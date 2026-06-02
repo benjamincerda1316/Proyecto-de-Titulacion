@@ -686,8 +686,8 @@ const app = {
         role: "consultant", 
         rol: "JUNIOR", 
         avatar_initials: "FD",
-        current_week: 1, 
-        semana_actual: 1, 
+        current_week: 3, 
+        semana_actual: 3, 
         avg_score: 0,
         status: "on_track",
         progreso_mallas: Array(12).fill({ completado: false, nota: null })
@@ -1209,7 +1209,7 @@ const app = {
             // Forzar desbloqueo de Semana 3 para Francisca para facilitar pruebas (desactivado para permitir probar evaluación S1)
             if (this.state.db.consultant_progress["USR-FRANCISCA"]) {
               const franProgress = this.state.db.consultant_progress["USR-FRANCISCA"];
-              if (false) { // Desactivado forzado automático
+              if (true) { // Desactivado forzado automático
                 franProgress.completed_weeks = [1, 2];
                 franProgress.checklist_states[1] = { 0: true, 1: true, 2: true, 3: true, 4: true };
                 franProgress.checklist_states[2] = { 0: true, 1: true, 2: true, 3: true, 4: true, 5: true, 6: true };
@@ -1324,7 +1324,7 @@ const app = {
         
         // Populate historical seed data based on their default template states
         let completedCount = 0;
-        if (user.id === 'USR-FRANCISCA') completedCount = 0; // Starts at week 1 to allow testing evaluation!
+        if (user.id === 'USR-FRANCISCA') completedCount = 2; // Starts at week 3
         
         for (let w = 1; w <= weekCount; w++) {
           const template = this.defaultTemplates.week_templates.find(wt => wt.week_number === w);
