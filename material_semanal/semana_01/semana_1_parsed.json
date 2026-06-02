@@ -1,0 +1,502 @@
+[
+  {
+    "question": "¿Cuál es la función principal del Front Office?",
+    "options": [
+      "Registrar asientos contables",
+      "Vender productos y generar negocios",
+      "Liquidar operaciones",
+      "Auditar procesos"
+    ],
+    "correct": 1
+  },
+  {
+    "question": "¿Quién normalmente interactúa directamente con los clientes?",
+    "options": [
+      "Back Office",
+      "Auditoría Interna",
+      "Front Office",
+      "Compliance"
+    ],
+    "correct": 2
+  },
+  {
+    "question": "¿Qué área valida los riesgos de las operaciones antes o después de su ejecución?",
+    "options": [
+      "Front Office",
+      "Middle Office",
+      "Recursos Humanos",
+      "Tesorería"
+    ],
+    "correct": 1
+  },
+  {
+    "question": "¿Cuál es una función típica del Back Office?",
+    "options": [
+      "Negociar swaps",
+      "Captar clientes",
+      "Confirmar y liquidar operaciones",
+      "Gestionar inversiones"
+    ],
+    "correct": 2
+  },
+  {
+    "question": "¿Qué ocurre si Front Office ejecuta una operación y Back Office no la liquida?",
+    "options": [
+      "No pasa nada",
+      "Existe riesgo operacional",
+      "Aumenta la rentabilidad",
+      "Mejora la liquidez"
+    ],
+    "correct": 1
+  },
+  {
+    "question": "¿Cuál es el orden correcto?",
+    "options": [
+      "Liquidación → Negociación → Confirmación",
+      "Confirmación → Negociación → Contabilidad",
+      "Negociación → Confirmación → Liquidación",
+      "Contabilidad → Negociación → Confirmación"
+    ],
+    "correct": 2
+  },
+  {
+    "question": "¿Qué significa \"Trade Date\"?",
+    "options": [
+      "Fecha de pago",
+      "Fecha de negociación",
+      "Fecha contable",
+      "Fecha de vencimiento"
+    ],
+    "correct": 1
+  },
+  {
+    "question": "¿Qué significa \"Settlement Date\"?",
+    "options": [
+      "Fecha de liquidación",
+      "Fecha de emisión",
+      "Fecha de aprobación",
+      "Fecha de negociación"
+    ],
+    "correct": 0
+  },
+  {
+    "question": "¿Quién suele generar el trade en un banco?",
+    "options": [
+      "Front Office",
+      "Back Office",
+      "Auditoría",
+      "Compliance"
+    ],
+    "correct": 0
+  },
+  {
+    "question": "¿Qué área suele registrar la contabilidad derivada de una operación?",
+    "options": [
+      "Front Office",
+      "Marketing",
+      "Finanzas/Contabilidad",
+      "Comercial"
+    ],
+    "correct": 2
+  },
+  {
+    "question": "Un activo es:",
+    "options": [
+      "Una obligación",
+      "Algo que genera valor económico",
+      "Una pérdida",
+      "Un gasto"
+    ],
+    "correct": 1
+  },
+  {
+    "question": "Un depósito de un cliente representa para el banco:",
+    "options": [
+      "Activo",
+      "Patrimonio",
+      "Pasivo",
+      "Ingreso"
+    ],
+    "correct": 2
+  },
+  {
+    "question": "Un préstamo otorgado por el banco es:",
+    "options": [
+      "Pasivo",
+      "Activo",
+      "Patrimonio",
+      "Gasto"
+    ],
+    "correct": 1
+  },
+  {
+    "question": "¿Qué ecuación es correcta?",
+    "options": [
+      "Activos = Pasivos + Patrimonio",
+      "Activos + Pasivos = Patrimonio",
+      "Patrimonio = Activos + Gastos",
+      "Ingresos = Activos + Pasivos"
+    ],
+    "correct": 0
+  },
+  {
+    "question": "Cuando aumenta un activo normalmente:",
+    "options": [
+      "Se debita",
+      "Se acredita",
+      "Se elimina",
+      "Se provisiona"
+    ],
+    "correct": 0
+  },
+  {
+    "question": "La Tesorería se encarga principalmente de:",
+    "options": [
+      "Contratar personal",
+      "Gestionar liquidez y financiamiento",
+      "Marketing",
+      "Auditoría"
+    ],
+    "correct": 1
+  },
+  {
+    "question": "¿Qué riesgo controla especialmente Tesorería?",
+    "options": [
+      "Riesgo de liquidez",
+      "Riesgo reputacional",
+      "Riesgo legal",
+      "Riesgo climático"
+    ],
+    "correct": 0
+  },
+  {
+    "question": "Un banco con exceso de efectivo probablemente:",
+    "options": [
+      "Buscará invertirlo",
+      "Cerrará operaciones",
+      "Aumentará pérdidas",
+      "Hará auditorías"
+    ],
+    "correct": 0
+  },
+  {
+    "question": "¿Qué es una posición de caja?",
+    "options": [
+      "Flujo neto de efectivo disponible",
+      "Patrimonio",
+      "Capital social",
+      "Utilidad retenida"
+    ],
+    "correct": 0
+  },
+  {
+    "question": "¿Qué mercado se usa frecuentemente para obtener liquidez de corto plazo?",
+    "options": [
+      "Mercado inmobiliario",
+      "Mercado interbancario",
+      "Mercado laboral",
+      "Mercado agrícola"
+    ],
+    "correct": 1
+  },
+  {
+    "question": "¿Qué es un bono?",
+    "options": [
+      "Derivado",
+      "Instrumento de deuda",
+      "Acción preferente",
+      "Divisa"
+    ],
+    "correct": 1
+  },
+  {
+    "question": "Una acción representa:",
+    "options": [
+      "Deuda",
+      "Propiedad parcial de una empresa",
+      "Derivado",
+      "Préstamo"
+    ],
+    "correct": 1
+  },
+  {
+    "question": "¿Qué es un depósito a plazo?",
+    "options": [
+      "Inversión con vencimiento definido",
+      "Derivado",
+      "Bono perpetuo",
+      "Acción"
+    ],
+    "correct": 0
+  },
+  {
+    "question": "¿Qué instrumento paga intereses periódicos?",
+    "options": [
+      "Bono",
+      "Forward",
+      "Opción",
+      "Futuro"
+    ],
+    "correct": 0
+  },
+  {
+    "question": "¿Qué mercado negocia monedas?",
+    "options": [
+      "Equity",
+      "FX",
+      "Commodities",
+      "Real Estate"
+    ],
+    "correct": 1
+  },
+  {
+    "question": "¿Qué es un derivado?",
+    "options": [
+      "Instrumento cuyo valor depende de otro activo",
+      "Un préstamo",
+      "Una cuenta corriente",
+      "Un depósito"
+    ],
+    "correct": 0
+  },
+  {
+    "question": "¿Qué es un Forward?",
+    "options": [
+      "Compra/venta futura pactada hoy",
+      "Un bono",
+      "Un depósito",
+      "Una acción"
+    ],
+    "correct": 0
+  },
+  {
+    "question": "¿Qué es una opción?",
+    "options": [
+      "Obligación de comprar",
+      "Derecho pero no obligación",
+      "Un préstamo",
+      "Un depósito"
+    ],
+    "correct": 1
+  },
+  {
+    "question": "En una Call Option el comprador espera que:",
+    "options": [
+      "Baje el precio",
+      "Suba el precio",
+      "No cambie",
+      "Quiebre la empresa"
+    ],
+    "correct": 1
+  },
+  {
+    "question": "¿Qué es un Swap?",
+    "options": [
+      "Intercambio de flujos financieros",
+      "Bono",
+      "Acción",
+      "Depósito"
+    ],
+    "correct": 0
+  },
+  {
+    "question": "¿Qué es riesgo de mercado?",
+    "options": [
+      "Cambios en precios, tasas o divisas",
+      "Robo físico",
+      "Renuncia de empleados",
+      "Riesgo legal"
+    ],
+    "correct": 0
+  },
+  {
+    "question": "¿Qué es riesgo de crédito?",
+    "options": [
+      "Incumplimiento de una contraparte",
+      "Baja liquidez",
+      "Falla tecnológica",
+      "Riesgo reputacional"
+    ],
+    "correct": 0
+  },
+  {
+    "question": "¿Qué es riesgo operacional?",
+    "options": [
+      "Pérdidas por errores o fallas de procesos",
+      "Variación de tasas",
+      "Variación de FX",
+      "Variación bursátil"
+    ],
+    "correct": 0
+  },
+  {
+    "question": "¿Qué área suele medir VaR?",
+    "options": [
+      "Middle Office / Riesgos",
+      "Marketing",
+      "RRHH",
+      "Ventas"
+    ],
+    "correct": 0
+  },
+  {
+    "question": "¿Qué significa VaR?",
+    "options": [
+      "Value at Risk",
+      "Variable at Return",
+      "Volume at Risk",
+      "Value and Return"
+    ],
+    "correct": 0
+  },
+  {
+    "question": "¿Para qué sirve el capital regulatorio?",
+    "options": [
+      "Absorber pérdidas",
+      "Pagar salarios",
+      "Comprar edificios",
+      "Financiar marketing"
+    ],
+    "correct": 0
+  },
+  {
+    "question": "¿Qué busca proteger Basilea?",
+    "options": [
+      "Estabilidad financiera",
+      "Ventas",
+      "Impuestos",
+      "Comercio exterior"
+    ],
+    "correct": 0
+  },
+  {
+    "question": "¿Por qué los bancos mantienen reservas?",
+    "options": [
+      "Cumplir exigencias regulatorias y liquidez",
+      "Pagar dividendos",
+      "Comprar acciones",
+      "Reducir clientes"
+    ],
+    "correct": 0
+  },
+  {
+    "question": "¿Qué es una contraparte?",
+    "options": [
+      "La otra parte de una operación financiera",
+      "Un auditor",
+      "Un accionista",
+      "Un regulador"
+    ],
+    "correct": 0
+  },
+  {
+    "question": "¿Qué organismo suele supervisar bancos en Chile?",
+    "options": [
+      "SII",
+      "CMF",
+      "BancoEstado",
+      "Tesorería General"
+    ],
+    "correct": 1
+  },
+  {
+    "question": "Un trader compra un bono. ¿Quién registra inicialmente la operación?",
+    "options": [
+      "Front Office",
+      "RRHH",
+      "Auditoría",
+      "Legal"
+    ],
+    "correct": 0
+  },
+  {
+    "question": "¿Quién verifica que el trade tenga sentido financiero y respete límites?",
+    "options": [
+      "Middle Office",
+      "Marketing",
+      "RRHH",
+      "Comercial"
+    ],
+    "correct": 0
+  },
+  {
+    "question": "¿Quién envía instrucciones de pago?",
+    "options": [
+      "Back Office",
+      "Front Office",
+      "Riesgos",
+      "Auditoría"
+    ],
+    "correct": 0
+  },
+  {
+    "question": "¿Qué área necesita información para elaborar estados financieros?",
+    "options": [
+      "Contabilidad",
+      "Marketing",
+      "Ventas",
+      "RRHH"
+    ],
+    "correct": 0
+  },
+  {
+    "question": "¿Qué sistema suele utilizarse para gestionar derivados y operaciones de mercado?",
+    "options": [
+      "SAP exclusivamente",
+      "Excel únicamente",
+      "Murex",
+      "PowerPoint"
+    ],
+    "correct": 2
+  },
+  {
+    "question": "¿Qué ocurre cuando una contraparte incumple un pago?",
+    "options": [
+      "Riesgo de crédito",
+      "Riesgo operacional",
+      "Riesgo reputacional",
+      "Riesgo climático"
+    ],
+    "correct": 0
+  },
+  {
+    "question": "¿Qué es P&L?",
+    "options": [
+      "Profit and Loss",
+      "Position and Liquidity",
+      "Price and Leverage",
+      "Payment and Liability"
+    ],
+    "correct": 0
+  },
+  {
+    "question": "¿Qué área suele ser responsable del P&L de una mesa de trading?",
+    "options": [
+      "Front Office",
+      "RRHH",
+      "Legal",
+      "Auditoría"
+    ],
+    "correct": 0
+  },
+  {
+    "question": "¿Por qué se realizan conciliaciones contables?",
+    "options": [
+      "Verificar consistencia entre sistemas y registros",
+      "Generar ventas",
+      "Aumentar riesgos",
+      "Crear derivados"
+    ],
+    "correct": 0
+  },
+  {
+    "question": "¿Cuál es el objetivo final de todo el flujo operativo bancario?",
+    "options": [
+      "Procesar operaciones de forma segura, rentable y controlada",
+      "Aumentar burocracia",
+      "Reducir clientes",
+      "Eliminar controles"
+    ],
+    "correct": 0
+  }
+]

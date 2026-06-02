@@ -1,0 +1,251 @@
+Product;Financial_event;Financial_event_step;Financial_event_amount;Financial_event_type;Debit_account_label;Credit_account_label;Reversed;Description;Help
+Money-market loan - Amortized Cost asset;Asset recognition;1;1000;Initial capital;Loan;Loan Payable;No;"According to IFRS 9, Loans remain classified as financial assets but ""Loans and receivables"" category do no longer exist as such. Indeed in IFRS 9, Amortized Cost measurement of financial assets, hence loans, remains possible given the objective is to hold assets to collect contractual cash flows, which is the case for money marfket loans. Otherwise, Loans are measured at Fair Value Through Profit or Loss (FVTPL).";Trade date operation
+Money-market loan - Amortized Cost asset;Cash settlement;2;1000;Initial capital;Loan Payable;Cash Nostro;No;;Start date operation
+Money-market loan - Amortized Cost asset;Value measurement;3;10;Interest accruals;Interest receivable;Interest Income;Yes;;Accrual of the interests
+Money-market loan - Amortized Cost asset;Realized income;4;10;Interest;Cash Nostro;Interest Income;No;;Realized interests
+Money-market loan - Amortized Cost asset;Asset derecognition;5;1000;Redeemed capital;Cash Nostro;Loan;No;;Maturity date operation, return capital
+;;;;;;;;;
+Money-market deposit - Amortized Cost liability;Liability recognition;1;1000;Initial capital;Deposit Receivable;Deposit;No;"Deposits are loans seen on the borrower side, i.e. over-the-counter contracts where one party (borrower) agrees to 
+borrow capital to another party (lender) for a determined period of time against a fix or floating interest payment.";Trade date operation
+Money-market deposit - Amortized Cost liability;Cash settlement;2;1000;Initial capital;Cash Nostro;Deposit Receivable;No;;Start date operation
+Money-market deposit - Amortized Cost liability;Value measurement;3;10;Interest accruals;Interest Expense;Interest Payable;Yes;;Accrual of the interests
+Money-market deposit - Amortized Cost liability;Realized loss;4;10;Interest;Interest Expense;Cash Nostro;No;;Realized interests
+Money-market deposit - Amortized Cost liability;Liability derecognition;5;1000;Redeemed capital;Deposit;Cash Nostro;No;;Maturity date operation, return capital
+;;;;;;;;;
+FX Spot and FX Forward - Trading - Profit;OBS commitment (leg 1) - Payable;1;1000;Notional payable;Contingent Contra;Contingent Payable;No;FX Spot and FX Forward are over-the-counter contracts between two parties in order to exchange a certain amount of currencies at a specified time, at a rate agreed at the time of the transaction. The difference between FX spot and FX forward contracts is the settlement delay which is usually 0 to 2 business days for spot contracts, and more than two business days for forward contracts.;Commit notional (OBS)
+FX Spot and FX Forward - Trading - Profit;OBS commitment (leg 2) - Receivable;1;1000;Notional receivable;Contingent Receivable;Contingent Contra;No;;Counterparty commits notional (OBS)
+FX Spot and FX Forward - Trading - Profit;Value measurement;2;10;Revaluation (MTM) - Profit;Unrealized Asset;MTM Gain;Yes;;Revaluation at profit
+FX Spot and FX Forward - Trading - Profit;OBS uncommitment (leg 1) - Payable;3;1000;Notional payable;Contingent Payable;Contingent Contra;No;;Uncommit notional (OBS)
+FX Spot and FX Forward - Trading - Profit;OBS uncommitment (leg 2) - Receivable;3;1000;Notional receivable;Contingent Contra;Contingent Receivable;No;;Counterparty uncommits notional (OBS)
+FX Spot and FX Forward - Trading - Profit;Realized income or expense;3;10;Cash settlement;Cash Nostro;Realized Gain;No;;FX settlement at profit
+;;;;;;;;;
+FX Spot and FX Forward - Trading - Loss;OBS commitment (leg 1) - Payable;1;1000;Notional payable;Contingent Contra;Contingent Payable;No;FX Spot and FX Forward are over-the-counter contracts between two parties in order to exchange a certain amount of currencies at a specified time, at a rate agreed at the time of the transaction. The difference between FX spot and FX forward contracts is the settlement delay which is usually 0 to 2 business days for spot contracts, and more than two business days for forward contracts.;Commit notional (OBS)
+FX Spot and FX Forward - Trading - Loss;OBS commitment (leg 2) - Receivable;1;1000;Notional receivable;Contingent Receivable;Contingent Contra;No;;Counterparty commits notional (OBS)
+FX Spot and FX Forward - Trading - Loss;Value measurement;2;10;Revaluation (MTM) - Loss;MTM Loss;Unrealized liability;Yes;;Revaluation at Loss
+FX Spot and FX Forward - Trading - Loss;OBS uncommitment (leg 1) - Payable;3;1000;Notional payable;Contingent Payable;Contingent Contra;No;;Uncommit notional (OBS)
+FX Spot and FX Forward - Trading - Loss;OBS uncommitment (leg 2) - Receivable;3;1000;Notional receivable;Contingent Contra;Contingent Receivable;No;;Counterparty uncommits notional (OBS)
+FX Spot and FX Forward - Trading - Loss;Realized income or expense;3;10;Cash settlement;Realized Loss;Cash Nostro;No;;FX settlement at loss
+;;;;;;;;;
+FX Swap - Trading derivative;OBS commitment (Near leg - Buy currency) - Receivable;1;1000;Notional receivable;Contingent Receivable;Contingent Contra;No;A FX Swap is an over-the-counter contract between two parties made of 2 legs that can be considered 2 successive spot/forward transactions. A Near Leg: the two parties agree to exchange one currency against another at an initial date (First Value Date) for a first exchange rate. A Far Leg: the two parties agree to exchange back the same currencies at a future date compared to initial date (Second Value Date) for a second exchange rate. The difference between the exchange rate applied on near and far leg reflects the interest differentials between the two  currencies concerned, also called swap points.;Trade date
+FX Swap - Trading derivative;OBS commitment (Near leg - Sell currency) - Payable;1;1000;Notional payable;Contingent Contra;Contingent Payable;No;;
+FX Swap - Trading derivative;OBS commitment (Far leg - Buy currency) - Receivable;1;1000;Notional receivable;Contingent Receivable;Contingent Contra;No;;
+FX Swap - Trading derivative;OBS commitment (Far leg - Sell currency) - Payable;1;1000;Notional payable;Contingent Contra;Contingent Payable;No;;
+FX Swap - Trading derivative;Value measurement (Near leg) - Profit;2;1;Revaluation (MTM) - Profit;Unrealized Asset;MTM Gain;Yes;;Revaluation - Gain
+FX Swap - Trading derivative;Value measurement (Far leg) - Profit;2;2;Revaluation (MTM) - Profit;Unrealized Asset;MTM Gain;Yes;;
+FX Swap - Trading derivative;Realized result (Near leg);3;1;Realized Gain;Cash Nostro;Realized Gain;No;;Realized Gain
+FX Swap - Trading derivative;Value measurement (Far leg) - Profit;4;1;Revaluation (MTM) - Loss;MTM Loss;Unrealized Liability;Yes;;Revaluation - Loss
+FX Swap - Trading derivative;Realized result (Far leg);5;1;Realized Loss;Realized Loss;Cash Nostro;No;;Realized Loss
+FX Swap - Trading derivative;OBS uncommitment (Near leg - Buy currency) - Receivable;6;1000;Notional receivable;Contingent Contra;Contingent Receivable;No;;Expiry date
+FX Swap - Trading derivative;OBS uncommitment (Near leg - Sell currency) - Payable;6;1000;Notional payable;Contingent Payable;Contingent Contra;No;;
+FX Swap - Trading derivative;OBS uncommitment (Far leg - Buy currency) - Receivable;6;1000;Notional receivable;Contingent Contra;Contingent Receivable;No;;
+FX Swap - Trading derivative;OBS uncommitment (Far leg - Sell currency) - Payable;6;1000;Notional payable;Contingent Payable;Contingent Contra;No;;
+;;;;;;;;;
+FX Option - Trading derivative - Buy call;OBS commitment (Buy currency) - Receivable;1;1000;Notional;Cont Buy Call Recbl;Contingent Contra;No;A FX option is an over-the-counter contract involving two parties, the buyer and the seller of the option, that agree on the following conditions: A right for the buyer, not an obligation, to exchange a certain amount of one currency against another currency at a pre-agreed exchange rate on a specified date. The type of the option, a call or a put option, respectively the right to buy or sell a currency against the other.;Trade date
+FX Option - Trading derivative - Buy call;OBS commitment (Sell currency) - Payable;1;1000;Notional;Contingent Contra;Cont Buy Call Paybl;No;;
+FX Option - Trading derivative - Buy call;Expense deferral;1;10;Premium;Deferred Loss;Premium Payable;No;;
+FX Option - Trading derivative - Buy call;Cash settlement;2;10;Premium;Premium Payable;Cash Nostro;No;Settlement;
+FX Option - Trading derivative - Buy call;Value measurement - Gain;3;11;Revaluation (MTM);Unrealized Asset;MTM Gain;Yes;Revaluation;
+FX Option - Trading derivative - Buy call;Realized deferred expense;4;10;Premium;Premium Expense;Deferred Loss;No;Deal termination;
+FX Option - Trading derivative - Buy call;OBS uncommitment (Buy currency) - Receivable;4;1000;Notional;Contingent Contra;Cont Buy Call Recbl;No;;
+FX Option - Trading derivative - Buy call;OBS uncommitment (Sell currency) - Payable;4;1000;Notional;Cont Buy Call Paybl;Contingent Contra;No;;
+;;;;;;;;;
+Interest rate swap - Trading derivative - Loss;OBS commitment (leg 1) - Payable;1;1000;Notional payable;Contingent Contra;Contingent Payable;No;An interest rate swap (IRS) is an arrangement between two parties to exchange interest rate denominated in the same currency at predetermined conditions, for a certain amount of notional and over a certain period of time. If the IRS is not traded at fair value, a premium will be exchanged at inception between the two parties to compensate the gain or loss towards fair value.;Commit notional (OBS)
+Interest rate swap - Trading derivative - Loss;OBS commitment (leg 2) - Receivable;1;1000;Notional receivable;Contingent Receivable;Contingent Contra;No;;Counterparty commits notional (OBS)
+Interest rate swap - Trading derivative - Loss;Unrealized premium;2;100;Premium Payable;Premium Expense;Premium Payable;No;;Unrealized payable premium
+Interest rate swap - Trading derivative - Loss;Cash settlement;3;100;Premium Pay;Premium Payable;Cash Nostro;No;;Premium payment
+Interest rate swap - Trading derivative - Loss;Value measurement;4;10;Revaluation (MTM) - Loss;MTM Loss;Unrealized liability;Yes;;Revaluation at Loss
+Interest rate swap - Trading derivative - Loss;Realized income or expense;5;10;Interest Pay;Interest Expense;Cash Nostro;No;;Interest payment
+Interest rate swap - Trading derivative - Loss;OBS uncommitment (leg 1) - Payable;6;1000;Notional payable;Contingent Payable;Contingent Contra;No;;Uncommit notional (OBS)
+Interest rate swap - Trading derivative - Loss;OBS uncommitment (leg 2) - Receivable;6;1000;Notional receivable;Contingent Contra;Contingent Receivable;No;;Counterparty uncommits notional (OBS)
+;;;;;;;;;
+Interest rate swap - Trading derivative - Profit;OBS commitment (leg 1) - Payable;1;1000;Notional payable;Contingent Contra;Contingent Payable;No;An interest rate swap (IRS) is an arrangement between two parties to exchange interest rate denominated in the same currency at predetermined conditions, for a certain amount of notional and over a certain period of time. If the IRS is not traded at fair value, a premium will be exchanged at inception between the two parties to compensate the gain or loss towards fair value.;Commit notional (OBS)
+Interest rate swap - Trading derivative - Profit;OBS commitment (leg 2) - Receivable;1;1000;Notional receivable;Contingent Receivable;Contingent Contra;No;;Counterparty commits notional (OBS)
+Interest rate swap - Trading derivative - Profit;Unrealized premium;2;100;Premium Receivable;Premium Receivable;Premium Income;No;;Unrealized receivable premium
+Interest rate swap - Trading derivative - Profit;Premium cash settlement;3;100;Premium Receive;Cash Nostro;Premium Receivable;No;;Premium payment
+Interest rate swap - Trading derivative - Profit;Value measurement;4;10;Revaluation (MTM) - Profit;Unrealized Asset;MTM Gain;Yes;;Revaluation at Profit
+Interest rate swap - Trading derivative - Profit;Realized income or expense;5;10;Interest Receive;Cash Nostro;Interest Income;No;;Interest receive
+Interest rate swap - Trading derivative - Profit;OBS uncommitment (leg 1) - Payable;6;1000;Notional payable;Contingent Payable;Contingent Contra;No;;Uncommit notional (OBS)
+Interest rate swap - Trading derivative - Profit;OBS uncommitment (leg 2) - Receivable;6;1000;Notional receivable;Contingent Contra;Contingent Receivable;No;;Counterparty uncommits notional (OBS)
+;;;;;;;;;
+Equity - FVTPL - Purchased and held;Nominal Payable@TradeDate;1;153;Nominal Trade;Equity Nominal;Equity Payable;No;According to IFRS 9, Equitiy assets do not give birth to contractual cash flows which are payments of principal and interests, and must then be measured at Fair Value Through Profit or Loss (FVTPL).;Trade date
+Equity - FVTPL - Purchased and held;Nominal Pay@PaymentDate;2;153;Nominal Pay;Equity Payable;Cash Nostro;No;;Settle equity with cash
+Equity - FVTPL - Purchased and held;Revaluation (MTM) - Profit;3;156;Inventory Position;Unrealized Asset;MTM Gain;Yes;;Reval at MTM
+Equity - FVTPL - Purchased and held;CA Commitment Cash Dividend;4;2;Inventory Position (Corporate action);Dividend Receivable;Dividend Income;No;;Dividend commitment
+Equity - FVTPL - Purchased and held;CA Cash Dividend;5;2;Inventory Position (Corporate action);Cash Nostro;Dividend Receivable;No;;Dividend payment
+;;;;;;;;;
+Equity - FVTPL - Purchased and sold for a profit;Nominal Payable@TradeDate;1;153;Nominal Trade;Equity Nominal;Equity Payable;No;According to IFRS 9, Equitiy assets do not give birth to contractual cash flows which are payments of principal and interests, and must then be measured at Fair Value Through Profit or Loss (FVTPL).;Trade
+Equity - FVTPL - Purchased and sold for a profit;Nominal Pay@PaymentDate;2;153;Nominal Pay;Equity Payable;Cash Nostro;No;;Settle equity
+Equity - FVTPL - Purchased and sold for a profit;Revaluation (MTM) - Profit;3;156;Inventory Position;Unrealized Asset;MTM Gain;Yes;;Reval at MTM
+Equity - FVTPL - Purchased and sold for a profit;Realized Gain @ClosingDate;4;3;PnL;Equity Nominal;Realized Gain;No;;Trade date (sale of equity)
+Equity - FVTPL - Purchased and sold for a profit;Nominal Receivable@TradeDate;4;156;Nominal Trade;Equity Receivable;Equity Nominal;No;;
+Equity - FVTPL - Purchased and sold for a profit;Nominal Receive@PaymentDate;5;156;Nominal Receive;Cash Nostro;Equity Receivable;No;;Payment of equity by counterparty
+;;;;;;;;;
+Equity - FVTPL - Purchased and sold for a loss;Nominal Payable@TradeDate;1;153;Nominal Trade;Equity Nominal;Equity Payable;No;According to IFRS 9, Equitiy assets do not give birth to contractual cash flows which are payments of principal and interests, and must then be measured at Fair Value Through Profit or Loss (FVTPL).;Trade
+Equity - FVTPL - Purchased and sold for a loss;Nominal Pay@PaymentDate;2;153;Nominal Pay;Equity Payable;Cash Nostro;No;;Settle equity
+Equity - FVTPL - Purchased and sold for a loss;Revaluation (MTM) - Profit;3;149;Inventory Position;MTM Loss;Unrealized Liability;Yes;;Reval at MTM
+Equity - FVTPL - Purchased and sold for a loss;Realized Loss @ClosingDate;4;4;PnL;Realized Loss;Equity Nominal;No;;Trade date (sale of equity)
+Equity - FVTPL - Purchased and sold for a loss;Nominal Receivable@TradeDate;4;149;Nominal Trade;Equity Receivable;Equity Nominal;No;;
+Equity - FVTPL - Purchased and sold for a loss;Nominal Receive@PaymentDate;5;149;Nominal Receive;Cash Nostro;Equity Receivable;No;;Payment of equity by counterparty
+;;;;;;;;;
+Equity - FVTOCI - Purchased and held;Nominal Payable@TradeDate;1;153;Nominal Trade;Equity Nominal;Equity Payable;No;You would account for an equity instrument at FVTOCI to reflect long?term, non?trading investments in a way that avoids profit?or?loss volatility while still measuring them at fair value.;
+Equity - FVTOCI - Purchased and held;Nominal Pay@PaymentDate;2;153;Nominal Pay;Equity Payable;Cash Nostro;No;;
+Equity - FVTOCI - Purchased and held;Revaluation (MTM) - Profit;3;156;Inventory Position;Equity OCI;MTM Gain;Yes;;
+Equity - FVTOCI - Purchased and held;CA Commitment Cash Dividend;4;2;Inventory Position (Corporate action);Dividend Receivable;Dividend Income;No;;Dividend commitment
+Equity - FVTOCI - Purchased and held;CA Cash Dividend;5;2;Inventory Position (Corporate action);Cash Nostro;Dividend Receivable;No;;Dividend payment
+;;;;;;;;;
+Equity - FVTOCI - Purchased and sold for a profit;Nominal Payable@TradeDate;1;153;Nominal Trade;Equity Nominal;Equity Payable;No;You would account for an equity instrument at FVTOCI to reflect long?term, non?trading investments in a way that avoids profit?or?loss volatility while still measuring them at fair value.;Trade
+Equity - FVTOCI - Purchased and sold for a profit;Nominal Pay@PaymentDate;2;153;Nominal Pay;Equity Payable;Cash Nostro;No;;Settle equity
+Equity - FVTOCI - Purchased and sold for a profit;Revaluation (MTM) - Profit;3;156;Inventory Position;Unrealized Asset;Equity OCI;Yes;;Reval at MTM
+Equity - FVTOCI - Purchased and sold for a profit;Realized Profit @ClosingDate;4;3;PnL;Equity Nominal;Realized Gain;No;;Trade date (sale of equity)
+Equity - FVTOCI - Purchased and sold for a profit;Nominal Receivable@TradeDate;4;156;Nominal Trade;Equity Receivable;Equity Nominal;No;;
+Equity - FVTOCI - Purchased and sold for a profit;Nominal Receive@PaymentDate;5;156;Nominal Receive;Cash Nostro;Equity Receivable;No;;Payment of equity by counterparty
+;;;;;;;;;
+Equity - FVTOCI - Purchased and sold for a loss;Nominal Payable@TradeDate;1;153;Nominal Trade;Equity Nominal;Equity Payable;No;You would account for an equity instrument at FVTOCI to reflect long?term, non?trading investments in a way that avoids profit?or?loss volatility while still measuring them at fair value.;Trade
+Equity - FVTOCI - Purchased and sold for a loss;Nominal Pay@PaymentDate;2;153;Nominal Pay;Equity Payable;Cash Nostro;No;;Settle equity
+Equity - FVTOCI - Purchased and sold for a loss;Revaluation (MTM) - Loss;3;149;Inventory Position;Equity OCI;Unrealized Liability;Yes;;Reval at MTM
+Equity - FVTOCI - Purchased and sold for a loss;Realized Loss @ClosingDate;4;4;PnL;Realized Loss;Equity Nominal;No;;Trade date (sale of equity)
+Equity - FVTOCI - Purchased and sold for a loss;Nominal Receivable@TradeDate;4;149;Nominal Trade;Equity Receivable;Equity Nominal;No;;
+Equity - FVTOCI - Purchased and sold for a loss;Nominal Receive@PaymentDate;5;149;Nominal Receive;Cash Nostro;Equity Receivable;No;;Payment of equity by counterparty
+;;;;;;;;;
+Bond - Amortized Cost - Held to maturity;OBS trade commitment - Capital;1;1000;Initial capital;OBS Trade Commitment;OBS Offset;No;A bond measured at amortized cost is recorded based on its initial value adjusted over time for principal repayments and interest using the effective interest method, with no fair value changes recognized in profit or loss.;Trade date
+Bond - Amortized Cost - Held to maturity;OBS trade commitment - Premium;1;50;Premium;OBS Trade Commitment;OBS Offset;No;;
+Bond - Amortized Cost - Held to maturity;OBS trade commitment - Accruals;1;10;Accruals;OBS Trade Commitment;OBS Offset;No;;
+Bond - Amortized Cost - Held to maturity;OBS trade uncommitment - Capital;2;1000;Initial capital;OBS Offset;OBS Trade Commitment;No;;Settlement date
+Bond - Amortized Cost - Held to maturity;OBS trade uncommitment - Premium;2;50;Premium;OBS Offset;OBS Trade Commitment;No;;
+Bond - Amortized Cost - Held to maturity;OBS trade uncommitment - Accruals;2;10;Accruals;OBS Offset;OBS Trade Commitment;No;;
+Bond - Amortized Cost - Held to maturity;Asset position opening;3;1050;Purchase price (Clean);Carrying Amount;Cash Nostro;No;;Write purchase to BS
+Bond - Amortized Cost - Held to maturity;Realized interest expense;3;10;Accrued interest purchased;Interest Income;Cash Nostro;No;;
+Bond - Amortized Cost - Held to maturity;Bonds premium amortization;4;50;Premium;Interest Income;Carrying Amount;No;;Amortize premium through expense
+Bond - Amortized Cost - Held to maturity;Accrued interest;4;12;Accruals;Accrued Interests;Interest Income;Yes;;
+Bond - Amortized Cost - Held to maturity;Coupon received;5;20;Interest;Cash Nostro;Interest Income;No;;Coupon
+Bond - Amortized Cost - Held to maturity;Redemption;6;1000;Principal;Cash Nostro;Carrying Amount;No;;Maturity
+Bond - Amortized Cost - Held to maturity;Redemption - Realized P/L Loss;6;50;P&L;POS Realized Loss;Cash Nostro;No;;
+;;;;;;;;;
+Bond - Amortized Cost - Purchased  @Premium and sold for profit;OBS trade commitment - Capital purchase;1;1000;Initial capital;OBS Trade Commitment;OBS Offset;No;A bond at amortized cost is a debt investment measured at its initial value adjusted over time for principal repayments and the amortization of any discount or premium, rather than being revalued at current market prices.;Trade date (purchase)
+Bond - Amortized Cost - Purchased  @Premium and sold for profit;OBS trade commitment - Premium purchase;1;50;Premium;OBS Trade Commitment;OBS Offset;No;;
+Bond - Amortized Cost - Purchased  @Premium and sold for profit;OBS trade commitment - Accruals purchase;1;10;Accruals;OBS Trade Commitment;OBS Offset;No;;
+Bond - Amortized Cost - Purchased  @Premium and sold for profit;OBS trade uncommitment - Capital purchase;2;1000;Initial capital;OBS Offset;OBS Trade Commitment;No;;Settlement date (purchase)
+Bond - Amortized Cost - Purchased  @Premium and sold for profit;OBS trade uncommitment - Premium purchase;2;50;Premium;OBS Offset;OBS Trade Commitment;No;;
+Bond - Amortized Cost - Purchased  @Premium and sold for profit;OBS trade uncommitment - Accruals purchase;2;10;Accruals;OBS Offset;OBS Trade Commitment;No;;
+Bond - Amortized Cost - Purchased  @Premium and sold for profit;Asset position opening;2;1050;Purchase price (Clean);Carrying Amount;Cash Nostro;No;;
+Bond - Amortized Cost - Purchased  @Premium and sold for profit;Realized interest expense;2;10;Accrued interest purchased;Interest Income;Cash Nostro;No;;
+Bond - Amortized Cost - Purchased  @Premium and sold for profit;Accrued interest;3;2;Accruals;Accrued Interests;Interest Income;Yes;;Accrued interests
+Bond - Amortized Cost - Purchased  @Premium and sold for profit;OBS trade commitment - Capital sale;4;1000;Initial capital;OBS Offset;OBS Trade Commitment;No;;Trade date (sale)
+Bond - Amortized Cost - Purchased  @Premium and sold for profit;OBS trade commitment - Premium sale;4;60;Premium;OBS Offset;OBS Trade Commitment;No;;
+Bond - Amortized Cost - Purchased  @Premium and sold for profit;OBS trade commitment - Accruals sale;4;12;Accruals;OBS Offset;OBS Trade Commitment;No;;
+Bond - Amortized Cost - Purchased  @Premium and sold for profit;OBS trade uncommitment - Capital sale;5;1000;Initial capital;OBS Trade Commitment;OBS Offset;No;;Settlement date (sale)
+Bond - Amortized Cost - Purchased  @Premium and sold for profit;OBS trade uncommitment - Premium sale;5;60;Premium;OBS Trade Commitment;OBS Offset;No;;
+Bond - Amortized Cost - Purchased  @Premium and sold for profit;OBS trade uncommitment - Accruals sale;5;12;Accruals;OBS Trade Commitment;OBS Offset;No;;
+Bond - Amortized Cost - Purchased  @Premium and sold for profit;AC Bonds Cash delivery - Sale;5;1050;Cost FIFO or AVP (clean);Cash Nostro;Carrying Amount;No;;
+Bond - Amortized Cost - Purchased  @Premium and sold for profit;Bonds Accrued Interest - Sale;5;12;Accruals;Cash Nostro;Interest Income;No;;
+Bond - Amortized Cost - Purchased  @Premium and sold for profit;"Bonds Realized PL @ value date
+Profit on Sale";5;30;Realized PL;Cash Nostro;POS Realized Gain;No;;
+Bond - Amortized Cost - Purchased  @Premium and sold for profit;"Realized Amortization @ value date
+Profit on Sale";5;4;Realized Amortization;Interest Income;POS Realized Gain;No;;
+;;;;;;;;;
+Bond - Amortized Cost - Purchased  @Discount and sold for loss;OBS trade commitment - Capital purchase;1;1000;Initial capital;OBS Trade Commitment;OBS Offset;No;A bond at amortized cost is a debt investment measured at its initial value adjusted over time for principal repayments and the amortization of any discount or premium, rather than being revalued at current market prices.;Trade date (purchase)
+Bond - Amortized Cost - Purchased  @Discount and sold for loss;OBS trade commitment - Discount purchase;1;50;Discount;OBS Trade Commitment;OBS Offset;No;;
+Bond - Amortized Cost - Purchased  @Discount and sold for loss;OBS trade commitment - Accruals purchase;1;10;Accruals;OBS Trade Commitment;OBS Offset;No;;
+Bond - Amortized Cost - Purchased  @Discount and sold for loss;OBS trade uncommitment - Capital purchase;2;1000;Initial capital;OBS Offset;OBS Trade Commitment;No;;Settlement date (purchase)
+Bond - Amortized Cost - Purchased  @Discount and sold for loss;OBS trade uncommitment - Discount purchase;2;50;Discount;OBS Offset;OBS Trade Commitment;No;;
+Bond - Amortized Cost - Purchased  @Discount and sold for loss;OBS trade uncommitment - Accruals purchase;2;10;Accruals;OBS Offset;OBS Trade Commitment;No;;
+Bond - Amortized Cost - Purchased  @Discount and sold for loss;Asset position opening;2;950;Purchase price (Clean);Carrying Amount;Cash Nostro;No;;
+Bond - Amortized Cost - Purchased  @Discount and sold for loss;Realized interest expense;2;10;Accrued interest purchased;Interest Income;Cash Nostro;No;;
+Bond - Amortized Cost - Purchased  @Discount and sold for loss;Accrued interest;3;12;Accruals;Accrued Interests;Interest Income;Yes;;Accrued interests
+Bond - Amortized Cost - Purchased  @Discount and sold for loss;OBS trade commitment - Capital sale;4;1000;Initial capital;OBS Offset;OBS Trade Commitment;No;;Trade date (sale)
+Bond - Amortized Cost - Purchased  @Discount and sold for loss;OBS trade commitment - Premium sale;4;60;Premium;OBS Offset;OBS Trade Commitment;No;;
+Bond - Amortized Cost - Purchased  @Discount and sold for loss;OBS trade commitment - Accruals sale;4;12;Accruals;OBS Offset;OBS Trade Commitment;No;;
+Bond - Amortized Cost - Purchased  @Discount and sold for loss;OBS trade uncommitment - Capital sale;5;1000;Initial capital;OBS Trade Commitment;OBS Offset;No;;Settlement date (sale)
+Bond - Amortized Cost - Purchased  @Discount and sold for loss;OBS trade uncommitment - Premium sale;5;50;Premium;OBS Trade Commitment;OBS Offset;No;;
+Bond - Amortized Cost - Purchased  @Discount and sold for loss;OBS trade uncommitment - Accruals sale;5;12;Accruals;OBS Trade Commitment;OBS Offset;No;;
+Bond - Amortized Cost - Purchased  @Discount and sold for loss;AC Bonds Cash delivery - Sale;5;950;Cost FIFO or AVP (clean);Cash Nostro;Carrying Amount;No;;
+Bond - Amortized Cost - Purchased  @Discount and sold for loss;Bonds Accrued Interest - Sale;5;12;Accruals;Cash Nostro;Interest Income;No;;
+Bond - Amortized Cost - Purchased  @Discount and sold for loss;Bonds Realized PL @ value date Loss on Sale;5;20;Realized PL;POS Realized Loss;Cash Nostro;No;;
+Bond - Amortized Cost - Purchased  @Discount and sold for loss;Realized Amortization @ value date Loss on Sale;5;4;Realized Amortization;POS Realized Loss;Interest Income;No;;
+;;;;;;;;;
+Bond - FVTPL - Held  to maturity;OBS trade commitment - Capital;1;1000;Initial capital;OBS Trade Commitment;OBS Offset;No;A bond measured at FVTPL is revalued at fair value each period, with all gains or losses immediately recognized in profit or loss.;Trade date
+Bond - FVTPL - Held  to maturity;OBS trade commitment - Premium;1;50;Premium;OBS Trade Commitment;OBS Offset;No;;
+Bond - FVTPL - Held  to maturity;OBS trade commitment - Accruals;1;10;Accruals;OBS Trade Commitment;OBS Offset;No;;
+Bond - FVTPL - Held  to maturity;FV OBS Valuation (profit);2;1;Fair value profit;Unreal. UnSettl. POS;UnSettl.POS MtM Gain;Yes;;
+Bond - FVTPL - Held  to maturity;OBS trade uncommitment - Capital;3;1000;Initial capital;OBS Offset;OBS Trade Commitment;No;;Settlement date
+Bond - FVTPL - Held  to maturity;OBS trade uncommitment - Premium;3;50;Premium;OBS Offset;OBS Trade Commitment;No;;
+Bond - FVTPL - Held  to maturity;OBS trade uncommitment - Accruals;3;10;Accruals;OBS Offset;OBS Trade Commitment;No;;
+Bond - FVTPL - Held  to maturity;Asset position opening;3;1050;Purchase price (Clean);Carrying Amount;Cash Nostro;No;;
+Bond - FVTPL - Held  to maturity;Realized interest expense;3;10;Accrued interest purchased;Interest Income;Cash Nostro;No;;
+Bond - FVTPL - Held  to maturity;Accrued interest;4;12;Accruals;Accrued Interests;Interest Income;Yes;;Accrued interests and MTM valuation
+Bond - FVTPL - Held  to maturity;FV BS Valuation (profit);4;2;Fair value profit;Carrying Amount;MTM Gain;Yes;;
+Bond - FVTPL - Held  to maturity;Coupon received;5;20;Interest;Cash Nostro;Interest Income;No;;Coupon payment
+Bond - FVTPL - Held  to maturity;Redemption (Cost);6;1050;Principal;Cash Nostro;Carrying Amount;No;;Redemption at purchase price
+Bond - FVTPL - Held  to maturity;Redemption - Realized P/L Loss;6;50;P&L;POS Realized Loss;Cash Nostro;No;;
+;;;;;;;;;
+Bond - FVTOCI - Held  to maturity;OBS trade commitment - Capital;1;1000;Initial capital;OBS Trade Commitment;OBS Offset;No;A bond measured at FVTOCI is carried at fair value, but unrealized gains or losses go to other comprehensive income while interest revenue and impairments affect profit or loss.;Trade date
+Bond - FVTOCI - Held  to maturity;OBS trade commitment - Premium;1;50;Premium;OBS Trade Commitment;OBS Offset;No;;
+Bond - FVTOCI - Held  to maturity;OBS trade commitment - Accruals;1;10;Accruals;OBS Trade Commitment;OBS Offset;No;;
+Bond - FVTOCI - Held  to maturity;FV OBS Valuation (profit);2;1;Fair value profit;Unreal. UnSettl. POS;UnSettl.POS MtM Gain;Yes;;
+Bond - FVTOCI - Held  to maturity;OBS trade uncommitment - Capital;3;1000;Initial capital;OBS Offset;OBS Trade Commitment;No;;Settlement date
+Bond - FVTOCI - Held  to maturity;OBS trade uncommitment - Premium;3;50;Premium;OBS Offset;OBS Trade Commitment;No;;
+Bond - FVTOCI - Held  to maturity;OBS trade uncommitment - Accruals;3;10;Accruals;OBS Offset;OBS Trade Commitment;No;;
+Bond - FVTOCI - Held  to maturity;Asset position opening;3;1050;Purchase price (Clean);Carrying Amount;Cash Nostro;No;;
+Bond - FVTOCI - Held  to maturity;Realized interest expense;3;10;Accrued interest purchased;Interest Income;Cash Nostro;No;;
+Bond - FVTOCI - Held  to maturity;Accrued interest;4;12;Accruals;Accrued Interests;Interest Income;Yes;;Accrued interests and MTM valuation
+Bond - FVTOCI - Held  to maturity;FVTOCI Position Valuation (profit);4;2;Fair value profit;Carrying Amount;Equity OCI;Yes;;
+Bond - FVTOCI - Held  to maturity;Bond Premium Amortization;5;50;Premium;Interest Income;Carrying Amount;No;;
+Bond - FVTOCI - Held  to maturity;Coupon received;6;20;Interest;Cash Nostro;Interest Income;No;;Coupon payment
+Bond - FVTOCI - Held  to maturity;Redemption (Cost);7;1050;Principal;Cash Nostro;Carrying Amount;No;;Redemption at purchase price
+Bond - FVTOCI - Held  to maturity;Redemption - Realized P/L Loss;7;50;P&L;POS Realized Loss;Cash Nostro;No;;
+;;;;;;;;;
+Bond - FVTOCI - Purchased @Premium and sold for profit;OBS trade commitment - Capital;1;1000;Initial capital;OBS Trade Commitment;OBS Offset;No;A bond measured at FVTOCI is carried at fair value, but unrealized gains or losses go to other comprehensive income while interest revenue and impairments affect profit or loss.;Trade date
+Bond - FVTOCI - Purchased @Premium and sold for profit;OBS trade commitment - Premium;1;50;Premium;OBS Trade Commitment;OBS Offset;No;;
+Bond - FVTOCI - Purchased @Premium and sold for profit;OBS trade commitment - Accruals;1;10;Accruals;OBS Trade Commitment;OBS Offset;No;;
+Bond - FVTOCI - Purchased @Premium and sold for profit;FV OBS Valuation (profit);2;1;Fair value profit;Unreal. UnSettl. POS;UnSettl.POS MtM Gain;Yes;;OBS revaluation
+Bond - FVTOCI - Purchased @Premium and sold for profit;OBS trade uncommitment - Capital;3;1000;Initial capital;OBS Offset;OBS Trade Commitment;No;;Settlement date
+Bond - FVTOCI - Purchased @Premium and sold for profit;OBS trade uncommitment - Premium;3;50;Premium;OBS Offset;OBS Trade Commitment;No;;
+Bond - FVTOCI - Purchased @Premium and sold for profit;OBS trade uncommitment - Accruals;3;10;Accruals;OBS Offset;OBS Trade Commitment;No;;
+Bond - FVTOCI - Purchased @Premium and sold for profit;Asset position opening;3;1050;Purchase price (Clean);Carrying Amount;Cash Nostro;No;;
+Bond - FVTOCI - Purchased @Premium and sold for profit;Realized interest expense;3;10;Accrued interest purchased;Interest Income;Cash Nostro;No;;
+Bond - FVTOCI - Purchased @Premium and sold for profit;Accrued interest;4;12;Accruals;Accrued Interests;Interest Income;Yes;;Accrued interests and MTM valuation
+Bond - FVTOCI - Purchased @Premium and sold for profit;MTM FVTOCI POS BS Value measurement - Profit;4;2;MTM;Carrying Amount;Equity OCI;Yes;;
+Bond - FVTOCI - Purchased @Premium and sold for profit;OBS trade commitment - Capital;5;1000;Initial capital;OBS Offset;OBS Trade Commitment;No;;Sell the bond for profit
+Bond - FVTOCI - Purchased @Premium and sold for profit;OBS trade commitment - Premium;5;50;Premium;OBS Offset;OBS Trade Commitment;No;;
+Bond - FVTOCI - Purchased @Premium and sold for profit;OBS trade commitment - Accruals;5;10;Accruals;OBS Offset;OBS Trade Commitment;No;;
+Bond - FVTOCI - Purchased @Premium and sold for profit;FV OBS Valuation (Profit);6;1;Fair value profit;Unreal. UnSettl. POS;UnSettl.POS MtM Gain;Yes;;OBS revaluation
+Bond - FVTOCI - Purchased @Premium and sold for profit;OBS trade uncommitment - Capital;7;1000;Initial capital;OBS Trade Commitment;OBS Offset;No;;Sale settlement
+Bond - FVTOCI - Purchased @Premium and sold for profit;OBS trade uncommitment - Premium;7;50;Premium;OBS Trade Commitment;OBS Offset;No;;
+Bond - FVTOCI - Purchased @Premium and sold for profit;OBS trade uncommitment - Accruals;7;10;Accruals;OBS Trade Commitment;OBS Offset;No;;
+Bond - FVTOCI - Purchased @Premium and sold for profit;Bond cash delivery sale trade;7;1050;Purchase price (Clean);Cash Nostro;Carrying Amount;No;;
+Bond - FVTOCI - Purchased @Premium and sold for profit;Accrued interests sale;7;12;Accruals;Cash Nostro;Interest Income;No;;
+Bond - FVTOCI - Purchased @Premium and sold for profit;Realized PL Profit on sale @value date;7;30;PnL;Cash Nostro;;No;;
+Bond - FVTOCI - Purchased @Premium and sold for profit;Realized amortization @value date profit on sale;7;4;Amortization;Interest Income;;No;;
+;;;;;;;;;
+Bond - FVTOCI - Purchased @Discount and sold for loss;OBS trade commitment - Capital;1;1000;Initial capital;OBS Trade Commitment;OBS Offset;No;A bond measured at FVTOCI is carried at fair value, but unrealized gains or losses go to other comprehensive income while interest revenue and impairments affect profit or loss.;Trade date
+Bond - FVTOCI - Purchased @Discount and sold for loss;OBS trade commitment - Discount;1;50;Discount;OBS Trade Commitment;OBS Offset;No;;
+Bond - FVTOCI - Purchased @Discount and sold for loss;OBS trade commitment - Accruals;1;10;Accruals;OBS Trade Commitment;OBS Offset;No;;
+Bond - FVTOCI - Purchased @Discount and sold for loss;FV OBS Valuation (profit);2;1;Fair value profit;Unreal. UnSettl. POS;UnSettl.POS MtM Gain;Yes;;OBS revaluation
+Bond - FVTOCI - Purchased @Discount and sold for loss;OBS trade uncommitment - Capital;3;1000;Initial capital;OBS Offset;OBS Trade Commitment;No;;Settlement date
+Bond - FVTOCI - Purchased @Discount and sold for loss;OBS trade uncommitment - Discount;3;50;Discount;OBS Offset;OBS Trade Commitment;No;;
+Bond - FVTOCI - Purchased @Discount and sold for loss;OBS trade uncommitment - Accruals;3;10;Accruals;OBS Offset;OBS Trade Commitment;No;;
+Bond - FVTOCI - Purchased @Discount and sold for loss;Asset position opening;3;950;Purchase price (Clean);Carrying Amount;Cash Nostro;No;;
+Bond - FVTOCI - Purchased @Discount and sold for loss;Realized interest expense;3;10;Accrued interest purchased;Interest Income;Cash Nostro;No;;
+Bond - FVTOCI - Purchased @Discount and sold for loss;Accrued interest;4;12;Accruals;Accrued Interests;Interest Income;Yes;;Accrued interests and MTM valuation
+Bond - FVTOCI - Purchased @Discount and sold for loss;MTM FVTOCI POS BS Value measurement - Loss;4;2;MTM;Equity OCI;Carrying Amount;Yes;;
+Bond - FVTOCI - Purchased @Discount and sold for loss;OBS trade commitment - Capital;5;1000;Initial capital;OBS Offset;OBS Trade Commitment;No;;Sell the bond for profit
+Bond - FVTOCI - Purchased @Discount and sold for loss;OBS trade commitment - Discount;5;50;Discount;OBS Offset;OBS Trade Commitment;No;;
+Bond - FVTOCI - Purchased @Discount and sold for loss;OBS trade commitment - Accruals;5;12;Accruals;OBS Offset;OBS Trade Commitment;No;;
+Bond - FVTOCI - Purchased @Discount and sold for loss;FV OBS Valuation (Loss);6;1;Fair value loss;UnSettl.POS MtM Loss;Unreal. UnSettl. POS;Yes;;OBS revaluation
+Bond - FVTOCI - Purchased @Discount and sold for loss;OBS trade uncommitment - Capital;7;1000;Initial capital;OBS Trade Commitment;OBS Offset;No;;Sale settlement
+Bond - FVTOCI - Purchased @Discount and sold for loss;OBS trade uncommitment - Discount;7;50;Discount;OBS Trade Commitment;OBS Offset;No;;
+Bond - FVTOCI - Purchased @Discount and sold for loss;OBS trade uncommitment - Accruals;7;10;Accruals;OBS Trade Commitment;OBS Offset;No;;
+Bond - FVTOCI - Purchased @Discount and sold for loss;Bond cash delivery sale trade;7;950;Purchase price (Clean);Cash Nostro;Carrying Amount;No;;
+Bond - FVTOCI - Purchased @Discount and sold for loss;Accrued interests sale;7;12;Accruals;Cash Nostro;Interest Income;No;;
+Bond - FVTOCI - Purchased @Discount and sold for loss;Realized PL Loss on sale @value date;7;30;PnL;POS Realized Gain;Cash Nostro;No;;
+Bond - FVTOCI - Purchased @Discount and sold for loss;Realized amortization @value date loss on sale;7;4;Amortization;POS Realized Gain;Interest Income;No;;
+;;;;;;;;;
+Commodities Cleared Swap - Trading derivative - Profit;OBS Notional Payable@TradeDate;1;1000;Notional;Contingent Contra;Contingent Payable;No;A commodity cleared swap is a standardized, plain vanilla OTC commodity swap, centrally cleared on the Exchange.;Trade date
+Commodities Cleared Swap - Trading derivative - Profit;OBS Notional Receivable@TradeDate;1;1000;Notional;Contingent Receivable;Contingent Contra;No;;
+Commodities Cleared Swap - Trading derivative - Profit;Brokerage Payable@TradeDate;1;1;Fees;Brokerage Expense;Brokerage Payable;No;;
+Commodities Cleared Swap - Trading derivative - Profit;Brokerage Pay@PaymentDate;2;1;Fees;Brokerage Payable;Cash Nostro;No;;Payment date
+Commodities Cleared Swap - Trading derivative - Profit;Revaluation (MtM) - Gain;3;10;Revaluation amount;Unrealized Asset;MTM Gain;Yes;;Revaluation
+Commodities Cleared Swap - Trading derivative - Profit;Cash Settlement Receivable@TradeDate;4;5;Settlement amount;Settlement Receivable;Realized Gain;No;;Settlement trade date
+Commodities Cleared Swap - Trading derivative - Profit;Cash Settlement Receive@PaymentDate;5;5;Settlement amount;Cash Nostro;Settlement Receivable;No;;Settlement payment date
+Commodities Cleared Swap - Trading derivative - Profit;OBS Notional Payable reversal@Maturity;6;1000;Notional;Contingent Contra;Contingent Payable;No;;Expiry date
+Commodities Cleared Swap - Trading derivative - Profit;OBS Notional Receivable reversal@Maturity;6;1000;Notional;Contingent Receivable;Contingent Contra;No;;
