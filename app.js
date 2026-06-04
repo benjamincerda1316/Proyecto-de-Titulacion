@@ -1122,8 +1122,8 @@ const app = {
   },
 
   // Setup/Initialize App
-  init() {
-    this.loadDatabase();
+  async init() {
+    await this.loadDatabase();
     this.checkSession();
     this.updateClock();
     setInterval(() => this.updateClock(), 60000);
