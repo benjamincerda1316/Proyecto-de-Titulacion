@@ -1176,9 +1176,11 @@ const app = {
 
   // Database / Storage Methods
   async loadDatabase() {
-    const apiBase = (window.location.origin === 'null' || window.location.protocol === 'file:' || !window.location.port || window.location.port !== '3000') 
-      ? 'http://localhost:3000' 
-      : '';
+    const isLocalFileOrDev = window.location.protocol === 'file:' || 
+                             window.location.origin === 'null' ||
+                             (window.location.hostname === 'localhost' && window.location.port !== '3000') ||
+                             (window.location.hostname === '127.0.0.1' && window.location.port !== '3000');
+    const apiBase = isLocalFileOrDev ? 'http://localhost:3000' : '';
     try {
       const response = await fetch(`${apiBase}/api/db`);
       if (response.ok) {
@@ -1367,9 +1369,11 @@ const app = {
     }
     localStorage.setItem('mxboard_db_v3', JSON.stringify(this.state.db));
 
-    const apiBase = (window.location.origin === 'null' || window.location.protocol === 'file:' || !window.location.port || window.location.port !== '3000') 
-      ? 'http://localhost:3000' 
-      : '';
+    const isLocalFileOrDev = window.location.protocol === 'file:' || 
+                             window.location.origin === 'null' ||
+                             (window.location.hostname === 'localhost' && window.location.port !== '3000') ||
+                             (window.location.hostname === '127.0.0.1' && window.location.port !== '3000');
+    const apiBase = isLocalFileOrDev ? 'http://localhost:3000' : '';
 
     fetch(`${apiBase}/api/db/save`, {
       method: 'POST',
