@@ -1277,22 +1277,9 @@ const app = {
               }
             }
 
-            // Forzar desbloqueo de Semana 3 para Francisca para facilitar pruebas (desactivado para permitir probar evaluación S1)
+            // Forzar desbloqueo de Semana 3 para Francisca desactivado para iniciar desde 0.
             if (this.state.db.consultant_progress["USR-FRANCISCA"]) {
-              const franProgress = this.state.db.consultant_progress["USR-FRANCISCA"];
-              if (true) { // Desactivado forzado automático
-                franProgress.completed_weeks = [1, 2];
-                franProgress.checklist_states[1] = { 0: true, 1: true, 2: true, 3: true, 4: true };
-                franProgress.checklist_states[2] = { 0: true, 1: true, 2: true, 3: true, 4: true, 5: true, 6: true };
-                franProgress.test_scores[1] = 85;
-                franProgress.test_scores[2] = 90;
-                franProgress.deliverables[2] = {
-                  fileName: "evidencia_semana_2_fd.pdf",
-                  fileSize: "1.8 MB",
-                  status: "approved",
-                  submittedAt: new Date().toISOString()
-                };
-              }
+              // No se fuerza ningún progreso inicial en esta versión.
             }
           }
           this.saveDatabase();
@@ -1418,8 +1405,7 @@ const app = {
         };
         
         // Populate historical seed data based on their default template states
-        let completedCount = 0;
-        if (user.id === 'USR-FRANCISCA') completedCount = 2; // Starts at week 3
+        let completedCount = 0; // Todos los juniors inician en semana 1 (0 completadas)
         
         for (let w = 1; w <= weekCount; w++) {
           const template = this.defaultTemplates.week_templates.find(wt => wt.week_number === w);
@@ -1504,9 +1490,7 @@ const app = {
       "USR-FRANCISCA": "USR-BENJAMIN"
     };
 
-    const initialMentoringLogs = [
-      { id: "m-003", junior_id: "USR-FRANCISCA", tutor_name: "Benjamín Cerda", date: "2026-05-20", topic: "Navegación e interfaz de Sandbox MX.3", duration: 45, ids: 1 }
-    ];
+    const initialMentoringLogs = [];
 
     const troubleshootingDB = [
       { code: "err-acc-015", title: "ERR-ACC-015: Accrual Account Missing", description: "Ocurre cuando el motor contable de MX.3 intenta valorizar cupones devengados pero no encuentra una cuenta contable asignada en el plan contable (Chart of Accounts) para registrar el interés acumulado.", steps: ["Ingresar al módulo de parametrización contable contable en el Sandbox MX.3.", "Seleccionar el tipo de instrumento 'Bond' o 'Fixed Income'.", "Añadir una regla contable para el evento 'Accrual' (interés devengado).", "Asignar la cuenta contable de activo correspondiente al libro mayor.", "Guardar cambios, vaciar caché contable y re-procesar los asientos contables en la Sandbox."] },
@@ -1515,115 +1499,7 @@ const app = {
       { code: "err-sys-999", title: "ERR-SYS-999: Sandbox Database Connection Lost", description: "Error del sistema que indica pérdida de conexión con la base de datos central de pruebas del Sandbox MX.3 Chile.", steps: ["Verificar el estado de la conexión VPN o red interna.", "Reiniciar el terminal de MX.3 en tu máquina local.", "Si persiste, revisar el canal Slack #sandbox-mx3 para constatar si hay ventanas de mantenimiento activas.", "Como último recurso, notificar al tutor para que solicite el reinicio del servidor de base de datos del sandbox."] }
     ];
 
-    const initialCalendarEvents = [
-      // Week 5 - Francisca (USR-FRANCISCA) - Executed
-      {
-        id: "ev-001",
-        title: "Tutoría Semanal Obligatoria",
-        type: "tutoring",
-        junior_id: "USR-FRANCISCA",
-        expert_id: "USR-BENJAMIN", // Benjamín
-        block_day: "2026-05-20", // Wednesday
-        time_start: "10:00",
-        time_end: "11:00",
-        planned_minutes: 60,
-        executed_minutes: 60,
-        status: "ejecutada",
-        block_reason: "Revisión semanal de avances y checklist de la Semana 5.",
-        week_number: 5
-      },
-      {
-        id: "ev-002",
-        title: "Masterclass: Renta Fija Básica",
-        type: "masterclass",
-        junior_id: "USR-FRANCISCA",
-        expert_id: "USR-SANDRA", // Sandra Segura
-        block_day: "2026-05-21", // Thursday
-        time_start: "15:00",
-        time_end: "16:00",
-        planned_minutes: 60,
-        executed_minutes: 50,
-        status: "ejecutada",
-        block_reason: "Clase obligatoria sobre parametrización de bonos corporativos.",
-        week_number: 5
-      },
-      {
-        id: "ev-003",
-        title: "Soporte Extra: Errores en Sandbox",
-        type: "extra_support",
-        junior_id: "USR-FRANCISCA",
-        expert_id: "USR-BENJAMIN", // Benjamín
-        block_day: "2026-05-22", // Friday
-        time_start: "11:00",
-        time_end: "12:00",
-        planned_minutes: 60,
-        executed_minutes: 45,
-        status: "ejecutada",
-        block_reason: "Soporte reactivo por bloqueo en sandbox contable.",
-        week_number: 5
-      },
-      {
-        id: "ev-004",
-        title: "Coaching: Evaluación de Señoreaje",
-        type: "coaching",
-        junior_id: "USR-FRANCISCA",
-        expert_id: "USR-LUANA", // Luana Ortega
-        block_day: "2026-05-22", // Friday
-        time_start: "16:00",
-        time_end: "17:00",
-        planned_minutes: 60,
-        executed_minutes: 60,
-        status: "ejecutada",
-        block_reason: "Reunión 1-on-1 para evaluar rampa y habilidades blandas.",
-        week_number: 5
-      },
-      // Week 6 - Approved / Pending
-      {
-        id: "ev-005",
-        title: "Tutoría Semanal Obligatoria",
-        type: "tutoring",
-        junior_id: "USR-FRANCISCA",
-        expert_id: "USR-BENJAMIN", // Benjamín
-        block_day: "2026-05-27", // Wednesday next week
-        time_start: "10:00",
-        time_end: "11:00",
-        planned_minutes: 60,
-        executed_minutes: null,
-        status: "aprobada",
-        block_reason: "Alineación de objetivos de Semana 6.",
-        week_number: 6
-      },
-      {
-        id: "ev-006",
-        title: "Masterclass: Introducción a Swaps IRS",
-        type: "masterclass",
-        junior_id: "USR-FRANCISCA",
-        expert_id: "USR-FERNANDO", // Fernando Araya
-        block_day: "2026-05-28", // Thursday next week
-        time_start: "15:00",
-        time_end: "16:00",
-        planned_minutes: 60,
-        executed_minutes: null,
-        status: "aprobada",
-        block_reason: "Clase obligatoria de Swaps de Tasas de Interés.",
-        week_number: 6
-      },
-      {
-        id: "ev-007",
-        title: "Soporte Extra: Duda Parametrización IRS",
-        type: "extra_support",
-        junior_id: "USR-FRANCISCA",
-        expert_id: "USR-SANDRA", // Sandra Segura
-        block_day: "2026-05-29", // Friday next week
-        time_start: "10:00",
-        time_end: "11:00",
-        planned_minutes: 60,
-        executed_minutes: null,
-        status: "solicitada",
-        block_reason: "Tengo dudas con el cálculo del MTM en la Sandbox para swaps.",
-        week_number: 6
-      }
-    ];
+    const initialCalendarEvents = [];
 
     // Seed cert_checklists for every consultant (4 hitos de certificación).
     const initialCertChecklists = {};
@@ -2134,7 +2010,11 @@ const app = {
 
     // CORRECCIÓN DE LA MATRIZ DE REGLAS TIMELINE GUARD
     // Evaluamos si la semana que el Junior está mirando en la pantalla es del futuro bloqueado
-    const esSemanaBloqueada = (semanaVisualizada >= this.limiteBloqueadoMalla);
+    const userId = this.state.activeUser ? this.state.activeUser.id : 'default';
+    const progress = this.state.db && this.state.db.consultant_progress ? this.state.db.consultant_progress[userId] : null;
+    const completedCount = progress ? (progress.completed_weeks ? progress.completed_weeks.length : 0) : 0;
+    const currentWeekNum = Math.min(completedCount + 1, 12);
+    const esSemanaBloqueada = (semanaVisualizada > currentWeekNum);
     
     // El input de los comités corporativos SOLO se congela si es una semana bloqueada del futuro.
     // En la Semana 1 y Semana 2, el Newcomer TIENE PERMISO TOTAL para clickear y rellenar sus hitos.
@@ -2208,9 +2088,12 @@ const app = {
   navigateWorkspaceWeek(direccion) {
     const nuevaSemana = this.currentViewedWeek + direccion;
     
-    // CORRECCIÓN: Permite navegar libremente por el pasado y el presente habilitado.
-    // Solo bloquea si se intenta pisar la Semana 3 o superior, o bajar de la 1.
-    if (nuevaSemana < 1 || nuevaSemana >= this.limiteBloqueadoMalla) {
+    const userId = this.state.activeUser ? this.state.activeUser.id : 'default';
+    const progress = this.state.db && this.state.db.consultant_progress ? this.state.db.consultant_progress[userId] : null;
+    const completedCount = progress ? (progress.completed_weeks ? progress.completed_weeks.length : 0) : 0;
+    const currentWeekNum = Math.min(completedCount + 1, 12);
+    
+    if (nuevaSemana < 1 || nuevaSemana > currentWeekNum) {
       return; // Bloqueo de seguridad
     }
     
@@ -2223,14 +2106,18 @@ const app = {
     const btnNext = document.getElementById('btn-workspace-next');
     if (!btnPrev || !btnNext) return;
     
+    const userId = this.state.activeUser ? this.state.activeUser.id : 'default';
+    const progress = this.state.db && this.state.db.consultant_progress ? this.state.db.consultant_progress[userId] : null;
+    const completedCount = progress ? (progress.completed_weeks ? progress.completed_weeks.length : 0) : 0;
+    const currentWeekNum = Math.min(completedCount + 1, 12);
+    
     // Flecha Izquierda: Gris solo si estoy en la primera página
     btnPrev.disabled = (this.currentViewedWeek === 1);
     
-    // Flecha Derecha: Se apaga y se pone en gris de forma estricta AL LLEGAR A LA SEMANA 2
-    // ya que el siguiente paso (+1) rompería el límite de la Semana 3 (Bloqueada).
-    if (this.currentViewedWeek === 2) {
+    // Flecha Derecha: Se apaga y se pone en gris de forma estricta al llegar a la semana actual en curso
+    if (this.currentViewedWeek >= currentWeekNum) {
       btnNext.disabled = true;
-      btnNext.setAttribute('title', 'Contenido bloqueado: Semana 3 en desarrollo');
+      btnNext.setAttribute('title', `Contenido bloqueado: Semana ${currentWeekNum + 1} bloqueada`);
     } else {
       btnNext.disabled = false;
       btnNext.setAttribute('title', 'Avanzar semana');
@@ -7840,115 +7727,7 @@ const app = {
   },
 
   resetCalendarEvents() {
-    const initialCalendarEvents = [
-      // Week 5 - Francisca (USR-FRANCISCA) - Executed
-      {
-        id: "ev-001",
-        title: "Tutoría Semanal Obligatoria",
-        type: "tutoring",
-        junior_id: "USR-FRANCISCA",
-        expert_id: "USR-BENJAMIN", // Benjamín
-        block_day: "2026-05-20", // Wednesday
-        time_start: "10:00",
-        time_end: "11:00",
-        planned_minutes: 60,
-        executed_minutes: 60,
-        status: "ejecutado",
-        block_reason: "Revisión semanal de avances y checklist de la Semana 5.",
-        week_number: 5
-      },
-      {
-        id: "ev-002",
-        title: "Masterclass: Renta Fija Básica",
-        type: "masterclass",
-        junior_id: "USR-FRANCISCA",
-        expert_id: "USR-SANDRA", // Sandra Segura
-        block_day: "2026-05-21", // Thursday
-        time_start: "15:00",
-        time_end: "16:00",
-        planned_minutes: 60,
-        executed_minutes: 50,
-        status: "ejecutado",
-        block_reason: "Clase obligatoria sobre parametrización de bonos corporativos.",
-        week_number: 5
-      },
-      {
-        id: "ev-003",
-        title: "Soporte Extra: Errores en Sandbox",
-        type: "extra_support",
-        junior_id: "USR-FRANCISCA",
-        expert_id: "USR-BENJAMIN", // Benjamín
-        block_day: "2026-05-22", // Friday
-        time_start: "11:00",
-        time_end: "12:00",
-        planned_minutes: 60,
-        executed_minutes: 45,
-        status: "ejecutado",
-        block_reason: "Soporte reactivo por bloqueo en sandbox contable.",
-        week_number: 5
-      },
-      {
-        id: "ev-004",
-        title: "Coaching: Evaluación de Señoreaje",
-        type: "coaching",
-        junior_id: "USR-FRANCISCA",
-        expert_id: "USR-LUANA", // Luana Ortega
-        block_day: "2026-05-22", // Friday
-        time_start: "16:00",
-        time_end: "17:00",
-        planned_minutes: 60,
-        executed_minutes: 60,
-        status: "ejecutado",
-        block_reason: "Reunión 1-on-1 para evaluar rampa y habilidades blandas.",
-        week_number: 5
-      },
-      // Week 6 - Approved / Pending
-      {
-        id: "ev-005",
-        title: "Tutoría Semanal Obligatoria",
-        type: "tutoring",
-        junior_id: "USR-FRANCISCA",
-        expert_id: "USR-BENJAMIN", // Benjamín
-        block_day: "2026-05-27", // Wednesday next week
-        time_start: "10:00",
-        time_end: "11:00",
-        planned_minutes: 60,
-        executed_minutes: null,
-        status: "aprobado",
-        block_reason: "Alineación de objetivos de Semana 6.",
-        week_number: 6
-      },
-      {
-        id: "ev-006",
-        title: "Masterclass: Introducción a Swaps IRS",
-        type: "masterclass",
-        junior_id: "USR-FRANCISCA",
-        expert_id: "USR-FERNANDO", // Fernando Araya
-        block_day: "2026-05-28", // Thursday next week
-        time_start: "15:00",
-        time_end: "16:00",
-        planned_minutes: 60,
-        executed_minutes: null,
-        status: "aprobado",
-        block_reason: "Clase obligatoria de Swaps de Tasas de Interés.",
-        week_number: 6
-      },
-      {
-        id: "ev-007",
-        title: "Soporte Extra: Duda Parametrización IRS",
-        type: "extra_support",
-        junior_id: "USR-FRANCISCA",
-        expert_id: "USR-SANDRA", // Sandra Segura
-        block_day: "2026-05-29", // Friday next week
-        time_start: "10:00",
-        time_end: "11:00",
-        planned_minutes: 60,
-        executed_minutes: null,
-        status: "pendiente_aprobacion",
-        block_reason: "Tengo dudas con el cálculo del MTM en la Sandbox para swaps.",
-        week_number: 6
-      }
-    ];
+    const initialCalendarEvents = [];
     
     this.state.db.calendar_events = initialCalendarEvents;
     this.saveDatabase();
