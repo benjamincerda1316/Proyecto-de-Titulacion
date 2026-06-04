@@ -647,8 +647,8 @@ const app = {
     inspectedUser: null,   // Currently inspected consultant in Admin View
     inspectedWeekNum: null, // Selected week in Admin Inspector
     activePanelTab: 'checklist', // Active tab in consultant panel (checklist, evaluation, deliverable)
-    currentYear: 2026,
-    currentMonth: 4,       // May (0-indexed)
+    currentYear: new Date().getFullYear(),
+    currentMonth: new Date().getMonth(),       // Dinámico según fecha actual (0-indexed)
     managerCalendarSelectedJuniorId: null,
     selectedExpertsIds: [], // Selected expert IDs for scheduling
     testState: {
@@ -686,8 +686,8 @@ const app = {
         role: "consultant", 
         rol: "JUNIOR", 
         avatar_initials: "FD",
-        current_week: 1, 
-        semana_actual: 1, 
+        current_week: 3, 
+        semana_actual: 3, 
         avg_score: 0,
         status: "on_track",
         progreso_mallas: Array(12).fill({ completado: false, nota: null })
@@ -1175,7 +1175,76 @@ const app = {
   },
 
   // Database / Storage Methods
-  loadDatabase() {
+  async loadDatabase() {
+    const apiBase = (window.location.origin === 'null' || window.location.protocol === 'file:' || !window.location.port || window.location.port !== '3000') 
+      ? 'http://localhost:3000' 
+      : '';
+    try {
+      const response = await fetch(`${apiBase}/api/db`);
+      if (response.ok) {
+        const data = await response.json();
+        if (data.empty) {
+          console.warn("Database on server is empty. Seeding defaults...");
+          this.resetDB();
+          return;
+        }
+        this.state.db = data;
+        
+        // Defensive check: ensure all consultants have a progress record in consultant_progress to prevent UI crashes
+        this.state.db.users.forEach(u => {
+          if (u.role === 'consultant' && (!this.state.db.consultant_progress || !this.state.db.consultant_progress[u.id])) {
+            if (!this.state.db.consultant_progress) this.state.db.consultant_progress = {};
+            this.state.db.consultant_progress[u.id] = {
+              completed_weeks: [],
+              checklist_states: {},
+              test_scores: {},
+              test_attempts: {},
+              test_times: {},
+              deliverables: {},
+              comments: {},
+              game_scores: {}
+            };
+          }
+        });
+
+        // Sync structures and templates
+        this.state.db.week_templates = JSON.parse(JSON.stringify(this.defaultTemplates.week_templates));
+        this.state.db.questions = JSON.parse(JSON.stringify(this.defaultTemplates.questions));
+        
+        if (this.state.db.consultant_progress) {
+          for (const userId in this.state.db.consultant_progress) {
+            const progress = this.state.db.consultant_progress[userId];
+            if (progress.completed_weeks) {
+              progress.completed_weeks = progress.completed_weeks.filter(w => w <= 12);
+            }
+            if (!progress.game_scores) {
+              progress.game_scores = {};
+            }
+          }
+        }
+        
+        // Sync role properties
+        this.state.db.users.forEach(u => {
+          if (u.rol && !u.role) {
+            if (u.rol === 'MANAGER') u.role = 'admin';
+            else if (u.rol === 'TUTOR') u.role = 'tutor';
+            else if (u.rol === 'SENIOR') u.role = 'senior';
+            else if (u.rol === 'JUNIOR') u.role = 'consultant';
+          }
+          if (u.role && !u.rol) {
+            if (u.role === 'admin') u.rol = 'MANAGER';
+            else if (u.role === 'tutor') u.rol = 'TUTOR';
+            else if (u.role === 'senior') u.rol = 'SENIOR';
+            else if (u.role === 'consultant') u.rol = 'JUNIOR';
+          }
+        });
+        return;
+      }
+    } catch (e) {
+      console.warn("Could not connect to backend server. Falling back to local storage.", e);
+    }
+
+    // Local Storage Fallback
     const rawDB = localStorage.getItem('mxboard_db_v3');
     if (rawDB) {
       try {
@@ -1209,7 +1278,7 @@ const app = {
             // Forzar desbloqueo de Semana 3 para Francisca para facilitar pruebas (desactivado para permitir probar evaluación S1)
             if (this.state.db.consultant_progress["USR-FRANCISCA"]) {
               const franProgress = this.state.db.consultant_progress["USR-FRANCISCA"];
-              if (false) { // Desactivado forzado automático
+              if (true) { // Desactivado forzado automático
                 franProgress.completed_weeks = [1, 2];
                 franProgress.checklist_states[1] = { 0: true, 1: true, 2: true, 3: true, 4: true };
                 franProgress.checklist_states[2] = { 0: true, 1: true, 2: true, 3: true, 4: true, 5: true, 6: true };
@@ -1297,6 +1366,28 @@ const app = {
       });
     }
     localStorage.setItem('mxboard_db_v3', JSON.stringify(this.state.db));
+
+    const apiBase = (window.location.origin === 'null' || window.location.protocol === 'file:' || !window.location.port || window.location.port !== '3000') 
+      ? 'http://localhost:3000' 
+      : '';
+
+    fetch(`${apiBase}/api/db/save`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(this.state.db)
+    })
+    .then(response => {
+      if (!response.ok) {
+        console.error("Failed to save database to server");
+      } else {
+        console.log("Database successfully saved/synced to SQLite server.");
+      }
+    })
+    .catch(e => {
+      console.warn("Could not save to backend server, saved only in localStorage.", e);
+    });
   },
 
   resetDB() {
@@ -1324,7 +1415,7 @@ const app = {
         
         // Populate historical seed data based on their default template states
         let completedCount = 0;
-        if (user.id === 'USR-FRANCISCA') completedCount = 0; // Starts at week 1 to allow testing evaluation!
+        if (user.id === 'USR-FRANCISCA') completedCount = 2; // Starts at week 3
         
         for (let w = 1; w <= weekCount; w++) {
           const template = this.defaultTemplates.week_templates.find(wt => wt.week_number === w);
@@ -6361,9 +6452,11 @@ const app = {
     }
     
     // 4. Render Active Month Days
+    const today = new Date();
     for (let dayNum = 1; dayNum <= totalDays; dayNum++) {
       const dayDiv = document.createElement('div');
-      dayDiv.className = 'calendar-day bg-white';
+      const isToday = (year === today.getFullYear() && month === today.getMonth() && dayNum === today.getDate());
+      dayDiv.className = isToday ? 'calendar-day today' : 'calendar-day bg-white';
       
       const dayNumSpan = document.createElement('span');
       dayNumSpan.className = 'day-number';
@@ -7904,6 +7997,62 @@ const app = {
     }
   },
 
+  openChangePasswordModal() {
+    const modal = document.getElementById('change-password-modal');
+    if (modal) {
+      modal.style.display = 'flex';
+      modal.classList.remove('hidden');
+    }
+    const form = document.getElementById('change-password-form');
+    if (form) form.reset();
+  },
+
+  closeChangePasswordModal() {
+    const modal = document.getElementById('change-password-modal');
+    if (modal) {
+      modal.style.display = 'none';
+      modal.classList.add('hidden');
+    }
+  },
+
+  handleChangePassword(event) {
+    if (event && event.preventDefault) event.preventDefault();
+
+    const email = document.getElementById('change-pass-email').value.trim().toLowerCase();
+    const currentPass = document.getElementById('change-pass-current').value;
+    const newPass = document.getElementById('change-pass-new').value;
+    const confirmPass = document.getElementById('change-pass-confirm').value;
+
+    const userInDb = this.state.db.users.find(u => u.email.toLowerCase() === email);
+    if (!userInDb) {
+      this.showToast("El correo electrónico no existe en el sistema.", "danger");
+      return;
+    }
+
+    if (currentPass !== userInDb.password) {
+      this.showToast("La contraseña actual es incorrecta.", "danger");
+      return;
+    }
+
+    if (newPass !== confirmPass) {
+      this.showToast("Las contraseñas nuevas no coinciden.", "danger");
+      return;
+    }
+
+    if (newPass.length < 4) {
+      this.showToast("La nueva contraseña debe tener al menos 4 caracteres.", "warning");
+      return;
+    }
+
+    userInDb.password = newPass;
+    if (this.state.activeUser && this.state.activeUser.email.toLowerCase() === email) {
+      this.state.activeUser.password = newPass;
+    }
+    this.saveDatabase();
+    this.showToast("Contraseña actualizada con éxito.");
+    this.closeChangePasswordModal();
+  },
+
   handleNewMemberRoleChange(value) {
     const tutorGroup = document.getElementById('new-member-tutor-group');
     if (tutorGroup) {
@@ -8023,6 +8172,21 @@ const app = {
       // Use user.rol in uppercase if set, otherwise fallback from user.role mapping
       const currentRol = user.rol || (user.role === 'admin' ? 'MANAGER' : user.role === 'tutor' ? 'TUTOR' : user.role === 'senior' ? 'SENIOR' : 'JUNIOR');
 
+      // Tutor Selection
+      let tutorCell = '';
+      if (currentRol === 'JUNIOR') {
+        const currentTutorId = this.state.db.tutor_junior_mapping[user.id] || '';
+        const tutorsList = this.state.db.users.filter(u => u.role === 'tutor' || u.role === 'senior');
+        tutorCell = `
+          <select id="tutor-select-${user.id}" class="bg-gray-50 border border-gray-300 rounded-md p-1.5 text-xs focus:ring-pink-500 team-role-select" style="max-width: 150px;">
+            <option value="" ${currentTutorId === '' ? 'selected' : ''}>Sin asignar</option>
+            ${tutorsList.map(t => `<option value="${t.id}" ${t.id === currentTutorId ? 'selected' : ''}>${t.nombre || t.name}</option>`).join('')}
+          </select>
+        `;
+      } else {
+        tutorCell = `<span class="text-xs text-gray-400">N/A</span>`;
+      }
+
       row.innerHTML = `
         <td class="p-4 font-medium text-gray-800">${user.nombre || user.name}</td>
         <td class="p-4 text-gray-600">${user.email}</td>
@@ -8034,6 +8198,7 @@ const app = {
             <option value="MANAGER" ${currentRol === 'MANAGER' ? 'selected' : ''}>Manager / Admin</option>
           </select>
         </td>
+        <td class="p-4">${tutorCell}</td>
         <td class="p-4">${estadoMalla}</td>
         <td class="p-4 text-right">
           <button onclick="app.handleUpdateMemberRole('${user.id}')" class="bg-gray-100 hover:bg-pink-50 text-pink-600 hover:text-pink-700 px-3 py-1.5 rounded-md font-medium text-xs transition-colors">
@@ -8064,6 +8229,17 @@ const app = {
       else if (nuevoRol === 'SENIOR') user.role = 'senior';
       else if (nuevoRol === 'TUTOR') user.role = 'tutor';
       else if (nuevoRol === 'JUNIOR') user.role = 'consultant';
+
+      // Update tutor mapping if selector exists
+      const tutorSelect = document.getElementById(`tutor-select-${userId}`);
+      if (tutorSelect) {
+        const nuevoTutorId = tutorSelect.value;
+        if (nuevoTutorId) {
+          this.state.db.tutor_junior_mapping[userId] = nuevoTutorId;
+        } else {
+          delete this.state.db.tutor_junior_mapping[userId];
+        }
+      }
 
       // Business Rule: Initialize progress mapping if user is updated to JUNIOR and didn't have it
       if (nuevoRol === 'JUNIOR' && oldRol !== 'JUNIOR') {
@@ -8103,10 +8279,11 @@ const app = {
         delete user.current_week;
         delete user.avg_score;
         delete user.status;
+        delete this.state.db.tutor_junior_mapping[userId];
       }
 
       this.saveDatabase();
-      this.showToast(`Permisos de ${user.name} actualizados con éxito.`);
+      this.showToast(`Datos de ${user.nombre || user.name} actualizados con éxito.`);
       this.renderTeamTable();
       this.renderAdminView();
     }
