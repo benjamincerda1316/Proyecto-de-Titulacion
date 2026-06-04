@@ -3,3 +3,7 @@ Thumbs.db
 *.log
 .ipynb_checkpoints/
 .gemini/
+node_modules/
+.env
+mxboard.db
+

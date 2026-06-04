@@ -96,39 +96,10 @@
               </button>
             </form>
 
-            <div
-              style="margin-top: 15px; text-align: center; border-top: 1px dashed var(--neutral-border); padding-top: 12px;">
-              <span style="font-size: 0.75rem; color: var(--neutral-muted); display: block; margin-bottom: 8px;"><i
-                  class="ti ti-bolt"></i> Acceso Rápido Demo:</span>
-              <div style="display: flex; gap: 8px; justify-content: center; flex-wrap: wrap;">
-                <button type="button" class="btn btn-xs btn-outline" onclick="app.quickFill('luana@murex.cl', 'admin')"
-                  style="font-size: 0.7rem; padding: 4px 8px;">Luana (Manager)</button>
-                <button type="button" class="btn btn-xs btn-outline"
-                  onclick="app.quickFill('benjamin.cerda@murex.cl', 'password')"
-                  style="font-size: 0.7rem; padding: 4px 8px;">Benjamín (Tutor)</button>
-                <button type="button" class="btn btn-xs btn-outline"
-                  onclick="app.quickFill('sandra.segura@murex.cl', 'password')"
-                  style="font-size: 0.7rem; padding: 4px 8px;">Sandra (Senior)</button>
-                <button type="button" class="btn btn-xs btn-outline"
-                  onclick="app.quickFill('francisca.ledantec@murex.cl', 'password')"
-                  style="font-size: 0.7rem; padding: 4px 8px;">Francisca (Junior)</button>
-              </div>
-            </div>
-
-            <div class="login-helper" style="margin-top: 12px;">
-              <details>
-                <summary style="font-size: 0.75rem;"><i class="ti ti-help-circle"></i> Credenciales de prueba
-                  (Simulación)</summary>
-                <div class="helper-credentials"
-                  style="font-size: 0.75rem; line-height: 1.4; text-align: left; padding: 5px;">
-                  <p><strong>Manager:</strong> luana@murex.cl (clave: admin)</p>
-                  <p><strong>Tutor:</strong> benjamin.cerda@murex.cl (clave: password)</p>
-                  <p><strong>Seniors:</strong> fernando.araya@murex.cl, sandra.segura@murex.cl,
-                    alejandra.gonzalez@murex.cl (clave: password)</p>
-                  <p><strong>Juniors:</strong> francisca.ledantec@murex.cl, juan.orrego@murex.cl,
-                    carolina.sepulveda@murex.cl, valentina.lara@murex.cl (clave: password)</p>
-                </div>
-              </details>
+            <div style="margin-top: 15px; text-align: center; border-top: 1px dashed var(--neutral-border); padding-top: 12px;">
+              <a href="#" onclick="app.openChangePasswordModal()" style="font-size: 0.85rem; color: var(--primary); font-weight: 500; text-decoration: none; display: inline-flex; align-items: center; gap: 6px;">
+                <i class="ti ti-key"></i> Cambiar Contraseña
+              </a>
             </div>
           </div>
         </div>
@@ -1970,7 +1941,7 @@
             </div>
 
             <!-- Tab 5: Gestión de Equipo -->
-            <div class="session-tab-pane" id="admin-session-pane-team" style="display: none;">
+            <div class="session-tab-pane" id="admin-session-pane-team">
               <div class="card glass-card">
                 <div class="section-header"
                   style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 15px; margin-bottom: 20px;">
@@ -1991,6 +1962,7 @@
                         <th>Nombre</th>
                         <th>Correo Electrónico</th>
                         <th>Rol / Permisos</th>
+                        <th>Tutor Asignado</th>
                         <th>Estado / Malla</th>
                         <th style="text-align: right;">Acciones</th>
                       </tr>
@@ -2223,6 +2195,59 @@
         <div style="display: flex; gap: 10px; justify-content: flex-end;">
           <button type="button" class="btn btn-outline" onclick="app.closeAddMemberModal()">Cancelar</button>
           <button type="submit" class="btn btn-primary">Confirmar</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- 6. CAMBIAR CONTRASEÑA MODAL -->
+  <div class="modal-overlay" id="change-password-modal" style="display: none;">
+    <div class="card glass-card animate-scale-up"
+      style="max-width: 450px; background: white; padding: 25px; border-radius: var(--radius-sm); position: relative; box-shadow: var(--shadow-lg);">
+      <button class="modal-close-btn" onclick="app.closeChangePasswordModal()"><i class="ti ti-x"></i></button>
+      <h3 style="margin-bottom: 5px;"><i class="ti ti-key" style="color: var(--primary);"></i> Cambiar Contraseña</h3>
+      <p style="font-size: 0.8rem; color: var(--neutral-muted); margin-bottom: 20px;">Actualiza la contraseña de tu cuenta ingresando tu correo y contraseña actual.</p>
+
+      <form id="change-password-form" onsubmit="app.handleChangePassword(event)">
+        <div class="form-group" style="margin-bottom: 15px;">
+          <label for="change-pass-email"
+            style="font-size: 0.85rem; font-weight: 500; display: block; margin-bottom: 6px;">Correo Electrónico</label>
+          <div class="input-wrapper">
+            <i class="ti ti-mail"></i>
+            <input type="email" id="change-pass-email" required
+              style="width: 100%; padding: 10px 10px 10px 42px; font-size: 0.9rem; background-color: var(--neutral-light); border: 1px solid var(--neutral-border); border-radius: var(--radius-sm); outline: none;">
+          </div>
+        </div>
+        <div class="form-group" style="margin-bottom: 15px;">
+          <label for="change-pass-current"
+            style="font-size: 0.85rem; font-weight: 500; display: block; margin-bottom: 6px;">Contraseña Actual</label>
+          <div class="input-wrapper">
+            <i class="ti ti-lock"></i>
+            <input type="password" id="change-pass-current" required
+              style="width: 100%; padding: 10px 10px 10px 42px; font-size: 0.9rem; background-color: var(--neutral-light); border: 1px solid var(--neutral-border); border-radius: var(--radius-sm); outline: none;">
+          </div>
+        </div>
+        <div class="form-group" style="margin-bottom: 15px;">
+          <label for="change-pass-new"
+            style="font-size: 0.85rem; font-weight: 500; display: block; margin-bottom: 6px;">Nueva Contraseña</label>
+          <div class="input-wrapper">
+            <i class="ti ti-lock"></i>
+            <input type="password" id="change-pass-new" required
+              style="width: 100%; padding: 10px 10px 10px 42px; font-size: 0.9rem; background-color: var(--neutral-light); border: 1px solid var(--neutral-border); border-radius: var(--radius-sm); outline: none;">
+          </div>
+        </div>
+        <div class="form-group" style="margin-bottom: 20px;">
+          <label for="change-pass-confirm"
+            style="font-size: 0.85rem; font-weight: 500; display: block; margin-bottom: 6px;">Confirmar Nueva Contraseña</label>
+          <div class="input-wrapper">
+            <i class="ti ti-lock"></i>
+            <input type="password" id="change-pass-confirm" required
+              style="width: 100%; padding: 10px 10px 10px 42px; font-size: 0.9rem; background-color: var(--neutral-light); border: 1px solid var(--neutral-border); border-radius: var(--radius-sm); outline: none;">
+          </div>
+        </div>
+        <div style="display: flex; gap: 10px; justify-content: flex-end;">
+          <button type="button" class="btn btn-outline" onclick="app.closeChangePasswordModal()">Cancelar</button>
+          <button type="submit" class="btn btn-primary">Guardar</button>
         </div>
       </form>
     </div>

@@ -361,12 +361,16 @@ button {
    1. LOGIN VIEW DESIGN
    ========================================================================== */
 .login-section {
-  display: flex;
+  display: none;
   align-items: center;
   justify-content: center;
   position: relative;
   overflow: hidden;
   padding: 40px 20px;
+}
+
+.login-section.show {
+  display: flex;
 }
 
 .login-wrapper {
@@ -2962,6 +2966,27 @@ button {
   box-shadow: none;
   opacity: 0.6;
 }
+
+.calendar-day.today {
+  background-color: #fff0f6 !important;
+  border: 2px solid var(--primary) !important;
+  box-shadow: 0 0 12px rgba(219, 39, 119, 0.25) !important;
+}
+
+.calendar-day.today::before {
+  content: 'Hoy';
+  position: absolute;
+  top: 6px;
+  left: 6px;
+  font-size: 0.65rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  color: var(--primary);
+  background-color: #fce7f3;
+  padding: 2px 5px;
+  border-radius: 4px;
+}
+
 
 .day-number {
   font-size: 0.75rem;
