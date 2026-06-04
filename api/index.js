@@ -52,7 +52,7 @@ app.use(express.static(path.join(__dirname, '..')));
 
 let pool;
 
-const pgUrl = process.env.DATABASE_URL;
+const pgUrl = process.env.DATABASE_URL || process.env.POSTGRES_URL;
 if (pgUrl && !pgUrl.includes('[YOUR-PASSWORD]')) {
   pool = new Pool({
     connectionString: pgUrl,
@@ -94,10 +94,10 @@ const db = {
 // Open database connection and create tables
 async function initDatabase() {
   if (!pool) {
-    const pgUrl = process.env.DATABASE_URL;
+    const pgUrl = process.env.DATABASE_URL || process.env.POSTGRES_URL;
     if (!pgUrl || pgUrl.includes('[YOUR-PASSWORD]')) {
-      console.warn('\n⚠️ WARNING: DATABASE_URL is not set or still contains [YOUR-PASSWORD] in .env file.');
-      console.warn('Please update the .env file with your actual Supabase database password to run properly.');
+      console.warn('\n⚠️ WARNING: DATABASE_URL or POSTGRES_URL is not set.');
+      console.warn('Please update the environment variables with your actual Supabase database password to run properly.');
       return;
     }
 
