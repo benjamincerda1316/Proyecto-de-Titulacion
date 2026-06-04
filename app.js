@@ -5608,7 +5608,7 @@ const app = {
     const duration = parseInt(document.getElementById('expert-tutor-duration').value);
     
     const selectedDate = new Date(date + "T00:00:00");
-    const today = new Date();
+    const today = new Date(HOY_PRESENTE);
     today.setHours(0,0,0,0);
     if (selectedDate < today) {
       this.showToast("No puedes agendar tutorías en fechas pasadas.", "warning");
@@ -7078,7 +7078,7 @@ const app = {
     const reason = document.getElementById('support-reason').value.trim();
     
     const selectedDate = new Date(date + "T00:00:00");
-    const today = new Date();
+    const today = new Date(HOY_PRESENTE);
     today.setHours(0,0,0,0);
     if (selectedDate < today) {
       this.showToast("No puedes solicitar soporte para fechas pasadas.", "warning");
