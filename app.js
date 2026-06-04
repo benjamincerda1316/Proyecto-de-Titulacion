@@ -1509,6 +1509,14 @@ const app = {
         initialCertChecklists[u.id] = { 1: false, 2: false, 3: false, 4: false };
       });
 
+    // Seed onboarding_progress for every consultant
+    const initialOnboardingProgress = {};
+    this.defaultTemplates.users
+      .filter(u => u.role === 'consultant')
+      .forEach(u => {
+        initialOnboardingProgress[u.id] = {};
+      });
+
     this.state.db = {
       users: this.defaultTemplates.users,
       week_templates: this.defaultTemplates.week_templates,
@@ -1520,7 +1528,8 @@ const app = {
       troubleshooting_db: troubleshootingDB,
       cert_checklists: initialCertChecklists,
       calendar_events: initialCalendarEvents,
-      historial_evaluaciones: initialHistorialEvaluaciones
+      historial_evaluaciones: initialHistorialEvaluaciones,
+      onboarding_progress: initialOnboardingProgress
     };
     
     // Clear quiz attempt locks from localStorage
@@ -1983,6 +1992,12 @@ const app = {
   },
 
   getOnboardingCheckState(userId, itemName) {
+    if (this.state.db && this.state.db.onboarding_progress && this.state.db.onboarding_progress[userId]) {
+      const state = this.state.db.onboarding_progress[userId][itemName.replace(/\s+/g, '_')];
+      if (state !== undefined) {
+        return state === true || state === 'true';
+      }
+    }
     const userKey = `murex_global_onb_check_${userId}_${itemName.replace(/\s+/g, '_')}`;
     const globalKey = `murex_global_onb_check_${itemName.replace(/\s+/g, '_')}`;
     const userVal = localStorage.getItem(userKey);
@@ -2001,6 +2016,16 @@ const app = {
   setOnboardingCheckState(userId, itemName, checked) {
     const userKey = `murex_global_onb_check_${userId}_${itemName.replace(/\s+/g, '_')}`;
     localStorage.setItem(userKey, checked);
+    if (this.state.db) {
+      if (!this.state.db.onboarding_progress) {
+        this.state.db.onboarding_progress = {};
+      }
+      if (!this.state.db.onboarding_progress[userId]) {
+        this.state.db.onboarding_progress[userId] = {};
+      }
+      this.state.db.onboarding_progress[userId][itemName.replace(/\s+/g, '_')] = checked;
+      this.saveDatabase();
+    }
   },
 
   renderTablasOnboardingReales(semanaVisualizada) {

@@ -238,6 +238,14 @@ async function initDatabase() {
     )
   `);
 
+  // Create Onboarding Progress table
+  await db.exec(`
+    CREATE TABLE IF NOT EXISTS onboarding_progress (
+      user_id TEXT PRIMARY KEY,
+      onboarding_check_states_json TEXT
+    )
+  `);
+
   // Create Troubleshooting DB table
   await db.exec(`
     CREATE TABLE IF NOT EXISTS troubleshooting_db (
@@ -331,6 +339,13 @@ app.get('/api/db', async (req, res) => {
     const templates = await db.all('SELECT * FROM week_templates');
     const questions = await db.all('SELECT * FROM questions');
     const troubleshooting = await db.all('SELECT * FROM troubleshooting_db');
+    const onboardingRows = await db.all('SELECT * FROM onboarding_progress');
+
+    // Map onboarding_progress back to object
+    const onboarding_progress = {};
+    onboardingRows.forEach(row => {
+      onboarding_progress[row.user_id] = JSON.parse(row.onboarding_check_states_json || '{}');
+    });
 
     // Map tutor_junior_mapping back to object
     const tutor_junior_mapping = {};
@@ -443,7 +458,8 @@ app.get('/api/db', async (req, res) => {
       troubleshooting_db: parsedTroubleshooting,
       cert_checklists,
       calendar_events: parsedEvents,
-      historial_evaluaciones: parsedEvaluations
+      historial_evaluaciones: parsedEvaluations,
+      onboarding_progress
     });
   } catch (err) {
     console.error('Error fetching database state:', err);
@@ -603,7 +619,18 @@ app.post('/api/db/save', (req, res) => {
         for (const t of data.troubleshooting_db) {
           await txDb.run(
             `INSERT INTO troubleshooting_db (code, title, description, steps_json) VALUES ($1, $2, $3, $4)`,
-            [t.code, t.title, t.description, JSON.stringify(t.steps || [])]
+            [t.code, t.name || t.title, t.description, JSON.stringify(t.steps || [])]
+          );
+        }
+      }
+
+      // 12. Onboarding Progress
+      await txDb.exec('DELETE FROM onboarding_progress');
+      if (data.onboarding_progress) {
+        for (const [user_id, states] of Object.entries(data.onboarding_progress)) {
+          await txDb.run(
+            `INSERT INTO onboarding_progress (user_id, onboarding_check_states_json) VALUES ($1, $2)`,
+            [user_id, JSON.stringify(states)]
           );
         }
       }

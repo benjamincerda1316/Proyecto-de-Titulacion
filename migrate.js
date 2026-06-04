@@ -180,6 +180,13 @@ async function runMigration() {
     )
   `);
 
+  await pgClient.query(`
+    CREATE TABLE IF NOT EXISTS onboarding_progress (
+      user_id TEXT PRIMARY KEY,
+      onboarding_check_states_json TEXT
+    )
+  `);
+
   const tables = [
     { name: 'users', fields: ['id', 'name', 'nombre', 'email', 'password', 'role', 'rol', 'avatar_initials', 'current_week', 'avg_score', 'status', 'progreso_mallas_json'] },
     { name: 'tutor_junior_mapping', fields: ['junior_id', 'tutor_id'] },
@@ -191,7 +198,8 @@ async function runMigration() {
     { name: 'smtp_outbox', fields: ['id', 'email_json'] },
     { name: 'week_templates', fields: ['week_number', 'template_json'] },
     { name: 'questions', fields: ['week_number', 'questions_json'] },
-    { name: 'troubleshooting_db', fields: ['code', 'title', 'description', 'steps_json'] }
+    { name: 'troubleshooting_db', fields: ['code', 'title', 'description', 'steps_json'] },
+    { name: 'onboarding_progress', fields: ['user_id', 'onboarding_check_states_json'] }
   ];
 
   console.log('🔄 Starting data migration...');
