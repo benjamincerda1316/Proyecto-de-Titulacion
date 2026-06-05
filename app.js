@@ -1165,7 +1165,10 @@ const app = {
     },
     charts: {
       consultant: null,
-      admin: null
+      admin: null,
+      inspectResource: null,
+      inspectDeviation: null,
+      resource: null
     }
   },
 
@@ -9547,7 +9550,7 @@ const app = {
     // Wrapped in requestAnimationFrame so the panel is visible and has dimensions before Chart.js renders
     const _hoursByExpert = hoursByExpert;
     const _juniorEvents = juniorEvents;
-    requestAnimationFrame(() => {
+    setTimeout(() => {
       if (typeof Chart === 'undefined') return;
 
       const ctxInspectResource = document.getElementById('inspect-chart-resource-hours');
@@ -9655,7 +9658,7 @@ const app = {
           }
         });
       }
-    });
+    }, 50);
 
     // Call the new function to render the Audit Log Bitacora
     this.renderInspectedAuditBitacora(userId);
