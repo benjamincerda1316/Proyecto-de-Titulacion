@@ -2167,6 +2167,18 @@ const app = {
     const saved = localStorage.getItem(storageKey);
     const count = (weekNum === 2) ? 25 : 15;
     
+    // Si es la semana 2 (evaluación) y ya hay puntaje guardado en base de datos, bloquear
+    const progress = this.state.db && this.state.db.consultant_progress ? this.state.db.consultant_progress[userId] : null;
+    if (weekNum === 2 && progress && progress.game_scores && progress.game_scores[2]) {
+      this.classGameState.currentIndex = count;
+      this.classGameState.score = progress.game_scores[2].score;
+      this.classGameState.classified = [];
+      this.classGameState.shuffledAccounts = [];
+      this.classGameState.hasStarted = true;
+      this.classGameRenderBoard();
+      return;
+    }
+    
     if (saved) {
       try {
         const parsed = JSON.parse(saved);
@@ -2284,6 +2296,28 @@ const app = {
             resultsDetailsEl.innerText = "Good effort! Take a moment to review incorrect items and try again to improve your score.";
           } else {
             resultsDetailsEl.innerText = "Keep practicing! Review the definitions of assets, liabilities, and equity to build a stronger foundation.";
+          }
+        }
+        
+        // Ocultar/desactivar botón de reintento en la Semana 2 (Evaluación de 1 solo intento)
+        const retryBtn = document.querySelector('#class-game-results button');
+        if (retryBtn) {
+          if (weekNum === 2) {
+            retryBtn.style.display = 'none';
+            let msgEl = document.getElementById('class-game-retry-msg');
+            if (!msgEl) {
+              msgEl = document.createElement('p');
+              msgEl.id = 'class-game-retry-msg';
+              msgEl.style.fontSize = '0.9rem';
+              msgEl.style.fontWeight = '700';
+              msgEl.style.color = 'var(--warning-text)';
+              retryBtn.parentNode.insertBefore(msgEl, retryBtn);
+            }
+            msgEl.innerText = "Evaluación Finalizada: Tu puntaje ha sido registrado en la base de datos. Solo se permite 1 intento.";
+          } else {
+            retryBtn.style.display = 'inline-block';
+            const msgEl = document.getElementById('class-game-retry-msg');
+            if (msgEl) msgEl.remove();
           }
         }
       }
@@ -2417,9 +2451,13 @@ const app = {
   },
 
   classGameReset() {
+    const weekNum = this.currentViewedWeek || 1;
+    if (weekNum === 2) {
+      this.showToast("Solo se permite un intento para la evaluación de clasificación de la Semana 2.", "warning");
+      return;
+    }
     this.classGameResetState();
     const userId = this.state.activeUser ? this.state.activeUser.id : 'default';
-    const weekNum = this.currentViewedWeek || 1;
     if (this.state.db && this.state.db.consultant_progress[userId]) {
       const progress = this.state.db.consultant_progress[userId];
       if (progress.game_scores && progress.game_scores[weekNum]) {
@@ -4602,11 +4640,11 @@ const app = {
         const gameScore = progress.game_scores ? progress.game_scores[weekNum] : undefined;
         
         if (gameScore !== undefined) {
-          gameScoreDisplay.innerText = `${gameScore.score}/${gameScore.total}`;
+          const pct = Math.round((gameScore.score / gameScore.total) * 100);
+          gameScoreDisplay.innerText = `${pct}%`;
           gameScoreDisplay.style.display = 'flex';
           
-          const pct = Math.round((gameScore.score / gameScore.total) * 100);
-          gameDetailsDisplay.innerText = `Precisión: ${pct}%\nEstado: Completado\nFecha: ${new Date(gameScore.completedAt).toLocaleDateString('es-CL')}`;
+          gameDetailsDisplay.innerText = `Respuestas correctas: ${gameScore.score}/${gameScore.total}\nEstado: Completado\nFecha: ${new Date(gameScore.completedAt).toLocaleDateString('es-CL')}`;
         } else {
           gameScoreDisplay.innerText = '-';
           gameDetailsDisplay.innerText = 'Desafío de clasificación de cuentas pendiente.';
