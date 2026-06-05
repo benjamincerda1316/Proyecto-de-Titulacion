@@ -9651,6 +9651,155 @@ const app = {
         });
       }
     }
+
+    // Call the new function to render the Audit Log Bitacora
+    this.renderInspectedAuditBitacora(userId);
+  },
+
+  renderInspectedAuditBitacora(userId) {
+    const container = document.getElementById('inspect-audit-bitacora');
+    if (!container) return;
+    
+    container.innerHTML = '';
+    
+    const junior = this.state.inspectedUser;
+    if (!junior) return;
+
+    // Filter events for this junior (except rejected and non-billable corporate learning)
+    const events = (this.state.db.calendar_events || []).filter(
+      e => e.junior_id === userId && e.status !== 'rechazado' && e.status !== 'rechazada' && e.contabilizar_ids !== false
+    );
+    
+    // Group events by expert_id using e.expertos_asistentes_ids if exists, else e.expert_id
+    const expertMap = {};
+    events.forEach(e => {
+      const expIds = e.expertos_asistentes_ids || [e.expert_id];
+      expIds.forEach(id => {
+        if (!expertMap[id]) {
+          expertMap[id] = [];
+        }
+        expertMap[id].push(e);
+      });
+    });
+    
+    // Build rows for the table
+    let rowsHtml = '';
+    if (Object.keys(expertMap).length === 0) {
+      rowsHtml = `
+        <tr>
+          <td colspan="4" style="text-align:center; padding:15px; color:var(--neutral-muted);">Sin registros de interacciones.</td>
+        </tr>
+      `;
+    } else {
+      Object.keys(expertMap).forEach(expertId => {
+        const expertEvents = expertMap[expertId];
+        const expertObj = this.state.db.users.find(u => u.id === expertId);
+        const expertName = expertObj ? expertObj.name : 'Experto N/A';
+        
+        let roleLabel = 'Tutor';
+        if (expertObj) {
+          if (expertObj.role === 'admin') roleLabel = 'Manager';
+          else if (expertObj.role === 'senior') roleLabel = 'Senior';
+          else if (expertObj.role === 'tutor') {
+            const mappingTutorId = this.state.db.tutor_junior_mapping[junior.id];
+            roleLabel = expertObj.id === mappingTutorId ? 'Tutor a Cargo' : 'Tutor';
+          }
+        }
+        
+        // Group by type to get friendly interaction string
+        const typeCounts = {};
+        expertEvents.forEach(e => {
+          let friendlyType = 'Soporte';
+          const typeLower = (e.type || '').toLowerCase();
+          if (typeLower === 'tutoring') friendlyType = 'Tutoría';
+          else if (typeLower === 'masterclass') friendlyType = 'Masterclass';
+          else if (typeLower === 'coaching') friendlyType = 'Coaching';
+          else if (typeLower === 'extra_support' || typeLower === 'support') friendlyType = 'Soporte Extra';
+          typeCounts[friendlyType] = (typeCounts[friendlyType] || 0) + 1;
+        });
+        
+        const typeList = [];
+        if (typeCounts['Tutoría']) typeList.push(`Tutorías (${typeCounts['Tutoría']})`);
+        if (typeCounts['Masterclass']) typeList.push(`Masterclass (${typeCounts['Masterclass']})`);
+        if (typeCounts['Coaching']) typeList.push(`Coaching (${typeCounts['Coaching']})`);
+        if (typeCounts['Soporte Extra']) typeList.push(`Soporte Extra (${typeCounts['Soporte Extra']})`);
+        const interDetails = typeList.join(' + ') || 'Ninguna';
+        
+        const sessionsCount = expertEvents.length;
+        const expertTotalHours = expertEvents.reduce((sum, e) => {
+          const mins = e.executed_minutes || e.planned_minutes || 60;
+          return sum + (mins / 60);
+        }, 0);
+        
+        rowsHtml += `
+          <tr>
+            <td style="font-weight: 600;">${expertName} (${roleLabel})</td>
+            <td>${interDetails}</td>
+            <td style="text-align: center; font-weight: 600;">${sessionsCount}</td>
+            <td style="text-align: right; font-weight: 700; color: ${expertTotalHours >= 4 ? 'var(--primary)' : 'var(--neutral-dark)'};">
+              ${expertTotalHours.toFixed(1)} Hrs
+            </td>
+          </tr>
+        `;
+      });
+    }
+    
+    // Calculate reactive support hours (type = 'extra_support' or 'support')
+    const reactiveHours = events.filter(e => {
+      const typeLower = (e.type || '').toLowerCase();
+      return typeLower === 'extra_support' || typeLower === 'support';
+    }).reduce((sum, e) => {
+      const mins = e.executed_minutes || e.planned_minutes || 60;
+      return sum + (mins / 60);
+    }, 0);
+    
+    // Financial impact banner
+    let alertHtml = '';
+    if (reactiveHours > 0) {
+      const costMillions = (reactiveHours * 0.32).toFixed(1);
+      alertHtml = `
+        <div class="audit-alert-banner" style="margin-top: 15px;">
+          <i class="ti ti-alert-triangle animate-pulse" style="font-size: 1.2rem;"></i>
+          <span><strong>Impacto Financiero Proyectado:</strong> Esta tasa de soporte reactivo equivale a un costo de oportunidad de $${costMillions} millones CLP semanales para el área.</span>
+        </div>
+      `;
+    } else {
+      alertHtml = `
+        <div class="audit-alert-banner info" style="margin-top: 15px;">
+          <i class="ti ti-circle-check" style="font-size: 1.2rem;"></i>
+          <span><strong>Capacidad Operativa Optimizada:</strong> No se registran horas de soporte reactivo extraordinarias para este consultor.</span>
+        </div>
+      `;
+    }
+    
+    // Construct the audit log pane
+    const card = document.createElement('div');
+    card.className = 'card glass-card';
+    card.style.marginTop = '20px';
+    card.innerHTML = `
+      <div class="card-header" style="padding: 10px 15px; display: flex; justify-content: space-between; align-items: center;">
+        <h3 class="card-title" style="font-size: 0.8rem; margin: 0;">
+          <i class="ti ti-shield-check" style="color: var(--primary);"></i> Bitácora de Auditoría de Interacciones
+        </h3>
+      </div>
+      <div style="padding: 15px; font-size: 0.75rem;">
+        <table class="audit-table" style="width: 100%;">
+          <thead>
+            <tr>
+              <th>Consultor Experto</th>
+              <th>Tipo de Interacción</th>
+              <th style="text-align: center;">Sesiones</th>
+              <th style="text-align: right;">Tiempo Real</th>
+            </tr>
+          </thead>
+          <tbody>
+            ${rowsHtml}
+          </tbody>
+        </table>
+        ${alertHtml}
+      </div>
+    `;
+    container.appendChild(card);
   },
 
   calculateTimesheetFromHours() {
