@@ -4924,16 +4924,20 @@ const app = {
       const btnWeekly = document.getElementById('btn-inspect-tab-weekly');
       const btnPassport = document.getElementById('btn-inspect-tab-passport');
       const btnEvaluations = document.getElementById('btn-inspect-tab-evaluations');
+      const btnHours = document.getElementById('btn-inspect-tab-hours');
       const panelWeekly = document.getElementById('inspect-panel-weekly');
       const panelPassport = document.getElementById('inspect-panel-passport');
       const panelEvaluations = document.getElementById('inspect-panel-evaluations');
+      const panelHours = document.getElementById('inspect-panel-hours');
 
       if (btnWeekly) btnWeekly.classList.remove('active');
       if (btnPassport) btnPassport.classList.remove('active');
       if (btnEvaluations) btnEvaluations.classList.remove('active');
+      if (btnHours) btnHours.classList.remove('active');
       if (panelWeekly) panelWeekly.style.display = 'none';
       if (panelPassport) panelPassport.style.display = 'none';
       if (panelEvaluations) panelEvaluations.style.display = 'none';
+      if (panelHours) panelHours.style.display = 'none';
 
       if (tabName === 'weekly') {
         if (btnWeekly) btnWeekly.classList.add('active');
@@ -4948,6 +4952,10 @@ const app = {
         if (btnEvaluations) btnEvaluations.classList.add('active');
         if (panelEvaluations) panelEvaluations.style.display = 'block';
         this.renderEvaluationsAttemptsList();
+      } else if (tabName === 'hours') {
+        if (btnHours) btnHours.classList.add('active');
+        if (panelHours) panelHours.style.display = 'block';
+        this.renderInspectedHours();
       }
     } catch (err) {
       console.error("Error switching inspector tab:", err);
@@ -8923,6 +8931,155 @@ const app = {
         }
       }
     });
+  },
+
+  renderInspectedHours() {
+    if (!this.state.inspectedUser) return;
+    const userId = this.state.inspectedUser.id;
+
+    // Filter executed calendar events for the inspected junior
+    const juniorEvents = (this.state.db.calendar_events || []).filter(
+      e => e.junior_id === userId && (e.status === 'ejecutado' || e.status === 'ejecutada')
+    );
+
+    // Calculate total hours and total sessions
+    let totalMinutes = 0;
+    juniorEvents.forEach(e => {
+      totalMinutes += (e.executed_minutes || 0);
+    });
+    const totalHoursStr = (totalMinutes / 60).toFixed(1);
+    const totalSessions = juniorEvents.length;
+
+    // Update KPI UI elements
+    const totalKpiEl = document.getElementById('inspect-hours-total-kpi');
+    const sessionsKpiEl = document.getElementById('inspect-hours-sessions-kpi');
+    if (totalKpiEl) totalKpiEl.innerText = `${totalHoursStr} hrs`;
+    if (sessionsKpiEl) sessionsKpiEl.innerText = totalSessions;
+
+    // 1. Calculate hours by session type
+    const types = ['tutoring', 'masterclass', 'extra_support', 'coaching'];
+    const typeLabels = {
+      'tutoring': 'Tutoría',
+      'masterclass': 'Masterclass',
+      'extra_support': 'Soporte',
+      'coaching': 'Coaching'
+    };
+    const hoursByType = { tutoring: 0, masterclass: 0, extra_support: 0, coaching: 0 };
+    juniorEvents.forEach(e => {
+      const typeLower = (e.type || '').toLowerCase();
+      if (types.includes(typeLower)) {
+        hoursByType[typeLower] += (e.executed_minutes || 0) / 60;
+      }
+    });
+
+    const maxTypeVal = Math.max(...Object.values(hoursByType), 1);
+    const typeListContainer = document.getElementById('inspect-hours-type-list');
+    if (typeListContainer) {
+      typeListContainer.innerHTML = '';
+      types.forEach(t => {
+        const hrs = hoursByType[t];
+        const percent = (hrs / maxTypeVal) * 100;
+        let barColor = 'var(--primary)';
+        if (t === 'extra_support') barColor = 'var(--warning)';
+        if (t === 'coaching') barColor = '#8b5cf6';
+        if (t === 'tutoring') barColor = 'var(--success)';
+
+        const item = document.createElement('div');
+        item.innerHTML = `
+          <div style="display: flex; justify-content: space-between; font-size: 0.75rem; margin-bottom: 4px;">
+            <span style="font-weight: 600; color: var(--neutral-dark);">${typeLabels[t]}</span>
+            <span style="color: var(--neutral-muted); font-weight: 700;">${hrs.toFixed(1)} hrs</span>
+          </div>
+          <div style="background: var(--neutral-light); height: 8px; border-radius: 4px; overflow: hidden; width: 100%;">
+            <div style="background: ${barColor}; width: ${percent}%; height: 100%; border-radius: 4px; transition: width 0.3s ease;"></div>
+          </div>
+        `;
+        typeListContainer.appendChild(item);
+      });
+    }
+
+    // 2. Calculate hours consumed per expert
+    const hoursByExpert = {};
+    juniorEvents.forEach(e => {
+      const expId = e.expert_id;
+      const expertObj = this.state.db.users.find(u => u.id === expId);
+      const name = expertObj ? expertObj.name : 'N/A';
+      hoursByExpert[name] = (hoursByExpert[name] || 0) + (e.executed_minutes || 0) / 60;
+    });
+
+    const expertListContainer = document.getElementById('inspect-hours-expert-list');
+    if (expertListContainer) {
+      expertListContainer.innerHTML = '';
+      const sortedExperts = Object.entries(hoursByExpert).sort((a, b) => b[1] - a[1]);
+      if (sortedExperts.length === 0) {
+        expertListContainer.innerHTML = '<div style="color: var(--neutral-muted); font-size: 0.75rem; text-align: center; padding: 15px;">Sin horas registradas con expertos.</div>';
+      } else {
+        const maxExpVal = Math.max(...sortedExperts.map(e => e[1]), 1);
+        sortedExperts.forEach(([name, hrs]) => {
+          const percent = (hrs / maxExpVal) * 100;
+          const item = document.createElement('div');
+          item.innerHTML = `
+            <div style="display: flex; justify-content: space-between; font-size: 0.75rem; margin-bottom: 4px;">
+              <span style="font-weight: 600; color: var(--neutral-dark);">${name}</span>
+              <span style="color: var(--neutral-muted); font-weight: 700;">${hrs.toFixed(1)} hrs</span>
+            </div>
+            <div style="background: var(--neutral-light); height: 6px; border-radius: 3px; overflow: hidden; width: 100%;">
+              <div style="background: var(--primary); width: ${percent}%; height: 100%; border-radius: 3px; transition: width 0.3s ease;"></div>
+            </div>
+          `;
+          expertListContainer.appendChild(item);
+        });
+      }
+    }
+
+    // 3. Render sessions detailed log table
+    const tbody = document.getElementById('inspect-hours-sessions-tbody');
+    if (tbody) {
+      tbody.innerHTML = '';
+      if (juniorEvents.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="4" style="text-align:center; padding:15px; color:var(--neutral-muted);">No hay registros de sesiones ejecutadas para este consultor.</td></tr>`;
+      } else {
+        const sortedEvents = [...juniorEvents].sort((a, b) => new Date(b.block_day) - new Date(a.block_day));
+        sortedEvents.forEach(e => {
+          const expertObj = this.state.db.users.find(u => u.id === e.expert_id);
+          const formattedDate = new Date(e.block_day + "T00:00:00").toLocaleDateString('es-CL', { day: '2-digit', month: '2-digit' });
+          
+          let typeBadgeStyle = 'background-color:rgba(22, 163, 74, 0.1); color:#16a34a; font-weight:700;'; // tutoring
+          let shortType = 'Tutoría';
+          const typeLower = (e.type || '').toLowerCase();
+          
+          if (typeLower === 'masterclass') {
+            typeBadgeStyle = 'background-color:rgba(147, 51, 234, 0.1); color:#9333ea; font-weight:700;';
+            shortType = 'Masterclass';
+          } else if (typeLower === 'extra_support') {
+            typeBadgeStyle = 'background-color:rgba(239, 159, 39, 0.1); color:#b26500; font-weight:700;';
+            shortType = 'Soporte';
+          } else if (typeLower === 'coaching') {
+            typeBadgeStyle = 'background-color:rgba(139, 92, 246, 0.1); color:#7c3aed; font-weight:700;';
+            shortType = 'Coaching';
+          } else if (e.type === 'MUREX_LEARNING') {
+            typeBadgeStyle = 'background-color:rgba(71, 85, 105, 0.1); color:#475569; font-weight:700;';
+            shortType = 'Murex Learning';
+          } else if (e.type === 'FEEDBACK_ALINEAMIENTO') {
+            typeBadgeStyle = 'background-color:rgba(13, 148, 136, 0.1); color:#0d9488; font-weight:700;';
+            shortType = 'Feedback';
+          }
+
+          const tr = document.createElement('tr');
+          tr.innerHTML = `
+            <td>${formattedDate}</td>
+            <td>
+              <div style="font-weight:600;">${e.title || 'Sesión'}</div>
+              <span class="badge" style="font-size:0.65rem; padding:1px 4px; ${typeBadgeStyle}">Semana ${e.week_number} - ${shortType}</span>
+            </td>
+            <td>${expertObj?.name || 'N/A'}</td>
+            <td><strong>${e.executed_minutes}m</strong></td>
+          </tr>
+        `;
+          tbody.appendChild(tr);
+        });
+      }
+    }
   }
 };
 
