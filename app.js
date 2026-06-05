@@ -4923,23 +4923,31 @@ const app = {
     try {
       const btnWeekly = document.getElementById('btn-inspect-tab-weekly');
       const btnPassport = document.getElementById('btn-inspect-tab-passport');
+      const btnEvaluations = document.getElementById('btn-inspect-tab-evaluations');
       const panelWeekly = document.getElementById('inspect-panel-weekly');
       const panelPassport = document.getElementById('inspect-panel-passport');
+      const panelEvaluations = document.getElementById('inspect-panel-evaluations');
+
+      if (btnWeekly) btnWeekly.classList.remove('active');
+      if (btnPassport) btnPassport.classList.remove('active');
+      if (btnEvaluations) btnEvaluations.classList.remove('active');
+      if (panelWeekly) panelWeekly.style.display = 'none';
+      if (panelPassport) panelPassport.style.display = 'none';
+      if (panelEvaluations) panelEvaluations.style.display = 'none';
 
       if (tabName === 'weekly') {
         if (btnWeekly) btnWeekly.classList.add('active');
-        if (btnPassport) btnPassport.classList.remove('active');
         if (panelWeekly) panelWeekly.style.display = 'block';
-        if (panelPassport) panelPassport.style.display = 'none';
-      } else {
-        if (btnWeekly) btnWeekly.classList.remove('active');
+      } else if (tabName === 'passport') {
         if (btnPassport) btnPassport.classList.add('active');
-        if (panelWeekly) panelWeekly.style.display = 'none';
         if (panelPassport) panelPassport.style.display = 'block';
-        
         if (this.state.inspectedUser) {
           this.renderInspectedPassport(this.state.inspectedUser.id);
         }
+      } else if (tabName === 'evaluations') {
+        if (btnEvaluations) btnEvaluations.classList.add('active');
+        if (panelEvaluations) panelEvaluations.style.display = 'block';
+        this.renderEvaluationsAttemptsList();
       }
     } catch (err) {
       console.error("Error switching inspector tab:", err);
@@ -5931,24 +5939,18 @@ const app = {
     
     const btnAcademic = document.getElementById('admin-tab-academic');
     const btnCalendar = document.getElementById('admin-tab-calendar');
-    const btnEvaluations = document.getElementById('admin-tab-evaluations');
     
     if (btnAcademic) btnAcademic.classList.toggle('active', tabName === 'academic');
     if (btnCalendar) btnCalendar.classList.toggle('active', tabName === 'calendar');
-    if (btnEvaluations) btnEvaluations.classList.toggle('active', tabName === 'evaluations');
     
     const paneAcademic = document.getElementById('admin-pane-academic');
     const paneCalendar = document.getElementById('admin-pane-calendar');
-    const paneEvaluations = document.getElementById('admin-pane-evaluations');
     
     if (paneAcademic) paneAcademic.style.display = tabName === 'academic' ? 'block' : 'none';
     if (paneCalendar) paneCalendar.style.display = tabName === 'calendar' ? 'block' : 'none';
-    if (paneEvaluations) paneEvaluations.style.display = tabName === 'evaluations' ? 'block' : 'none';
     
     if (tabName === 'calendar') {
       this.switchAdminSessionTab(this.state.adminSessionActiveTab || 'calendar');
-    } else if (tabName === 'evaluations') {
-      this.renderEvaluationsAttemptsList();
     }
   },
 
@@ -8740,7 +8742,10 @@ const app = {
       viewer.className = 'eval-detail-viewer-empty';
     }
 
-    const intentos = this.state.db.historial_evaluaciones || [];
+    let intentos = this.state.db.historial_evaluaciones || [];
+    if (this.state.inspectedUser) {
+      intentos = intentos.filter(h => h.usuario_id === this.state.inspectedUser.id);
+    }
 
     if (intentos.length === 0) {
       listContainer.innerHTML = '<div style="color: var(--neutral-muted); font-size: 0.8rem; text-align: center; padding: 20px;">No hay evaluaciones rendidas aún.</div>';

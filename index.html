@@ -1068,9 +1068,6 @@
             <button id="admin-tab-calendar" class="admin-tab-btn" onclick="app.switchAdminViewTab('calendar')">
               <i class="ti ti-calendar-event"></i> Calendario Hub
             </button>
-            <button id="admin-tab-evaluations" class="admin-tab-btn" onclick="app.switchAdminViewTab('evaluations')">
-              <i class="ti ti-checklist"></i> Inspeccionar Evaluaciones
-            </button>
           </div>
 
           <!-- Academic Pane -->
@@ -1187,6 +1184,10 @@
                       <button class="inspector-tab-btn" id="btn-inspect-tab-passport"
                         onclick="app.switchInspectorTab('passport')">
                         <i class="ti ti-notebook"></i> Pasaporte Murex
+                      </button>
+                      <button class="inspector-tab-btn" id="btn-inspect-tab-evaluations"
+                        onclick="app.switchInspectorTab('evaluations')">
+                        <i class="ti ti-checklist"></i> Historial Evaluaciones
                       </button>
                     </div>
 
@@ -1354,6 +1355,36 @@
                           </div>
                         </div>
                         <p class="passport-donut-stats" id="inspect-passport-donut-stats">0 de 22 hitos completados</p>
+                      </div>
+                    </div>
+
+                    <!-- Tab 3: Evaluations Audit Panel -->
+                    <div id="inspect-panel-evaluations" class="inspector-tab-panel" style="display: none; padding: 15px 0;">
+                      <div style="margin-bottom: 20px;">
+                        <h4 style="font-size: 1.1rem; font-weight: bold; color: var(--neutral-dark); margin: 0 0 6px 0; font-family: var(--font-display);">
+                          Auditoría e Inspección de Evaluaciones
+                        </h4>
+                        <p style="font-size: 0.8rem; color: var(--neutral-muted); margin: 0;">
+                          Revisa los intentos, respuestas marcadas, aciertos y fallas del consultor en sus evaluaciones semanales.
+                        </p>
+                      </div>
+
+                      <div class="eval-audit-grid" style="display: grid; grid-template-columns: 1.2fr 2fr; gap: 20px;">
+                        <!-- Columna 1: Historial de Intentos -->
+                        <div class="eval-audit-col-list">
+                          <label class="eval-audit-section-label" style="font-size: 0.75rem; font-weight: bold; color: var(--neutral-muted); text-transform: uppercase;">Historial de Intentos</label>
+                          <div id="evaluations-attempts-list" class="eval-attempts-list" style="margin-top: 10px; display: flex; flex-direction: column; gap: 10px; max-height: 500px; overflow-y: auto;">
+                            <!-- Injected dynamically -->
+                          </div>
+                        </div>
+
+                        <!-- Columna 2: Detalle de Respuestas -->
+                        <div class="eval-audit-col-viewer">
+                          <label class="eval-audit-section-label" style="font-size: 0.75rem; font-weight: bold; color: var(--neutral-muted); text-transform: uppercase;">Detalle de Respuestas</label>
+                          <div id="evaluation-detail-viewer" class="eval-detail-viewer-empty" style="margin-top: 10px; background: var(--neutral-light); border: 1px solid var(--neutral-border); padding: 15px; border-radius: 8px; font-size: 0.8rem; color: var(--neutral-muted); min-height: 200px;">
+                            Selecciona un intento del panel izquierdo para auditar las respuestas...
+                          </div>
+                        </div>
                       </div>
                     </div>
                   </div>
@@ -1976,38 +2007,7 @@
             </div>
           </div> <!-- Close Calendar Pane -->
 
-          <!-- Inspeccionar Evaluaciones Pane -->
-          <div id="admin-pane-evaluations" class="admin-view-pane" style="display: none; padding: 25px;">
-            <div class="card glass-card" style="padding: 24px;">
-              <div style="margin-bottom: 24px;">
-                <h3
-                  style="font-size: 1.25rem; font-weight: bold; color: var(--neutral-dark); margin: 0 0 6px 0; font-family: var(--font-display);">
-                  Auditoría e Inspección de Evaluaciones
-                </h3>
-                <p style="font-size: 0.85rem; color: var(--neutral-muted); margin: 0;">
-                  Revisa las respuestas exactas, aciertos y fallas del equipo en onboarding técnico.
-                </p>
-              </div>
 
-              <div class="eval-audit-grid">
-                <!-- Columna 1: Historial de Intentos -->
-                <div class="eval-audit-col-list">
-                  <label class="eval-audit-section-label">Historial de Intentos</label>
-                  <div id="evaluations-attempts-list" class="eval-attempts-list">
-                    <!-- Injected dynamically -->
-                  </div>
-                </div>
-
-                <!-- Columna 2: Detalle de Respuestas -->
-                <div class="eval-audit-col-viewer">
-                  <label class="eval-audit-section-label">Detalle de Respuestas Marcadas por el Consultor</label>
-                  <div id="evaluation-detail-viewer" class="eval-detail-viewer-empty">
-                    Selecciona un intento del panel izquierdo para auditar las respuestas...
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
 
         </div>
       </section>
