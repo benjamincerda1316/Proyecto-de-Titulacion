@@ -1668,6 +1668,34 @@ const app = {
         this.state.db = data;
         this.updateAllTraineesScores();
         
+        // Ensure backward compatibility for calendar events
+        if (this.state.db.calendar_events) {
+          this.state.db.calendar_events.forEach(e => {
+            if (e.tipo_sesion === 'MUREX_LEARNING' || e.type === 'MUREX_LEARNING') {
+              e.bloqueado_edicion = true;
+              e.estado_confirmacion = 'FIXED';
+            } else {
+              if (e.bloqueado_edicion === undefined) e.bloqueado_edicion = false;
+              if (!e.estado_confirmacion) {
+                if (e.status === 'ejecutada' || e.status === 'aprobada' || e.status === 'aprobado' || e.status === 'ejecutado') {
+                  e.estado_confirmacion = 'FIXED';
+                } else if (e.status === 'rechazada' || e.status === 'rechazado') {
+                  e.estado_confirmacion = 'CANCELLED';
+                } else {
+                  e.estado_confirmacion = 'PENDIENTE_INVITADO';
+                }
+              }
+            }
+            if (!e.organizador_id) {
+              if (e.type === 'extra_support' || e.status === 'solicitada' || e.status === 'pendiente_aprobacion') {
+                e.organizador_id = e.junior_id;
+              } else {
+                e.organizador_id = e.expert_id || 'USR-LUANA';
+              }
+            }
+          });
+        }
+        
         // Defensive check: ensure all consultants have a progress record in consultant_progress to prevent UI crashes
         this.state.db.users.forEach(u => {
           if (u.role === 'consultant' && (!this.state.db.consultant_progress || !this.state.db.consultant_progress[u.id])) {
@@ -2008,7 +2036,375 @@ const app = {
       { code: "err-sys-999", title: "ERR-SYS-999: Sandbox Database Connection Lost", description: "Error del sistema que indica pérdida de conexión con la base de datos central de pruebas del Sandbox MX.3 Chile.", steps: ["Verificar el estado de la conexión VPN o red interna.", "Reiniciar el terminal de MX.3 en tu máquina local.", "Si persiste, revisar el canal Slack #sandbox-mx3 para constatar si hay ventanas de mantenimiento activas.", "Como último recurso, notificar al tutor para que solicite el reinicio del servidor de base de datos del sandbox."] }
     ];
 
-    const initialCalendarEvents = [];
+    const initialCalendarEvents = [
+      // Semana 2
+      {
+        id: 'ev-2-citrix',
+        title: 'Citrix y TradeQuery',
+        type: 'tutoring',
+        junior_id: 'USR-FRANCISCA',
+        expert_id: 'USR-BENJAMIN',
+        block_day: '2026-04-21',
+        time_start: '14:00',
+        time_end: '15:30',
+        planned_minutes: 90,
+        executed_minutes: 120,
+        status: 'ejecutado',
+        block_reason: 'NA',
+        week_number: 2
+      },
+      {
+        id: 'ev-2-etradepad',
+        title: 'E-tradepad',
+        type: 'tutoring',
+        junior_id: 'USR-FRANCISCA',
+        expert_id: 'USR-BENJAMIN',
+        block_day: '2026-04-22',
+        time_start: '14:00',
+        time_end: '16:00',
+        planned_minutes: 120,
+        executed_minutes: 120,
+        status: 'ejecutado',
+        block_reason: 'NA',
+        week_number: 2
+      },
+      {
+        id: 'ev-2-qasales',
+        title: 'QA and Test',
+        type: 'extra_support',
+        junior_id: 'USR-FRANCISCA',
+        expert_id: 'USR-BENJAMIN',
+        block_day: '2026-04-24',
+        time_start: '15:00',
+        time_end: '16:00',
+        planned_minutes: 60,
+        executed_minutes: 60,
+        status: 'ejecutado',
+        block_reason: 'NA',
+        week_number: 2
+      },
+      {
+        id: 'ev-2-explain-murex',
+        title: 'Explain Murex to your friends',
+        type: 'masterclass',
+        junior_id: 'USR-FRANCISCA',
+        expert_id: 'USR-LUANA',
+        block_day: '2026-04-21',
+        time_start: '09:30',
+        time_end: '11:00',
+        planned_minutes: 90,
+        executed_minutes: 90,
+        status: 'ejecutado',
+        block_reason: 'NA',
+        week_number: 2
+      },
+      {
+        id: 'ev-2-scale-agile',
+        title: 'NC integration Scale Agile at MUREX',
+        type: 'masterclass',
+        junior_id: 'USR-FRANCISCA',
+        expert_id: 'USR-LUANA',
+        block_day: '2026-04-22',
+        time_start: '09:00',
+        time_end: '11:00',
+        planned_minutes: 120,
+        executed_minutes: 120,
+        status: 'ejecutado',
+        block_reason: 'NA',
+        week_number: 2
+      },
+      {
+        id: 'ev-2-edde-salim',
+        title: 'Meeting the Co Founder Edde Salim',
+        type: 'masterclass',
+        junior_id: 'USR-FRANCISCA',
+        expert_id: 'USR-LUANA',
+        block_day: '2026-04-21',
+        time_start: '09:30',
+        time_end: '12:30',
+        planned_minutes: 180,
+        executed_minutes: 180,
+        status: 'ejecutado',
+        block_reason: 'NA',
+        week_number: 2
+      },
+      // Semana 3
+      {
+        id: 'ev-3-simple-acc',
+        title: 'Introduction to Simple Accounts',
+        type: 'tutoring',
+        junior_id: 'USR-FRANCISCA',
+        expert_id: 'USR-BENJAMIN',
+        block_day: '2026-04-27',
+        time_start: '11:00',
+        time_end: '13:00',
+        planned_minutes: 120,
+        executed_minutes: 120,
+        status: 'ejecutado',
+        block_reason: 'NA',
+        week_number: 3
+      },
+      {
+        id: 'ev-3-dynamic-acc',
+        title: 'Introduction to Dynamic Accounts',
+        type: 'tutoring',
+        junior_id: 'USR-FRANCISCA',
+        expert_id: 'USR-BENJAMIN',
+        block_day: '2026-04-28',
+        time_start: '16:00',
+        time_end: '17:00',
+        planned_minutes: 60,
+        executed_minutes: 60,
+        status: 'ejecutado',
+        block_reason: 'NA',
+        week_number: 3
+      },
+      {
+        id: 'ev-3-formula-acc',
+        title: 'Introduction to Formula Accounts',
+        type: 'tutoring',
+        junior_id: 'USR-FRANCISCA',
+        expert_id: 'USR-BENJAMIN',
+        block_day: '2026-04-29',
+        time_start: '11:00',
+        time_end: '12:36',
+        planned_minutes: 90,
+        executed_minutes: 60,
+        status: 'ejecutado',
+        block_reason: 'NA',
+        week_number: 3
+      },
+      {
+        id: 'ev-3-qa-review',
+        title: 'Q&A and Review',
+        type: 'extra_support',
+        junior_id: 'USR-FRANCISCA',
+        expert_id: 'USR-BENJAMIN',
+        block_day: '2026-04-30',
+        time_start: '11:00',
+        time_end: '13:00',
+        planned_minutes: 120,
+        executed_minutes: 120,
+        status: 'ejecutado',
+        block_reason: 'NA',
+        week_number: 3
+      },
+      // Semana 4
+      {
+        id: 'ev-4-accounts-1',
+        title: 'Accounts',
+        type: 'tutoring',
+        junior_id: 'USR-FRANCISCA',
+        expert_id: 'USR-BENJAMIN',
+        block_day: '2026-05-04',
+        time_start: '11:00',
+        time_end: '11:30',
+        planned_minutes: 30,
+        executed_minutes: 30,
+        status: 'ejecutado',
+        block_reason: 'NA',
+        week_number: 4
+      },
+      {
+        id: 'ev-4-accounts-2',
+        title: 'Accounts',
+        type: 'tutoring',
+        junior_id: 'USR-FRANCISCA',
+        expert_id: 'USR-BENJAMIN',
+        block_day: '2026-05-05',
+        time_start: '11:00',
+        time_end: '11:30',
+        planned_minutes: 30,
+        executed_minutes: 30,
+        status: 'ejecutado',
+        block_reason: 'NA',
+        week_number: 4
+      },
+      {
+        id: 'ev-4-qa-review',
+        title: 'Q&A and Review',
+        type: 'extra_support',
+        junior_id: 'USR-FRANCISCA',
+        expert_id: 'USR-BENJAMIN',
+        block_day: '2026-05-08',
+        time_start: '15:00',
+        time_end: '16:00',
+        planned_minutes: 60,
+        executed_minutes: 90,
+        status: 'ejecutado',
+        block_reason: 'Timesheet',
+        week_number: 4
+      },
+      // Semana 5
+      {
+        id: 'ev-5-rules-intro-1',
+        title: 'Introduction to Rules',
+        type: 'tutoring',
+        junior_id: 'USR-FRANCISCA',
+        expert_id: 'USR-BENJAMIN',
+        block_day: '2026-05-11',
+        time_start: '11:00',
+        time_end: '12:00',
+        planned_minutes: 60,
+        executed_minutes: 60,
+        status: 'ejecutado',
+        block_reason: 'NA',
+        week_number: 5
+      },
+      {
+        id: 'ev-5-rules-intro-2',
+        title: 'Introduction to Rules',
+        type: 'tutoring',
+        junior_id: 'USR-FRANCISCA',
+        expert_id: 'USR-BENJAMIN',
+        block_day: '2026-05-12',
+        time_start: '12:00',
+        time_end: '12:48',
+        planned_minutes: 40,
+        executed_minutes: 48,
+        status: 'ejecutado',
+        block_reason: 'NA',
+        week_number: 5
+      },
+      {
+        id: 'ev-5-rules-accounts',
+        title: 'Rules & Accounts',
+        type: 'tutoring',
+        junior_id: 'USR-FRANCISCA',
+        expert_id: 'USR-BENJAMIN',
+        block_day: '2026-05-14',
+        time_start: '15:00',
+        time_end: '15:34',
+        planned_minutes: 30,
+        executed_minutes: 34,
+        status: 'ejecutado',
+        block_reason: 'NA',
+        week_number: 5
+      },
+      {
+        id: 'ev-5-qa-review',
+        title: 'Q&A and Review',
+        type: 'tutoring',
+        junior_id: 'USR-FRANCISCA',
+        expert_id: 'USR-BENJAMIN',
+        block_day: '2026-05-15',
+        time_start: '16:00',
+        time_end: '17:00',
+        planned_minutes: 60,
+        executed_minutes: 57,
+        status: 'ejecutado',
+        block_reason: 'NA',
+        week_number: 5
+      },
+      // Semana 6
+      {
+        id: 'ev-6-drop-1',
+        title: 'Drop 1',
+        type: 'tutoring',
+        junior_id: 'USR-FRANCISCA',
+        expert_id: 'USR-BENJAMIN',
+        block_day: '2026-05-18',
+        time_start: '11:00',
+        time_end: '11:30',
+        planned_minutes: 30,
+        executed_minutes: 30,
+        status: 'ejecutado',
+        block_reason: 'NA',
+        week_number: 6
+      },
+      // Semana 7
+      {
+        id: 'ev-7-recap-jambo',
+        title: 'Recap: Back from Jambo',
+        type: 'tutoring',
+        junior_id: 'USR-FRANCISCA',
+        expert_id: 'USR-BENJAMIN',
+        block_day: '2026-05-25',
+        time_start: '11:00',
+        time_end: '11:15',
+        planned_minutes: 15,
+        executed_minutes: 15,
+        status: 'ejecutado',
+        block_reason: 'NA',
+        week_number: 7
+      },
+      {
+        id: 'ev-7-accounting-rules',
+        title: 'Accounting Rules for flows',
+        type: 'tutoring',
+        junior_id: 'USR-FRANCISCA',
+        expert_id: 'USR-BENJAMIN',
+        block_day: '2026-05-29',
+        time_start: '11:15',
+        time_end: '12:45',
+        planned_minutes: 60,
+        executed_minutes: 90,
+        status: 'ejecutado',
+        block_reason: 'NA',
+        week_number: 7
+      },
+      {
+        id: 'ev-7-qa-liq-1',
+        title: 'Q&A Liquidation',
+        type: 'extra_support',
+        junior_id: 'USR-FRANCISCA',
+        expert_id: 'USR-CAROLINA',
+        block_day: '2026-05-25',
+        time_start: '17:00',
+        time_end: '18:05',
+        planned_minutes: 60,
+        executed_minutes: 60,
+        status: 'ejecutado',
+        block_reason: 'Liquidation',
+        week_number: 7
+      },
+      // Semana 8
+      {
+        id: 'ev-8-qa-liq-2',
+        title: 'Q&A Liquidation',
+        type: 'extra_support',
+        junior_id: 'USR-FRANCISCA',
+        expert_id: 'USR-CAROLINA',
+        block_day: '2026-06-01',
+        time_start: '17:00',
+        time_end: '18:00',
+        planned_minutes: 60,
+        executed_minutes: 60,
+        status: 'ejecutado',
+        block_reason: 'Liquidation',
+        week_number: 8
+      },
+      {
+        id: 'ev-8-qa-liq-3',
+        title: 'Q&A Liquidation',
+        type: 'extra_support',
+        junior_id: 'USR-FRANCISCA',
+        expert_id: 'USR-CAROLINA',
+        block_day: '2026-06-02',
+        time_start: '11:00',
+        time_end: '12:00',
+        planned_minutes: 60,
+        executed_minutes: 60,
+        status: 'ejecutado',
+        block_reason: 'Liquidation',
+        week_number: 8
+      },
+      {
+        id: 'ev-8-luana-coaching',
+        title: '1-1 Luana',
+        type: 'coaching',
+        junior_id: 'USR-FRANCISCA',
+        expert_id: 'USR-LUANA',
+        block_day: '2026-06-03',
+        time_start: '11:30',
+        time_end: '12:00',
+        planned_minutes: 30,
+        executed_minutes: 30,
+        status: 'ejecutado',
+        block_reason: 'NA',
+        week_number: 8
+      }
+    ];
 
     // Seed cert_checklists for every consultant (4 hitos de certificación).
     const initialCertChecklists = {};
@@ -7001,7 +7397,7 @@ const app = {
         dayEvents = allEvents.filter(e => e.block_day === dateStr && e.junior_id === selectedJuniorId);
       }
       
-      dayEvents.sort((a, b) => a.time_start.localeCompare(b.time_start));
+      dayEvents.sort((a, b) => (a.time_start || '').localeCompare(b.time_start || ''));
       
       dayEvents.forEach(e => {
         const card = document.createElement('div');
