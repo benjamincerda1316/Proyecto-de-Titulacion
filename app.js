@@ -8978,9 +8978,9 @@ const app = {
     if (!this.state.inspectedUser) return;
     const userId = this.state.inspectedUser.id;
 
-    // Filter executed calendar events for the inspected junior
+    // Filter executed calendar events for the inspected junior (completed, ejecutado, ejecutada)
     const juniorEvents = (this.state.db.calendar_events || []).filter(
-      e => e.junior_id === userId && (e.status === 'ejecutado' || e.status === 'ejecutada')
+      e => e.junior_id === userId && (e.status === 'ejecutado' || e.status === 'ejecutada' || e.status === 'completed')
     );
 
     // Calculate total hours and total sessions
@@ -8998,18 +8998,21 @@ const app = {
     if (sessionsKpiEl) sessionsKpiEl.innerText = totalSessions;
 
     // 1. Calculate hours by session type
-    const types = ['tutoring', 'masterclass', 'extra_support', 'coaching'];
+    const types = ['tutoring', 'masterclass', 'extra_support', 'support', 'coaching'];
     const typeLabels = {
       'tutoring': 'Tutoría',
       'masterclass': 'Masterclass',
       'extra_support': 'Soporte',
+      'support': 'Soporte',
       'coaching': 'Coaching'
     };
     const hoursByType = { tutoring: 0, masterclass: 0, extra_support: 0, coaching: 0 };
     juniorEvents.forEach(e => {
-      const typeLower = (e.type || '').toLowerCase();
-      if (types.includes(typeLower)) {
-        hoursByType[typeLower] += (e.executed_minutes || 0) / 60;
+      let typeLower = (e.type || '').toLowerCase();
+      if (typeLower === 'support') typeLower = 'extra_support';
+      if (typeLower === 'extra_support' || typeLower === 'tutoring' || typeLower === 'masterclass' || typeLower === 'coaching') {
+        const key = typeLower === 'support' ? 'extra_support' : typeLower;
+        hoursByType[key] += (e.executed_minutes || 0) / 60;
       }
     });
 
@@ -9092,7 +9095,7 @@ const app = {
           if (typeLower === 'masterclass') {
             typeBadgeStyle = 'background-color:rgba(147, 51, 234, 0.1); color:#9333ea; font-weight:700;';
             shortType = 'Masterclass';
-          } else if (typeLower === 'extra_support') {
+          } else if (typeLower === 'extra_support' || typeLower === 'support') {
             typeBadgeStyle = 'background-color:rgba(239, 159, 39, 0.1); color:#b26500; font-weight:700;';
             shortType = 'Soporte';
           } else if (typeLower === 'coaching') {
