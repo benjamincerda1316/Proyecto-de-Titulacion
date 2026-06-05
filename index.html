@@ -1330,8 +1330,6 @@
             <div class="admin-header-actions">
               <button id="btn-admin-register-newcomer" class="btn btn-primary" onclick="app.openAddMemberModal()"><i
                   class="ti ti-user-plus"></i> Registrar Newcomer</button>
-              <button id="btn-admin-reset-db" class="btn btn-outline" onclick="app.resetDB()"><i
-                  class="ti ti-refresh"></i> Reiniciar Datos Demo</button>
             </div>
           </div>
 
@@ -2596,24 +2594,6 @@
     </div>
   </div>
 
-  <!-- SMTP Outbox Simulation Drawer Toggle -->
-  <button id="smtp-simulation-toggle" onclick="app.toggleSMTPDrawer()">
-    <i class="ti ti-mail-fast"></i> Alertas SMTP <span id="smtp-mail-badge">0</span>
-  </button>
-
-  <!-- SMTP Outbox Simulation Drawer -->
-  <div id="smtp-simulation-drawer">
-    <div class="smtp-drawer-header">
-      <h3><i class="ti ti-server"></i> Servidor SMTP (Simulado)</h3>
-      <button class="smtp-drawer-close" onclick="app.toggleSMTPDrawer()"><i class="ti ti-x"></i></button>
-    </div>
-    <div class="smtp-mail-list" id="smtp-mail-list">
-      <div class="smtp-empty-state" id="smtp-empty-state">
-        <i class="ti ti-mail-opened"></i>
-        <p>No se han registrado envíos de correos automáticos SMTP todavía.</p>
-      </div>
-    </div>
-  </div>
 
   <!-- Main JavaScript File -->
   <script src="material_semanal/semana_03/accounting_game_db.js"></script>
