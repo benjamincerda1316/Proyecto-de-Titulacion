@@ -1666,6 +1666,7 @@ const app = {
           return;
         }
         this.state.db = data;
+        this.updateAllTraineesScores();
         
         // Defensive check: ensure all consultants have a progress record in consultant_progress to prevent UI crashes
         this.state.db.users.forEach(u => {
@@ -1812,7 +1813,40 @@ const app = {
     }
   },
 
+  getWeekScore(progress, w) {
+    if (!progress || !progress.test_scores) return undefined;
+    const testScore = progress.test_scores[w];
+    if (testScore === undefined) return undefined;
+    if (w === 2) {
+      const gameData = progress.game_scores ? progress.game_scores[2] : null;
+      const gameScore = gameData ? Math.round((gameData.score / gameData.total) * 100) : 0;
+      return Math.round((testScore + gameScore) / 2);
+    }
+    return testScore;
+  },
+
+  updateAllTraineesScores() {
+    if (!this.state.db || !this.state.db.users) return;
+    this.state.db.users.forEach(u => {
+      if (u.role === 'consultant' || u.rol === 'JUNIOR') {
+        const progress = this.state.db.consultant_progress[u.id];
+        if (progress) {
+          const scores = [];
+          for (let w = 1; w <= 12; w++) {
+            const sc = this.getWeekScore(progress, w);
+            if (sc !== undefined) scores.push(sc);
+          }
+          const avgScore = scores.length > 0 ? Math.round(scores.reduce((a, b) => a + b, 0) / scores.length) : 0;
+          u.avg_score = avgScore;
+          const completedCount = progress.completed_weeks.length;
+          u.status = (avgScore < 70 && completedCount > 3) ? 'at_risk' : 'on_track';
+        }
+      }
+    });
+  },
+
   saveDatabase() {
+    this.updateAllTraineesScores();
     if (this.state.db && this.state.db.users) {
       this.state.db.users.forEach(u => {
         if (u.rol && !u.role) {
@@ -2186,7 +2220,11 @@ const app = {
     const currentWeekNum = Math.min(completedCount + 1, totalWeeks);
     
     // Calculate Average Score
-    const scores = Object.values(progress.test_scores);
+    const scores = [];
+    for (let w = 1; w <= 12; w++) {
+      const sc = this.getWeekScore(progress, w);
+      if (sc !== undefined) scores.push(sc);
+    }
     const avgScore = scores.length > 0 ? Math.round(scores.reduce((a,b)=>a+b, 0) / scores.length) : 0;
     
     // Determine status
@@ -2271,8 +2309,8 @@ const app = {
       if (isCompleted) {
         stateClass = 'state-completed';
         stateIcon = '<i class="ti ti-circle-check"></i>';
-        const score = progress.test_scores[w];
-        stateFooter = score ? `<span class="week-card-score">${score}% score</span>` : 'Aprobado';
+        const score = this.getWeekScore(progress, w);
+        stateFooter = score !== undefined ? `<span class="week-card-score">${score}% score</span>` : 'Aprobado';
       } else if (hasPendingDeliverable) {
         stateClass = 'state-review';
         stateIcon = '<i class="ti ti-clock"></i>';
@@ -4736,11 +4774,13 @@ const app = {
       const prog = this.state.db.consultant_progress[t.id];
       sumWeeks += t.current_week;
       
-      const scoresList = Object.values(prog.test_scores);
-      scoresList.forEach(s => {
-        sumScores += s;
-        totalScoresCount++;
-      });
+      for (let w = 1; w <= 12; w++) {
+        const s = this.getWeekScore(prog, w);
+        if (s !== undefined) {
+          sumScores += s;
+          totalScoresCount++;
+        }
+      }
       
       // Count pending reviews
       Object.values(prog.deliverables).forEach(d => {
@@ -5356,8 +5396,9 @@ const app = {
       
       trainees.forEach(t => {
         const prog = this.state.db.consultant_progress[t.id];
-        if (prog.test_scores[w] !== undefined) {
-          sum += prog.test_scores[w];
+        const s = this.getWeekScore(prog, w);
+        if (s !== undefined) {
+          sum += s;
           count++;
         }
       });
