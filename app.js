@@ -9544,15 +9544,20 @@ const app = {
     }
 
     // Render Chart.js charts for the inspected newcomer
-    if (typeof Chart !== 'undefined') {
+    // Wrapped in requestAnimationFrame so the panel is visible and has dimensions before Chart.js renders
+    const _hoursByExpert = hoursByExpert;
+    const _juniorEvents = juniorEvents;
+    requestAnimationFrame(() => {
+      if (typeof Chart === 'undefined') return;
+
       const ctxInspectResource = document.getElementById('inspect-chart-resource-hours');
       if (ctxInspectResource) {
         if (this.state.charts.inspectResource) {
           this.state.charts.inspectResource.destroy();
         }
 
-        const expertNames = Object.keys(hoursByExpert);
-        const expertHoursVals = Object.values(hoursByExpert);
+        const expertNames = Object.keys(_hoursByExpert);
+        const expertHoursVals = Object.values(_hoursByExpert);
 
         this.state.charts.inspectResource = new Chart(ctxInspectResource, {
           type: 'bar',
@@ -9594,7 +9599,7 @@ const app = {
         const plannedHours = { tutoring: 0, masterclass: 0, extra_support: 0, coaching: 0 };
         const realHours = { tutoring: 0, masterclass: 0, extra_support: 0, coaching: 0 };
 
-        juniorEvents.forEach(e => {
+        _juniorEvents.forEach(e => {
           let typeLower = (e.type || '').toLowerCase();
           if (typeLower === 'support') typeLower = 'extra_support';
           if (plannedHours[typeLower] !== undefined) {
@@ -9650,7 +9655,7 @@ const app = {
           }
         });
       }
-    }
+    });
 
     // Call the new function to render the Audit Log Bitacora
     this.renderInspectedAuditBitacora(userId);
