@@ -9121,6 +9121,20 @@ const app = {
         });
       }
     }
+  },
+
+  handleTimesheetPresetChange(val) {
+    const hours = parseFloat(val);
+    document.getElementById('timesheet-custom-hours').value = hours;
+    this.calculateCustomTimesheet();
+  },
+
+  calculateCustomTimesheet() {
+    const input = document.getElementById('timesheet-custom-hours');
+    if (!input) return;
+    const hours = parseFloat(input.value) || 0;
+    const result = (hours * 0.14).toFixed(2);
+    document.getElementById('timesheet-custom-result').innerText = result;
   }
 };
 
