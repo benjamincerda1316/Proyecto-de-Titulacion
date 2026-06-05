@@ -636,7 +636,7 @@ const bancoPreguntasSemana2 = [
       "Cada 1 mes",
       "Cada 2 meses"
     ],
-    "correct": 0
+    "correct": 1
   },
   {
     "question": "¿A qué estado financiero va un Notional en contabilidad?",
