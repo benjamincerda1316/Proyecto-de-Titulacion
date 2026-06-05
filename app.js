@@ -1165,7 +1165,10 @@ const app = {
     },
     charts: {
       consultant: null,
-      admin: null
+      admin: null,
+      inspectResource: null,
+      inspectDeviation: null,
+      resource: null
     }
   },
 
@@ -9543,113 +9546,72 @@ const app = {
       }
     }
 
-    // Render Chart.js charts for the inspected newcomer
-    if (typeof Chart !== 'undefined') {
-      const ctxInspectResource = document.getElementById('inspect-chart-resource-hours');
-      if (ctxInspectResource) {
-        if (this.state.charts.inspectResource) {
-          this.state.charts.inspectResource.destroy();
-        }
-
-        const expertNames = Object.keys(hoursByExpert);
-        const expertHoursVals = Object.values(hoursByExpert);
-
-        this.state.charts.inspectResource = new Chart(ctxInspectResource, {
-          type: 'bar',
-          data: {
-            labels: expertNames,
-            datasets: [{
-              label: 'Horas Reales',
-              data: expertHoursVals,
-              backgroundColor: 'rgba(166, 25, 46, 0.7)',
-              borderColor: '#A6192E',
-              borderWidth: 1
-            }]
-          },
-          options: {
-            responsive: true,
-            maintainAspectRatio: false,
-            scales: {
-              y: {
-                beginAtZero: true,
-                ticks: { font: { size: 9 } }
-              },
-              x: {
-                ticks: { font: { size: 9 } }
-              }
-            },
-            plugins: {
-              legend: { display: false }
-            }
-          }
+    // Render CSS bar chart: Horas por Experto (Consumo)
+    const expertBarsContainer = document.getElementById('inspect-chart-expert-bars');
+    if (expertBarsContainer) {
+      expertBarsContainer.innerHTML = '';
+      const sortedForChart = Object.entries(hoursByExpert).sort((a, b) => b[1] - a[1]);
+      if (sortedForChart.length === 0) {
+        expertBarsContainer.innerHTML = '<div style="color:var(--neutral-muted);font-size:0.75rem;text-align:center;padding:20px;">Sin datos</div>';
+      } else {
+        const maxVal = Math.max(...sortedForChart.map(e => e[1]), 1);
+        sortedForChart.forEach(([name, hrs]) => {
+          const pct = (hrs / maxVal) * 100;
+          const shortName = name.split(' ').slice(0, 2).join(' ');
+          expertBarsContainer.innerHTML += `
+            <div>
+              <div style="display:flex;justify-content:space-between;font-size:0.72rem;margin-bottom:3px;">
+                <span style="font-weight:600;color:var(--neutral-dark);">${shortName}</span>
+                <span style="color:var(--neutral-muted);font-weight:700;">${hrs.toFixed(1)} hrs</span>
+              </div>
+              <div style="background:var(--neutral-light);height:10px;border-radius:5px;overflow:hidden;">
+                <div style="background:#A6192E;width:${pct}%;height:100%;border-radius:5px;transition:width 0.3s ease;"></div>
+              </div>
+            </div>`;
         });
       }
+    }
 
-      const ctxInspectDev = document.getElementById('inspect-chart-deviation');
-      if (ctxInspectDev) {
-        if (this.state.charts.inspectDeviation) {
-          this.state.charts.inspectDeviation.destroy();
+    // Render CSS bar chart: Desviación Planificado vs Real
+    const desvBarsContainer = document.getElementById('inspect-chart-deviation-bars');
+    if (desvBarsContainer) {
+      desvBarsContainer.innerHTML = '';
+      const plannedHours = { tutoring: 0, masterclass: 0, extra_support: 0, coaching: 0 };
+      const realHours    = { tutoring: 0, masterclass: 0, extra_support: 0, coaching: 0 };
+      juniorEvents.forEach(e => {
+        let t = (e.type || '').toLowerCase();
+        if (t === 'support') t = 'extra_support';
+        if (plannedHours[t] !== undefined) {
+          plannedHours[t] += (e.planned_minutes || 60) / 60;
+          realHours[t]    += (e.executed_minutes || 0) / 60;
         }
-
-        const plannedHours = { tutoring: 0, masterclass: 0, extra_support: 0, coaching: 0 };
-        const realHours = { tutoring: 0, masterclass: 0, extra_support: 0, coaching: 0 };
-
-        juniorEvents.forEach(e => {
-          let typeLower = (e.type || '').toLowerCase();
-          if (typeLower === 'support') typeLower = 'extra_support';
-          if (plannedHours[typeLower] !== undefined) {
-            plannedHours[typeLower] += (e.planned_minutes || 60) / 60;
-            realHours[typeLower] += (e.executed_minutes || 0) / 60;
-          }
-        });
-
-        const labelsDev = ['Tutoría', 'Masterclass', 'Soporte', 'Coaching'];
-        const dataPlanned = [plannedHours.tutoring, plannedHours.masterclass, plannedHours.extra_support, plannedHours.coaching];
-        const dataReal = [realHours.tutoring, realHours.masterclass, realHours.extra_support, realHours.coaching];
-
-        this.state.charts.inspectDeviation = new Chart(ctxInspectDev, {
-          type: 'bar',
-          data: {
-            labels: labelsDev,
-            datasets: [
-              {
-                label: 'Planificado (hrs)',
-                data: dataPlanned,
-                backgroundColor: 'rgba(100, 116, 139, 0.5)',
-                borderColor: '#64748b',
-                borderWidth: 1
-              },
-              {
-                label: 'Real (hrs)',
-                data: dataReal,
-                backgroundColor: 'rgba(166, 25, 46, 0.7)',
-                borderColor: '#A6192E',
-                borderWidth: 1
-              }
-            ]
-          },
-          options: {
-            responsive: true,
-            maintainAspectRatio: false,
-            scales: {
-              y: {
-                beginAtZero: true,
-                ticks: { font: { size: 9 } }
-              },
-              x: {
-                ticks: { font: { size: 9 } }
-              }
-            },
-            plugins: {
-              legend: {
-                display: true,
-                position: 'top',
-                labels: { boxWidth: 12, font: { size: 9 } }
-              }
-            }
-          }
-        });
-      }
+      });
+      const devLabels = [['Tutoría','tutoring'],['Masterclass','masterclass'],['Soporte','extra_support'],['Coaching','coaching']];
+      const maxDev = Math.max(...devLabels.map(([,k]) => plannedHours[k]), 1);
+      desvBarsContainer.innerHTML += `<div style="display:flex;gap:12px;font-size:0.68rem;margin-bottom:8px;">
+        <span style="display:flex;align-items:center;gap:4px;"><span style="display:inline-block;width:10px;height:10px;border-radius:2px;background:#64748b;"></span>Planificado</span>
+        <span style="display:flex;align-items:center;gap:4px;"><span style="display:inline-block;width:10px;height:10px;border-radius:2px;background:#A6192E;"></span>Real</span>
+      </div>`;
+      devLabels.forEach(([label, key]) => {
+        const pPct = (plannedHours[key] / maxDev) * 100;
+        const rPct = (realHours[key] / maxDev) * 100;
+        desvBarsContainer.innerHTML += `
+          <div style="margin-bottom:4px;">
+            <div style="font-size:0.72rem;font-weight:600;color:var(--neutral-dark);margin-bottom:3px;">${label}</div>
+            <div style="display:flex;flex-direction:column;gap:2px;">
+              <div style="background:var(--neutral-light);height:8px;border-radius:4px;overflow:hidden;">
+                <div style="background:#64748b;width:${pPct}%;height:100%;border-radius:4px;"></div>
+              </div>
+              <div style="background:var(--neutral-light);height:8px;border-radius:4px;overflow:hidden;">
+                <div style="background:#A6192E;width:${rPct}%;height:100%;border-radius:4px;"></div>
+              </div>
+            </div>
+            <div style="display:flex;justify-content:space-between;font-size:0.65rem;color:var(--neutral-muted);margin-top:1px;">
+              <span>${plannedHours[key].toFixed(1)}h plan</span>
+              <span>${realHours[key].toFixed(1)}h real</span>
+            </div>
+          </div>`;
+      });
     }
 
     // Call the new function to render the Audit Log Bitacora
