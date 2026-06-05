@@ -9146,6 +9146,115 @@ const app = {
         });
       }
     }
+
+    // Render Chart.js charts for the inspected newcomer
+    if (typeof Chart !== 'undefined') {
+      const ctxInspectResource = document.getElementById('inspect-chart-resource-hours');
+      if (ctxInspectResource) {
+        if (this.state.charts.inspectResource) {
+          this.state.charts.inspectResource.destroy();
+        }
+
+        const expertNames = Object.keys(hoursByExpert);
+        const expertHoursVals = Object.values(hoursByExpert);
+
+        this.state.charts.inspectResource = new Chart(ctxInspectResource, {
+          type: 'bar',
+          data: {
+            labels: expertNames,
+            datasets: [{
+              label: 'Horas Reales',
+              data: expertHoursVals,
+              backgroundColor: 'rgba(166, 25, 46, 0.7)',
+              borderColor: '#A6192E',
+              borderWidth: 1
+            }]
+          },
+          options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            scales: {
+              y: {
+                beginAtZero: true,
+                ticks: { font: { size: 9 } }
+              },
+              x: {
+                ticks: { font: { size: 9 } }
+              }
+            },
+            plugins: {
+              legend: { display: false }
+            }
+          }
+        });
+      }
+
+      const ctxInspectDev = document.getElementById('inspect-chart-deviation');
+      if (ctxInspectDev) {
+        if (this.state.charts.inspectDeviation) {
+          this.state.charts.inspectDeviation.destroy();
+        }
+
+        const plannedHours = { tutoring: 0, masterclass: 0, extra_support: 0, coaching: 0 };
+        const realHours = { tutoring: 0, masterclass: 0, extra_support: 0, coaching: 0 };
+
+        juniorEvents.forEach(e => {
+          let typeLower = (e.type || '').toLowerCase();
+          if (typeLower === 'support') typeLower = 'extra_support';
+          if (plannedHours[typeLower] !== undefined) {
+            plannedHours[typeLower] += (e.planned_minutes || 60) / 60;
+            realHours[typeLower] += (e.executed_minutes || 0) / 60;
+          }
+        });
+
+        const labelsDev = ['Tutoría', 'Masterclass', 'Soporte', 'Coaching'];
+        const dataPlanned = [plannedHours.tutoring, plannedHours.masterclass, plannedHours.extra_support, plannedHours.coaching];
+        const dataReal = [realHours.tutoring, realHours.masterclass, realHours.extra_support, realHours.coaching];
+
+        this.state.charts.inspectDeviation = new Chart(ctxInspectDev, {
+          type: 'bar',
+          data: {
+            labels: labelsDev,
+            datasets: [
+              {
+                label: 'Planificado (hrs)',
+                data: dataPlanned,
+                backgroundColor: 'rgba(100, 116, 139, 0.5)',
+                borderColor: '#64748b',
+                borderWidth: 1
+              },
+              {
+                label: 'Real (hrs)',
+                data: dataReal,
+                backgroundColor: 'rgba(166, 25, 46, 0.7)',
+                borderColor: '#A6192E',
+                borderWidth: 1
+              }
+            ]
+          },
+          options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            scales: {
+              y: {
+                beginAtZero: true,
+                ticks: { font: { size: 9 } }
+              },
+              x: {
+                ticks: { font: { size: 9 } }
+              }
+            },
+            plugins: {
+              legend: {
+                display: true,
+                position: 'top',
+                labels: { boxWidth: 12, font: { size: 9 } }
+              }
+            }
+          }
+        });
+      }
+    }
   },
 
   calculateTimesheetFromHours() {

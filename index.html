@@ -1703,6 +1703,21 @@
                           <div id="inspect-hours-expert-list" class="custom-scrollbar" style="display: flex; flex-direction: column; gap: 12px; max-height: 250px; overflow-y: auto; padding-right: 4px;">
                             <!-- Injected dynamically -->
                           </div>
+                      </div>
+
+                      <!-- Duplicated Chart.js Canvases for Inspected Junior -->
+                      <div class="eval-audit-grid" style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 20px; margin-top: 10px;">
+                        <div style="background: #ffffff; border: 1px solid var(--neutral-border); padding: 15px; border-radius: 8px;">
+                          <label class="eval-audit-section-label" style="font-size: 0.75rem; font-weight: bold; color: var(--neutral-muted); text-transform: uppercase; margin: 0 0 10px 0; display: block;"><i class="ti ti-chart-bar"></i> Horas por Experto (Consumo)</label>
+                          <div class="chart-container" style="height: 180px; position: relative;">
+                            <canvas id="inspect-chart-resource-hours"></canvas>
+                          </div>
+                        </div>
+                        <div style="background: #ffffff; border: 1px solid var(--neutral-border); padding: 15px; border-radius: 8px;">
+                          <label class="eval-audit-section-label" style="font-size: 0.75rem; font-weight: bold; color: var(--neutral-muted); text-transform: uppercase; margin: 0 0 10px 0; display: block;"><i class="ti ti-chart-arrows-vertical"></i> Desviación (Planificado vs Real)</label>
+                          <div class="chart-container" style="height: 180px; position: relative;">
+                            <canvas id="inspect-chart-deviation"></canvas>
+                          </div>
                         </div>
                       </div>
 
