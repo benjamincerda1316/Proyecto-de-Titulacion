@@ -8803,8 +8803,46 @@ const app = {
     }
 
     const letras = ['A', 'B', 'C', 'D'];
+
+    // Calculate correct and incorrect counts for the filters
+    let correctCount = 0;
+    let incorrectCount = 0;
+    quizPool.forEach((q, idx) => {
+      const qKey = `P${idx + 1}`;
+      const markedAnsLetter = intento.respuestas_usuario[qKey] ? intento.respuestas_usuario[qKey].marcada : null;
+      const correctAnsLetter = intento.respuestas_usuario[qKey] ? intento.respuestas_usuario[qKey].correcta : letras[q.correct];
+      const markedIdx = letras.indexOf(markedAnsLetter);
+      const correctIdx = letras.indexOf(correctAnsLetter);
+      if (markedIdx === correctIdx) {
+        correctCount++;
+      } else {
+        incorrectCount++;
+      }
+    });
+
     viewer.innerHTML = '';
     viewer.className = '';
+
+    // Create and append the dynamic filter bar
+    const filterBar = document.createElement('div');
+    filterBar.className = 'eval-detail-filter-bar';
+    filterBar.style.display = 'flex';
+    filterBar.style.gap = '8px';
+    filterBar.style.marginBottom = '15px';
+    filterBar.style.paddingBottom = '10px';
+    filterBar.style.borderBottom = '1px solid var(--neutral-border)';
+    filterBar.innerHTML = `
+      <button class="btn btn-outline active btn-xs eval-filter-btn" data-filter="all" onclick="app.filterAuditQuestions(this, 'all')" style="cursor: pointer;">
+        Todas (${quizPool.length})
+      </button>
+      <button class="btn btn-outline btn-xs eval-filter-btn" data-filter="correct" onclick="app.filterAuditQuestions(this, 'correct')" style="cursor: pointer;">
+        <span style="color: var(--success); margin-right: 4px;">●</span> Buenas (${correctCount})
+      </button>
+      <button class="btn btn-outline btn-xs eval-filter-btn" data-filter="incorrect" onclick="app.filterAuditQuestions(this, 'incorrect')" style="cursor: pointer;">
+        <span style="color: var(--danger); margin-right: 4px;">●</span> Malas (${incorrectCount})
+      </button>
+    `;
+    viewer.appendChild(filterBar);
 
     const viewerContent = document.createElement('div');
     viewerContent.className = 'eval-detail-viewer-content';
@@ -8816,6 +8854,7 @@ const app = {
       
       const markedIdx = letras.indexOf(markedAnsLetter);
       const correctIdx = letras.indexOf(correctAnsLetter);
+      const isCorrect = (markedIdx === correctIdx);
 
       let optionsHtml = '';
       q.options.forEach((opt, oIdx) => {
@@ -8844,7 +8883,7 @@ const app = {
       });
 
       viewerContent.innerHTML += `
-        <div class="eval-audit-question-card">
+        <div class="eval-audit-question-card ${isCorrect ? 'is-correct-card' : 'is-incorrect-card'}" style="display: block; margin-bottom: 15px;">
           <p class="eval-audit-question-title">Pregunta ${idx + 1}: ${q.question}</p>
           <div class="eval-audit-options-list">
             ${optionsHtml}
@@ -8854,6 +8893,36 @@ const app = {
     });
 
     viewer.appendChild(viewerContent);
+  },
+
+  filterAuditQuestions(btn, filterType) {
+    const filterBar = btn.closest('.eval-detail-filter-bar');
+    if (filterBar) {
+      filterBar.querySelectorAll('.eval-filter-btn').forEach(b => b.classList.remove('active'));
+    }
+    btn.classList.add('active');
+
+    const viewer = document.getElementById('evaluation-detail-viewer');
+    if (!viewer) return;
+
+    const cards = viewer.querySelectorAll('.eval-audit-question-card');
+    cards.forEach(card => {
+      if (filterType === 'all') {
+        card.style.display = 'block';
+      } else if (filterType === 'correct') {
+        if (card.classList.contains('is-correct-card')) {
+          card.style.display = 'block';
+        } else {
+          card.style.display = 'none';
+        }
+      } else if (filterType === 'incorrect') {
+        if (card.classList.contains('is-incorrect-card')) {
+          card.style.display = 'block';
+        } else {
+          card.style.display = 'none';
+        }
+      }
+    });
   }
 };
 
