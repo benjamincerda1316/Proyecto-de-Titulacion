@@ -9061,14 +9061,33 @@ const app = {
         const maxExpVal = Math.max(...sortedExperts.map(e => e[1]), 1);
         sortedExperts.forEach(([name, hrs]) => {
           const percent = (hrs / maxExpVal) * 100;
+          const expertObj = this.state.db.users.find(u => u.name === name);
+          const roleLabel = expertObj ? (expertObj.role === 'admin' ? 'Manager' : expertObj.role === 'senior' ? 'Senior' : 'Tutor') : 'Tutor';
+          const roleBadgeColor = roleLabel === 'Manager' ? 'var(--primary-light)' : roleLabel === 'Senior' ? 'rgba(139, 92, 246, 0.1)' : 'rgba(22, 163, 74, 0.1)';
+          const roleTextColor = roleLabel === 'Manager' ? 'var(--primary-text)' : roleLabel === 'Senior' ? '#7c3aed' : '#16a34a';
+          const initials = expertObj?.avatar_initials || name.split(' ').map(n => n[0]).join('').substring(0, 2).toUpperCase();
+
           const item = document.createElement('div');
+          item.style.display = 'flex';
+          item.style.alignItems = 'center';
+          item.style.gap = '10px';
+          item.style.padding = '8px 0';
+          item.style.borderBottom = '1px dashed var(--neutral-border)';
           item.innerHTML = `
-            <div style="display: flex; justify-content: space-between; font-size: 0.75rem; margin-bottom: 4px;">
-              <span style="font-weight: 600; color: var(--neutral-dark);">${name}</span>
-              <span style="color: var(--neutral-muted); font-weight: 700;">${hrs.toFixed(1)} hrs</span>
+            <div style="width: 32px; height: 32px; border-radius: 50%; background-color: var(--primary-light); color: var(--primary-text); font-weight: 700; font-size: 0.8rem; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+              ${initials}
             </div>
-            <div style="background: var(--neutral-light); height: 6px; border-radius: 3px; overflow: hidden; width: 100%;">
-              <div style="background: var(--primary); width: ${percent}%; height: 100%; border-radius: 3px; transition: width 0.3s ease;"></div>
+            <div style="flex-grow: 1; min-width: 0;">
+              <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2px;">
+                <span style="font-weight: 600; color: var(--neutral-dark); font-size: 0.78rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 150px;">${name}</span>
+                <span style="color: var(--neutral-dark); font-weight: 700; font-size: 0.78rem;">${hrs.toFixed(1)} hrs</span>
+              </div>
+              <div style="display: flex; align-items: center; gap: 6px; margin-bottom: 4px;">
+                <span class="badge" style="font-size: 0.6rem; padding: 1px 4px; background-color: ${roleBadgeColor}; color: ${roleTextColor}; font-weight: 700;">${roleLabel}</span>
+                <div style="background: var(--neutral-light); height: 4px; border-radius: 2px; overflow: hidden; flex-grow: 1;">
+                  <div style="background: var(--primary); width: ${percent}%; height: 100%; border-radius: 2px; transition: width 0.3s ease;"></div>
+                </div>
+              </div>
             </div>
           `;
           expertListContainer.appendChild(item);
@@ -9111,7 +9130,10 @@ const app = {
 
           const tr = document.createElement('tr');
           tr.innerHTML = `
-            <td>${formattedDate}</td>
+            <td>
+              <div style="font-weight:600; color:var(--neutral-dark);">${formattedDate}</div>
+              <div style="font-size:0.65rem; color:var(--neutral-muted); font-weight:500; white-space:nowrap; margin-top:2px;">${e.time_start || '00:00'} - ${e.time_end || '00:00'}</div>
+            </td>
             <td>
               <div style="font-weight:600;">${e.title || 'Sesión'}</div>
               <span class="badge" style="font-size:0.65rem; padding:1px 4px; ${typeBadgeStyle}">Semana ${e.week_number} - ${shortType}</span>
