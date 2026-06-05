@@ -2709,6 +2709,28 @@ const app = {
     const startEl = document.getElementById('class-game-start');
     const totalCount = this.classGameState.shuffledAccounts.length || classGameAccounts.length;
     
+    const weekNum = this.currentViewedWeek || 1;
+
+    // Actualizar título de la barra de herramientas según la semana
+    const gameToolbarTitle = document.querySelector('#workspace-classification-game-zone .game-brand-title');
+    if (gameToolbarTitle) {
+      if (weekNum === 2) {
+        gameToolbarTitle.innerHTML = `<i class="ti ti-layout-grid-add" style="color: var(--primary);"></i> Semana 2: Desafío de Clasificación (Evaluación Final)`;
+      } else {
+        gameToolbarTitle.innerHTML = `<i class="ti ti-layout-grid-add" style="color: var(--primary);"></i> Semana 1: Desafío de Clasificación (Práctica)`;
+      }
+    }
+
+    // Ocultar botón de Reset en la barra de herramientas de la semana 2
+    const toolbarResetBtn = document.querySelector('#workspace-classification-game-zone button[onclick="app.classGameReset()"]');
+    if (toolbarResetBtn) {
+      if (weekNum === 2) {
+        toolbarResetBtn.style.display = 'none';
+      } else {
+        toolbarResetBtn.style.display = 'inline-block';
+      }
+    }
+    
     if (startEl) {
       if (!this.classGameState.hasStarted) {
         startEl.classList.remove('hidden');
@@ -3879,6 +3901,22 @@ const app = {
   // ==========================================================================
   // STATE-DRIVEN QUIZ ENGINE FOR WEEKLY EVALUATION
   // ==========================================================================
+  getQuizPool() {
+    const weekNum = this.quizEngine.semana;
+    let quizPool = [];
+    if (this.state.db && this.state.db.questions) {
+      quizPool = this.state.db.questions[weekNum] || this.state.db.questions[String(weekNum)] || [];
+    }
+    if (quizPool.length === 0 && weekNum === 1) {
+      quizPool = bancoPreguntasSemana1.map(item => ({
+        question: item.q,
+        options: item.opts.map(o => o.replace(/^[A-D]\)\s*/, '')),
+        correct: item.ans
+      }));
+    }
+    return quizPool;
+  },
+
   initEvaluacionSemanalUI(numeroSemana) {
     this.quizEngine.semana = parseInt(numeroSemana);
     clearInterval(this.quizEngine.timerInterval);
@@ -3913,8 +3951,8 @@ const app = {
         return;
     }
 
-    // REGLA DE CANDADO: Semana 2 en adelante congeladas
-    if (this.quizEngine.semana > 1) {
+    // REGLA DE CANDADO: Semana 3 en adelante congeladas
+    if (this.quizEngine.semana > 2) {
         if (ping) {
           ping.style.backgroundColor = "var(--neutral-muted)";
           ping.className = "w-2 h-2 rounded-full inline-block";
@@ -4046,7 +4084,8 @@ const app = {
     const screen = document.getElementById('quiz-engine-screen');
     if (!screen) return;
     const idx = this.quizEngine.index;
-    const item = bancoPreguntasSemana1[idx];
+    const quizPool = this.getQuizPool();
+    const item = quizPool[idx];
 
     if (!item) {
         this.terminarYMostrarResultado();
@@ -4063,16 +4102,16 @@ const app = {
     screen.innerHTML = `
         <div class="animate-fadeIn" style="display: flex; flex-direction: column; gap: 16px; font-family: var(--font-primary);">
             <div style="display: flex; justify-content: space-between; font-size: 0.65rem; color: var(--neutral-muted); font-weight: 600; border-bottom: 1px solid var(--neutral-border); padding-bottom: 8px; width: 100%;">
-                <span>PROCESANDO: PREGUNTA ${idx + 1} DE ${bancoPreguntasSemana1.length}</span>
-                <span style="color: var(--primary);">PROGRESO: ${Math.round((idx / bancoPreguntasSemana1.length) * 100)}%</span>
+                <span>PROCESANDO: PREGUNTA ${idx + 1} DE ${quizPool.length}</span>
+                <span style="color: var(--primary);">PROGRESO: ${Math.round((idx / quizPool.length) * 100)}%</span>
             </div>
 
             <div style="font-size: 0.85rem; font-weight: 600; color: var(--neutral-dark); background-color: var(--neutral-light); padding: 16px; border-radius: 8px; border: 1px solid var(--neutral-border); line-height: 1.6; box-shadow: 0 1px 3px rgba(0,0,0,0.02); word-wrap: break-word; break-words: break-all;">
-                ${item.q}
+                ${item.question}
             </div>
 
             <div style="display: flex; flex-direction: column; gap: 10px; width: 100%;">
-                ${item.opts.map((opcion, oIdx) => {
+                ${item.options.map((opcion, oIdx) => {
                     const cleanOpcion = opcion.replace(/^[A-D]\)\s*/, '');
                     return `
                         <div 
@@ -4100,7 +4139,8 @@ const app = {
   },
 
   registrarRespuestaExamen(opcionElegida) {
-    const item = bancoPreguntasSemana1[this.quizEngine.index];
+    const quizPool = this.getQuizPool();
+    const item = quizPool[this.quizEngine.index];
     const letras = ['A', 'B', 'C', 'D'];
     
     // Store user's response
@@ -4108,11 +4148,11 @@ const app = {
     const qKey = `P${this.quizEngine.index + 1}`;
     this.quizEngine.respuestasUsuario[qKey] = {
       marcada: letras[opcionElegida],
-      correcta: letras[item.ans],
-      es_valida: opcionElegida === item.ans
+      correcta: letras[item.correct],
+      es_valida: opcionElegida === item.correct
     };
 
-    if (opcionElegida === item.ans) {
+    if (opcionElegida === item.correct) {
         this.quizEngine.correctas++;
     }
     this.quizEngine.index++;
@@ -4128,7 +4168,8 @@ const app = {
 
     const screen = document.getElementById('quiz-engine-screen');
     const ping = document.getElementById('eval-ping-core');
-    const total = bancoPreguntasSemana1.length;
+    const quizPool = this.getQuizPool();
+    const total = quizPool.length;
     
     if (ping) {
       ping.style.backgroundColor = "var(--primary)";
@@ -4155,15 +4196,6 @@ const app = {
     // Populate user answers detail
     const respuestasUsuario = {};
     const letras = ['A', 'B', 'C', 'D'];
-    
-    let quizPool = this.state.db.questions[this.quizEngine.semana] || this.state.db.questions[String(this.quizEngine.semana)] || [];
-    if (quizPool.length === 0 && this.quizEngine.semana === 1) {
-      quizPool = bancoPreguntasSemana1.map((item) => ({
-        question: item.q,
-        options: item.opts.map(o => o.replace(/^[A-D]\)\s*/, '')),
-        correct: item.ans
-      }));
-    }
 
     quizPool.forEach((q, idx) => {
       const qKey = `P${idx + 1}`;
