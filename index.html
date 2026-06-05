@@ -1142,6 +1142,176 @@
                   </div>
                 </div>
               </div>
+
+              <!-- Ejemplo Práctico de Registro Semanal -->
+              <div style="background: #ffffff; border: 1px solid var(--neutral-border); padding: 20px; border-radius: 8px; margin-top: 20px; display: flex; flex-direction: column; gap: 15px;">
+                <div style="display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 15px;">
+                  <div>
+                    <h4 style="font-size: 0.9rem; font-weight: bold; color: var(--neutral-dark); margin: 0 0 4px 0; text-transform: uppercase; letter-spacing: 0.5px; display: flex; align-items: center; gap: 8px;">
+                      <i class="ti ti-table" style="color: var(--primary); font-size: 1.1rem;"></i> Ejemplo de Registro Semanal (Semana Ilustrativa)
+                    </h4>
+                    <p style="font-size: 0.78rem; color: var(--neutral-muted); margin: 0; max-width: 800px;">
+                      Esta tabla interactiva muestra cómo se distribuyen y registran las horas en una semana típica de onboarding. 
+                      <strong style="color: var(--primary-text);">Nota importante:</strong> Este ejemplo ilustra <strong>1 semana</strong> (40 horas = 5.0 en Timesheet) para facilitar el entendimiento, pero recuerda que el registro real en el portal se realiza de forma <strong>quincenal (cada 15 días)</strong>.
+                    </p>
+                  </div>
+                  <div style="background: var(--primary-light); padding: 8px 12px; border-radius: 6px; font-size: 0.72rem; font-weight: 600; color: var(--primary-text); border: 1px dashed var(--primary-text);">
+                    Escala: 8 horas diarias = 1.0 Timesheet (1 hora = 0.125)
+                  </div>
+                </div>
+
+                <div style="overflow-x: auto; border: 1px solid var(--neutral-border); border-radius: 6px;">
+                  <table class="mentor-log-table" style="width: 100%; font-size: 0.75rem; border-bottom: none; min-width: 1000px;">
+                    <thead>
+                      <tr>
+                        <th style="padding: 10px 8px; width: 30px; text-align: center;">#</th>
+                        <th style="padding: 10px 12px; width: 220px;">Project</th>
+                        <th style="padding: 10px 12px; width: 180px;">Activity</th>
+                        <th style="padding: 10px 12px; width: 140px;">Locality</th>
+                        <th style="padding: 10px 12px; width: 80px;">Billing</th>
+                        <th style="padding: 10px 8px; text-align: center; width: 75px;">Day 1 (Lun)</th>
+                        <th style="padding: 10px 8px; text-align: center; width: 75px;">Day 2 (Mar)</th>
+                        <th style="padding: 10px 8px; text-align: center; width: 75px;">Day 3 (Mié)</th>
+                        <th style="padding: 10px 8px; text-align: center; width: 75px;">Day 4 (Jue)</th>
+                        <th style="padding: 10px 8px; text-align: center; width: 75px;">Day 5 (Vie)</th>
+                        <th style="padding: 10px 12px; text-align: center; width: 110px; background-color: rgba(166, 25, 46, 0.05); font-weight: bold; color: var(--primary-text);">Total Imputado</th>
+                        <th style="padding: 10px 12px; width: 90px;">Case ID</th>
+                        <th style="padding: 10px 12px; width: 240px;">Comments</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <!-- Row 1 -->
+                      <tr style="transition: background 0.2s;" onmouseover="this.style.background='var(--neutral-light)'" onmouseout="this.style.background='transparent'">
+                        <td style="padding: 10px 8px; text-align: center; font-weight: bold; color: var(--neutral-muted);">1</td>
+                        <td style="padding: 10px 12px; font-weight: 500;">AMER-CS-FIN PL-NEWHIRE ONBD</td>
+                        <td style="padding: 10px 12px; color: var(--neutral-dark);">TRAINING-ATTENDANCE</td>
+                        <td style="padding: 10px 12px; color: var(--neutral-muted);">018 - MUREX Office</td>
+                        <td style="padding: 10px 12px;"><span class="badge" style="background: #e9ecef; color: #495057; font-size: 0.65rem; padding: 2px 6px;">Internal</span></td>
+                        <td style="padding: 10px 8px; text-align: center; font-weight: 500;" title="0.75 equivale a 6 horas de entrenamiento">0.75 <span style="display:block; font-size:0.65rem; color: var(--neutral-muted); font-weight: normal;">6h</span></td>
+                        <td style="padding: 10px 8px; text-align: center; font-weight: 500;" title="0.75 equivale a 6 horas de entrenamiento">0.75 <span style="display:block; font-size:0.65rem; color: var(--neutral-muted); font-weight: normal;">6h</span></td>
+                        <td style="padding: 10px 8px; text-align: center; font-weight: 500;" title="0.50 equivale a 4 horas de entrenamiento">0.50 <span style="display:block; font-size:0.65rem; color: var(--neutral-muted); font-weight: normal;">4h</span></td>
+                        <td style="padding: 10px 8px; text-align: center; font-weight: 500;" title="1.00 equivale a 8 horas de entrenamiento">1.00 <span style="display:block; font-size:0.65rem; color: var(--neutral-muted); font-weight: normal;">8h</span></td>
+                        <td style="padding: 10px 8px; text-align: center; font-weight: 500;" title="1.00 equivale a 8 horas de entrenamiento">1.00 <span style="display:block; font-size:0.65rem; color: var(--neutral-muted); font-weight: normal;">8h</span></td>
+                        <td style="padding: 10px 12px; text-align: center; font-weight: bold; color: var(--primary-text); background-color: rgba(166, 25, 46, 0.02);" title="Total de 32 horas en MX Learn">
+                          4.00
+                          <span style="display:block; font-size:0.65rem; color: var(--neutral-muted); font-weight: normal;">(32 horas)</span>
+                        </td>
+                        <td style="padding: 10px 12px; color: var(--neutral-muted); font-style: italic;">-</td>
+                        <td style="padding: 10px 12px; color: var(--neutral-dark);">Time Spent at MX Learn</td>
+                      </tr>
+                      <!-- Row 2 -->
+                      <tr style="transition: background 0.2s;" onmouseover="this.style.background='var(--neutral-light)'" onmouseout="this.style.background='transparent'">
+                        <td style="padding: 10px 8px; text-align: center; font-weight: bold; color: var(--neutral-muted);">2</td>
+                        <td style="padding: 10px 12px; font-weight: 500;">AMER-CS-FIN PL-TEAM</td>
+                        <td style="padding: 10px 12px; color: var(--neutral-dark);">ORG-MEETING</td>
+                        <td style="padding: 10px 12px; color: var(--neutral-muted);">018 - MUREX Office</td>
+                        <td style="padding: 10px 12px;"><span class="badge" style="background: #e9ecef; color: #495057; font-size: 0.65rem; padding: 2px 6px;">Internal</span></td>
+                        <td style="padding: 10px 8px; text-align: center; font-weight: 500;" title="0.25 equivale a 2 horas de reunión semanal">0.25 <span style="display:block; font-size:0.65rem; color: var(--neutral-muted); font-weight: normal;">2h</span></td>
+                        <td style="padding: 10px 8px; text-align: center; color: var(--neutral-muted);">0.00 <span style="display:block; font-size:0.65rem; color: var(--neutral-muted); font-weight: normal;">0h</span></td>
+                        <td style="padding: 10px 8px; text-align: center; color: var(--neutral-muted);">0.00 <span style="display:block; font-size:0.65rem; color: var(--neutral-muted); font-weight: normal;">0h</span></td>
+                        <td style="padding: 10px 8px; text-align: center; color: var(--neutral-muted);">0.00 <span style="display:block; font-size:0.65rem; color: var(--neutral-muted); font-weight: normal;">0h</span></td>
+                        <td style="padding: 10px 8px; text-align: center; color: var(--neutral-muted);">0.00 <span style="display:block; font-size:0.65rem; color: var(--neutral-muted); font-weight: normal;">0h</span></td>
+                        <td style="padding: 10px 12px; text-align: center; font-weight: bold; color: var(--primary-text); background-color: rgba(166, 25, 46, 0.02);" title="Total de 2 horas de reunión semanal">
+                          0.25
+                          <span style="display:block; font-size:0.65rem; color: var(--neutral-muted); font-weight: normal;">(2 horas)</span>
+                        </td>
+                        <td style="padding: 10px 12px; color: var(--neutral-muted); font-style: italic;">-</td>
+                        <td style="padding: 10px 12px; color: var(--neutral-dark);">Meeting: Finance CL P&L Weekly</td>
+                      </tr>
+                      <!-- Row 3 -->
+                      <tr style="transition: background 0.2s;" onmouseover="this.style.background='var(--neutral-light)'" onmouseout="this.style.background='transparent'">
+                        <td style="padding: 10px 8px; text-align: center; font-weight: bold; color: var(--neutral-muted);">3</td>
+                        <td style="padding: 10px 12px; font-weight: 500;">AMER-CS-FIN PL-TEAM</td>
+                        <td style="padding: 10px 12px; color: var(--neutral-dark);">ORG-MEETING</td>
+                        <td style="padding: 10px 12px; color: var(--neutral-muted);">018 - MUREX Office</td>
+                        <td style="padding: 10px 12px;"><span class="badge" style="background: #e9ecef; color: #495057; font-size: 0.65rem; padding: 2px 6px;">Internal</span></td>
+                        <td style="padding: 10px 8px; text-align: center; color: var(--neutral-muted);">0.00 <span style="display:block; font-size:0.65rem; color: var(--neutral-muted); font-weight: normal;">0h</span></td>
+                        <td style="padding: 10px 8px; text-align: center; font-weight: 500;" title="0.25 equivale a 2 horas de reunión mensual">0.25 <span style="display:block; font-size:0.65rem; color: var(--neutral-muted); font-weight: normal;">2h</span></td>
+                        <td style="padding: 10px 8px; text-align: center; color: var(--neutral-muted);">0.00 <span style="display:block; font-size:0.65rem; color: var(--neutral-muted); font-weight: normal;">0h</span></td>
+                        <td style="padding: 10px 8px; text-align: center; color: var(--neutral-muted);">0.00 <span style="display:block; font-size:0.65rem; color: var(--neutral-muted); font-weight: normal;">0h</span></td>
+                        <td style="padding: 10px 8px; text-align: center; color: var(--neutral-muted);">0.00 <span style="display:block; font-size:0.65rem; color: var(--neutral-muted); font-weight: normal;">0h</span></td>
+                        <td style="padding: 10px 12px; text-align: center; font-weight: bold; color: var(--primary-text); background-color: rgba(166, 25, 46, 0.02);" title="Total de 2 horas de reunión mensual">
+                          0.25
+                          <span style="display:block; font-size:0.65rem; color: var(--neutral-muted); font-weight: normal;">(2 horas)</span>
+                        </td>
+                        <td style="padding: 10px 12px; color: var(--neutral-muted); font-style: italic;">-</td>
+                        <td style="padding: 10px 12px; color: var(--neutral-dark);">Meeting: Finance Americas P&L Monthly</td>
+                      </tr>
+                      <!-- Row 4 -->
+                      <tr style="transition: background 0.2s;" onmouseover="this.style.background='var(--neutral-light)'" onmouseout="this.style.background='transparent'">
+                        <td style="padding: 10px 8px; text-align: center; font-weight: bold; color: var(--neutral-muted);">4</td>
+                        <td style="padding: 10px 12px; font-weight: 500;">MUREX BANK-SUPPORT</td>
+                        <td style="padding: 10px 12px; color: var(--neutral-dark);">2.0-SUPPORT CASE</td>
+                        <td style="padding: 10px 12px; color: var(--neutral-muted);">018 - MUREX Office</td>
+                        <td style="padding: 10px 12px;"><span class="badge badge-orange" style="font-size: 0.65rem; padding: 2px 6px;">Nonbill</span></td>
+                        <td style="padding: 10px 8px; text-align: center; color: var(--neutral-muted);">0.00 <span style="display:block; font-size:0.65rem; color: var(--neutral-muted); font-weight: normal;">0h</span></td>
+                        <td style="padding: 10px 8px; text-align: center; color: var(--neutral-muted);">0.00 <span style="display:block; font-size:0.65rem; color: var(--neutral-muted); font-weight: normal;">0h</span></td>
+                        <td style="padding: 10px 8px; text-align: center; font-weight: 500;" title="0.50 equivale a 4 horas dedicadas al caso">0.50 <span style="display:block; font-size:0.65rem; color: var(--neutral-muted); font-weight: normal;">4h</span></td>
+                        <td style="padding: 10px 8px; text-align: center; color: var(--neutral-muted);">0.00 <span style="display:block; font-size:0.65rem; color: var(--neutral-muted); font-weight: normal;">0h</span></td>
+                        <td style="padding: 10px 8px; text-align: center; color: var(--neutral-muted);">0.00 <span style="display:block; font-size:0.65rem; color: var(--neutral-muted); font-weight: normal;">0h</span></td>
+                        <td style="padding: 10px 12px; text-align: center; font-weight: bold; color: var(--primary-text); background-color: rgba(166, 25, 46, 0.02);" title="Total de 4 horas dedicadas al caso">
+                          0.50
+                          <span style="display:block; font-size:0.65rem; color: var(--neutral-muted); font-weight: normal;">(4 horas)</span>
+                        </td>
+                        <td style="padding: 10px 12px;"><span style="font-family: monospace; font-size: 0.72rem; background: var(--neutral-light); padding: 2px 6px; border-radius: 4px; border: 1px solid var(--neutral-border); font-weight: 600; color: var(--neutral-dark);">C-123456</span></td>
+                        <td style="padding: 10px 12px; color: var(--neutral-dark);">Time Spent Solving the Case</td>
+                      </tr>
+                      <!-- Total Row -->
+                      <tr style="background: var(--neutral-light); font-weight: bold; border-top: 2px solid var(--neutral-border);">
+                        <td style="padding: 12px 8px; text-align: center; color: var(--neutral-dark);">Total</td>
+                        <td style="padding: 12px 12px; font-size: 0.8rem; font-family: var(--font-display);" colspan="4">Total Timesheet Diarios (Deben sumar 1.0)</td>
+                        <td style="padding: 12px 8px; text-align: center; color: var(--neutral-dark); background-color: rgba(166, 25, 46, 0.01);">1.00 <span style="display:block; font-size:0.65rem; color: var(--neutral-muted); font-weight: normal;">8h</span></td>
+                        <td style="padding: 12px 8px; text-align: center; color: var(--neutral-dark); background-color: rgba(166, 25, 46, 0.01);">1.00 <span style="display:block; font-size:0.65rem; color: var(--neutral-muted); font-weight: normal;">8h</span></td>
+                        <td style="padding: 12px 8px; text-align: center; color: var(--neutral-dark); background-color: rgba(166, 25, 46, 0.01);">1.00 <span style="display:block; font-size:0.65rem; color: var(--neutral-muted); font-weight: normal;">8h</span></td>
+                        <td style="padding: 12px 8px; text-align: center; color: var(--neutral-dark); background-color: rgba(166, 25, 46, 0.01);">1.00 <span style="display:block; font-size:0.65rem; color: var(--neutral-muted); font-weight: normal;">8h</span></td>
+                        <td style="padding: 12px 8px; text-align: center; color: var(--neutral-dark); background-color: rgba(166, 25, 46, 0.01);">1.00 <span style="display:block; font-size:0.65rem; color: var(--neutral-muted); font-weight: normal;">8h</span></td>
+                        <td style="padding: 12px 12px; text-align: center; font-weight: 800; color: var(--primary-text); background-color: rgba(166, 25, 46, 0.08); font-size: 0.85rem;">
+                          5.00
+                          <span style="display:block; font-size:0.65rem; color: var(--primary-text); font-weight: 600;">(40 horas)</span>
+                        </td>
+                        <td style="padding: 12px 12px; color: var(--neutral-muted); font-style: italic;">-</td>
+                        <td style="padding: 12px 12px; color: var(--neutral-muted); font-weight: normal; font-size: 0.7rem;">Suma total semanal registrada</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+
+                <!-- Interactive helper explanation cards for each row's total to satisfy "bien interactivo tipo para que se entienda bien el ejemplo" -->
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 12px; margin-top: 5px;">
+                  <div style="background: var(--bg-app); border: 1px solid var(--neutral-border); padding: 12px; border-radius: 6px; display: flex; flex-direction: column; gap: 4px; transition: transform 0.2s, box-shadow 0.2s;" onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='var(--shadow-sm)';" onmouseout="this.style.transform='none'; this.style.boxShadow='none';">
+                    <div style="display: flex; align-items: center; gap: 6px;">
+                      <div style="width: 8px; height: 8px; border-radius: 50%; background-color: var(--primary);"></div>
+                      <span style="font-size: 0.65rem; font-weight: bold; color: var(--neutral-muted); text-transform: uppercase;">1. Entrenamiento (MX Learn)</span>
+                    </div>
+                    <span style="font-size: 0.88rem; font-weight: bold; color: var(--neutral-dark);">32 Horas en Plataforma</span>
+                    <p style="font-size: 0.72rem; color: var(--neutral-muted); margin: 0; line-height: 1.3;">Equivale a <strong>4.00</strong> en total. Registrado de lunes a viernes (Día 1: 0.75, Día 2: 0.75, Día 3: 0.50, Día 4: 1.00, Día 5: 1.00).</p>
+                  </div>
+                  <div style="background: var(--bg-app); border: 1px solid var(--neutral-border); padding: 12px; border-radius: 6px; display: flex; flex-direction: column; gap: 4px; transition: transform 0.2s, box-shadow 0.2s;" onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='var(--shadow-sm)';" onmouseout="this.style.transform='none'; this.style.boxShadow='none';">
+                    <div style="display: flex; align-items: center; gap: 6px;">
+                      <div style="width: 8px; height: 8px; border-radius: 50%; background-color: #0d6efd;"></div>
+                      <span style="font-size: 0.65rem; font-weight: bold; color: var(--neutral-muted); text-transform: uppercase;">2. Reunión Semanal (Weekly)</span>
+                    </div>
+                    <span style="font-size: 0.88rem; font-weight: bold; color: var(--neutral-dark);">2 Horas de Reunión</span>
+                    <p style="font-size: 0.72rem; color: var(--neutral-muted); margin: 0; line-height: 1.3;">Equivale a <strong>0.25</strong>. Registrado únicamente el Día 1 (Lunes) bajo el código <em>Finance CL P&L Weekly</em>.</p>
+                  </div>
+                  <div style="background: var(--bg-app); border: 1px solid var(--neutral-border); padding: 12px; border-radius: 6px; display: flex; flex-direction: column; gap: 4px; transition: transform 0.2s, box-shadow 0.2s;" onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='var(--shadow-sm)';" onmouseout="this.style.transform='none'; this.style.boxShadow='none';">
+                    <div style="display: flex; align-items: center; gap: 6px;">
+                      <div style="width: 8px; height: 8px; border-radius: 50%; background-color: #6f42c1;"></div>
+                      <span style="font-size: 0.65rem; font-weight: bold; color: var(--neutral-muted); text-transform: uppercase;">3. Reunión Mensual (Monthly)</span>
+                    </div>
+                    <span style="font-size: 0.88rem; font-weight: bold; color: var(--neutral-dark);">2 Horas de Reunión</span>
+                    <p style="font-size: 0.72rem; color: var(--neutral-muted); margin: 0; line-height: 1.3;">Equivale a <strong>0.25</strong>. Registrado únicamente el Día 2 (Martes) bajo el código <em>Finance Americas P&L Monthly</em>.</p>
+                  </div>
+                  <div style="background: var(--bg-app); border: 1px solid var(--neutral-border); padding: 12px; border-radius: 6px; display: flex; flex-direction: column; gap: 4px; transition: transform 0.2s, box-shadow 0.2s;" onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='var(--shadow-sm)';" onmouseout="this.style.transform='none'; this.style.boxShadow='none';">
+                    <div style="display: flex; align-items: center; gap: 6px;">
+                      <div style="width: 8px; height: 8px; border-radius: 50%; background-color: var(--warning);"></div>
+                      <span style="font-size: 0.65rem; font-weight: bold; color: var(--neutral-muted); text-transform: uppercase;">4. Caso de Soporte (Support)</span>
+                    </div>
+                    <span style="font-size: 0.88rem; font-weight: bold; color: var(--neutral-dark);">4 Horas Resolviendo Caso</span>
+                    <p style="font-size: 0.72rem; color: var(--neutral-muted); margin: 0; line-height: 1.3;">Equivale a <strong>0.50</strong>. Registrado el Día 3 (Miércoles) bajo el ID de Caso <strong>C-123456</strong>.</p>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
 
