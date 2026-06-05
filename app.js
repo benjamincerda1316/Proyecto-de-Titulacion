@@ -9135,7 +9135,7 @@ const app = {
     minutesInput.value = Math.round(hours * 60);
 
     // Calculate timesheet value (8 hours = 1.0)
-    const result = parseFloat((hours / 8).toFixed(4));
+    const result = parseFloat((hours / 8).toFixed(2));
     resultEl.innerText = result;
   },
 
@@ -9151,7 +9151,7 @@ const app = {
     hoursInput.value = parseFloat((minutes / 60).toFixed(2));
 
     // Calculate timesheet value (480 minutes = 1.0)
-    const result = parseFloat((minutes / 480).toFixed(4));
+    const result = parseFloat((minutes / 480).toFixed(2));
     resultEl.innerText = result;
   }
 };
