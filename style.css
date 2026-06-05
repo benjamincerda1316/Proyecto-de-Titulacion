@@ -4690,3 +4690,11 @@ button {
   white-space: nowrap;
 }
 
+/* Admin Inspector Below layout */
+@media (min-width: 1025px) {
+  .dashboard-grid.admin-inspector-layout {
+    grid-template-columns: 1fr;
+  }
+}
+
+
