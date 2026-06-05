@@ -4543,22 +4543,27 @@ button {
 
 /* Custom Scrollbar for list and viewer */
 .eval-attempts-list::-webkit-scrollbar,
-.eval-detail-viewer-content::-webkit-scrollbar {
+.eval-detail-viewer-content::-webkit-scrollbar,
+.custom-scrollbar::-webkit-scrollbar {
   width: 6px;
 }
 .eval-attempts-list::-webkit-scrollbar-track,
-.eval-detail-viewer-content::-webkit-scrollbar-track {
+.eval-detail-viewer-content::-webkit-scrollbar-track,
+.custom-scrollbar::-webkit-scrollbar-track {
   background: transparent;
 }
 .eval-attempts-list::-webkit-scrollbar-thumb,
-.eval-detail-viewer-content::-webkit-scrollbar-thumb {
+.eval-detail-viewer-content::-webkit-scrollbar-thumb,
+.custom-scrollbar::-webkit-scrollbar-thumb {
   background: rgba(0, 0, 0, 0.15);
   border-radius: 4px;
 }
 .eval-attempts-list::-webkit-scrollbar-thumb:hover,
-.eval-detail-viewer-content::-webkit-scrollbar-thumb:hover {
+.eval-detail-viewer-content::-webkit-scrollbar-thumb:hover,
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
   background: rgba(0, 0, 0, 0.25);
 }
+
 
 .eval-attempt-card {
   padding: 12px;
