@@ -1069,41 +1069,27 @@
                 <!-- Column 1: Interactive Converter -->
                 <div style="background: #ffffff; border: 1px solid var(--neutral-border); padding: 16px; border-radius: 8px; display: flex; flex-direction: column; gap: 12px;">
                   <h4 style="font-size: 0.85rem; font-weight: bold; color: var(--neutral-dark); margin: 0; text-transform: uppercase; letter-spacing: 0.5px;">Calculadora de Conversión</h4>
-                  <p style="font-size: 0.75rem; color: var(--neutral-muted); margin: 0;">El sistema de Timesheet utiliza una escala decimal donde <strong>1 hora = 0.14</strong> y <strong>media hora = 0.07</strong> (basado en una jornada estándar de 8 horas diarias).</p>
+                  <p style="font-size: 0.75rem; color: var(--neutral-muted); margin: 0;">El sistema de Timesheet utiliza una escala decimal donde una jornada completa de <strong>8 horas equivale a 1.0</strong> (1 hora = 0.125 y media hora = 0.0625).</p>
                   
-                  <!-- Dropdown select conversion -->
-                  <div>
-                    <label style="font-size: 0.75rem; font-weight: 600; color: var(--neutral-muted); display: block; margin-bottom: 6px;">Seleccionar tiempo predefinido:</label>
-                    <select id="timesheet-preset-select" onchange="app.handleTimesheetPresetChange(this.value)" style="padding: 8px; border: 1px solid var(--neutral-border); border-radius: 6px; width: 100%; font-size: 0.8rem; background: var(--bg-app); color: var(--neutral-dark);">
-                      <option value="0.5">30 Minutos (0.5 hrs) ➔ 0.07</option>
-                      <option value="1">1 Hora (1.0 hrs) ➔ 0.14</option>
-                      <option value="1.5">1 Hora y Media (1.5 hrs) ➔ 0.21</option>
-                      <option value="2">2 Horas (2.0 hrs) ➔ 0.28</option>
-                      <option value="2.5">2 Horas y Media (2.5 hrs) ➔ 0.35</option>
-                      <option value="3">3 Horas (3.0 hrs) ➔ 0.42</option>
-                      <option value="3.5">3 Horas y Media (3.5 hrs) ➔ 0.49</option>
-                      <option value="4">4 Horas (Media jornada) ➔ 0.56</option>
-                      <option value="4.5">4 Horas y Media (4.5 hrs) ➔ 0.63</option>
-                      <option value="5">5 Horas (5.0 hrs) ➔ 0.70</option>
-                      <option value="5.5">5 Horas y Media (5.5 hrs) ➔ 0.77</option>
-                      <option value="6">6 Horas (6.0 hrs) ➔ 0.84</option>
-                      <option value="6.5">6 Horas y Media (6.5 hrs) ➔ 0.91</option>
-                      <option value="7">7 Horas (7.0 hrs) ➔ 0.98</option>
-                      <option value="7.5">7 Horas y Media (7.5 hrs) ➔ 1.05</option>
-                      <option value="8" selected>8 Horas (Jornada Completa) ➔ 1.12</option>
-                    </select>
-                  </div>
-
                   <!-- Custom Manual Input -->
                   <div style="border-top: 1px dashed var(--neutral-border); padding-top: 12px; margin-top: 6px;">
-                    <label style="font-size: 0.75rem; font-weight: 600; color: var(--neutral-muted); display: block; margin-bottom: 6px;">Conversor personalizado:</label>
-                    <div style="display: flex; gap: 8px; align-items: center; margin-bottom: 10px;">
-                      <input type="number" id="timesheet-custom-hours" value="8" min="0" max="24" step="0.5" oninput="app.calculateCustomTimesheet()" style="padding: 6px; border: 1px solid var(--neutral-border); border-radius: 6px; width: 70px; font-size: 0.8rem; background: var(--bg-app); color: var(--neutral-dark); text-align: center;">
-                      <span style="font-size: 0.75rem; color: var(--neutral-muted);">horas</span>
+                    <label style="font-size: 0.75rem; font-weight: 600; color: var(--neutral-muted); display: block; margin-bottom: 8px;">Conversor personalizado:</label>
+                    
+                    <div style="display: flex; gap: 15px; align-items: center; margin-bottom: 15px;">
+                      <div style="display: flex; flex-direction: column; gap: 4px;">
+                        <span style="font-size: 0.65rem; color: var(--neutral-muted); font-weight: 600;">HORAS</span>
+                        <input type="number" id="timesheet-custom-hours" value="8" min="0" max="24" step="0.1" oninput="app.calculateTimesheetFromHours()" style="padding: 8px; border: 1px solid var(--neutral-border); border-radius: 6px; width: 90px; font-size: 0.8rem; background: var(--bg-app); color: var(--neutral-dark); text-align: center;">
+                      </div>
+                      <div style="font-size: 1.1rem; color: var(--neutral-muted); font-weight: bold; margin-top: 15px;">ó</div>
+                      <div style="display: flex; flex-direction: column; gap: 4px;">
+                        <span style="font-size: 0.65rem; color: var(--neutral-muted); font-weight: 600;">MINUTOS</span>
+                        <input type="number" id="timesheet-custom-minutes" value="480" min="0" max="1440" step="5" oninput="app.calculateTimesheetFromMinutes()" style="padding: 8px; border: 1px solid var(--neutral-border); border-radius: 6px; width: 90px; font-size: 0.8rem; background: var(--bg-app); color: var(--neutral-dark); text-align: center;">
+                      </div>
                     </div>
-                    <div style="background: var(--neutral-light); border: 1px solid var(--neutral-border); padding: 10px; border-radius: 6px; display: flex; justify-content: space-between; align-items: center;">
+
+                    <div style="background: var(--neutral-light); border: 1px solid var(--neutral-border); padding: 12px; border-radius: 6px; display: flex; justify-content: space-between; align-items: center;">
                       <span style="font-size: 0.75rem; font-weight: 600; color: var(--neutral-muted);">Resultado en Timesheet:</span>
-                      <span id="timesheet-custom-result" style="font-size: 1.1rem; font-weight: bold; color: var(--primary);">1.12</span>
+                      <span id="timesheet-custom-result" style="font-size: 1.2rem; font-weight: bold; color: var(--primary);">1.0</span>
                     </div>
                   </div>
                 </div>

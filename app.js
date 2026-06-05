@@ -9123,18 +9123,36 @@ const app = {
     }
   },
 
-  handleTimesheetPresetChange(val) {
-    const hours = parseFloat(val);
-    document.getElementById('timesheet-custom-hours').value = hours;
-    this.calculateCustomTimesheet();
+  calculateTimesheetFromHours() {
+    const hoursInput = document.getElementById('timesheet-custom-hours');
+    const minutesInput = document.getElementById('timesheet-custom-minutes');
+    const resultEl = document.getElementById('timesheet-custom-result');
+    if (!hoursInput || !minutesInput || !resultEl) return;
+
+    const hours = parseFloat(hoursInput.value) || 0;
+    
+    // Sync minutes field
+    minutesInput.value = Math.round(hours * 60);
+
+    // Calculate timesheet value (8 hours = 1.0)
+    const result = parseFloat((hours / 8).toFixed(4));
+    resultEl.innerText = result;
   },
 
-  calculateCustomTimesheet() {
-    const input = document.getElementById('timesheet-custom-hours');
-    if (!input) return;
-    const hours = parseFloat(input.value) || 0;
-    const result = (hours * 0.14).toFixed(2);
-    document.getElementById('timesheet-custom-result').innerText = result;
+  calculateTimesheetFromMinutes() {
+    const hoursInput = document.getElementById('timesheet-custom-hours');
+    const minutesInput = document.getElementById('timesheet-custom-minutes');
+    const resultEl = document.getElementById('timesheet-custom-result');
+    if (!hoursInput || !minutesInput || !resultEl) return;
+
+    const minutes = parseFloat(minutesInput.value) || 0;
+    
+    // Sync hours field
+    hoursInput.value = parseFloat((minutes / 60).toFixed(2));
+
+    // Calculate timesheet value (480 minutes = 1.0)
+    const result = parseFloat((minutes / 480).toFixed(4));
+    resultEl.innerText = result;
   }
 };
 
