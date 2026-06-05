@@ -4697,4 +4697,34 @@ button {
   }
 }
 
+.btn-outline.active {
+  background-color: var(--primary);
+  border-color: var(--primary);
+  color: white !important;
+}
+
+/* Premium Filter Button States */
+.eval-filter-btn {
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.eval-filter-btn.active[data-filter="all"] {
+  background-color: var(--primary-light) !important;
+  border-color: var(--primary) !important;
+  color: var(--primary-text) !important;
+  font-weight: 600;
+}
+.eval-filter-btn.active[data-filter="correct"] {
+  background-color: var(--success-light) !important;
+  border-color: var(--success) !important;
+  color: var(--success-text) !important;
+  font-weight: 600;
+}
+.eval-filter-btn.active[data-filter="incorrect"] {
+  background-color: var(--danger-light) !important;
+  border-color: var(--danger) !important;
+  color: var(--danger-text) !important;
+  font-weight: 600;
+}
+
+
 
