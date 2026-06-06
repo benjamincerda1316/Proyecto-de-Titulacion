@@ -1216,6 +1216,7 @@ const app = {
   state: {
     db: null,              // Holds active database loaded from localStorage
     serverConnected: false, // Tracks connection status to remote Supabase server
+    hasLoadedFromServer: false, // Tracks if database was successfully loaded from server in this session
     activeUser: null,      // Logged in user object
     loginRole: 'consultant', // Current selected tab in login
     selectedWeekNum: null, // Selected week for consultant detail panel
@@ -1729,6 +1730,7 @@ const app = {
   // Database / Storage Methods
   async loadDatabase() {
     this.state.serverConnected = false;
+    this.state.hasLoadedFromServer = false;
     const isLocalFileOrDev = window.location.protocol === 'file:' || 
                              window.location.origin === 'null' ||
                              (window.location.hostname === 'localhost' && window.location.port !== '3000') ||
@@ -1739,9 +1741,11 @@ const app = {
       if (response.ok) {
         const data = await response.json();
         this.state.serverConnected = true;
+        this.state.hasLoadedFromServer = true;
         if (data.empty) {
           console.warn("Database on server is empty. Seeding defaults...");
           this.resetDB();
+          this.updateDBStatusUI();
           return;
         }
         this.state.db = data;
@@ -1836,6 +1840,7 @@ const app = {
           }
         });
         this.autoMigrateFrancisca();
+        this.updateDBStatusUI();
         return;
       }
     } catch (e) {
@@ -1943,6 +1948,22 @@ const app = {
       }
     } else {
       this.resetDB();
+    }
+    this.updateDBStatusUI();
+  },
+
+  updateDBStatusUI() {
+    const badge = document.getElementById('db-status-badge');
+    if (!badge) return;
+    
+    if (this.state.serverConnected) {
+      badge.className = 'db-status-badge connected';
+      badge.innerHTML = '<span class="status-dot"></span><i class="ti ti-cloud-check"></i> Cloud Sync';
+      badge.title = 'Conectado a la base de datos remota (Supabase)';
+    } else {
+      badge.className = 'db-status-badge disconnected';
+      badge.innerHTML = '<span class="status-dot"></span><i class="ti ti-cloud-off"></i> Local Fallback';
+      badge.title = 'Sin conexión al servidor (Modo Local). Si estás en Vercel, asegúrate de configurar la variable de entorno DATABASE_URL.';
     }
   },
 
@@ -2099,8 +2120,8 @@ const app = {
     }
     localStorage.setItem('mxboard_db_v3', JSON.stringify(this.state.db));
 
-    if (!this.state.serverConnected) {
-      console.log("Server not connected or API error. Saving only to local storage.");
+    if (!this.state.hasLoadedFromServer) {
+      console.log("Server database was not loaded successfully in this session. Saving only to local storage to prevent data corruption.");
       return;
     }
 
@@ -2120,12 +2141,20 @@ const app = {
     .then(response => {
       if (!response.ok) {
         console.error("Failed to save database to server");
+        this.state.serverConnected = false;
+        this.updateDBStatusUI();
       } else {
-        console.log("Database successfully saved/synced to SQLite server.");
+        console.log("Database successfully saved/synced to server.");
+        if (!this.state.serverConnected) {
+          this.state.serverConnected = true;
+          this.updateDBStatusUI();
+        }
       }
     })
     .catch(e => {
       console.warn("Could not save to backend server, saved only in localStorage.", e);
+      this.state.serverConnected = false;
+      this.updateDBStatusUI();
     });
   },
 
