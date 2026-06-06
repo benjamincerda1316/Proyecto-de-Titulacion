@@ -1326,7 +1326,7 @@ const app = {
           "Resolver de manera interactiva el \"Juego de las Cuentas\" integrado en el Workspace de la plataforma",
           "Completar y registrar la visualización de los 21 videos mandatorios del módulo Financial Markets for Newcomers en la sección MXLearn"
         ],
-        knowledge_test: { num_questions: 3, min_passing_score: 70 },
+        knowledge_test: { num_questions: 26, min_passing_score: 70 },
         deliverable: { type: "zip", description: "Cuentas dinámicas parametrizadas y funcionales en el entorno de pruebas", required: true },
         unlock_condition: "week_2_passed"
       },
@@ -1493,31 +1493,264 @@ const app = {
       "2": bancoPreguntasSemana2,
       "3": [
         {
-          question: "¿Qué es una cuenta contable fórmula en MX.3?",
+          question: "¿Qué es la reunión Town Hall?",
           options: [
-            "Una cuenta cuyo saldo se calcula estáticamente una vez al año.",
-            "Una cuenta contable parametrizada para determinar dinámicamente sus débitos/créditos en base a variables como la divisa de origen.",
-            "Una cuenta utilizada únicamente para pagar comisiones de corretaje."
+            "Reunión mensual de Chile para ver los proyectos",
+            "Reunión anual de Murex Americas para ver proyectos",
+            "Reunión semestral de Murex Chile para ver proyectos",
+            "Reunión trimestral de Murex Americas para ver proyectos"
+          ],
+          correct: 3
+        },
+        {
+          question: "¿Qué se hace en la Weekly Meeting de Finance & P&L Chile?",
+          options: [
+            "Debatir sobre temáticas en común del equipo",
+            "Describir el status actual de los proyectos asignados",
+            "Hablar sobre la relación del equipo y RRHH",
+            "Entrega de JIRAs actualizados"
           ],
           correct: 1
         },
         {
-          question: "¿Cuál es una de las reuniones recurrentes esenciales para la logística y gobernanza del equipo de Finance & PL?",
+          question: "¿Qué se hace en la Monthly Meeting con Finance Americas?",
           options: [
-            "Reunión Semanal de Compras.",
-            "Comité Técnico Chile-Brasil, OPS and Finance Mensual, Finance Americas y 1-1 con la Manager.",
-            "Comité Ejecutivo de Recursos Humanos Global."
+            "Debatir sobre temáticas en común",
+            "Presentar requerimientos por región",
+            "Describir el status actual de proyectos por región",
+            "Entrega de JIRAs actualizados"
+          ],
+          correct: 2
+        },
+        {
+          question: "¿Qué se hace en la Monthly Meeting con OPS Chile/NY?",
+          options: [
+            "Debatir sobre temáticas en común de back office",
+            "Presentar solicitudes de back office y cuadraturas de cuentas de clientes",
+            "Describir el status actual de proyectos por región",
+            "Entrega de JIRAs actualizados de clientes con respecto al processing de operaciones"
+          ],
+          correct: 3
+        },
+        {
+          question: "¿Cuál sería el código correcto en el timesheet para agendar la reunión Finance Weekly?",
+          options: [
+            "AMER-CS-FIN PL-TEAM – GROWING OTHERS",
+            "AMER-CS-FIN PL-TEAM – INTERNAL SUPPORT",
+            "AMER-CS-FIN PL-TEAM – RG-CAREER MANAGEMENT & HR",
+            "AMER-CS-FIN PL-TEAM – ORG-MEETING"
+          ],
+          correct: 3
+        },
+        {
+          question: "¿Qué es una FX Option?",
+          options: [
+            "Un contrato que obliga a ambas partes a intercambiar dos divisas a un tipo de cambio fijo en una fecha futura",
+            "Un contrato derivado que otorga al comprador el derecho, pero no la obligación, de comprar o vender una divisa a un precio pactado en o antes de una fecha de vencimiento, a cambio del pago de una prima",
+            "Un acuerdo de intercambio de flujos de tasas de interés entre dos contrapartes en distintas monedas",
+            "Un contrato estandarizado negociado en bolsa para comprar divisas a precio spot"
           ],
           correct: 1
         },
         {
-          question: "¿Qué representa conceptualmente un instrumento de Opción Financiera?",
+          question: "En el Step 1 de una FX Option Buy Call, ¿qué cuenta va al Débito en el OBS Commitment de la divisa a recibir (Buy currency)?",
           options: [
-            "Un derecho (mas no una obligación) de comprar o vender un activo a un precio pactado en el futuro.",
-            "Una obligación recíproca de intercambio de flujos de tasas de interés.",
-            "Un bono emitido por el Banco Central que paga cupones fijos."
+            "Contingent Contra",
+            "Cont Buy Call Paybl",
+            "Cont Buy Call Recbl",
+            "Deferred Loss"
           ],
-          correct: 0
+          correct: 2
+        },
+        {
+          question: "En el Step 1 de una FX Option Buy Call, ¿qué cuenta va al Crédito en el OBS Commitment de la divisa a pagar (Sell currency)?",
+          options: [
+            "Cont Buy Call Recbl",
+            "Cont Buy Call Paybl",
+            "Unrealized Asset",
+            "Premium Payable"
+          ],
+          correct: 1
+        },
+        {
+          question: "En el Step 2 (Cash Settlement de la prima), ¿qué cuenta se debita y cuál se acredita?",
+          options: [
+            "Débito: Cash Nostro / Crédito: Premium Payable",
+            "Débito: Deferred Loss / Crédito: Premium Expense",
+            "Débito: Premium Payable / Crédito: Cash Nostro",
+            "Débito: MTM Gain / Crédito: Unrealized Asset"
+          ],
+          correct: 2
+        },
+        {
+          question: "En el Step 3 (Value Measurement con ganancia), ¿qué refleja el asiento contable?",
+          options: [
+            "Débito: MTM Gain / Crédito: Unrealized Asset",
+            "Débito: Unrealized Asset / Crédito: MTM Gain",
+            "Débito: Deferred Loss / Crédito: Premium Expense",
+            "Débito: Cash Nostro / Crédito: Unrealized Asset"
+          ],
+          correct: 1
+        },
+        {
+          question: "En el Step 4 al vencimiento, ¿qué ocurre con el OBS Uncommitment de la divisa a recibir?",
+          options: [
+            "Se debita Cont Buy Call Recbl y se acredita Contingent Contra",
+            "Se debita Contingent Contra y se acredita Cont Buy Call Recbl",
+            "Se debita Premium Expense y se acredita Deferred Loss",
+            "Se debita Unrealized Asset y se acredita MTM Gain"
+          ],
+          correct: 1
+        },
+        {
+          question: "Compraste una Call sobre EUR/USD con strike 1.10 y precio spot actual es 1.15. ¿Cuál es tu situación y qué esperas que ocurra?",
+          options: [
+            "Estás Out of the Money y esperas que el spot baje por debajo del strike para ejercer",
+            "Estás In the Money porque el spot supera el strike, y si ejerces compras EUR más barato que el mercado, por lo que tu expectativa era que el EUR se apreciara",
+            "Estás In the Money pero no tiene sentido ejercer porque el spot ya superó el strike",
+            "Estás At the Money y no hay beneficio ni pérdida en ejercer la opción"
+          ],
+          correct: 1
+        },
+        {
+          question: "Vendiste una Put sobre USD/CLP con strike 900. El spot actual está en 870. ¿Cuál es tu exposición real?",
+          options: [
+            "No tienes exposición porque el spot está por debajo del strike y la opción no se ejercerá",
+            "Tienes una ganancia porque el comprador no querrá ejercer",
+            "El comprador tiene incentivo a ejercer porque puede venderte USD a 900 cuando el mercado paga 870, y tú como vendedor estás obligado a comprar a ese precio, generando una pérdida de 30 pesos por USD nocional",
+            "Tu pérdida máxima está limitada a la prima que recibiste al vender la opción"
+          ],
+          correct: 2
+        },
+        {
+          question: "Una FX Option europea sobre GBP/USD tiene strike 1.25 y vence en 30 días. El spot hoy es 1.27. ¿En qué momento puede ejercerse y qué implica que sea europea?",
+          options: [
+            "Puede ejercerse en cualquier momento antes del vencimiento porque está In the Money",
+            "Solo puede ejercerse exactamente en la fecha de vencimiento, independientemente de dónde esté el spot durante la vida de la opción",
+            "Puede ejercerse solo si el spot supera 1.30 antes del vencimiento",
+            "Puede ejercerse en cualquier fecha en que el spot esté por encima del strike"
+          ],
+          correct: 1
+        },
+        {
+          question: "Tienes una posición larga en una Call y el subyacente no se mueve durante semanas. ¿Qué le ocurre al valor de tu opción aunque el spot permanezca constante?",
+          options: [
+            "El valor permanece estable porque el spot no cambió",
+            "El valor aumenta porque el mercado anticipa movimiento futuro",
+            "El valor disminuye progresivamente por efecto del time decay (Theta negativa), ya que cada día que pasa sin movimiento reduce el valor temporal de la opción",
+            "El valor depende únicamente del Delta, no del tiempo"
+          ],
+          correct: 2
+        },
+        {
+          question: "En una FX Option, ¿cuál es la diferencia entre precio spot y precio fijo (fixed/strike) y cómo determina si la opción tiene valor intrínseco?",
+          options: [
+            "El precio spot es el acordado al inicio del contrato y el strike es el precio de mercado vigente al vencimiento",
+            "El precio spot es el tipo de cambio vigente en el mercado en este momento, mientras que el strike o precio fijo es el acordado en el contrato. El valor intrínseco es la diferencia positiva entre ambos: en una Call es max(Spot - Strike, 0) y en una Put es max(Strike - Spot, 0)",
+            "Ambos precios son iguales al momento del booking y divergen solo si hay volatilidad",
+            "El precio fijo se usa solo para opciones americanas y el spot para europeas"
+          ],
+          correct: 1
+        },
+        {
+          question: "¿Qué es el Trade Date?",
+          options: [
+            "La fecha en que se intercambian los fondos entre las contrapartes",
+            "La fecha en que se acuerda y se registra la operación, donde quedan fijados todos los términos: precio, nocional, contraparte y vencimiento",
+            "La fecha en que el contrato expira y se realizan los pagos finales",
+            "La fecha desde la cual comienza a correr el devengo de intereses"
+          ],
+          correct: 1
+        },
+        {
+          question: "¿Qué es el Settlement Date o fecha de liquidación?",
+          options: [
+            "La fecha en que ambas partes firman el contrato",
+            "La fecha en que se calcula el MTM de la operación",
+            "La fecha en que efectivamente se produce el intercambio de fondos o activos entre las contrapartes, que puede ser T+1, T+2 o según lo pactado",
+            "La fecha de vencimiento del instrumento financiero"
+          ],
+          correct: 2
+        },
+        {
+          question: "¿Qué es el Value Date en una operación FX?",
+          options: [
+            "La fecha en que se ingresa la operación al sistema Murex",
+            "La fecha en que el trade genera valor económico para el libro, es decir cuando los fondos están disponibles y la operación produce efecto financiero real, típicamente coincide con el Settlement Date",
+            "La fecha en que se calcula el fixing de la divisa",
+            "La fecha en que el cliente confirma los términos de la operación"
+          ],
+          correct: 1
+        },
+        {
+          question: "¿Qué es el Fixing en una operación FX?",
+          options: [
+            "El precio spot pactado al momento del booking del trade",
+            "El proceso por el cual se corrigen errores en el tipo de cambio de una operación ya booked",
+            "La observación oficial del tipo de cambio de mercado en una fecha y hora específica, publicada por un organismo de referencia como el BCE o el Banco Central, que se usa para liquidar instrumentos cuyo pago depende de ese valor",
+            "El ajuste diario del MTM de posiciones en divisa"
+          ],
+          correct: 2
+        },
+        {
+          question: "¿Qué es la Maturity Date o fecha de vencimiento?",
+          options: [
+            "La fecha en que se acuerda el contrato entre las partes",
+            "La fecha en que se liquida la prima de una opción",
+            "La fecha en que el contrato llega a su fin y se realizan los pagos o entregas finales pactados, cerrando todas las obligaciones de ambas partes",
+            "La fecha desde la cual se empieza a calcular el P&L de la posición"
+          ],
+          correct: 2
+        },
+        {
+          question: "¿Cuál es la diferencia entre el Trade Date y el Value Date en un FX Spot?",
+          options: [
+            "Son siempre la misma fecha",
+            "El Trade Date es cuando se acuerda la operación y el Value Date es cuando se intercambian los fondos, típicamente dos días hábiles después en un FX Spot estándar (T+2)",
+            "El Value Date siempre ocurre un mes después del Trade Date",
+            "El Trade Date aplica solo a derivados y el Value Date solo a operaciones spot"
+          ],
+          correct: 1
+        },
+        {
+          question: "En una FX Option, ¿cuál es la relación entre el Expiry Date y el Settlement Date?",
+          options: [
+            "Son siempre la misma fecha",
+            "El Expiry Date es cuando la opción deja de poder ejercerse y se determina si hay valor intrínseco; el Settlement Date es cuando, si se ejerció, se produce el intercambio efectivo de divisas, que generalmente ocurre T+2 después del Expiry",
+            "El Settlement Date siempre ocurre antes del Expiry Date",
+            "El Expiry Date aplica solo a opciones americanas"
+          ],
+          correct: 1
+        },
+        {
+          question: "¿Qué ocurre contablemente en el Trade Date de una operación antes de que llegue el Settlement Date?",
+          options: [
+            "No se registra nada hasta que ocurra el intercambio de fondos",
+            "Se registran compromisos fuera de balance (Off-Balance Sheet) que reflejan los derechos y obligaciones pactados, sin que aún haya movimiento de caja real",
+            "Se registra directamente el movimiento de caja en el Balance Sheet",
+            "Se registra el MTM como ingreso realizado en el Income Statement"
+          ],
+          correct: 1
+        },
+        {
+          question: "¿Qué es el Accrual Date y cómo se diferencia del Trade Date?",
+          options: [
+            "Son la misma fecha en todos los instrumentos financieros",
+            "El Accrual Date es la fecha desde la cual comienza a devengarse un ingreso o gasto, como el interés de un bono o la prima de una opción, y puede o no coincidir con el Trade Date dependiendo del instrumento y la convención contable aplicada",
+            "El Accrual Date siempre coincide con el Settlement Date",
+            "El Accrual Date solo aplica a instrumentos de renta fija, no a derivados FX"
+          ],
+          correct: 1
+        },
+        {
+          question: "Si el Trade Date de un FX Forward es el lunes 2 de junio y el contrato vence en 3 meses, ¿qué fechas son relevantes y cuál es el orden correcto?",
+          options: [
+            "Trade Date → Maturity Date → Settlement Date → Value Date",
+            "Trade Date → Value Date (T+2 spot) → Maturity Date → Settlement Date, donde el Settlement ocurre típicamente T+2 después de la Maturity Date",
+            "Value Date → Trade Date → Settlement Date → Maturity Date",
+            "Todas las fechas son iguales en un FX Forward"
+          ],
+          correct: 1
         }
       ],
       "4": [
