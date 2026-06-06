@@ -3035,11 +3035,11 @@ const app = {
       }
     }
 
-    // MXLEARN ONBOARDING MODULES: Visibilidad en Semana 3
+    // MXLEARN ONBOARDING MODULES: Visibilidad en Semana 3 y Semana 4
     const onboardingZone = document.getElementById('workspace-onboarding-mxlearn-zone');
     if (onboardingZone) {
       const activeWeek = parseInt(weekNum);
-      if (activeWeek === 3) {
+      if (activeWeek === 3 || activeWeek === 4) {
         onboardingZone.classList.remove('hidden');
         if (!this.state.activeOnboardingFolder) {
           this.state.activeOnboardingFolder = 'financial_markets';
@@ -3232,11 +3232,11 @@ const app = {
     
     const activeUserId = this.state.activeUser ? this.state.activeUser.id : 'default';
     
-    // Check if week 3 is locked
+    // Check if viewed week is locked
     const progress = this.state.db && this.state.db.consultant_progress ? this.state.db.consultant_progress[activeUserId] : null;
     const completedCount = progress ? (progress.completed_weeks ? progress.completed_weeks.length : 0) : 0;
     const currentWeekNum = Math.min(completedCount + 1, 12);
-    const esSemanaBloqueada = (3 > currentWeekNum);
+    const esSemanaBloqueada = (this.currentViewedWeek > currentWeekNum);
     const inputDisabled = esSemanaBloqueada ? 'disabled' : '';
     
     let rowsHtml = '';
