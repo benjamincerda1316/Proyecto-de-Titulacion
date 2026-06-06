@@ -1750,6 +1750,7 @@ const app = {
             else if (u.role === 'consultant') u.rol = 'JUNIOR';
           }
         });
+        this.autoMigrateFrancisca();
         return;
       }
     } catch (e) {
@@ -1792,6 +1793,7 @@ const app = {
               // No se fuerza ningún progreso inicial en esta versión.
             }
           }
+          this.autoMigrateFrancisca();
           this.saveDatabase();
           
           // Sync role and rol properties on loaded users
@@ -1844,6 +1846,44 @@ const app = {
       }
     } else {
       this.resetDB();
+    }
+  },
+
+  autoMigrateFrancisca() {
+    if (!this.state.db || !this.state.db.users) return;
+    const fran = this.state.db.users.find(u => u.id === 'USR-FRANCISCA');
+    if (fran && (fran.current_week || fran.semana_actual || 1) < 8) {
+      console.log("Auto-migrating Francisca to Week 8...");
+      fran.current_week = 8;
+      fran.semana_actual = 8;
+      fran.progreso_mallas = Array(12).fill(null).map((_, i) => ({ completado: i < 7, nota: i < 7 ? 80 : null }));
+      
+      if (this.state.db.consultant_progress && this.state.db.consultant_progress["USR-FRANCISCA"]) {
+        const progress = this.state.db.consultant_progress["USR-FRANCISCA"];
+        progress.completed_weeks = [1, 2, 3, 4, 5, 6, 7];
+        if (!progress.checklist_states) progress.checklist_states = {};
+        if (!progress.test_scores) progress.test_scores = {};
+        if (!progress.test_attempts) progress.test_attempts = {};
+        if (!progress.test_times) progress.test_times = {};
+        if (!progress.deliverables) progress.deliverables = {};
+
+        for (let w = 1; w <= 7; w++) {
+          if (!progress.checklist_states[w]) progress.checklist_states[w] = {};
+          for (let idx = 0; idx < 10; idx++) {
+            progress.checklist_states[w][idx] = true;
+          }
+          progress.test_scores[w] = 80;
+          progress.test_attempts[w] = 1;
+          progress.test_times[w] = `${10 + w}m 30s`;
+          progress.deliverables[w] = {
+            fileName: `evidencia_semana_${w}_fd.pdf`,
+            fileSize: "1.8 MB",
+            status: "approved",
+            submittedAt: new Date(Date.now() - (7 - w + 1) * 7 * 24 * 3600 * 1000).toISOString()
+          };
+        }
+      }
+      this.saveDatabase();
     }
   },
 
