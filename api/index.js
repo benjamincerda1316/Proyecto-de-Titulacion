@@ -317,6 +317,14 @@ async function initDatabase() {
           status: "approved",
           submittedAt: new Date(Date.now() - (completedCount - w + 1) * 7 * 24 * 3600 * 1000).toISOString()
         };
+        // Seed game score for Week 2
+        if (w === 2) {
+          initialProgress.game_scores[2] = {
+            score: 25,
+            total: 25,
+            completedAt: new Date(Date.now() - (completedCount - 2 + 1) * 7 * 24 * 3600 * 1000).toISOString()
+          };
+        }
         // Mark all items as true (assume max 10 items)
         for (let idx = 0; idx < 10; idx++) {
           initialProgress.checklist_states[w][idx] = true;

@@ -622,7 +622,7 @@ const mxlearnOnboardingModules = {
   liquidation: {
     title: "Liquidation Module",
     items: [
-      "Read the Attached Documents"
+      "Read the attached documents"
     ]
   }
 };
@@ -1987,18 +1987,22 @@ const app = {
       needsSave = true;
     }
 
-    // 1.5. Ensure Francisca's Week 2 game score is set since she has completed it
-    if (this.state.db.consultant_progress && this.state.db.consultant_progress["USR-FRANCISCA"]) {
-      const progress = this.state.db.consultant_progress["USR-FRANCISCA"];
-      if (!progress.game_scores) progress.game_scores = {};
-      if (!progress.game_scores[2]) {
-        console.log("Auto-migrating: setting Francisca's Week 2 game score...");
-        progress.game_scores[2] = {
-          score: 25,
-          total: 25,
-          completedAt: new Date(Date.now() - 6 * 7 * 24 * 3600 * 1000).toISOString()
-        };
-        needsSave = true;
+    // 1.5. Ensure ANY user who has completed Week 2 has a valid game_scores[2] populated (including Francisca)
+    if (this.state.db.consultant_progress) {
+      for (const userId in this.state.db.consultant_progress) {
+        const progress = this.state.db.consultant_progress[userId];
+        if (progress.completed_weeks && progress.completed_weeks.includes(2)) {
+          if (!progress.game_scores) progress.game_scores = {};
+          if (!progress.game_scores[2]) {
+            console.log(`Auto-migrating: setting Week 2 game score for user ${userId}...`);
+            progress.game_scores[2] = {
+              score: 25,
+              total: 25,
+              completedAt: new Date(Date.now() - 6 * 7 * 24 * 3600 * 1000).toISOString()
+            };
+            needsSave = true;
+          }
+        }
       }
     }
 
@@ -3440,11 +3444,25 @@ const app = {
     const saved = localStorage.getItem(storageKey);
     const count = (weekNum === 2) ? 25 : 15;
     
-    // Si es la semana 2 (evaluación) y ya hay puntaje guardado en base de datos, bloquear
+    // Si es la semana 2 (evaluación) y ya se completó la semana o ya hay puntaje guardado en base de datos, bloquear
     const progress = this.state.db && this.state.db.consultant_progress ? this.state.db.consultant_progress[userId] : null;
-    if (weekNum === 2 && progress && progress.game_scores && progress.game_scores[2]) {
+    const isWeek2Completed = progress && progress.completed_weeks && progress.completed_weeks.includes(2);
+    const hasGame2Score = progress && progress.game_scores && progress.game_scores[2];
+    
+    if (weekNum === 2 && (isWeek2Completed || hasGame2Score)) {
+      if (progress) {
+        if (!progress.game_scores) progress.game_scores = {};
+        if (!progress.game_scores[2]) {
+          progress.game_scores[2] = {
+            score: 25,
+            total: 25,
+            completedAt: new Date().toISOString()
+          };
+          this.saveDatabase();
+        }
+      }
       this.classGameState.currentIndex = count;
-      this.classGameState.score = progress.game_scores[2].score;
+      this.classGameState.score = (progress && progress.game_scores[2]) ? progress.game_scores[2].score : count;
       this.classGameState.classified = [];
       this.classGameState.shuffledAccounts = [];
       this.classGameState.hasStarted = true;
