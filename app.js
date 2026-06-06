@@ -1184,6 +1184,7 @@ const app = {
       { id: "USR-JUAN", name: "Juan Francisco Orrego", nombre: "Juan Francisco Orrego", email: "juan.orrego@murex.cl", password: "password", role: "tutor", rol: "TUTOR", avatar_initials: "JO" },
       { id: "USR-CAROLINA", name: "Carolina Sepúlveda", nombre: "Carolina Sepúlveda", email: "carolina.sepulveda@murex.cl", password: "password", role: "tutor", rol: "TUTOR", avatar_initials: "CS" },
       { id: "USR-VALENTINA", name: "Valentina Lara", nombre: "Valentina Lara", email: "valentina.lara@murex.cl", password: "password", role: "tutor", rol: "TUTOR", avatar_initials: "VL" },
+      { id: "USR-MUREX-LEARNING", name: "Murex Learning", nombre: "Murex Learning", email: "murex.learning@murex.cl", password: "password", role: "senior", rol: "SENIOR", avatar_initials: "ML" },
       { 
         id: "USR-FRANCISCA", 
         name: "Francisca Le Dantec", 
@@ -1684,6 +1685,11 @@ const app = {
                                e.id === 'ev-2-edde-salim';
             e.contabilizar_ids = !isInternal;
 
+            if (isInternal) {
+              e.expert_id = 'USR-MUREX-LEARNING';
+              e.organizador_id = 'USR-MUREX-LEARNING';
+            }
+
             if (e.tipo_sesion === 'MUREX_LEARNING' || e.type === 'MUREX_LEARNING') {
               e.bloqueado_edicion = true;
               e.estado_confirmacion = 'FIXED';
@@ -1829,6 +1835,11 @@ const app = {
                                  e.id === 'ev-2-edde-salim';
               e.contabilizar_ids = !isInternal;
 
+              if (isInternal) {
+                e.expert_id = 'USR-MUREX-LEARNING';
+                e.organizador_id = 'USR-MUREX-LEARNING';
+              }
+
               if (e.tipo_sesion === 'MUREX_LEARNING' || e.type === 'MUREX_LEARNING') {
                 e.bloqueado_edicion = true;
                 e.estado_confirmacion = 'FIXED';
@@ -1904,15 +1915,38 @@ const app = {
       needsSave = true;
     }
 
-    // 2. Auto-migrate internal events to MUREX_LEARNING
+    // 2. Ensure USR-MUREX-LEARNING exists in users
+    if (this.state.db.users) {
+      const hasMl = this.state.db.users.some(u => u.id === 'USR-MUREX-LEARNING');
+      if (!hasMl) {
+        console.log("Auto-migrating: adding USR-MUREX-LEARNING user...");
+        this.state.db.users.push({
+          id: "USR-MUREX-LEARNING",
+          name: "Murex Learning",
+          nombre: "Murex Learning",
+          email: "murex.learning@murex.cl",
+          password: "password",
+          role: "senior",
+          rol: "SENIOR",
+          avatar_initials: "ML"
+        });
+        needsSave = true;
+      }
+    }
+
+    // 3. Auto-migrate internal events type and expert_id
     if (this.state.db.calendar_events) {
       const targetIds = ['ev-2-scale-agile', 'ev-2-explain-murex', 'ev-2-edde-salim'];
       targetIds.forEach(id => {
         const ev = this.state.db.calendar_events.find(e => e.id === id);
-        if (ev && ev.type !== 'MUREX_LEARNING') {
-          console.log(`Auto-migrating event ${id} to MUREX_LEARNING...`);
-          ev.type = 'MUREX_LEARNING';
-          needsSave = true;
+        if (ev) {
+          if (ev.type !== 'MUREX_LEARNING' || ev.expert_id !== 'USR-MUREX-LEARNING' || ev.organizador_id !== 'USR-MUREX-LEARNING') {
+            console.log(`Auto-migrating event ${id} to MUREX_LEARNING with USR-MUREX-LEARNING expert...`);
+            ev.type = 'MUREX_LEARNING';
+            ev.expert_id = 'USR-MUREX-LEARNING';
+            ev.organizador_id = 'USR-MUREX-LEARNING';
+            needsSave = true;
+          }
         }
       });
     }
@@ -2174,7 +2208,7 @@ const app = {
         title: 'Explain Murex to your friends',
         type: 'MUREX_LEARNING',
         junior_id: 'USR-FRANCISCA',
-        expert_id: 'USR-LUANA',
+        expert_id: 'USR-MUREX-LEARNING',
         block_day: '2026-04-21',
         time_start: '09:30',
         time_end: '11:00',
@@ -2189,7 +2223,7 @@ const app = {
         title: 'NC integration Scale Agile at MUREX',
         type: 'MUREX_LEARNING',
         junior_id: 'USR-FRANCISCA',
-        expert_id: 'USR-LUANA',
+        expert_id: 'USR-MUREX-LEARNING',
         block_day: '2026-04-22',
         time_start: '09:00',
         time_end: '11:00',
@@ -2204,7 +2238,7 @@ const app = {
         title: 'Meeting the Co Founder Edde Salim',
         type: 'MUREX_LEARNING',
         junior_id: 'USR-FRANCISCA',
-        expert_id: 'USR-LUANA',
+        expert_id: 'USR-MUREX-LEARNING',
         block_day: '2026-04-21',
         time_start: '09:30',
         time_end: '12:30',
@@ -9527,6 +9561,9 @@ const app = {
     // 2. Calculate hours consumed per expert
     const hoursByExpert = {};
     juniorEvents.forEach(e => {
+      if (e.contabilizar_ids === false || e.expert_id === 'USR-MUREX-LEARNING') {
+        return;
+      }
       const expId = e.expert_id;
       const expertObj = this.state.db.users.find(u => u.id === expId);
       const name = expertObj ? expertObj.name : 'N/A';
@@ -9579,12 +9616,38 @@ const app = {
 
     // 3. Render sessions detailed log table
     const tbody = document.getElementById('inspect-hours-sessions-tbody');
+    const expertFilterSelect = document.getElementById('inspect-sessions-expert-filter');
+    if (expertFilterSelect) {
+      const prevVal = expertFilterSelect.value || 'all';
+      expertFilterSelect.innerHTML = '<option value="all">Todos los expertos</option>';
+      const uniqueExpertIds = [...new Set(juniorEvents.map(e => e.expert_id))];
+      uniqueExpertIds.forEach(expId => {
+        const expertObj = this.state.db.users.find(u => u.id === expId);
+        if (expertObj) {
+          const opt = document.createElement('option');
+          opt.value = expId;
+          opt.textContent = expertObj.name;
+          expertFilterSelect.appendChild(opt);
+        }
+      });
+      if (uniqueExpertIds.includes(prevVal)) {
+        expertFilterSelect.value = prevVal;
+      } else {
+        expertFilterSelect.value = 'all';
+      }
+    }
+
     if (tbody) {
       tbody.innerHTML = '';
-      if (juniorEvents.length === 0) {
-        tbody.innerHTML = `<tr><td colspan="4" style="text-align:center; padding:15px; color:var(--neutral-muted);">No hay registros de sesiones ejecutadas para este consultor.</td></tr>`;
+      const selectedExpertId = expertFilterSelect ? expertFilterSelect.value : 'all';
+      const filteredEvents = selectedExpertId === 'all' 
+        ? juniorEvents 
+        : juniorEvents.filter(e => e.expert_id === selectedExpertId);
+
+      if (filteredEvents.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="4" style="text-align:center; padding:15px; color:var(--neutral-muted);">No hay registros para el experto seleccionado.</td></tr>`;
       } else {
-        const sortedEvents = [...juniorEvents].sort((a, b) => new Date(b.block_day) - new Date(a.block_day));
+        const sortedEvents = [...filteredEvents].sort((a, b) => new Date(b.block_day) - new Date(a.block_day));
         sortedEvents.forEach(e => {
           const expertObj = this.state.db.users.find(u => u.id === e.expert_id);
           const formattedDate = new Date(e.block_day + "T00:00:00").toLocaleDateString('es-CL', { day: '2-digit', month: '2-digit' });
@@ -9699,6 +9762,13 @@ const app = {
 
     // Call the new function to render the Audit Log Bitacora
     this.renderInspectedAuditBitacora(userId);
+  },
+
+  filterInspectedSessionsByExpert() {
+    const junior = this.state.inspectedUser;
+    if (junior) {
+      this.renderInspectedHours(junior.id);
+    }
   },
 
   renderInspectedAuditBitacora(userId) {
