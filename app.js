@@ -9569,8 +9569,8 @@ const app = {
         <td class="p-4">${tutorCell}</td>
         <td class="p-4">${estadoMalla}</td>
         <td class="p-4 text-right">
-          <button onclick="app.handleUpdateMemberRole('${user.id}')" class="bg-gray-100 hover:bg-pink-50 text-pink-600 hover:text-pink-700 px-3 py-1.5 rounded-md font-medium text-xs transition-colors">
-            Actualizar
+          <button onclick="app.handleUpdateMemberRole('${user.id}')" class="btn btn-xs" style="background-color: rgba(219, 39, 119, 0.08); color: #db2777; border: 1px solid rgba(219, 39, 119, 0.18); font-weight: 600; display: inline-flex; align-items: center; gap: 4px; transition: all 0.2s ease;" onmouseover="this.style.backgroundColor='rgba(219, 39, 119, 0.15)'" onmouseout="this.style.backgroundColor='rgba(219, 39, 119, 0.08)'">
+            <i class="ti ti-refresh" style="font-size: 0.85rem;"></i> Actualizar
           </button>
         </td>
       `;
