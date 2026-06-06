@@ -1677,6 +1677,13 @@ const app = {
         // Ensure backward compatibility for calendar events
         if (this.state.db.calendar_events) {
           this.state.db.calendar_events.forEach(e => {
+            const isInternal = e.type === 'MUREX_LEARNING' || 
+                               e.tipo_sesion === 'MUREX_LEARNING' ||
+                               e.id === 'ev-2-scale-agile' ||
+                               e.id === 'ev-2-explain-murex' ||
+                               e.id === 'ev-2-edde-salim';
+            e.contabilizar_ids = !isInternal;
+
             if (e.tipo_sesion === 'MUREX_LEARNING' || e.type === 'MUREX_LEARNING') {
               e.bloqueado_edicion = true;
               e.estado_confirmacion = 'FIXED';
@@ -1815,6 +1822,13 @@ const app = {
           // Ensure backward compatibility for calendar events
           if (this.state.db.calendar_events) {
             this.state.db.calendar_events.forEach(e => {
+              const isInternal = e.type === 'MUREX_LEARNING' || 
+                                 e.tipo_sesion === 'MUREX_LEARNING' ||
+                                 e.id === 'ev-2-scale-agile' ||
+                                 e.id === 'ev-2-explain-murex' ||
+                                 e.id === 'ev-2-edde-salim';
+              e.contabilizar_ids = !isInternal;
+
               if (e.tipo_sesion === 'MUREX_LEARNING' || e.type === 'MUREX_LEARNING') {
                 e.bloqueado_edicion = true;
                 e.estado_confirmacion = 'FIXED';
@@ -1851,6 +1865,10 @@ const app = {
 
   autoMigrateFrancisca() {
     if (!this.state.db || !this.state.db.users) return;
+    
+    let needsSave = false;
+
+    // 1. Force Francisca to Week 8 if she is in an older week
     const fran = this.state.db.users.find(u => u.id === 'USR-FRANCISCA');
     if (fran && (fran.current_week || fran.semana_actual || 1) < 8) {
       console.log("Auto-migrating Francisca to Week 8...");
@@ -1883,6 +1901,23 @@ const app = {
           };
         }
       }
+      needsSave = true;
+    }
+
+    // 2. Auto-migrate internal events to MUREX_LEARNING
+    if (this.state.db.calendar_events) {
+      const targetIds = ['ev-2-scale-agile', 'ev-2-explain-murex', 'ev-2-edde-salim'];
+      targetIds.forEach(id => {
+        const ev = this.state.db.calendar_events.find(e => e.id === id);
+        if (ev && ev.type !== 'MUREX_LEARNING') {
+          console.log(`Auto-migrating event ${id} to MUREX_LEARNING...`);
+          ev.type = 'MUREX_LEARNING';
+          needsSave = true;
+        }
+      });
+    }
+
+    if (needsSave) {
       this.saveDatabase();
     }
   },
@@ -2137,7 +2172,7 @@ const app = {
       {
         id: 'ev-2-explain-murex',
         title: 'Explain Murex to your friends',
-        type: 'masterclass',
+        type: 'MUREX_LEARNING',
         junior_id: 'USR-FRANCISCA',
         expert_id: 'USR-LUANA',
         block_day: '2026-04-21',
@@ -2152,7 +2187,7 @@ const app = {
       {
         id: 'ev-2-scale-agile',
         title: 'NC integration Scale Agile at MUREX',
-        type: 'masterclass',
+        type: 'MUREX_LEARNING',
         junior_id: 'USR-FRANCISCA',
         expert_id: 'USR-LUANA',
         block_day: '2026-04-22',
@@ -2167,7 +2202,7 @@ const app = {
       {
         id: 'ev-2-edde-salim',
         title: 'Meeting the Co Founder Edde Salim',
-        type: 'masterclass',
+        type: 'MUREX_LEARNING',
         junior_id: 'USR-FRANCISCA',
         expert_id: 'USR-LUANA',
         block_day: '2026-04-21',
