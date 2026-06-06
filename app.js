@@ -558,24 +558,6 @@ const tablasOnboardingGlobal = [
 ];
 
 const mxlearnOnboardingModules = {
-  accounting: {
-    title: "Accounting Module",
-    items: [
-      "Module: Introduction to Accounting Rules",
-      "Module: Simple Accounts Parametrization",
-      "Module: Dynamic Accounts and Formula Rules",
-      "Module: Accounting Event Templates"
-    ]
-  },
-  liquidation: {
-    title: "Liquidation Module",
-    items: [
-      "Module: Introduction to Settlement and Liquidation",
-      "Module: Payment Instructions and SWIFT",
-      "Module: Confirmation Templates and Validation Rules",
-      "Module: Tasks Organizer and EOD Operations"
-    ]
-  },
   financial_markets: {
     title: "Financial Markets for Newcomers",
     items: [
@@ -600,6 +582,50 @@ const mxlearnOnboardingModules = {
       "Module: Money Market I - Single Period Swaps (SPS)",
       "Module: Swaps I - Applications",
       "Module: Swaps IV - Cross Currency Swaps"
+    ]
+  },
+  accounting: {
+    title: "Accounting Module",
+    hasSubfolders: true,
+    subfolders: {
+      fit_for_banking: {
+        title: "Fit for Banking",
+        items: [
+          "Module: Double Entry Systems",
+          "Module: Accounting Principles",
+          "Module: International Financial Reporting Standards",
+          "Module: Valuation Concepts",
+          "Module: IAS Measurements",
+          "Module: Impairment of Assets",
+          "Module: Hedge Accounting - IFRS 9",
+          "Module: Fair Value Measurement - IFRS 13",
+          "Module: Financial Instruments - IFRS 9",
+          "Module: Cash Flow Statement",
+          "Module: Income Statement Analysis",
+          "Module: Balance Sheet Analysis"
+        ]
+      },
+      intro_pnl: {
+        title: "Financial Statements Introduction to Profit and Loss",
+        items: [
+          "Completion of Activities"
+        ]
+      },
+      eod_troubleshooting: {
+        title: "Generic EOD Troubleshooting",
+        items: [
+          "Completion of Activities"
+        ]
+      }
+    }
+  },
+  liquidation: {
+    title: "Liquidation Module",
+    items: [
+      "Module: Introduction to Settlement and Liquidation",
+      "Module: Payment Instructions and SWIFT",
+      "Module: Confirmation Templates and Validation Rules",
+      "Module: Tasks Organizer and EOD Operations"
     ]
   }
 };
@@ -3222,11 +3248,30 @@ const app = {
     this.renderOnboardingFolderContent();
   },
   
+  switchAccountingSubfolder(subfolderName) {
+    this.state.activeAccountingSubfolder = subfolderName;
+    
+    // Update active class for trainee subfolder buttons
+    const btnFit = document.getElementById('btn-subfolder-fit');
+    const btnPnl = document.getElementById('btn-subfolder-pnl');
+    const btnEod = document.getElementById('btn-subfolder-eod');
+    
+    if (btnFit) btnFit.classList.remove('active');
+    if (btnPnl) btnPnl.classList.remove('active');
+    if (btnEod) btnEod.classList.remove('active');
+    
+    if (subfolderName === 'fit_for_banking' && btnFit) btnFit.classList.add('active');
+    if (subfolderName === 'intro_pnl' && btnPnl) btnPnl.classList.add('active');
+    if (subfolderName === 'eod_troubleshooting' && btnEod) btnEod.classList.add('active');
+    
+    this.renderOnboardingFolderContent();
+  },
+  
   renderOnboardingFolderContent() {
     const container = document.getElementById('onboarding-folder-content');
     if (!container) return;
     
-    const folderName = this.state.activeOnboardingFolder || 'accounting';
+    const folderName = this.state.activeOnboardingFolder || 'financial_markets';
     const folderData = mxlearnOnboardingModules[folderName];
     if (!folderData) return;
     
@@ -3239,9 +3284,41 @@ const app = {
     const esSemanaBloqueada = (this.currentViewedWeek > currentWeekNum);
     const inputDisabled = esSemanaBloqueada ? 'disabled' : '';
     
+    let subfolderHtml = '';
+    let itemsToRender = [];
+    
+    if (folderData.hasSubfolders) {
+      if (!this.state.activeAccountingSubfolder) {
+        this.state.activeAccountingSubfolder = 'fit_for_banking';
+      }
+      const subKey = this.state.activeAccountingSubfolder;
+      const subData = folderData.subfolders[subKey];
+      itemsToRender = subData ? subData.items : [];
+      
+      subfolderHtml = `
+        <div class="onboarding-subfolders-tabs" style="display: flex; gap: 8px; margin-bottom: 12px; margin-top: 5px; border-bottom: 1px dashed var(--neutral-border); padding-bottom: 8px;">
+          <button class="folder-subtab-btn ${subKey === 'fit_for_banking' ? 'active' : ''}" id="btn-subfolder-fit" onclick="app.switchAccountingSubfolder('fit_for_banking')">
+            <i class="ti ti-folder-open"></i> Fit for Banking
+          </button>
+          <button class="folder-subtab-btn ${subKey === 'intro_pnl' ? 'active' : ''}" id="btn-subfolder-pnl" onclick="app.switchAccountingSubfolder('intro_pnl')">
+            <i class="ti ti-folder-open"></i> Financial Statements Introduction to Profit and Loss
+          </button>
+          <button class="folder-subtab-btn ${subKey === 'eod_troubleshooting' ? 'active' : ''}" id="btn-subfolder-eod" onclick="app.switchAccountingSubfolder('eod_troubleshooting')">
+            <i class="ti ti-folder-open"></i> Generic EOD Troubleshooting
+          </button>
+        </div>
+      `;
+    } else {
+      itemsToRender = folderData.items;
+    }
+    
     let rowsHtml = '';
-    folderData.items.forEach(item => {
-      const isChecked = this.getOnboardingCheckState(activeUserId, item);
+    itemsToRender.forEach(item => {
+      const storageKey = folderData.hasSubfolders 
+        ? `Accounting_${this.state.activeAccountingSubfolder}_${item}` 
+        : item;
+        
+      const isChecked = this.getOnboardingCheckState(activeUserId, storageKey);
       const isCheckedStr = isChecked ? 'checked' : '';
       
       rowsHtml += `
@@ -3251,7 +3328,7 @@ const app = {
               type="checkbox" 
               ${isCheckedStr} 
               ${inputDisabled}
-              onchange="app.setOnboardingCheckState('${activeUserId}', '${item.replace(/'/g, "\\'")}', this.checked); app.renderOnboardingFolderContent();"
+              onchange="app.setOnboardingCheckState('${activeUserId}', '${storageKey.replace(/'/g, "\\'")}', this.checked); app.renderOnboardingFolderContent();"
               class="induction-checkbox"
             >
           </td>
@@ -3267,6 +3344,7 @@ const app = {
     });
     
     container.innerHTML = `
+      ${subfolderHtml}
       <div class="induction-table-card" style="margin-top: 0; box-shadow: none; border: 1px solid var(--neutral-border);">
         <table class="mentor-log-table" style="width: 100%; border-collapse: collapse;">
           <thead>
@@ -5694,22 +5772,74 @@ const app = {
       this.renderInspectedOnboardingModules(this.state.inspectedUser.id);
     }
   },
+
+  switchInspectAccountingSubfolder(subfolderName) {
+    this.state.activeInspectAccountingSubfolder = subfolderName;
+    
+    const btnFit = document.getElementById('btn-inspect-subfolder-fit');
+    const btnPnl = document.getElementById('btn-inspect-subfolder-pnl');
+    const btnEod = document.getElementById('btn-inspect-subfolder-eod');
+    
+    if (btnFit) btnFit.classList.remove('active');
+    if (btnPnl) btnPnl.classList.remove('active');
+    if (btnEod) btnEod.classList.remove('active');
+    
+    if (subfolderName === 'fit_for_banking' && btnFit) btnFit.classList.add('active');
+    if (subfolderName === 'intro_pnl' && btnPnl) btnPnl.classList.add('active');
+    if (subfolderName === 'eod_troubleshooting' && btnEod) btnEod.classList.add('active');
+    
+    if (this.state.inspectedUser) {
+      this.renderInspectedOnboardingModules(this.state.inspectedUser.id);
+    }
+  },
   
   renderInspectedOnboardingModules(userId) {
     try {
-      const folderName = this.state.activeInspectOnboardingFolder || 'accounting';
+      const folderName = this.state.activeInspectOnboardingFolder || 'financial_markets';
       const folderData = mxlearnOnboardingModules[folderName];
       if (!folderData) return;
       
       const tbody = document.getElementById('inspect-onboarding-tbody');
       if (!tbody) return;
       
-      let totalItems = folderData.items.length;
+      let subfolderHtml = '';
+      let itemsToRender = [];
+      
+      if (folderData.hasSubfolders) {
+        if (!this.state.activeInspectAccountingSubfolder) {
+          this.state.activeInspectAccountingSubfolder = 'fit_for_banking';
+        }
+        const subKey = this.state.activeInspectAccountingSubfolder;
+        const subData = folderData.subfolders[subKey];
+        itemsToRender = subData ? subData.items : [];
+        
+        subfolderHtml = `
+          <div class="onboarding-subfolders-tabs" style="display: flex; gap: 8px; margin-bottom: 12px; margin-top: 5px; border-bottom: 1px dashed var(--neutral-border); padding-bottom: 8px; grid-column: span 3; width: 100%;">
+            <button class="folder-subtab-btn ${subKey === 'fit_for_banking' ? 'active' : ''}" id="btn-inspect-subfolder-fit" onclick="app.switchInspectAccountingSubfolder('fit_for_banking')">
+              <i class="ti ti-folder-open"></i> Fit for Banking
+            </button>
+            <button class="folder-subtab-btn ${subKey === 'intro_pnl' ? 'active' : ''}" id="btn-inspect-subfolder-pnl" onclick="app.switchInspectAccountingSubfolder('intro_pnl')">
+              <i class="ti ti-folder-open"></i> Financial Statements Introduction to Profit and Loss
+            </button>
+            <button class="folder-subtab-btn ${subKey === 'eod_troubleshooting' ? 'active' : ''}" id="btn-inspect-subfolder-eod" onclick="app.switchInspectAccountingSubfolder('eod_troubleshooting')">
+              <i class="ti ti-folder-open"></i> Generic EOD Troubleshooting
+            </button>
+          </div>
+        `;
+      } else {
+        itemsToRender = folderData.items;
+      }
+      
+      let totalItems = itemsToRender.length;
       let completedCount = 0;
       
       let rowsHtml = '';
-      folderData.items.forEach(item => {
-        const isChecked = this.getOnboardingCheckState(userId, item);
+      itemsToRender.forEach(item => {
+        const storageKey = folderData.hasSubfolders 
+          ? `Accounting_${this.state.activeInspectAccountingSubfolder}_${item}` 
+          : item;
+          
+        const isChecked = this.getOnboardingCheckState(userId, storageKey);
         if (isChecked) completedCount++;
         
         rowsHtml += `
@@ -5732,6 +5862,21 @@ const app = {
       });
       
       tbody.innerHTML = rowsHtml;
+      
+      // Update subfolders tabs if they exist, or insert them
+      const panelOnboardingEl = document.getElementById('inspect-panel-onboarding');
+      if (panelOnboardingEl) {
+        const existingSubtabs = panelOnboardingEl.querySelector('.onboarding-subfolders-tabs');
+        if (existingSubtabs) {
+          existingSubtabs.remove();
+        }
+        if (subfolderHtml) {
+          const foldersTabContainer = panelOnboardingEl.querySelector('.onboarding-folders-tabs');
+          if (foldersTabContainer) {
+            foldersTabContainer.insertAdjacentHTML('afterend', subfolderHtml);
+          }
+        }
+      }
       
       const percent = totalItems > 0 ? Math.round((completedCount / totalItems) * 100) : 0;
       

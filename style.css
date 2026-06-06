@@ -4769,6 +4769,36 @@ button {
   font-size: 0.9rem;
 }
 
+/* Onboarding Sub-folder Styles */
+.folder-subtab-btn {
+  background: transparent;
+  border: 1px dashed var(--neutral-border);
+  font-size: 0.72rem;
+  font-weight: 500;
+  color: var(--neutral-muted);
+  padding: 4px 10px;
+  border-radius: 4px;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  transition: all 0.2s ease;
+}
+
+.folder-subtab-btn:hover {
+  background: rgba(166, 25, 46, 0.04);
+  border-color: var(--primary);
+  color: var(--primary);
+}
+
+.folder-subtab-btn.active {
+  background: var(--primary-light);
+  border: 1px solid var(--primary);
+  color: var(--primary-text);
+  font-weight: 600;
+}
+
+
 
 
 
