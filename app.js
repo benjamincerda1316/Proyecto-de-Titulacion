@@ -1144,6 +1144,7 @@ const app = {
   // Application Data & State
   state: {
     db: null,              // Holds active database loaded from localStorage
+    serverConnected: false, // Tracks connection status to remote Supabase server
     activeUser: null,      // Logged in user object
     loginRole: 'consultant', // Current selected tab in login
     selectedWeekNum: null, // Selected week for consultant detail panel
@@ -1192,11 +1193,11 @@ const app = {
         role: "consultant", 
         rol: "JUNIOR", 
         avatar_initials: "FD",
-        current_week: 3, 
-        semana_actual: 3, 
-        avg_score: 0,
+        current_week: 8, 
+        semana_actual: 8, 
+        avg_score: 80,
         status: "on_track",
-        progreso_mallas: Array(12).fill({ completado: false, nota: null })
+        progreso_mallas: Array(12).fill(null).map((_, i) => ({ completado: i < 7, nota: i < 7 ? 80 : null }))
       }
     ],
     
@@ -1654,6 +1655,7 @@ const app = {
 
   // Database / Storage Methods
   async loadDatabase() {
+    this.state.serverConnected = false;
     const isLocalFileOrDev = window.location.protocol === 'file:' || 
                              window.location.origin === 'null' ||
                              (window.location.hostname === 'localhost' && window.location.port !== '3000') ||
@@ -1663,6 +1665,7 @@ const app = {
       const response = await fetch(`${apiBase}/api/db`);
       if (response.ok) {
         const data = await response.json();
+        this.state.serverConnected = true;
         if (data.empty) {
           console.warn("Database on server is empty. Seeding defaults...");
           this.resetDB();
@@ -1896,6 +1899,11 @@ const app = {
     }
     localStorage.setItem('mxboard_db_v3', JSON.stringify(this.state.db));
 
+    if (!this.state.serverConnected) {
+      console.log("Server not connected or API error. Saving only to local storage.");
+      return;
+    }
+
     const isLocalFileOrDev = window.location.protocol === 'file:' || 
                              window.location.origin === 'null' ||
                              (window.location.hostname === 'localhost' && window.location.port !== '3000') ||
@@ -1945,7 +1953,7 @@ const app = {
         };
         
         // Populate historical seed data based on their default template states
-        let completedCount = 0; // Todos los juniors inician en semana 1 (0 completadas)
+        let completedCount = (user.current_week || user.semana_actual || 1) - 1;
         
         for (let w = 1; w <= weekCount; w++) {
           const template = this.defaultTemplates.week_templates.find(wt => wt.week_number === w);
@@ -9397,7 +9405,7 @@ const app = {
     if (sessionsKpiEl) sessionsKpiEl.innerText = totalSessions;
 
     // 1. Calculate hours by session type
-    const types = ['tutoring', 'masterclass', 'extra_support', 'support', 'coaching'];
+    const types = ['tutoring', 'masterclass', 'extra_support', 'coaching'];
     const typeLabels = {
       'tutoring': 'Tutoría',
       'masterclass': 'Masterclass',

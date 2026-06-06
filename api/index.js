@@ -51,6 +51,7 @@ app.use((req, res, next) => {
 app.use(express.static(path.join(__dirname, '..')));
 
 let pool;
+let initPromise = null;
 
 const pgUrl = process.env.DATABASE_URL || process.env.POSTGRES_URL;
 if (pgUrl && !pgUrl.includes('[YOUR-PASSWORD]')) {
@@ -268,23 +269,25 @@ async function initDatabase() {
       { id: "USR-JUAN", name: "Juan Francisco Orrego", nombre: "Juan Francisco Orrego", email: "juan.orrego@murex.cl", password: "password", role: "tutor", rol: "TUTOR", avatar_initials: "JO" },
       { id: "USR-CAROLINA", name: "Carolina Sepúlveda", nombre: "Carolina Sepúlveda", email: "carolina.sepulveda@murex.cl", password: "password", role: "tutor", rol: "TUTOR", avatar_initials: "CS" },
       { id: "USR-VALENTINA", name: "Valentina Lara", nombre: "Valentina Lara", email: "valentina.lara@murex.cl", password: "password", role: "tutor", rol: "TUTOR", avatar_initials: "VL" },
-      { id: "USR-FRANCISCA", name: "Francisca Le Dantec", nombre: "Francisca Le Dantec", email: "francisca.ledantec@murex.cl", password: "password", role: "consultant", rol: "JUNIOR", avatar_initials: "FD", current_week: 1, avg_score: 0, status: "on_track" }
+      { id: "USR-FRANCISCA", name: "Francisca Le Dantec", nombre: "Francisca Le Dantec", email: "francisca.ledantec@murex.cl", password: "password", role: "consultant", rol: "JUNIOR", avatar_initials: "FD", current_week: 8, avg_score: 80, status: "on_track" }
     ];
+
+    const progresoMallas = Array(12).fill(null).map((_, i) => ({ completado: i < 7, nota: i < 7 ? 80 : null }));
 
     for (const u of defaultUsers) {
       await db.run(
         `INSERT INTO users (id, name, nombre, email, password, role, rol, avatar_initials, current_week, avg_score, status, progreso_mallas_json) 
          VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
-        [u.id, u.name, u.nombre, u.email, u.password, u.role, u.rol, u.avatar_initials, u.current_week || 1, u.avg_score || 0, u.status || 'on_track', JSON.stringify([])]
+        [u.id, u.name, u.nombre, u.email, u.password, u.role, u.rol, u.avatar_initials, u.current_week || 1, u.avg_score || 0, u.status || 'on_track', JSON.stringify(u.id === 'USR-FRANCISCA' ? progresoMallas : [])]
       );
     }
 
     // Seed mappings
     await db.run(`INSERT INTO tutor_junior_mapping (junior_id, tutor_id) VALUES ('USR-FRANCISCA', 'USR-BENJAMIN')`);
     
-    // Seed initial progress for Francisca (starting at week 1)
+    // Seed initial progress for Francisca (starting at week 8, completing 1 to 7)
     const initialProgress = {
-      completed_weeks: [],
+      completed_weeks: [1, 2, 3, 4, 5, 6, 7],
       checklist_states: {},
       test_scores: {},
       test_attempts: {},
@@ -293,6 +296,32 @@ async function initDatabase() {
       comments: {},
       game_scores: {}
     };
+
+    const weekCount = 12;
+    const completedCount = 7;
+    for (let w = 1; w <= weekCount; w++) {
+      initialProgress.checklist_states[w] = {};
+      if (w <= completedCount) {
+        initialProgress.test_scores[w] = 80;
+        initialProgress.test_attempts[w] = 1;
+        initialProgress.test_times[w] = `${10 + w}m 30s`;
+        initialProgress.deliverables[w] = {
+          fileName: `evidencia_semana_${w}_fd.pdf`,
+          fileSize: "1.8 MB",
+          status: "approved",
+          submittedAt: new Date(Date.now() - (completedCount - w + 1) * 7 * 24 * 3600 * 1000).toISOString()
+        };
+        // Mark all items as true (assume max 10 items)
+        for (let idx = 0; idx < 10; idx++) {
+          initialProgress.checklist_states[w][idx] = true;
+        }
+      } else {
+        // Active or locked weeks
+        for (let idx = 0; idx < 10; idx++) {
+          initialProgress.checklist_states[w][idx] = (w === completedCount + 1 && idx < 2);
+        }
+      }
+    }
 
     await db.run(
       `INSERT INTO consultant_progress (user_id, completed_weeks_json, checklist_states_json, test_scores_json, test_attempts_json, test_times_json, deliverables_json, comments_json, game_scores_json) 
@@ -319,6 +348,9 @@ async function initDatabase() {
 // GET API to fetch full state
 app.get('/api/db', async (req, res) => {
   try {
+    if (initPromise) {
+      await initPromise;
+    }
     if (!pool) {
       return res.status(500).json({ error: 'Database is not initialized.' });
     }
@@ -470,12 +502,15 @@ app.get('/api/db', async (req, res) => {
 let dbMutex = Promise.resolve();
 
 // POST API to save full state
-app.post('/api/db/save', (req, res) => {
+app.post('/api/db/save', async (req, res) => {
   const data = req.body;
   if (!data || !data.users) {
     return res.status(400).json({ error: 'Invalid data' });
   }
 
+  if (initPromise) {
+    await initPromise;
+  }
   if (!pool) {
     return res.status(500).json({ error: 'Database is not initialized.' });
   }
@@ -655,7 +690,7 @@ app.post('/api/db/save', (req, res) => {
 
 const PORT = process.env.PORT || 3000;
 if (process.env.NODE_ENV !== 'production' || !process.env.VERCEL) {
-  initDatabase().then(() => {
+  initPromise = initDatabase().then(() => {
     app.listen(PORT, () => {
       console.log(`Server is running at http://localhost:${PORT}`);
     });
@@ -664,7 +699,7 @@ if (process.env.NODE_ENV !== 'production' || !process.env.VERCEL) {
   });
 } else {
   // Eagerly initialize DDL setup on serverless boot
-  initDatabase().catch(err => console.error('Serverless DB DDL failed:', err));
+  initPromise = initDatabase().catch(err => console.error('Serverless DB DDL failed:', err));
 }
 
 module.exports = app;
