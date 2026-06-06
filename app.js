@@ -622,10 +622,7 @@ const mxlearnOnboardingModules = {
   liquidation: {
     title: "Liquidation Module",
     items: [
-      "Module: Introduction to Settlement and Liquidation",
-      "Module: Payment Instructions and SWIFT",
-      "Module: Confirmation Templates and Validation Rules",
-      "Module: Tasks Organizer and EOD Operations"
+      "Read the Attached Documents"
     ]
   }
 };
@@ -1990,6 +1987,21 @@ const app = {
       needsSave = true;
     }
 
+    // 1.5. Ensure Francisca's Week 2 game score is set since she has completed it
+    if (this.state.db.consultant_progress && this.state.db.consultant_progress["USR-FRANCISCA"]) {
+      const progress = this.state.db.consultant_progress["USR-FRANCISCA"];
+      if (!progress.game_scores) progress.game_scores = {};
+      if (!progress.game_scores[2]) {
+        console.log("Auto-migrating: setting Francisca's Week 2 game score...");
+        progress.game_scores[2] = {
+          score: 25,
+          total: 25,
+          completedAt: new Date(Date.now() - 6 * 7 * 24 * 3600 * 1000).toISOString()
+        };
+        needsSave = true;
+      }
+    }
+
     // 2. Ensure USR-MUREX-LEARNING exists in users
     if (this.state.db.users) {
       const hasMl = this.state.db.users.some(u => u.id === 'USR-MUREX-LEARNING');
@@ -2198,6 +2210,15 @@ const app = {
                 fileSize: "1.8 MB",
                 status: "approved",
                 submittedAt: new Date(Date.now() - (completedCount - w + 1) * 7 * 24 * 3600 * 1000).toISOString()
+              };
+            }
+
+            // Seed game score for Week 2
+            if (w === 2) {
+              progress[user.id].game_scores[2] = {
+                score: 25,
+                total: 25,
+                completedAt: new Date(Date.now() - (completedCount - 2 + 1) * 7 * 24 * 3600 * 1000).toISOString()
               };
             }
           } else {
