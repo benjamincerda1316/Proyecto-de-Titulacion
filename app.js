@@ -557,6 +557,54 @@ const tablasOnboardingGlobal = [
     }
 ];
 
+const mxlearnOnboardingModules = {
+  accounting: {
+    title: "Accounting Module",
+    items: [
+      "Module: Introduction to Accounting Rules",
+      "Module: Simple Accounts Parametrization",
+      "Module: Dynamic Accounts and Formula Rules",
+      "Module: Accounting Event Templates"
+    ]
+  },
+  liquidation: {
+    title: "Liquidation Module",
+    items: [
+      "Module: Introduction to Settlement and Liquidation",
+      "Module: Payment Instructions and SWIFT",
+      "Module: Confirmation Templates and Validation Rules",
+      "Module: Tasks Organizer and EOD Operations"
+    ]
+  },
+  financial_markets: {
+    title: "Financial Markets for Newcomers",
+    items: [
+      "Module: Introduction to Banks",
+      "Module: Bank Capital Management",
+      "Module: Financial Statement Analysis of Banks",
+      "Module: Time Value of Money",
+      "Module: Internal Rate of Return",
+      "Module: Valuation of Fixed Income Bonds",
+      "Module: Introduction to Financial Futures",
+      "Module: Introduction to Options",
+      "Module: Cash Instruments",
+      "Module: Repo and Sell/Buy Back",
+      "Module: Securities Lending",
+      "Module: Repo/Security Lending and Financial Products",
+      "Module: Introduction to FX Market",
+      "Module: FX Management",
+      "Module: FX Spot Market",
+      "Module: FX Forward Market",
+      "Module: FX Options - Basic Strategies and Risk Parameters",
+      "Module: Risk-Free Rates (RFR)",
+      "Module: Money Market I - Single Period Swaps (SPS)",
+      "Module: Swaps I - Applications",
+      "Module: Swaps IV - Cross Currency Swaps"
+    ]
+  }
+};
+
+
 const bancoPreguntasSemana2 = [
   {
     "question": "¿Cuál es la función principal del Trade Query en Murex?",
@@ -1251,7 +1299,8 @@ const app = {
           "Implementar Cuentas Fórmula aplicando condicionales lógicos para el direccionamiento automatizado de montos",
           "Completar correctamente la Timesheet de la semana siguiendo las reglas de imputación del área",
           "Identificar el propósito de los comités recurrentes (Chile-Brasil, OPS/Finance, Americas, Townhalls)",
-          "Resolver de manera interactiva el \"Juego de las Cuentas\" integrado en el Workspace de la plataforma"
+          "Resolver de manera interactiva el \"Juego de las Cuentas\" integrado en el Workspace de la plataforma",
+          "Completar y registrar la visualización de los 21 videos mandatorios del módulo Financial Markets for Newcomers en la sección MXLearn"
         ],
         knowledge_test: { num_questions: 3, min_passing_score: 70 },
         deliverable: { type: "zip", description: "Cuentas dinámicas parametrizadas y funcionales en el entorno de pruebas", required: true },
@@ -2986,6 +3035,21 @@ const app = {
       }
     }
 
+    // MXLEARN ONBOARDING MODULES: Visibilidad en Semana 3
+    const onboardingZone = document.getElementById('workspace-onboarding-mxlearn-zone');
+    if (onboardingZone) {
+      const activeWeek = parseInt(weekNum);
+      if (activeWeek === 3) {
+        onboardingZone.classList.remove('hidden');
+        if (!this.state.activeOnboardingFolder) {
+          this.state.activeOnboardingFolder = 'financial_markets';
+        }
+        this.switchOnboardingFolder(this.state.activeOnboardingFolder);
+      } else {
+        onboardingZone.classList.add('hidden');
+      }
+    }
+
     // Sync subtabs UI
     this.switchPanelTab(this.state.activePanelTab);
     this.initEvaluacionSemanalUI(weekNum);
@@ -3137,6 +3201,87 @@ const app = {
         `;
         container.appendChild(tableWrapper);
     });
+  },
+
+  switchOnboardingFolder(folderName) {
+    this.state.activeOnboardingFolder = folderName;
+    
+    // Update folder buttons active class
+    const btnAcc = document.getElementById('btn-folder-accounting');
+    const btnLiq = document.getElementById('btn-folder-liquidation');
+    const btnFin = document.getElementById('btn-folder-financial');
+    
+    if (btnAcc) btnAcc.classList.remove('active');
+    if (btnLiq) btnLiq.classList.remove('active');
+    if (btnFin) btnFin.classList.remove('active');
+    
+    if (folderName === 'accounting' && btnAcc) btnAcc.classList.add('active');
+    if (folderName === 'liquidation' && btnLiq) btnLiq.classList.add('active');
+    if (folderName === 'financial_markets' && btnFin) btnFin.classList.add('active');
+    
+    this.renderOnboardingFolderContent();
+  },
+  
+  renderOnboardingFolderContent() {
+    const container = document.getElementById('onboarding-folder-content');
+    if (!container) return;
+    
+    const folderName = this.state.activeOnboardingFolder || 'accounting';
+    const folderData = mxlearnOnboardingModules[folderName];
+    if (!folderData) return;
+    
+    const activeUserId = this.state.activeUser ? this.state.activeUser.id : 'default';
+    
+    // Check if week 3 is locked
+    const progress = this.state.db && this.state.db.consultant_progress ? this.state.db.consultant_progress[activeUserId] : null;
+    const completedCount = progress ? (progress.completed_weeks ? progress.completed_weeks.length : 0) : 0;
+    const currentWeekNum = Math.min(completedCount + 1, 12);
+    const esSemanaBloqueada = (3 > currentWeekNum);
+    const inputDisabled = esSemanaBloqueada ? 'disabled' : '';
+    
+    let rowsHtml = '';
+    folderData.items.forEach(item => {
+      const isChecked = this.getOnboardingCheckState(activeUserId, item);
+      const isCheckedStr = isChecked ? 'checked' : '';
+      
+      rowsHtml += `
+        <tr>
+          <td style="width: 50px; text-align: center; padding: 10px;">
+            <input 
+              type="checkbox" 
+              ${isCheckedStr} 
+              ${inputDisabled}
+              onchange="app.setOnboardingCheckState('${activeUserId}', '${item.replace(/'/g, "\\'")}', this.checked); app.renderOnboardingFolderContent();"
+              class="induction-checkbox"
+            >
+          </td>
+          <td style="font-weight: 500; font-size: 0.8rem; padding: 10px;">${item}</td>
+          <td style="text-align: right; padding: 10px; white-space: nowrap; padding-right: 15px;">
+            ${esSemanaBloqueada 
+              ? '<span class="induction-badge preview"><i class="ti ti-lock" style="margin-right: 3px;"></i> Bloqueado</span>' 
+              : (isChecked ? '<span class="induction-badge ok"><i class="ti ti-circle-check" style="margin-right: 3px;"></i> Completado</span>' : '<span class="induction-badge pending"><i class="ti ti-pencil" style="margin-right: 3px;"></i> Pendiente</span>')
+            }
+          </td>
+        </tr>
+      `;
+    });
+    
+    container.innerHTML = `
+      <div class="induction-table-card" style="margin-top: 0; box-shadow: none; border: 1px solid var(--neutral-border);">
+        <table class="mentor-log-table" style="width: 100%; border-collapse: collapse;">
+          <thead>
+            <tr style="background-color: var(--neutral-light); border-bottom: 1px solid var(--neutral-border);">
+              <th style="width: 50px; text-align: center; padding: 8px; font-size: 0.75rem; color: var(--neutral-muted);">Estado</th>
+              <th style="text-align: left; padding: 8px; font-size: 0.75rem; color: var(--neutral-muted);">Módulo / Video de Onboarding</th>
+              <th style="text-align: right; padding: 8px; font-size: 0.75rem; color: var(--neutral-muted); padding-right: 15px;">Estatus</th>
+            </tr>
+          </thead>
+          <tbody>
+            ${rowsHtml}
+          </tbody>
+        </table>
+      </div>
+    `;
   },
 
   navigateWorkspaceWeek(direccion) {
@@ -5481,19 +5626,23 @@ const app = {
       const btnPassport = document.getElementById('btn-inspect-tab-passport');
       const btnEvaluations = document.getElementById('btn-inspect-tab-evaluations');
       const btnHours = document.getElementById('btn-inspect-tab-hours');
+      const btnOnboarding = document.getElementById('btn-inspect-tab-onboarding');
       const panelWeekly = document.getElementById('inspect-panel-weekly');
       const panelPassport = document.getElementById('inspect-panel-passport');
       const panelEvaluations = document.getElementById('inspect-panel-evaluations');
       const panelHours = document.getElementById('inspect-panel-hours');
+      const panelOnboarding = document.getElementById('inspect-panel-onboarding');
 
       if (btnWeekly) btnWeekly.classList.remove('active');
       if (btnPassport) btnPassport.classList.remove('active');
       if (btnEvaluations) btnEvaluations.classList.remove('active');
       if (btnHours) btnHours.classList.remove('active');
+      if (btnOnboarding) btnOnboarding.classList.remove('active');
       if (panelWeekly) panelWeekly.style.display = 'none';
       if (panelPassport) panelPassport.style.display = 'none';
       if (panelEvaluations) panelEvaluations.style.display = 'none';
       if (panelHours) panelHours.style.display = 'none';
+      if (panelOnboarding) panelOnboarding.style.display = 'none';
 
       if (tabName === 'weekly') {
         if (btnWeekly) btnWeekly.classList.add('active');
@@ -5512,10 +5661,96 @@ const app = {
         if (btnHours) btnHours.classList.add('active');
         if (panelHours) panelHours.style.display = 'block';
         this.renderInspectedHours();
+      } else if (tabName === 'onboarding') {
+        if (btnOnboarding) btnOnboarding.classList.add('active');
+        if (panelOnboarding) panelOnboarding.style.display = 'block';
+        if (!this.state.activeInspectOnboardingFolder) {
+          this.state.activeInspectOnboardingFolder = 'financial_markets'; // default to financial markets for audit
+        }
+        this.switchInspectOnboardingFolder(this.state.activeInspectOnboardingFolder);
       }
     } catch (err) {
       console.error("Error switching inspector tab:", err);
       this.showToast(`Error al cambiar pestaña: ${err.message}`);
+    }
+  },
+
+  switchInspectOnboardingFolder(folderName) {
+    this.state.activeInspectOnboardingFolder = folderName;
+    
+    const btnAcc = document.getElementById('btn-inspect-folder-accounting');
+    const btnLiq = document.getElementById('btn-inspect-folder-liquidation');
+    const btnFin = document.getElementById('btn-inspect-folder-financial');
+    
+    if (btnAcc) btnAcc.classList.remove('active');
+    if (btnLiq) btnLiq.classList.remove('active');
+    if (btnFin) btnFin.classList.remove('active');
+    
+    if (folderName === 'accounting' && btnAcc) btnAcc.classList.add('active');
+    if (folderName === 'liquidation' && btnLiq) btnLiq.classList.add('active');
+    if (folderName === 'financial_markets' && btnFin) btnFin.classList.add('active');
+    
+    if (this.state.inspectedUser) {
+      this.renderInspectedOnboardingModules(this.state.inspectedUser.id);
+    }
+  },
+  
+  renderInspectedOnboardingModules(userId) {
+    try {
+      const folderName = this.state.activeInspectOnboardingFolder || 'accounting';
+      const folderData = mxlearnOnboardingModules[folderName];
+      if (!folderData) return;
+      
+      const tbody = document.getElementById('inspect-onboarding-tbody');
+      if (!tbody) return;
+      
+      let totalItems = folderData.items.length;
+      let completedCount = 0;
+      
+      let rowsHtml = '';
+      folderData.items.forEach(item => {
+        const isChecked = this.getOnboardingCheckState(userId, item);
+        if (isChecked) completedCount++;
+        
+        rowsHtml += `
+          <tr>
+            <td style="text-align: center; font-size: 1rem; width: 60px; padding: 10px 5px;">
+              ${isChecked 
+                ? '<i class="ti ti-circle-check" style="color: var(--success);"></i>' 
+                : '<i class="ti ti-circle-x" style="color: var(--neutral-muted); opacity: 0.5;"></i>'
+              }
+            </td>
+            <td style="font-weight: 500; padding: 10px 5px;">${item}</td>
+            <td style="text-align: right; padding: 10px 5px; padding-right: 15px;">
+              ${isChecked 
+                ? '<span class="induction-badge ok"><i class="ti ti-check" style="margin-right: 3px;"></i> Completado</span>' 
+                : '<span class="induction-badge pending"><i class="ti ti-clock" style="margin-right: 3px;"></i> Pendiente</span>'
+              }
+            </td>
+          </tr>
+        `;
+      });
+      
+      tbody.innerHTML = rowsHtml;
+      
+      const percent = totalItems > 0 ? Math.round((completedCount / totalItems) * 100) : 0;
+      
+      const progressText = document.getElementById('inspect-onboarding-progress-text');
+      const progressBar = document.getElementById('inspect-onboarding-progress-bar');
+      const progressPercent = document.getElementById('inspect-onboarding-progress-percent');
+      
+      if (progressText) {
+        progressText.innerText = `${completedCount} de ${totalItems} módulos completados`;
+      }
+      if (progressBar) {
+        progressBar.style.width = `${percent}%`;
+      }
+      if (progressPercent) {
+        progressPercent.innerText = `${percent}%`;
+      }
+    } catch (err) {
+      console.error("Error rendering inspected onboarding modules:", err);
+      this.showToast(`Error al cargar módulos onboarding: ${err.message}`);
     }
   },
 

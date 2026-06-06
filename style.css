@@ -4731,5 +4731,44 @@ button {
   font-weight: 600;
 }
 
+/* Onboarding Folder Tab Styles */
+.folder-tab-btn {
+  background: rgba(255, 255, 255, 0.4);
+  border: 1px solid var(--neutral-border);
+  border-bottom: none;
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: var(--neutral-muted);
+  padding: 8px 14px;
+  border-top-left-radius: 6px;
+  border-top-right-radius: 6px;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  transition: all 0.2s ease;
+  margin-bottom: -7px;
+  outline: none;
+}
+
+.folder-tab-btn:hover {
+  background: rgba(255, 255, 255, 0.8);
+  color: var(--primary);
+}
+
+.folder-tab-btn.active {
+  background: white;
+  border-color: var(--neutral-border);
+  color: var(--primary);
+  border-bottom: 2px solid white !important;
+  box-shadow: 0 -2px 5px rgba(0,0,0,0.02);
+  margin-bottom: -7px;
+}
+
+.folder-tab-btn i {
+  font-size: 0.9rem;
+}
+
+
 
 
