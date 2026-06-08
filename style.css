@@ -4118,6 +4118,37 @@ button {
   transition: var(--transition-fast);
 }
 
+/* Onboarding module items link button styles */
+.onboarding-link-btn {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px;
+  text-decoration: none !important;
+  color: inherit !important;
+  height: 100%;
+  transition: all 0.2s ease;
+  border-radius: 4px;
+}
+
+.onboarding-link-btn:hover {
+  background-color: var(--primary-light) !important;
+  color: var(--primary) !important;
+}
+
+.onboarding-link-btn:hover span {
+  font-weight: 600;
+}
+
+.onboarding-link-badge {
+  transition: all 0.2s ease;
+}
+
+.onboarding-link-btn:hover .onboarding-link-badge {
+  background-color: var(--primary) !important;
+  color: #ffffff !important;
+}
+
 .induction-checkbox:disabled {
   opacity: 0.5;
   cursor: not-allowed;

@@ -627,6 +627,9 @@ const mxlearnOnboardingModules = {
   }
 };
 
+const onboardingItemUrls = {
+  "Read the attached documents": "https://mxlearn.360learning.com/course/play/6758b7f7a03295ae3449b8e4/attempts/6a233b0a0c8feff1cddaa2c3?preferredLang=en"
+};
 
 const bancoPreguntasSemana2 = [
   {
@@ -3608,6 +3611,21 @@ const app = {
       const isChecked = this.getOnboardingCheckState(activeUserId, storageKey);
       const isCheckedStr = isChecked ? 'checked' : '';
       
+      const itemUrl = onboardingItemUrls[item];
+      let itemCellHtml = `<td style="font-weight: 500; font-size: 0.8rem; padding: 10px;">${item}</td>`;
+      if (itemUrl) {
+        itemCellHtml = `
+          <td style="padding: 0; font-weight: 500; font-size: 0.8rem;">
+            <a href="${itemUrl}" target="_blank" class="onboarding-link-btn">
+              <span>${item}</span>
+              <span class="onboarding-link-badge" style="font-size: 0.7rem; color: var(--primary); background: var(--primary-light); padding: 3px 8px; border-radius: 4px; display: inline-flex; align-items: center; gap: 4px; font-weight: 600; opacity: 0.85;">
+                <i class="ti ti-external-link"></i> Ir al Curso
+              </span>
+            </a>
+          </td>
+        `;
+      }
+      
       rowsHtml += `
         <tr>
           <td style="width: 50px; text-align: center; padding: 10px;">
@@ -3619,7 +3637,7 @@ const app = {
               class="induction-checkbox"
             >
           </td>
-          <td style="font-weight: 500; font-size: 0.8rem; padding: 10px;">${item}</td>
+          ${itemCellHtml}
           <td style="text-align: right; padding: 10px; white-space: nowrap; padding-right: 15px;">
             ${esSemanaBloqueada 
               ? '<span class="induction-badge preview"><i class="ti ti-lock" style="margin-right: 3px;"></i> Bloqueado</span>' 
@@ -6143,6 +6161,21 @@ const app = {
         const isChecked = this.getOnboardingCheckState(userId, storageKey);
         if (isChecked) completedCount++;
         
+        const itemUrl = onboardingItemUrls[item];
+        let itemCellHtml = `<td style="font-weight: 500; padding: 10px 5px;">${item}</td>`;
+        if (itemUrl) {
+          itemCellHtml = `
+            <td style="padding: 0; font-weight: 500;">
+              <a href="${itemUrl}" target="_blank" class="onboarding-link-btn" style="padding: 10px 5px;">
+                <span>${item}</span>
+                <span class="onboarding-link-badge" style="font-size: 0.7rem; color: var(--primary); background: var(--primary-light); padding: 3px 8px; border-radius: 4px; display: inline-flex; align-items: center; gap: 4px; font-weight: 600; opacity: 0.85;">
+                  <i class="ti ti-external-link"></i> Ir al Curso
+                </span>
+              </a>
+            </td>
+          `;
+        }
+        
         rowsHtml += `
           <tr>
             <td style="text-align: center; font-size: 1rem; width: 60px; padding: 10px 5px;">
@@ -6151,7 +6184,7 @@ const app = {
                 : '<i class="ti ti-circle-x" style="color: var(--neutral-muted); opacity: 0.5;"></i>'
               }
             </td>
-            <td style="font-weight: 500; padding: 10px 5px;">${item}</td>
+            ${itemCellHtml}
             <td style="text-align: right; padding: 10px 5px; padding-right: 15px;">
               ${isChecked 
                 ? '<span class="induction-badge ok"><i class="ti ti-check" style="margin-right: 3px;"></i> Completado</span>' 
