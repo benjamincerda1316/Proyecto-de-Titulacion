@@ -7607,31 +7607,6 @@ const app = {
         });
       }
       
-      // Calculate reactive support hours (type = 'extra_support')
-      const reactiveHours = events.filter(e => e.type === 'extra_support').reduce((sum, e) => {
-        const mins = e.executed_minutes || e.planned_minutes || 60;
-        return sum + (mins / 60);
-      }, 0);
-      
-      // Financial impact banner
-      let alertHtml = '';
-      if (reactiveHours > 0) {
-        const costMillions = (reactiveHours * 0.32).toFixed(1);
-        alertHtml = `
-          <div class="audit-alert-banner">
-            <i class="ti ti-alert-triangle animate-pulse"></i>
-            <span><strong>Impacto Financiero Proyectado:</strong> Esta tasa de soporte reactivo equivale a un costo de oportunidad de $${costMillions} millones CLP semanales para el área.</span>
-          </div>
-        `;
-      } else {
-        alertHtml = `
-          <div class="audit-alert-banner info">
-            <i class="ti ti-circle-check"></i>
-            <span><strong>Capacidad Operativa Optimizada:</strong> No se registran horas de soporte reactivo extraordinarias para este consultor.</span>
-          </div>
-        `;
-      }
-      
       const isHighLoad = totalHours >= 12;
       const accordionItem = document.createElement('div');
       accordionItem.className = 'audit-accordion-item';
@@ -7660,7 +7635,6 @@ const app = {
               ${rowsHtml}
             </tbody>
           </table>
-          ${alertHtml}
         </div>
       `;
       container.appendChild(accordionItem);
@@ -10540,34 +10514,6 @@ const app = {
       });
     }
     
-    // Calculate reactive support hours (type = 'extra_support' or 'support')
-    const reactiveHours = events.filter(e => {
-      const typeLower = (e.type || '').toLowerCase();
-      return typeLower === 'extra_support' || typeLower === 'support';
-    }).reduce((sum, e) => {
-      const mins = e.executed_minutes || e.planned_minutes || 60;
-      return sum + (mins / 60);
-    }, 0);
-    
-    // Financial impact banner
-    let alertHtml = '';
-    if (reactiveHours > 0) {
-      const costMillions = (reactiveHours * 0.32).toFixed(1);
-      alertHtml = `
-        <div class="audit-alert-banner" style="margin-top: 15px;">
-          <i class="ti ti-alert-triangle animate-pulse" style="font-size: 1.2rem;"></i>
-          <span><strong>Impacto Financiero Proyectado:</strong> Esta tasa de soporte reactivo equivale a un costo de oportunidad de $${costMillions} millones CLP semanales para el área.</span>
-        </div>
-      `;
-    } else {
-      alertHtml = `
-        <div class="audit-alert-banner info" style="margin-top: 15px;">
-          <i class="ti ti-circle-check" style="font-size: 1.2rem;"></i>
-          <span><strong>Capacidad Operativa Optimizada:</strong> No se registran horas de soporte reactivo extraordinarias para este consultor.</span>
-        </div>
-      `;
-    }
-    
     // Construct the audit log pane
     const card = document.createElement('div');
     card.className = 'card glass-card';
@@ -10592,7 +10538,6 @@ const app = {
             ${rowsHtml}
           </tbody>
         </table>
-        ${alertHtml}
       </div>
     `;
     container.appendChild(card);
