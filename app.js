@@ -10321,10 +10321,12 @@ const app = {
       if (e.contabilizar_ids === false || e.expert_id === 'USR-MUREX-LEARNING') {
         return;
       }
-      const expId = e.expert_id;
-      const expertObj = this.state.db.users.find(u => u.id === expId);
-      const name = expertObj ? expertObj.name : 'N/A';
-      hoursByExpert[name] = (hoursByExpert[name] || 0) + (e.executed_minutes || 0) / 60;
+      const expIds = e.expertos_asistentes_ids || [e.expert_id];
+      expIds.forEach(expId => {
+        const expertObj = this.state.db.users.find(u => u.id === expId);
+        const name = expertObj ? expertObj.name : 'N/A';
+        hoursByExpert[name] = (hoursByExpert[name] || 0) + (e.executed_minutes || 0) / 60;
+      });
     });
 
     const expertListContainer = document.getElementById('inspect-hours-expert-list');
@@ -10377,7 +10379,16 @@ const app = {
     if (expertFilterSelect) {
       const prevVal = expertFilterSelect.value || 'all';
       expertFilterSelect.innerHTML = '<option value="all">Todos los expertos</option>';
-      const uniqueExpertIds = [...new Set(juniorEvents.map(e => e.expert_id))];
+      
+      const allExpertIds = [];
+      juniorEvents.forEach(e => {
+        const expIds = e.expertos_asistentes_ids || [e.expert_id];
+        expIds.forEach(id => {
+          if (id && id !== 'USR-MUREX-LEARNING') allExpertIds.push(id);
+        });
+      });
+      const uniqueExpertIds = [...new Set(allExpertIds)];
+      
       uniqueExpertIds.forEach(expId => {
         const expertObj = this.state.db.users.find(u => u.id === expId);
         if (expertObj) {
@@ -10399,14 +10410,20 @@ const app = {
       const selectedExpertId = expertFilterSelect ? expertFilterSelect.value : 'all';
       const filteredEvents = selectedExpertId === 'all' 
         ? juniorEvents 
-        : juniorEvents.filter(e => e.expert_id === selectedExpertId);
+        : juniorEvents.filter(e => e.expert_id === selectedExpertId || (e.expertos_asistentes_ids && e.expertos_asistentes_ids.includes(selectedExpertId)));
 
       if (filteredEvents.length === 0) {
         tbody.innerHTML = `<tr><td colspan="4" style="text-align:center; padding:15px; color:var(--neutral-muted);">No hay registros para el experto seleccionado.</td></tr>`;
       } else {
         const sortedEvents = [...filteredEvents].sort((a, b) => new Date(b.block_day) - new Date(a.block_day));
         sortedEvents.forEach(e => {
-          const expertObj = this.state.db.users.find(u => u.id === e.expert_id);
+          let expertNameStr = 'N/A';
+          if (e.expertos_asistentes_ids && e.expertos_asistentes_ids.length > 0) {
+            expertNameStr = e.expertos_asistentes_ids.map(id => this.state.db.users.find(u => u.id === id)?.name || id).join(', ');
+          } else {
+            const expertObj = this.state.db.users.find(u => u.id === e.expert_id);
+            expertNameStr = expertObj ? expertObj.name : 'N/A';
+          }
           const formattedDate = new Date(e.block_day + "T00:00:00").toLocaleDateString('es-CL', { day: '2-digit', month: '2-digit' });
           
           let typeBadgeStyle = 'background-color:rgba(22, 163, 74, 0.1); color:#16a34a; font-weight:700;'; // tutoring
@@ -10440,7 +10457,7 @@ const app = {
               <div style="font-weight:600;">${e.title || 'Sesión'}</div>
               <span class="badge" style="font-size:0.65rem; padding:1px 4px; ${typeBadgeStyle}">Semana ${e.week_number} - ${shortType}</span>
             </td>
-            <td>${expertObj?.name || 'N/A'}</td>
+            <td>${expertNameStr}</td>
             <td><strong>${e.executed_minutes}m</strong></td>
           </tr>
         `;
