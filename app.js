@@ -608,13 +608,14 @@ const mxlearnOnboardingModules = {
       intro_pnl: {
         title: "Financial Statements Introduction to Profit and Loss",
         items: [
-          "Completion of Activities"
+          "Module: Financial Statements",
+          "Introduction to Profit & Loss"
         ]
       },
       eod_troubleshooting: {
         title: "Generic EOD Troubleshooting",
         items: [
-          "Completion of Activities"
+          "Generic EOD Troubleshooting"
         ]
       }
     }
@@ -628,7 +629,29 @@ const mxlearnOnboardingModules = {
 };
 
 const onboardingItemUrls = {
-  "Read the attached documents": "https://mxlearn.360learning.com/course/play/6758b7f7a03295ae3449b8e4/attempts/6a233b0a0c8feff1cddaa2c3?preferredLang=en"
+  // Liquidation Module
+  "Read the attached documents": "https://mxlearn.360learning.com/course/play/6758b7f7a03295ae3449b8e4/attempts/6a233b0a0c8feff1cddaa2c3?preferredLang=en",
+  
+  // Accounting Module - Fit for Banking
+  "Module: Double Entry Systems": "https://mxlearn.360learning.com/course/play/5e8b26f0e424ab028b6e6cc4/attempts/6981f665f274ab876974f954?preferredLang=en",
+  "Module: Accounting Principles": "https://mxlearn.360learning.com/course/play/5e8b26f0e424ab028b6e6cc5/attempts/69820a6d84f435f3ed4e69fe?preferredLang=en",
+  "Module: International Financial Reporting Standards": "https://mxlearn.360learning.com/course/play/5e8b26f0e424ab028b6e6cc6/attempts/69824d4131d0be5da0a74029?preferredLang=en",
+  "Module: Valuation Concepts": "https://mxlearn.360learning.com/course/play/5e8b26f0e424ab028b6e6cc7/attempts/698348ba480695ae2bd4f613?preferredLang=en",
+  "Module: IAS Measurements": "https://mxlearn.360learning.com/course/play/5e8b26f0e424ab028b6e6cc8/attempts/69834e6889ad186271342b67?preferredLang=en",
+  "Module: Impairment of Assets": "https://mxlearn.360learning.com/course/play/5e8b26f0e424ab028b6e6cc9/attempts/69835e32480695ae2bd4fba1?preferredLang=en",
+  "Module: Hedge Accounting - IFRS 9": "https://mxlearn.360learning.com/course/play/5e8b26f0e424ab028b6e6ccc/attempts/697a6bf792e8d2797ae64210?preferredLang=en",
+  "Module: Fair Value Measurement - IFRS 13": "https://mxlearn.360learning.com/course/play/5e8b26f0e424ab028b6e6ccb/attempts/69838e14195b37a496921f56?preferredLang=en",
+  "Module: Financial Instruments - IFRS 9": "https://mxlearn.360learning.com/course/play/5e8b26f0e424ab028b6e6cca/attempts/6983a7dc9acd0ff2959cef11?preferredLang=en",
+  "Module: Cash Flow Statement": "https://mxlearn.360learning.com/course/play/5e8b26f0e424ab028b6e6cc2/attempts/6984b9834843055713815673?preferredLang=en",
+  "Module: Income Statement Analysis": "https://mxlearn.360learning.com/course/play/5e8b26f0e424ab028b6e6cc1/attempts/6984f13ef93d1ea32dc047f6?preferredLang=en",
+  "Module: Balance Sheet Analysis": "https://mxlearn.360learning.com/course/play/5e8b26f0e424ab028b6e6cc0/attempts/69853dc8a9d86632e6dc33e0?preferredLang=en",
+
+  // Accounting Module - Financial Statements Introduction to Profit and Loss
+  "Module: Financial Statements": "https://mxlearn.360learning.com/course/play/5e8b26f0e424ab028b6e6cbf/attempts/698543df0aa16474b852050b?preferredLang=en",
+  "Introduction to Profit & Loss": "https://mxlearn.360learning.com/course/play/5f44c06bb1b5105d12176bca/attempts/6985dd19aae0ac9695dd5a1c?preferredLang=en",
+
+  // Accounting Module - Generic EOD Troubleshooting
+  "Generic EOD Troubleshooting": "https://mxlearn.360learning.com/course/play/606f0c184deb1757af672ff8?pathSessionId=6797cd5832d5d3b1f1817767&preferredLang=en"
 };
 
 const bancoPreguntasSemana2 = [
@@ -6228,8 +6251,8 @@ const app = {
         progressPercent.innerText = `${percent}%`;
       }
 
-      // Calculate General Onboarding Progress (across all 36 items: Financial, Accounting, and Liquidation)
-      let generalTotal = 36;
+      // Calculate General Onboarding Progress (across all 37 items: Financial, Accounting, and Liquidation)
+      let generalTotal = 37;
       let generalCompleted = 0;
 
       // 1. Financial Markets (21 items)
@@ -6239,7 +6262,7 @@ const app = {
         }
       });
 
-      // 2. Accounting Modules (14 items across 3 subfolders)
+      // 2. Accounting Modules (15 items across 3 subfolders)
       const accSubfolders = mxlearnOnboardingModules.accounting.subfolders;
       for (const subKey in accSubfolders) {
         accSubfolders[subKey].items.forEach(item => {
