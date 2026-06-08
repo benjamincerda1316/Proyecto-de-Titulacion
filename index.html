@@ -1816,10 +1816,24 @@
                         </button>
                       </div>
                       
+                      <!-- General Progress overview card -->
+                      <div class="card glass-card" style="margin-bottom: 15px; padding: 15px; display: flex; align-items: center; justify-content: space-between; gap: 20px; background: linear-gradient(135deg, rgba(219, 39, 119, 0.03) 0%, rgba(37, 99, 235, 0.03) 100%); border: 1px solid rgba(219, 39, 119, 0.12);">
+                        <div>
+                          <h4 style="margin: 0 0 5px 0; font-size: 0.85rem; color: var(--neutral-dark); font-weight: 700;">
+                            <i class="ti ti-chart-bar" style="color: var(--primary); margin-right: 4px;"></i> Progreso General de Onboarding
+                          </h4>
+                          <p id="inspect-onboarding-general-text" style="margin: 0; font-size: 0.75rem; color: var(--neutral-muted);">0 de 36 videos completados</p>
+                        </div>
+                        <div style="flex-grow: 1; max-width: 250px; background: var(--neutral-light); height: 10px; border-radius: 5px; overflow: hidden;">
+                          <div id="inspect-onboarding-general-bar" style="background: linear-gradient(90deg, var(--primary) 0%, #db2777 100%); width: 0%; height: 100%; transition: width 0.3s ease;"></div>
+                        </div>
+                        <span id="inspect-onboarding-general-percent" style="font-weight: 800; font-size: 0.85rem; color: var(--primary);">0%</span>
+                      </div>
+
                       <!-- Progress overview card -->
                       <div class="card glass-card" style="margin-bottom: 15px; padding: 15px; display: flex; align-items: center; justify-content: space-between; gap: 20px;">
                         <div>
-                          <h4 style="margin: 0 0 5px 0; font-size: 0.85rem; color: var(--neutral-dark);">Progreso del Módulo</h4>
+                          <h4 style="margin: 0 0 5px 0; font-size: 0.85rem; color: var(--neutral-dark);">Progreso del Módulo Seleccionado</h4>
                           <p id="inspect-onboarding-progress-text" style="margin: 0; font-size: 0.75rem; color: var(--neutral-muted);">0 de 21 completados</p>
                         </div>
                         <div style="flex-grow: 1; max-width: 250px; background: var(--neutral-light); height: 10px; border-radius: 5px; overflow: hidden;">

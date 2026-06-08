@@ -6186,13 +6186,58 @@ const app = {
       const progressPercent = document.getElementById('inspect-onboarding-progress-percent');
       
       if (progressText) {
-        progressText.innerText = `${completedCount} de ${totalItems} módulos completados`;
+        progressText.innerText = `${completedCount} de ${totalItems} completados`;
       }
       if (progressBar) {
         progressBar.style.width = `${percent}%`;
       }
       if (progressPercent) {
         progressPercent.innerText = `${percent}%`;
+      }
+
+      // Calculate General Onboarding Progress (across all 36 items: Financial, Accounting, and Liquidation)
+      let generalTotal = 36;
+      let generalCompleted = 0;
+
+      // 1. Financial Markets (21 items)
+      mxlearnOnboardingModules.financial_markets.items.forEach(item => {
+        if (this.getOnboardingCheckState(userId, item)) {
+          generalCompleted++;
+        }
+      });
+
+      // 2. Accounting Modules (14 items across 3 subfolders)
+      const accSubfolders = mxlearnOnboardingModules.accounting.subfolders;
+      for (const subKey in accSubfolders) {
+        accSubfolders[subKey].items.forEach(item => {
+          const storageKey = `Accounting_${subKey}_${item}`;
+          if (this.getOnboardingCheckState(userId, storageKey)) {
+            generalCompleted++;
+          }
+        });
+      }
+
+      // 3. Liquidation Module (1 item)
+      mxlearnOnboardingModules.liquidation.items.forEach(item => {
+        if (this.getOnboardingCheckState(userId, item)) {
+          generalCompleted++;
+        }
+      });
+
+      const generalPercent = Math.round((generalCompleted / generalTotal) * 100);
+
+      const genText = document.getElementById('inspect-onboarding-general-text');
+      const genBar = document.getElementById('inspect-onboarding-general-bar');
+      const genPercent = document.getElementById('inspect-onboarding-general-percent');
+
+      if (genText) {
+        genText.innerText = `${generalCompleted} de ${generalTotal} videos/módulos completados`;
+      }
+      if (genBar) {
+        genBar.style.width = `${generalPercent}%`;
+      }
+      if (genPercent) {
+        genPercent.innerText = `${generalPercent}%`;
       }
     } catch (err) {
       console.error("Error rendering inspected onboarding modules:", err);
