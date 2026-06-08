@@ -589,7 +589,7 @@ const mxlearnOnboardingModules = {
     hasSubfolders: true,
     subfolders: {
       fit_for_banking: {
-        title: "Fit for Banking",
+        title: "Accounting Fundamentals for Newcomers",
         items: [
           "Module: Double Entry Systems",
           "Module: Accounting Principles",
@@ -602,13 +602,13 @@ const mxlearnOnboardingModules = {
           "Module: Financial Instruments - IFRS 9",
           "Module: Cash Flow Statement",
           "Module: Income Statement Analysis",
-          "Module: Balance Sheet Analysis"
+          "Module: Balance Sheet Analysis",
+          "Module: Financial Statements"
         ]
       },
       intro_pnl: {
         title: "Financial Statements Introduction to Profit and Loss",
         items: [
-          "Module: Financial Statements",
           "Introduction to Profit & Loss"
         ]
       },
@@ -3611,7 +3611,7 @@ const app = {
       subfolderHtml = `
         <div class="onboarding-subfolders-tabs" style="display: flex; gap: 8px; margin-bottom: 12px; margin-top: 5px; border-bottom: 1px dashed var(--neutral-border); padding-bottom: 8px;">
           <button class="folder-subtab-btn ${subKey === 'fit_for_banking' ? 'active' : ''}" id="btn-subfolder-fit" onclick="app.switchAccountingSubfolder('fit_for_banking')">
-            <i class="ti ti-folder-open"></i> Fit for Banking
+            <i class="ti ti-folder-open"></i> Accounting Fundamentals for Newcomers
           </button>
           <button class="folder-subtab-btn ${subKey === 'intro_pnl' ? 'active' : ''}" id="btn-subfolder-pnl" onclick="app.switchAccountingSubfolder('intro_pnl')">
             <i class="ti ti-folder-open"></i> Financial Statements Introduction to Profit and Loss
@@ -6158,7 +6158,7 @@ const app = {
         subfolderHtml = `
           <div class="onboarding-subfolders-tabs" style="display: flex; gap: 8px; margin-bottom: 12px; margin-top: 5px; border-bottom: 1px dashed var(--neutral-border); padding-bottom: 8px; grid-column: span 3; width: 100%;">
             <button class="folder-subtab-btn ${subKey === 'fit_for_banking' ? 'active' : ''}" id="btn-inspect-subfolder-fit" onclick="app.switchInspectAccountingSubfolder('fit_for_banking')">
-              <i class="ti ti-folder-open"></i> Fit for Banking
+              <i class="ti ti-folder-open"></i> Accounting Fundamentals for Newcomers
             </button>
             <button class="folder-subtab-btn ${subKey === 'intro_pnl' ? 'active' : ''}" id="btn-inspect-subfolder-pnl" onclick="app.switchInspectAccountingSubfolder('intro_pnl')">
               <i class="ti ti-folder-open"></i> Financial Statements Introduction to Profit and Loss
