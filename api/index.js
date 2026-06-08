@@ -199,6 +199,14 @@ async function initDatabase() {
     )
   `);
 
+  // Add extra columns if they don't exist
+  await db.exec(`ALTER TABLE calendar_events ADD COLUMN IF NOT EXISTS organizador_id TEXT`);
+  await db.exec(`ALTER TABLE calendar_events ADD COLUMN IF NOT EXISTS expertos_asistentes_ids TEXT`);
+  await db.exec(`ALTER TABLE calendar_events ADD COLUMN IF NOT EXISTS group_id TEXT`);
+  await db.exec(`ALTER TABLE calendar_events ADD COLUMN IF NOT EXISTS tipo_sesion TEXT`);
+  await db.exec(`ALTER TABLE calendar_events ADD COLUMN IF NOT EXISTS estado_confirmacion TEXT`);
+  await db.exec(`ALTER TABLE calendar_events ADD COLUMN IF NOT EXISTS bloqueado_edicion BOOLEAN DEFAULT FALSE`);
+
   // Create Historial Evaluaciones table
   await db.exec(`
     CREATE TABLE IF NOT EXISTS historial_evaluaciones (
@@ -462,7 +470,13 @@ app.get('/api/db', async (req, res) => {
       executed_minutes: ev.executed_minutes,
       status: ev.status,
       block_reason: ev.block_reason,
-      week_number: ev.week_number
+      week_number: ev.week_number,
+      organizador_id: ev.organizador_id,
+      expertos_asistentes_ids: ev.expertos_asistentes_ids ? JSON.parse(ev.expertos_asistentes_ids) : null,
+      group_id: ev.group_id,
+      tipo_sesion: ev.tipo_sesion,
+      estado_confirmacion: ev.estado_confirmacion,
+      bloqueado_edicion: ev.bloqueado_edicion
     }));
 
     // Parse templates
@@ -599,9 +613,29 @@ app.post('/api/db/save', async (req, res) => {
       if (data.calendar_events) {
         for (const ev of data.calendar_events) {
           await txDb.run(
-            `INSERT INTO calendar_events (id, title, type, junior_id, expert_id, block_day, time_start, time_end, planned_minutes, executed_minutes, status, block_reason, week_number) 
-             VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13)`,
-            [ev.id, ev.title, ev.type, ev.junior_id, ev.expert_id, ev.block_day, ev.time_start, ev.time_end, ev.planned_minutes, ev.executed_minutes, ev.status, ev.block_reason, ev.week_number]
+            `INSERT INTO calendar_events (id, title, type, junior_id, expert_id, block_day, time_start, time_end, planned_minutes, executed_minutes, status, block_reason, week_number, organizador_id, expertos_asistentes_ids, group_id, tipo_sesion, estado_confirmacion, bloqueado_edicion) 
+             VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16, $17, $18, $19)`,
+            [
+              ev.id, 
+              ev.title, 
+              ev.type, 
+              ev.junior_id, 
+              ev.expert_id, 
+              ev.block_day, 
+              ev.time_start, 
+              ev.time_end, 
+              ev.planned_minutes, 
+              ev.executed_minutes, 
+              ev.status, 
+              ev.block_reason, 
+              ev.week_number,
+              ev.organizador_id || null,
+              ev.expertos_asistentes_ids ? JSON.stringify(ev.expertos_asistentes_ids) : null,
+              ev.group_id || null,
+              ev.tipo_sesion || null,
+              ev.estado_confirmacion || null,
+              ev.bloqueado_edicion || false
+            ]
           );
         }
       }

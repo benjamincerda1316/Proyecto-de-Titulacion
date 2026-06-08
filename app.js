@@ -8265,6 +8265,7 @@ const app = {
         // Show events for the logged-in tutor/expert, or coaching sessions where they are the recipient
         dayEvents = allEvents.filter(e => e.block_day === dateStr && (
           e.expert_id === this.state.activeUser.id || 
+          (e.expertos_asistentes_ids && e.expertos_asistentes_ids.includes(this.state.activeUser.id)) ||
           (e.type === 'coaching' && e.junior_id === this.state.activeUser.id)
         ));
       } else if (viewRole === 'manager') {
