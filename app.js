@@ -1296,7 +1296,8 @@ const app = {
         semana_actual: 8, 
         avg_score: 80,
         status: "on_track",
-        progreso_mallas: Array(12).fill(null).map((_, i) => ({ completado: i < 7, nota: i < 7 ? 80 : null }))
+        progreso_mallas: Array(12).fill(null).map((_, i) => ({ completado: i < 7, nota: i < 7 ? 80 : null })),
+        entry_date: "2026-04-13"
       }
     ],
     
@@ -7657,12 +7658,7 @@ const app = {
       return;
     }
 
-    const startOfOnboarding = new Date("2026-04-20T00:00:00");
-    const diffTime = Math.abs(selectedDate - startOfOnboarding);
-    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-    let weekNum = Math.ceil((diffDays + 1) / 7);
-    if (weekNum < 1) weekNum = 1;
-    if (weekNum > 12) weekNum = 12;
+    const weekNum = this.getWeekForJunior(juniorId, date);
 
     const [h, m] = time.split(':').map(Number);
     const endTotalMins = h * 60 + m + duration;
@@ -8285,8 +8281,38 @@ const app = {
         searchInput.placeholder = "Escribe el nombre del relator...";
       }
     }
-    
     this.populateManagerDropdowns();
+  },
+
+  getWeekForJunior(juniorId, dateStr) {
+    const junior = this.state.db.users.find(u => u.id === juniorId);
+    const entryDateStr = (junior && junior.entry_date) || "2026-04-13";
+    
+    const entry = new Date(entryDateStr + "T00:00:00");
+    const target = new Date(dateStr + "T00:00:00");
+    
+    const diffTime = target - entry;
+    if (diffTime < 0) return 1;
+    
+    const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
+    let weekNum = Math.floor(diffDays / 7) + 1;
+    if (weekNum < 1) weekNum = 1;
+    if (weekNum > 12) weekNum = 12;
+    return weekNum;
+  },
+
+  updateMasterclassWeekSelect() {
+    const juniorSelect = document.getElementById('masterclass-junior-select');
+    const dateInput = document.getElementById('masterclass-date');
+    const weekSelect = document.getElementById('masterclass-week-select');
+    if (!juniorSelect || !dateInput || !weekSelect) return;
+    
+    const juniorId = juniorSelect.value;
+    const dateVal = dateInput.value;
+    if (!juniorId || !dateVal) return;
+    
+    const calculatedWeek = this.getWeekForJunior(juniorId, dateVal);
+    weekSelect.value = calculatedWeek;
   },
 
   populateManagerDropdowns() {
@@ -9101,12 +9127,7 @@ const app = {
       return;
     }
     
-    const startOfOnboarding = new Date("2026-05-04T00:00:00");
-    const diffTime = Math.abs(selectedDate - startOfOnboarding);
-    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-    let weekNum = Math.ceil((diffDays + 1) / 7);
-    if (weekNum < 1) weekNum = 1;
-    if (weekNum > 12) weekNum = 12;
+    const weekNum = this.getWeekForJunior(this.state.activeUser.id, date);
     
     const [h, m] = time.split(':').map(Number);
     const endTotalMins = h * 60 + m + duration;
@@ -9480,7 +9501,7 @@ const app = {
       executed_minutes: null,
       status: "aprobado",
       block_reason: `Reunión de coaching individual para evaluar avance y soft skills.`,
-      week_number: this.state.calendarWeekNum || 3,
+      week_number: this.getWeekForJunior(juniorId, date),
       organizador_id: this.state.activeUser.id,
       estado_confirmacion: "FIXED",
       bloqueado_edicion: false
@@ -9893,6 +9914,19 @@ const app = {
     // Ensure tutor select group is visible initially (since JUNIOR is default)
     const tutorGroup = document.getElementById('new-member-tutor-group');
     if (tutorGroup) tutorGroup.style.display = 'block';
+
+    // Ensure entry date group is visible initially and defaults to local today
+    const entryDateGroup = document.getElementById('new-member-entry-date-group');
+    if (entryDateGroup) entryDateGroup.style.display = 'block';
+    
+    const entryDateInput = document.getElementById('new-member-entry-date');
+    if (entryDateInput) {
+      entryDateInput.setAttribute('required', 'true');
+      const today = new Date();
+      const offset = today.getTimezoneOffset();
+      const localToday = new Date(today.getTime() - (offset * 60 * 1000));
+      entryDateInput.value = localToday.toISOString().split('T')[0];
+    }
   },
   
   closeAddMemberModal() {
@@ -9964,6 +9998,18 @@ const app = {
     if (tutorGroup) {
       tutorGroup.style.display = value === 'JUNIOR' ? 'block' : 'none';
     }
+    const entryDateGroup = document.getElementById('new-member-entry-date-group');
+    const entryDateInput = document.getElementById('new-member-entry-date');
+    if (entryDateGroup) {
+      entryDateGroup.style.display = value === 'JUNIOR' ? 'block' : 'none';
+    }
+    if (entryDateInput) {
+      if (value === 'JUNIOR') {
+        entryDateInput.setAttribute('required', 'true');
+      } else {
+        entryDateInput.removeAttribute('required');
+      }
+    }
   },
 
   handleCreateMember(event) {
@@ -10001,6 +10047,7 @@ const app = {
       newMember.current_week = 1;
       newMember.avg_score = 0;
       newMember.status = "on_track";
+      newMember.entry_date = document.getElementById('new-member-entry-date').value;
       
       // Initialize progress record
       const progress = {
@@ -10071,9 +10118,29 @@ const app = {
       row.className = "border-b border-gray-100 hover:bg-gray-50 transition-colors";
       
       // Estado visual de la malla técnica
-      const estadoMalla = user.rol === 'JUNIOR' 
-        ? `<span class="text-xs bg-pink-100 text-pink-700 px-2.5 py-1 rounded-full font-medium">Semana ${user.semana_actual || user.current_week || 1} (Onboarding)</span>` 
-        : `<span class="text-xs bg-green-100 text-green-700 px-2.5 py-1 rounded-full font-medium">Habilitado (Autónomo)</span>`;
+      let estadoMalla = '';
+      if (user.rol === 'JUNIOR') {
+        const today = new Date();
+        const todayStr = `${today.getFullYear()}-${(today.getMonth()+1).toString().padStart(2, '0')}-${today.getDate().toString().padStart(2, '0')}`;
+        const cronWeek = this.getWeekForJunior(user.id, todayStr);
+        const entryDateFormatted = user.entry_date ? user.entry_date : 'No registrada';
+        
+        estadoMalla = `
+          <div style="display: flex; flex-direction: column; gap: 4px; align-items: flex-start;">
+            <span class="text-xs bg-pink-100 text-pink-700 px-2.5 py-1 rounded-full font-medium">
+              Semana ${user.semana_actual || user.current_week || 1} (Progreso)
+            </span>
+            <span class="text-xs text-gray-500" style="margin-left: 4px; font-weight: 500;">
+              Semana ${cronWeek} (Cronológica)
+            </span>
+            <span class="text-xs text-gray-400" style="margin-left: 4px; font-style: italic;">
+              Ingreso: ${entryDateFormatted}
+            </span>
+          </div>
+        `;
+      } else {
+        estadoMalla = `<span class="text-xs bg-green-100 text-green-700 px-2.5 py-1 rounded-full font-medium">Habilitado (Autónomo)</span>`;
+      }
 
       // Use user.rol in uppercase if set, otherwise fallback from user.role mapping
       const currentRol = user.rol || (user.role === 'admin' ? 'MANAGER' : user.role === 'tutor' ? 'TUTOR' : user.role === 'senior' ? 'SENIOR' : 'JUNIOR');

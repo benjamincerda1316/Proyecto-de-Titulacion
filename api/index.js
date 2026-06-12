@@ -140,9 +140,17 @@ async function initDatabase() {
       current_week INTEGER,
       avg_score INTEGER,
       status TEXT,
-      progreso_mallas_json TEXT
+      progreso_mallas_json TEXT,
+      entry_date TEXT
     )
   `);
+
+  // Run dynamic schema migration to ensure entry_date exists in live databases
+  try {
+    await db.exec(`ALTER TABLE users ADD COLUMN IF NOT EXISTS entry_date TEXT`);
+  } catch (err) {
+    console.log('ALTER TABLE users entry_date notice:', err.message);
+  }
 
   // Create Tutor Junior Mapping table
   await db.exec(`
@@ -295,16 +303,16 @@ async function initDatabase() {
       { id: "USR-CAROLINA", name: "Carolina Sepúlveda", nombre: "Carolina Sepúlveda", email: "carolina.sepulveda@murex.cl", password: "password", role: "tutor", rol: "TUTOR", avatar_initials: "CS" },
       { id: "USR-VALENTINA", name: "Valentina Lara", nombre: "Valentina Lara", email: "valentina.lara@murex.cl", password: "password", role: "tutor", rol: "TUTOR", avatar_initials: "VL" },
       { id: "USR-MUREX-LEARNING", name: "Murex Learning", nombre: "Murex Learning", email: "murex.learning@murex.cl", password: "password", role: "senior", rol: "SENIOR", avatar_initials: "ML" },
-      { id: "USR-FRANCISCA", name: "Francisca Le Dantec", nombre: "Francisca Le Dantec", email: "francisca.ledantec@murex.cl", password: "password", role: "consultant", rol: "JUNIOR", avatar_initials: "FD", current_week: 8, avg_score: 80, status: "on_track" }
+      { id: "USR-FRANCISCA", name: "Francisca Le Dantec", nombre: "Francisca Le Dantec", email: "francisca.ledantec@murex.cl", password: "password", role: "consultant", rol: "JUNIOR", avatar_initials: "FD", current_week: 8, avg_score: 80, status: "on_track", entry_date: "2026-04-13" }
     ];
 
     const progresoMallas = Array(12).fill(null).map((_, i) => ({ completado: i < 7, nota: i < 7 ? 80 : null }));
 
     for (const u of defaultUsers) {
       await db.run(
-        `INSERT INTO users (id, name, nombre, email, password, role, rol, avatar_initials, current_week, avg_score, status, progreso_mallas_json) 
-         VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
-        [u.id, u.name, u.nombre, u.email, u.password, u.role, u.rol, u.avatar_initials, u.current_week || 1, u.avg_score || 0, u.status || 'on_track', JSON.stringify(u.id === 'USR-FRANCISCA' ? progresoMallas : [])]
+        `INSERT INTO users (id, name, nombre, email, password, role, rol, avatar_initials, current_week, avg_score, status, progreso_mallas_json, entry_date) 
+         VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+        [u.id, u.name, u.nombre, u.email, u.password, u.role, u.rol, u.avatar_initials, u.current_week || 1, u.avg_score || 0, u.status || 'on_track', JSON.stringify(u.id === 'USR-FRANCISCA' ? progresoMallas : []), u.entry_date || null]
       );
     }
 
@@ -374,6 +382,15 @@ async function initDatabase() {
     );
 
     console.log('Default users and basic progress seeded successfully.');
+  }
+
+  // Ensure default entry dates for existing users (Francisca Le Dantec and Juanito Perez)
+  try {
+    await db.run("UPDATE users SET entry_date = '2026-04-13' WHERE id = 'USR-FRANCISCA' AND (entry_date IS NULL OR entry_date = '')");
+    await db.run("UPDATE users SET entry_date = '2026-06-08' WHERE email = 'juanperez@murex.cl' AND (entry_date IS NULL OR entry_date = '')");
+    console.log('Migrated entry dates for Francisca and Juanito Perez successfully.');
+  } catch (err) {
+    console.error('Failed to migrate entry_dates for existing users:', err.message);
   }
 
   console.log('Database initialized successfully.');
@@ -454,7 +471,8 @@ app.get('/api/db', async (req, res) => {
       semana_actual: u.current_week,
       avg_score: u.avg_score,
       status: u.status,
-      progreso_mallas: JSON.parse(u.progreso_mallas_json || '[]')
+      progreso_mallas: JSON.parse(u.progreso_mallas_json || '[]'),
+      entry_date: u.entry_date
     }));
 
     // Parse evaluation history
@@ -569,9 +587,9 @@ app.post('/api/db/save', async (req, res) => {
       await txDb.exec('DELETE FROM users');
       for (const u of data.users) {
         await txDb.run(
-          `INSERT INTO users (id, name, nombre, email, password, role, rol, avatar_initials, current_week, avg_score, status, progreso_mallas_json) 
-           VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12)`,
-          [u.id, u.name, u.nombre || u.name, u.email, u.password, u.role, u.rol, u.avatar_initials, u.current_week || u.semana_actual, u.avg_score, u.status, JSON.stringify(u.progreso_mallas || [])]
+          `INSERT INTO users (id, name, nombre, email, password, role, rol, avatar_initials, current_week, avg_score, status, progreso_mallas_json, entry_date) 
+           VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13)`,
+          [u.id, u.name, u.nombre || u.name, u.email, u.password, u.role, u.rol, u.avatar_initials, u.current_week || u.semana_actual, u.avg_score, u.status, JSON.stringify(u.progreso_mallas || []), u.entry_date || null]
         );
       }
 
