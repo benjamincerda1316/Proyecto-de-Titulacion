@@ -5392,20 +5392,44 @@ const app = {
       this.showToast("Solo se aceptan archivos PDF.", "danger");
       return;
     }
+
+    // Vercel serverless request body size limit is 4.5MB. We limit to 4.0MB to be safe.
+    if (file.size > 4 * 1024 * 1024) {
+      this.showToast("El archivo es muy grande. El límite máximo es 4MB.", "danger");
+      return;
+    }
     
     const weekNum = this.state.selectedWeekNum;
     const userId = this.state.activeUser.id;
     const progress = this.state.db.consultant_progress[userId];
     
-    // Guardar el archivo real en memoria para la sesión activa
+    // Guardar el archivo real en memoria y persistir en la base de datos
     window.uploadedFiles = window.uploadedFiles || {};
     const reader = new FileReader();
-    reader.onload = (event) => {
+    reader.onload = async (event) => {
+      const base64Data = event.target.result;
+      
       window.uploadedFiles[`${userId}_${weekNum}`] = {
         name: file.name,
         type: file.type,
-        dataUrl: event.target.result
+        dataUrl: base64Data
       };
+
+      try {
+        await fetch('/api/upload-file', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            user_id: userId,
+            week_number: weekNum,
+            file_name: file.name,
+            file_type: file.type,
+            file_data: base64Data
+          })
+        });
+      } catch (err) {
+        console.error('Error persisting file upload:', err);
+      }
     };
     reader.readAsDataURL(file);
 
@@ -6617,7 +6641,7 @@ const app = {
   },
 
   // Mock download helper
-  downloadMockFile(e) {
+  async downloadMockFile(e) {
     e.preventDefault();
     const userId = this.state.inspectedUser.id;
     const weekNum = this.state.inspectedWeekNum;
@@ -6627,7 +6651,26 @@ const app = {
     
     // Check if the actual file exists in-memory
     window.uploadedFiles = window.uploadedFiles || {};
-    const inMemoryFile = window.uploadedFiles[`${userId}_${weekNum}`];
+    let inMemoryFile = window.uploadedFiles[`${userId}_${weekNum}`];
+    
+    // Try to fetch from server if not in-memory
+    if (!inMemoryFile) {
+      this.showToast("Buscando entregable en el servidor...");
+      try {
+        const response = await fetch(`/api/download-file?user_id=${userId}&week_number=${weekNum}`);
+        if (response.ok) {
+          const data = await response.json();
+          inMemoryFile = {
+            name: data.file_name,
+            type: data.file_type,
+            dataUrl: data.file_data
+          };
+          window.uploadedFiles[`${userId}_${weekNum}`] = inMemoryFile;
+        }
+      } catch (err) {
+        console.error('Failed to download file from database:', err);
+      }
+    }
     
     if (inMemoryFile) {
       // Download the actual uploaded file!

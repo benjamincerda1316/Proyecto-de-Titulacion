@@ -270,6 +270,18 @@ async function initDatabase() {
     )
   `);
 
+  // Create Uploaded Files table (to persist deliverables without localstorage limit)
+  await db.exec(`
+    CREATE TABLE IF NOT EXISTS uploaded_files (
+      user_id TEXT,
+      week_number INTEGER,
+      file_name TEXT,
+      file_type TEXT,
+      file_data TEXT,
+      PRIMARY KEY (user_id, week_number)
+    )
+  `);
+
   const usersCount = await db.get('SELECT COUNT(*) as count FROM users');
   if (!usersCount || parseInt(usersCount.count, 10) === 0) {
     console.log('Seeding default users into Supabase...');
@@ -734,6 +746,55 @@ app.post('/api/db/save', async (req, res) => {
   }).catch((e) => {
     console.error('Fatal queue error:', e);
   });
+});
+
+// POST /api/upload-file (persists trainee PDF upload)
+app.post('/api/upload-file', async (req, res) => {
+  try {
+    if (initPromise) await initPromise;
+    const { user_id, week_number, file_name, file_type, file_data } = req.body;
+    if (!user_id || !week_number || !file_name || !file_data) {
+      return res.status(400).json({ error: 'Missing required fields' });
+    }
+
+    await db.run(
+      `INSERT INTO uploaded_files (user_id, week_number, file_name, file_type, file_data)
+       VALUES (?, ?, ?, ?, ?)
+       ON CONFLICT (user_id, week_number) DO UPDATE
+       SET file_name = EXCLUDED.file_name, file_type = EXCLUDED.file_type, file_data = EXCLUDED.file_data`,
+      [user_id, parseInt(week_number), file_name, file_type || 'application/pdf', file_data]
+    );
+
+    res.json({ success: true });
+  } catch (err) {
+    console.error('Error in /api/upload-file:', err);
+    res.status(500).json({ error: err.message });
+  }
+});
+
+// GET /api/download-file (fetches trainee PDF upload)
+app.get('/api/download-file', async (req, res) => {
+  try {
+    if (initPromise) await initPromise;
+    const { user_id, week_number } = req.query;
+    if (!user_id || !week_number) {
+      return res.status(400).json({ error: 'Missing required parameters' });
+    }
+
+    const row = await db.get(
+      'SELECT file_name, file_type, file_data FROM uploaded_files WHERE user_id = ? AND week_number = ?',
+      [user_id, parseInt(week_number)]
+    );
+
+    if (!row) {
+      return res.status(404).json({ error: 'File not found' });
+    }
+
+    res.json(row);
+  } catch (err) {
+    console.error('Error in /api/download-file:', err);
+    res.status(500).json({ error: err.message });
+  }
 });
 
 const PORT = process.env.PORT || 3000;
