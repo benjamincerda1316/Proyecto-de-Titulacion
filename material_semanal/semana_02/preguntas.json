@@ -1,26 +1,26 @@
 [
   {
-    "question": "¿Cuál es la función principal del Trade Query en Murex?",
+    "question": "What is the primary function of the Trade Query in Murex?",
     "options": [
-      "Bookear trades",
-      "Realizar eventos a trades",
-      "Buscar y filtrar trades",
-      "Replicar trades"
+      "Book trades",
+      "Perform events on trades",
+      "Search and filter trades",
+      "Replicate trades"
     ],
     "correct": 2
   },
   {
-    "question": "¿Cuál es la función principal del e-Tradepad en Murex?",
+    "question": "What is the primary function of the e-Tradepad in Murex?",
     "options": [
-      "Bookear trades",
-      "Realizar eventos a trades",
-      "Buscar y filtrar trades",
-      "Replicar trades"
+      "Book trades",
+      "Perform events on trades",
+      "Search and filter trades",
+      "Replicate trades"
     ],
     "correct": 0
   },
   {
-    "question": "¿Con qué perfil se inicializa la contabilidad en MX.3?",
+    "question": "With which profile is accounting initialized in MX.3?",
     "options": [
       "MO",
       "FO",
@@ -30,7 +30,7 @@
     "correct": 3
   },
   {
-    "question": "¿Con qué perfil se editan las reglas contables en MX.3?",
+    "question": "With which profile are accounting rules edited in MX.3?",
     "options": [
       "MO",
       "FO",
@@ -40,7 +40,7 @@
     "correct": 3
   },
   {
-    "question": "¿Con cuál aplicación puedo ver mis vacaciones?",
+    "question": "With which application can I view my vacations?",
     "options": [
       "Workday",
       "MXIntra",
@@ -50,7 +50,7 @@
     "correct": 0
   },
   {
-    "question": "¿Cuál aplicación me da información y documentación sobre casos reales de clientes y herramientas para resolver casos?",
+    "question": "Which application provides information and documentation on real client cases and tools to resolve cases?",
     "options": [
       "Pega Case",
       "MXDoc",
@@ -60,7 +60,7 @@
     "correct": 0
   },
   {
-    "question": "¿Cuál aplicación tiene la documentación oficial de Murex para configurar?",
+    "question": "Which application has the official Murex documentation for configuration?",
     "options": [
       "Pega Case",
       "MXDoc",
@@ -70,17 +70,17 @@
     "correct": 1
   },
   {
-    "question": "¿Cada cuánto se rellena el timesheet?",
+    "question": "How often is the timesheet filled out?",
     "options": [
-      "Cada 1 semana",
-      "Cada 15 días",
-      "Cada 1 mes",
-      "Cada 2 meses"
+      "Every 1 week",
+      "Every 15 days",
+      "Every 1 month",
+      "Every 2 months"
     ],
     "correct": 1
   },
   {
-    "question": "¿A qué estado financiero va un Notional en contabilidad?",
+    "question": "To which financial statement does a Notional go in accounting?",
     "options": [
       "Balance Sheet",
       "Off-Balance Sheet",
@@ -90,7 +90,7 @@
     "correct": 1
   },
   {
-    "question": "¿A qué estado financiero va un MTM (Mark-to-Market) en contabilidad?",
+    "question": "To which financial statement does an MTM (Mark-to-Market) go in accounting?",
     "options": [
       "Balance Sheet",
       "Off-Balance Sheet",
@@ -100,37 +100,37 @@
     "correct": 0
   },
   {
-    "question": "¿Qué es un FX Swap?",
+    "question": "What is an FX Swap?",
     "options": [
-      "La compra de una divisa a precio spot sin compromiso de devolución",
-      "El intercambio de dos divisas en una fecha spot y el intercambio inverso en una fecha futura pactada",
-      "Un contrato de opción sobre divisas",
-      "Un futuro sobre tipo de cambio negociado en bolsa"
+      "The purchase of a currency at spot price without a commitment to return it",
+      "The exchange of two currencies on a spot date and the reverse exchange on an agreed future date",
+      "A currency option contract",
+      "An exchange rate future traded on an exchange"
     ],
     "correct": 1
   },
   {
-    "question": "¿Cuáles son las dos patas de un FX Swap?",
+    "question": "What are the two legs of an FX Swap?",
     "options": [
-      "Near leg y Far leg",
-      "Buy leg y Sell leg",
-      "Open leg y Close leg",
-      "Long leg y Short leg"
+      "Near leg and Far leg",
+      "Buy leg and Sell leg",
+      "Open leg and Close leg",
+      "Long leg and Short leg"
     ],
     "correct": 0
   },
   {
-    "question": "¿Cuál es la diferencia entre el Trade Date y el Settlement Date?",
+    "question": "What is the difference between the Trade Date and the Settlement Date?",
     "options": [
-      "Son la misma fecha",
-      "El Trade Date es cuando se acuerda la operación; el Settlement Date es cuando se intercambian los fondos",
-      "El Settlement Date es siempre anterior al Trade Date",
-      "El Trade Date aplica solo a opciones"
+      "They are the same date",
+      "The Trade Date is when the transaction is agreed; the Settlement Date is when the funds are exchanged",
+      "The Settlement Date is always before the Trade Date",
+      "The Trade Date applies only to options"
     ],
     "correct": 1
   },
   {
-    "question": "En un FX Spot, ¿cuántos días hábiles después del Trade Date ocurre el Settlement?",
+    "question": "In an FX Spot, how many business days after the Trade Date does Settlement occur?",
     "options": [
       "T+0",
       "T+1",
@@ -140,57 +140,57 @@
     "correct": 2
   },
   {
-    "question": "¿Qué representa el \"swap points\" o puntos swap en un FX Swap?",
+    "question": "What do the \"swap points\" represent in an FX Swap?",
     "options": [
-      "La comisión cobrada por el banco",
-      "La diferencia entre el tipo de cambio de la near leg y la far leg, derivada del diferencial de tasas de interés",
-      "El margen de crédito del cliente",
-      "El tipo de cambio spot vigente al vencimiento"
+      "The fee charged by the bank",
+      "The difference between the exchange rate of the near leg and the far leg, derived from the interest rate differential",
+      "The client's credit margin",
+      "The spot exchange rate in effect at maturity"
     ],
     "correct": 1
   },
   {
-    "question": "¿Qué riesgo principal cubre un FX Swap?",
+    "question": "What main risk does an FX Swap cover?",
     "options": [
-      "Riesgo de crédito",
-      "Riesgo de tipo de interés",
-      "Riesgo de liquidez y financiación en divisas",
-      "Riesgo operacional"
+      "Credit risk",
+      "Interest rate risk",
+      "Liquidity and funding risk in foreign currencies",
+      "Operational risk"
     ],
     "correct": 2
   },
   {
-    "question": "¿Qué es el Roll-over en un FX Swap?",
+    "question": "What is the Roll-over in an FX Swap?",
     "options": [
-      "Cancelar anticipadamente un swap",
-      "Extender la fecha de vencimiento de la far leg a una fecha más lejana",
-      "Cambiar la divisa del contrato",
-      "Convertir un FX Swap en un FX Forward"
+      "Cancel a swap early",
+      "Extend the maturity date of the far leg to a further date",
+      "Change the currency of the contract",
+      "Convert an FX Swap into an FX Forward"
     ],
     "correct": 1
   },
   {
-    "question": "En un FX Swap, ¿qué queda fijo durante toda la vida del contrato?",
+    "question": "In an FX Swap, what remains fixed during the entire life of the contract?",
     "options": [
-      "El tipo de cambio spot de mercado",
-      "El diferencial (swap points) entre ambas patas",
-      "La tasa de interés de mercado",
-      "El MTM de la operación"
+      "The market spot exchange rate",
+      "The differential (swap points) between both legs",
+      "The market interest rate",
+      "The MTM of the transaction"
     ],
     "correct": 1
   },
   {
-    "question": "¿Cómo se registra contablemente la near leg de un FX Swap en la fecha de liquidación?",
+    "question": "How is the near leg of an FX Swap recorded in accounting on the settlement date?",
     "options": [
-      "Como ingreso en el Income Statement",
-      "Como un activo y un pasivo en el Balance Sheet por el intercambio de nominales",
-      "Directamente como Off-Balance Sheet",
-      "Solo se registra al vencimiento"
+      "As income in the Income Statement",
+      "As an asset and a liability in the Balance Sheet due to the exchange of nominals",
+      "Directly as Off-Balance Sheet",
+      "Only recorded at maturity"
     ],
     "correct": 1
   },
   {
-    "question": "¿Qué perfil de Murex se utiliza típicamente para bookear un FX Swap?",
+    "question": "Which Murex profile is typically used to book an FX Swap?",
     "options": [
       "HOUSEKEEPER",
       "CONFIG",
@@ -200,247 +200,247 @@
     "correct": 2
   },
   {
-    "question": "¿Un FX Swap genera riesgo de mercado de tipo de cambio neto?",
+    "question": "Does an FX Swap generate net foreign exchange market risk?",
     "options": [
-      "Sí, igual que un spot",
-      "No, porque las dos patas se compensan en montos nominales",
-      "Solo en la far leg",
-      "Solo si el cliente incumple"
+      "Yes, the same as a spot",
+      "No, because the two legs offset each other in nominal amounts",
+      "Only on the far leg",
+      "Only if the client defaults"
     ],
     "correct": 1
   },
   {
-    "question": "¿Qué es una opción Call?",
+    "question": "What is a Call option?",
     "options": [
-      "El derecho a vender un activo a un precio determinado",
-      "La obligación de comprar un activo a un precio determinado",
-      "El derecho a comprar un activo a un precio determinado",
-      "Un contrato de intercambio de flujos"
+      "The right to sell an asset at a set price",
+      "The obligation to buy an asset at a set price",
+      "The right to buy an asset at a set price",
+      "A contract to exchange flows"
     ],
     "correct": 2
   },
   {
-    "question": "¿Qué es una opción Put?",
+    "question": "What is a Put option?",
     "options": [
-      "El derecho a comprar un activo a un precio determinado",
-      "El derecho a vender un activo a un precio determinado",
-      "La obligación de vender un activo",
-      "Un forward con opcionalidad"
+      "The right to buy an asset at a set price",
+      "The right to sell an asset at a set price",
+      "The obligation to sell an asset",
+      "A forward with optionality"
     ],
     "correct": 1
   },
   {
-    "question": "¿Qué es el precio de ejercicio (strike) en una opción?",
+    "question": "What is the exercise price (strike) in an option?",
     "options": [
-      "El precio de mercado del subyacente en la fecha de vencimiento",
-      "El precio al cual el comprador puede ejercer su derecho de compra o venta",
-      "La prima pagada por la opción",
-      "El diferencial entre bid y ask"
+      "The market price of the underlying on the maturity date",
+      "The price at which the buyer can exercise their right to buy or sell",
+      "The premium paid for the option",
+      "The bid-ask spread"
     ],
     "correct": 1
   },
   {
-    "question": "¿Qué es la prima de una opción?",
+    "question": "What is the premium of an option?",
     "options": [
-      "El precio de ejercicio pactado",
-      "El beneficio obtenido al ejercer la opción",
-      "El precio que paga el comprador al vendedor por adquirir el derecho",
-      "La garantía depositada en cámara de compensación"
+      "The agreed strike price",
+      "The profit obtained by exercising the option",
+      "The price paid by the buyer to the seller to acquire the right",
+      "The collateral deposited in the clearing house"
     ],
     "correct": 2
   },
   {
-    "question": "¿Cuándo se dice que una opción Call está \"In the Money\" (ITM)?",
+    "question": "When is a Call option said to be \"In the Money\" (ITM)?",
     "options": [
-      "Cuando el precio del subyacente es igual al strike",
-      "Cuando el precio del subyacente es inferior al strike",
-      "Cuando el precio del subyacente es superior al strike",
-      "Cuando la prima es mayor que el strike"
+      "When the price of the underlying is equal to the strike",
+      "When the price of the underlying is below the strike",
+      "When the price of the underlying is above the strike",
+      "When the premium is greater than the strike"
     ],
     "correct": 2
   },
   {
-    "question": "¿Qué es el Delta de una opción?",
+    "question": "What is the Delta of an option?",
     "options": [
-      "El tiempo restante hasta el vencimiento",
-      "La sensibilidad del precio de la opción ante un cambio de un punto en el subyacente",
-      "La volatilidad implícita de la opción",
-      "La tasa libre de riesgo utilizada en el modelo"
+      "The remaining time until maturity",
+      "The sensitivity of the option's price to a one-point change in the underlying",
+      "The option's implied volatility",
+      "The risk-free rate used in the model"
     ],
     "correct": 1
   },
   {
-    "question": "¿Qué modelo se usa frecuentemente para valorar opciones sobre divisas (FX Options)?",
+    "question": "Which model is frequently used to value currency options (FX Options)?",
     "options": [
-      "Modelo de Vasicek",
+      "Vasicek model",
       "Black-Scholes / Garman-Kohlhagen",
-      "Modelo de Hull-White",
-      "Modelo CIR"
+      "Hull-White model",
+      "CIR model"
     ],
     "correct": 1
   },
   {
-    "question": "¿Qué es una opción europea frente a una americana?",
+    "question": "What is a European option versus an American option?",
     "options": [
-      "La europea solo puede ejercerse al vencimiento; la americana puede ejercerse en cualquier momento hasta el vencimiento",
-      "La europea puede ejercerse en cualquier momento; la americana solo al vencimiento",
-      "Son idénticas en sus derechos",
-      "La diferencia es solo geográfica, no de ejercicio"
+      "A European option can only be exercised at maturity; an American option can be exercised at any time up to maturity",
+      "A European option can be exercised at any time; an American option only at maturity",
+      "They are identical in their rights",
+      "The difference is only geographic, not exercise-related"
     ],
     "correct": 0
   },
   {
-    "question": "¿Qué es la Vega de una opción?",
+    "question": "What is the Vega of an option?",
     "options": [
-      "Sensibilidad al paso del tiempo",
-      "Sensibilidad al cambio en el precio del subyacente",
-      "Sensibilidad al cambio en la volatilidad implícita",
-      "Sensibilidad al cambio en las tasas de interés"
+      "Sensitivity to the passage of time",
+      "Sensitivity to change in the underlying price",
+      "Sensitivity to change in implied volatility",
+      "Sensitivity to change in interest rates"
     ],
     "correct": 2
   },
   {
-    "question": "¿Qué es la Theta de una opción?",
+    "question": "What is the Theta of an option?",
     "options": [
-      "Sensibilidad al cambio en la volatilidad",
-      "Pérdida de valor de la opción con el paso del tiempo (time decay)",
-      "Sensibilidad al cambio en el precio del subyacente",
-      "Sensibilidad a las tasas de interés"
+      "Sensitivity to change in volatility",
+      "Loss of option value over time (time decay)",
+      "Sensitivity to change in the underlying price",
+      "Sensitivity to interest rates"
     ],
     "correct": 1
   },
   {
-    "question": "¿Qué es un contrato de futuros?",
+    "question": "What is a futures contract?",
     "options": [
-      "Un derecho a comprar o vender un activo en el futuro",
-      "Un acuerdo OTC de intercambio de flujos",
-      "Un contrato estandarizado y negociado en bolsa para comprar/vender un activo a un precio y fecha futura determinados",
-      "Una opción sin prima"
+      "A right to buy or sell an asset in the future",
+      "An OTC agreement to exchange flows",
+      "A standardized contract traded on an exchange to buy/sell an asset at a set price and future date",
+      "An option with no premium"
     ],
     "correct": 2
   },
   {
-    "question": "¿Cuál es la principal diferencia entre un futuro y un forward?",
+    "question": "What is the main difference between a future and a forward?",
     "options": [
-      "El futuro tiene un subyacente; el forward no",
-      "El futuro se negocia en mercados organizados y es estandarizado; el forward es OTC y personalizable",
-      "El forward requiere margen diario; el futuro no",
-      "Solo los futuros tienen fecha de vencimiento"
+      "The future has an underlying; the forward does not",
+      "The future is traded on organized markets and is standardized; the forward is OTC and customizable",
+      "The forward requires daily margin; the future does not",
+      "Only futures have a maturity date"
     ],
     "correct": 1
   },
   {
-    "question": "¿Qué es el \"marking to market\" diario en futuros?",
+    "question": "What is daily \"marking to market\" in futures?",
     "options": [
-      "La valoración mensual del contrato",
-      "El ajuste diario de pérdidas y ganancias en la cuenta de margen según el precio de cierre del mercado",
-      "La renovación automática del contrato al vencimiento",
-      "El cálculo de la prima del contrato"
+      "The monthly valuation of the contract",
+      "The daily adjustment of gains and losses in the margin account based on the market closing price",
+      "The automatic rollover of the contract at maturity",
+      "The calculation of the contract premium"
     ],
     "correct": 1
   },
   {
-    "question": "¿Qué es el margen inicial en un contrato de futuros?",
+    "question": "What is the initial margin in a futures contract?",
     "options": [
-      "La ganancia garantizada al entrar en el contrato",
-      "El depósito de garantía que debe mantener el inversor al abrir una posición",
-      "El precio de liquidación al vencimiento",
-      "La comisión de la cámara de compensación"
+      "The guaranteed profit upon entering the contract",
+      "The collateral deposit that the investor must maintain when opening a position",
+      "The settlement price at maturity",
+      "The clearing house fee"
     ],
     "correct": 1
   },
   {
-    "question": "¿Qué ocurre cuando el saldo de la cuenta de margen cae por debajo del margen de mantenimiento?",
+    "question": "What happens when the balance in the margin account falls below the maintenance margin?",
     "options": [
-      "El contrato se cancela automáticamente",
-      "Se emite un margin call y el inversor debe reponer fondos",
-      "La cámara asume la pérdida",
-      "El precio del contrato se ajusta al spot"
+      "The contract is automatically cancelled",
+      "A margin call is issued and the investor must replenish funds",
+      "The clearing house assumes the loss",
+      "The contract price adjusts to spot"
     ],
     "correct": 1
   },
   {
-    "question": "¿Qué es la \"entrega\" en un contrato de futuros?",
+    "question": "What is \"delivery\" in a futures contract?",
     "options": [
-      "El pago de la prima al vencimiento",
-      "La liquidación física del activo subyacente al vencimiento, o liquidación en efectivo según el contrato",
-      "La reposición del margen",
-      "La renovación del contrato por otro período"
+      "Payment of the premium at maturity",
+      "The physical settlement of the underlying asset at maturity, or cash settlement depending on the contract",
+      "The replenishment of the margin",
+      "The renewal of the contract for another period"
     ],
     "correct": 1
   },
   {
-    "question": "¿Qué es el \"open interest\" en futuros?",
+    "question": "What is \"open interest\" in futures?",
     "options": [
-      "El volumen total negociado en el día",
-      "El número total de contratos abiertos que aún no han sido cerrados ni liquidados",
-      "El interés acumulado de la posición larga",
-      "El precio promedio de todos los contratos vigentes"
+      "The total volume traded in the day",
+      "The total number of open contracts that have not yet been closed or settled",
+      "The accumulated interest of the long position",
+      "The average price of all outstanding contracts"
     ],
     "correct": 1
   },
   {
-    "question": "¿Cómo se cierra una posición en futuros sin llegar a la entrega física?",
+    "question": "How is a position in futures closed without reaching physical delivery?",
     "options": [
-      "Solicitando la cancelación a la bolsa",
-      "Tomando una posición opuesta (contraria) del mismo contrato",
-      "Esperando al vencimiento y pagando una penalidad",
-      "Transfiriéndola a otro inversor directamente"
+      "By requesting cancellation from the exchange",
+      "By taking an opposite (offsetting) position of the same contract",
+      "By waiting for maturity and paying a penalty",
+      "By transferring it directly to another investor"
     ],
     "correct": 1
   },
   {
-    "question": "¿Qué es el \"basis\" en futuros?",
+    "question": "What is the \"basis\" in futures?",
     "options": [
-      "El precio spot del activo",
-      "La diferencia entre el precio spot del activo subyacente y el precio del futuro",
-      "El margen de mantenimiento requerido",
-      "La tasa de interés implícita del contrato"
+      "The spot price of the asset",
+      "The difference between the spot price of the underlying asset and the futures price",
+      "The required maintenance margin",
+      "The implied interest rate of the contract"
     ],
     "correct": 1
   },
   {
-    "question": "¿Qué es el \"basis risk\" en una cobertura con futuros?",
+    "question": "What is \"basis risk\" in a hedge with futures?",
     "options": [
-      "El riesgo de que el precio del futuro suba",
-      "El riesgo de que la correlación entre el activo a cubrir y el futuro no sea perfecta, dejando exposición residual",
-      "El riesgo de incumplimiento de la cámara de compensación",
-      "El riesgo de que no haya liquidez en el contrato"
+      "The risk that the futures price goes up",
+      "The risk that the correlation between the asset to be hedged and the future is not perfect, leaving residual exposure",
+      "The risk of default by the clearing house",
+      "The risk that there is no liquidity in the contract"
     ],
     "correct": 1
   },
   {
-    "question": "¿Qué es la fecha de valor (Value Date) en una operación financiera?",
+    "question": "What is the Value Date in a financial transaction?",
     "options": [
-      "La fecha en que se acuerda el trade",
-      "La fecha en que efectivamente se intercambian los fondos o activos",
-      "La fecha en que se contabiliza el MTM",
-      "La fecha de expiración de la opción"
+      "The date the trade is agreed",
+      "The date the funds or assets are actually exchanged",
+      "The date the MTM is recorded",
+      "The expiration date of the option"
     ],
     "correct": 1
   },
   {
-    "question": "¿Qué es la Maturity Date en un instrumento financiero?",
+    "question": "What is the Maturity Date in a financial instrument?",
     "options": [
-      "La fecha de contratación de la operación",
-      "La fecha en que vence el contrato y se realizan los pagos o entregas finales",
-      "La fecha de cálculo del interés devengado",
-      "La fecha de primera revisión de cupón"
+      "The booking date of the transaction",
+      "The date the contract matures and final payments or deliveries are made",
+      "The calculation date of accrued interest",
+      "The first coupon reset date"
     ],
     "correct": 1
   },
   {
-    "question": "¿Qué es el Accrual Date en contabilidad financiera?",
+    "question": "What is the Accrual Date in financial accounting?",
     "options": [
-      "La fecha de liquidación del bono",
-      "La fecha desde la cual se comienza a devengar el interés o resultado de la operación",
-      "La fecha de cierre del libro contable",
-      "La fecha de auditoría del balance"
+      "The bond settlement date",
+      "The date from which the interest or result of the transaction begins to accrue",
+      "The closing date of the ledger",
+      "The balance sheet audit date"
     ],
     "correct": 1
   },
   {
-    "question": "¿A qué estado financiero va el resultado realizado (P&L realizado) de una operación?",
+    "question": "To which financial statement does the realized result (realized P&L) of a transaction go?",
     "options": [
       "Balance Sheet",
       "Off-Balance Sheet",
@@ -450,52 +450,52 @@
     "correct": 2
   },
   {
-    "question": "¿Cuál es la función del perfil BO (Back Office) en Murex?",
+    "question": "What is the function of the BO (Back Office) profile in Murex?",
     "options": [
-      "Configurar reglas contables",
-      "Bookear trades en FO",
-      "Confirmar, liquidar y gestionar el ciclo de vida post-trade de las operaciones",
-      "Inicializar la contabilidad"
+      "Configure accounting rules",
+      "Book trades in FO",
+      "Confirm, settle, and manage the post-trade lifecycle of transactions",
+      "Initialize accounting"
     ],
     "correct": 2
   },
   {
-    "question": "¿Qué es un evento de \"novación\" en Murex?",
+    "question": "What is a \"novation\" event in Murex?",
     "options": [
-      "Crear un nuevo trade desde cero",
-      "Reemplazar una de las partes de una operación existente por una nueva contraparte",
-      "Cancelar un trade sin reemplazarlo",
-      "Cambiar el nominal de un trade sin modificar la contraparte"
+      "Create a new trade from scratch",
+      "Replace one of the parties of an existing transaction with a new counterparty",
+      "Cancel a trade without replacing it",
+      "Change the nominal of a trade without modifying the counterparty"
     ],
     "correct": 1
   },
   {
-    "question": "¿Qué es el workflow de \"confirmación\" en el ciclo de vida de un trade en Murex?",
+    "question": "What is the \"confirmation\" workflow in the lifecycle of a trade in Murex?",
     "options": [
-      "El proceso de bookeo inicial del trade en FO",
-      "El proceso por el cual ambas partes verifican y validan los términos de la operación antes de la liquidación",
-      "La generación automática del asiento contable",
-      "El cálculo del MTM de la operación"
+      "The initial trade booking process in FO",
+      "The process by which both parties verify and validate the terms of the transaction before settlement",
+      "The automatic generation of the accounting entry",
+      "The calculation of the transaction's MTM"
     ],
     "correct": 1
   },
   {
-    "question": "¿Qué es el Static Data en Murex?",
+    "question": "What is the Static Data in Murex?",
     "options": [
-      "Los datos de mercado en tiempo real",
-      "La información de configuración base del sistema, como contrapartes, instrumentos, curvas y calendarios",
-      "Los trades históricos cerrados",
-      "Los reportes de regulación generados por el sistema"
+      "Real-time market data",
+      "The basic configuration information of the system, as counterparties, instruments, curves, and calendars",
+      "Historical closed trades",
+      "Regulatory reports generated by the system"
     ],
     "correct": 1
   },
   {
-    "question": "¿Qué hace el proceso de \"end of day\" (EOD) en Murex?",
+    "question": "What does the \"end of day\" (EOD) process do in Murex?",
     "options": [
-      "Borra los trades del día anterior",
-      "Ejecuta una serie de procesos automáticos como valoración, generación de asientos contables, cálculo de P&L y cierre del día operativo",
-      "Reinicia los perfiles de usuario",
-      "Envía confirmaciones automáticas a todas las contrapartes"
+      "Delete trades from the previous day",
+      "Run a series of automatic processes such as valuation, generation of accounting entries, P&L calculation, and operational day close",
+      "Reset user profiles",
+      "Send automatic confirmations to all counterparties"
     ],
     "correct": 1
   }
