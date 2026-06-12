@@ -5103,8 +5103,9 @@ const app = {
         return;
     }
 
-    // REGLA DE CANDADO: Semana 3 en adelante congeladas
-    if (this.quizEngine.semana > 2) {
+    // REGLA DE CANDADO: Semana sin preguntas cargadas
+    const testQuestionsAvailable = this.state.db && this.state.db.questions && this.state.db.questions[this.quizEngine.semana] && this.state.db.questions[this.quizEngine.semana].length > 0;
+    if (!testQuestionsAvailable) {
         if (ping) {
           ping.style.backgroundColor = "var(--neutral-muted)";
           ping.className = "w-2 h-2 rounded-full inline-block";
