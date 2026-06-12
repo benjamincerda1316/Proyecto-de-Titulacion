@@ -393,6 +393,41 @@ async function initDatabase() {
     console.error('Failed to migrate entry_dates for existing users:', err.message);
   }
 
+  // Ensure all JUNIORs have a "Llegada" event on their entry date at 09:30
+  try {
+    const juniors = await db.all("SELECT id, name, entry_date FROM users WHERE rol = 'JUNIOR' AND entry_date IS NOT NULL AND entry_date != ''");
+    for (const jr of juniors) {
+      const eventId = `ev-llegada-${jr.id}`;
+      const existingEvent = await db.get("SELECT id FROM calendar_events WHERE id = ?", [eventId]);
+      if (!existingEvent) {
+        await db.run(
+          `INSERT INTO calendar_events (id, title, type, junior_id, expert_id, block_day, time_start, time_end, planned_minutes, status, block_reason, week_number, organizador_id, estado_confirmacion, bloqueado_edicion)
+           VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+          [
+            eventId,
+            `Llegada de ${jr.name}`,
+            'llegada',
+            jr.id,
+            'USR-LUANA',
+            jr.entry_date,
+            '09:30',
+            '10:30',
+            60,
+            'aprobado',
+            `Primer día de ingreso del Junior ${jr.name} al equipo de Finance & PL.`,
+            1,
+            'USR-LUANA',
+            'FIXED',
+            true
+          ]
+        );
+        console.log(`Created arrival event for ${jr.name} on ${jr.entry_date}`);
+      }
+    }
+  } catch (err) {
+    console.error('Failed to create arrival events for existing juniors:', err.message);
+  }
+
   console.log('Database initialized successfully.');
 }
 

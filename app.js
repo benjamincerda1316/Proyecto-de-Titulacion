@@ -10076,6 +10076,29 @@ const app = {
       
       // Initialize empty certification checklist
       this.state.db.cert_checklists[newId] = { 1: false, 2: false, 3: false, 4: false };
+
+      // Automatically create a "Llegada" calendar event
+      const arrivalEvent = {
+        id: `ev-llegada-${newId}`,
+        title: `Llegada de ${name}`,
+        type: "llegada",
+        junior_id: newId,
+        expert_id: "USR-LUANA",
+        block_day: newMember.entry_date,
+        time_start: "09:30",
+        time_end: "10:30",
+        planned_minutes: 60,
+        executed_minutes: null,
+        status: "aprobado",
+        block_reason: `Primer día de ingreso del Junior ${name} al equipo de Finance & PL.`,
+        week_number: 1,
+        organizador_id: "USR-LUANA",
+        estado_confirmacion: "FIXED",
+        bloqueado_edicion: true
+      };
+      
+      this.state.db.calendar_events = this.state.db.calendar_events || [];
+      this.state.db.calendar_events.push(arrivalEvent);
     }
     
     this.state.db.users.push(newMember);
