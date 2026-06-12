@@ -3830,6 +3830,18 @@ const app = {
     
     const weekNum = this.currentViewedWeek || 1;
 
+    // Verificar si es la semana 2 y la evaluación ya se completó o guardó
+    const userId = this.state.activeUser ? this.state.activeUser.id : 'default';
+    const progress = this.state.db && this.state.db.consultant_progress ? this.state.db.consultant_progress[userId] : null;
+    const isWeek2Completed = progress && progress.completed_weeks && progress.completed_weeks.includes(2);
+    const hasGame2Score = progress && progress.game_scores && progress.game_scores[2];
+    const gameFinished = this.classGameState.currentIndex >= totalCount;
+    const isCompletedEvaluated = (weekNum === 2 && (isWeek2Completed || hasGame2Score || gameFinished));
+
+    const toolbarRight = document.querySelector('#workspace-classification-game-zone .game-toolbar-right');
+    const progressWrapper = document.querySelector('#workspace-classification-game-zone .class-game-progress-wrapper');
+    const completedSummaryEl = document.getElementById('class-game-completed-summary');
+
     // Actualizar título de la barra de herramientas según la semana
     const gameToolbarTitle = document.querySelector('#workspace-classification-game-zone .game-brand-title');
     if (gameToolbarTitle) {
@@ -3838,6 +3850,25 @@ const app = {
       } else {
         gameToolbarTitle.innerHTML = `<i class="ti ti-layout-grid-add" style="color: var(--primary);"></i> Semana 1: Desafío de Clasificación (Práctica)`;
       }
+    }
+
+    if (isCompletedEvaluated) {
+      if (completedSummaryEl) {
+        completedSummaryEl.classList.remove('hidden');
+        const scoreVal = (progress && progress.game_scores[2]) ? progress.game_scores[2].score : this.classGameState.score;
+        const totalVal = (progress && progress.game_scores[2]) ? progress.game_scores[2].total : totalCount;
+        document.getElementById('completed-game-score-text').innerText = `${scoreVal}/${totalVal}`;
+      }
+      if (toolbarRight) toolbarRight.style.setProperty('display', 'none', 'important');
+      if (progressWrapper) progressWrapper.classList.add('hidden');
+      if (startEl) startEl.classList.add('hidden');
+      if (boardEl) boardEl.classList.add('hidden');
+      if (resultsEl) resultsEl.classList.add('hidden');
+      return;
+    } else {
+      if (completedSummaryEl) completedSummaryEl.classList.add('hidden');
+      if (toolbarRight) toolbarRight.style.display = 'flex';
+      if (progressWrapper) progressWrapper.classList.remove('hidden');
     }
 
     // Ocultar botón de Reset en la barra de herramientas de la semana 2
@@ -5365,7 +5396,19 @@ const app = {
     const userId = this.state.activeUser.id;
     const progress = this.state.db.consultant_progress[userId];
     
-    // Simulate upload saving in local state (metadata only, not base64 to prevent storage blowup)
+    // Guardar el archivo real en memoria para la sesión activa
+    window.uploadedFiles = window.uploadedFiles || {};
+    const reader = new FileReader();
+    reader.onload = (event) => {
+      window.uploadedFiles[`${userId}_${weekNum}`] = {
+        name: file.name,
+        type: file.type,
+        dataUrl: event.target.result
+      };
+    };
+    reader.readAsDataURL(file);
+
+    // Guardar los metadatos en la base de datos
     progress.deliverables[weekNum] = {
       fileName: file.name,
       fileSize: `${(file.size / (1024 * 1024)).toFixed(1)} MB`,
@@ -6575,7 +6618,107 @@ const app = {
   // Mock download helper
   downloadMockFile(e) {
     e.preventDefault();
-    this.showToast("Descargando archivo adjunto (Simulado)...");
+    const userId = this.state.inspectedUser.id;
+    const weekNum = this.state.inspectedWeekNum;
+    const progress = this.state.db.consultant_progress[userId];
+    const deliverable = progress.deliverables[weekNum];
+    if (!deliverable) return;
+    
+    // Check if the actual file exists in-memory
+    window.uploadedFiles = window.uploadedFiles || {};
+    const inMemoryFile = window.uploadedFiles[`${userId}_${weekNum}`];
+    
+    if (inMemoryFile) {
+      // Download the actual uploaded file!
+      const link = document.createElement('a');
+      link.href = inMemoryFile.dataUrl;
+      link.download = inMemoryFile.name;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      this.showToast("Descargando el entregable original enviado por el alumno...");
+    } else {
+      // Fallback: Generate a beautiful HTML report representing the deliverable
+      const template = this.state.db.week_templates.find(wt => wt.week_number === weekNum);
+      const trainee = this.state.db.users.find(u => u.id === userId);
+      const tutorId = this.state.db.tutor_junior_mapping[userId];
+      const tutor = this.state.db.users.find(u => u.id === tutorId);
+      
+      const htmlContent = `
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Entregable - Semana ${weekNum} - ${trainee ? trainee.name : 'Consultor'}</title>
+  <style>
+    body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; color: #333; margin: 0; padding: 40px; background-color: #f3f4f6; }
+    .card { background: white; max-width: 700px; margin: 0 auto; border-radius: 12px; box-shadow: 0 4px 20px rgba(0,0,0,0.05); padding: 40px; border-top: 6px solid #e11d48; }
+    .header { display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid #f3f4f6; padding-bottom: 20px; margin-bottom: 20px; }
+    .logo { font-size: 1.5rem; font-weight: bold; color: #1e293b; }
+    .logo span { color: #e11d48; }
+    .title { font-size: 1.25rem; font-weight: 700; color: #1e293b; margin: 0 0 10px 0; text-transform: uppercase; }
+    .meta-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 30px; }
+    .meta-item { background: #f8fafc; padding: 12px; border-radius: 6px; border: 1px solid #e2e8f0; }
+    .meta-label { font-size: 0.75rem; color: #64748b; font-weight: 600; text-transform: uppercase; margin-bottom: 4px; }
+    .meta-value { font-size: 0.9rem; color: #0f172a; font-weight: 600; }
+    .content-box { border: 2px dashed #cbd5e1; border-radius: 8px; padding: 30px; text-align: center; color: #64748b; font-size: 0.95rem; line-height: 1.6; margin-bottom: 20px; background-color: #fafbfd; }
+    .badge { display: inline-block; padding: 4px 8px; border-radius: 4px; font-size: 0.75rem; font-weight: bold; text-transform: uppercase; }
+    .badge-approved { background-color: #d1fae5; color: #065f46; }
+    .badge-pending_review { background-color: #fef3c7; color: #92400e; }
+    .badge-rejected { background-color: #fee2e2; color: #991b1b; }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <div class="header">
+      <div class="logo"><span>MX</span>Board</div>
+      <div class="badge badge-\${deliverable.status}">\${deliverable.status === 'approved' ? 'Aprobado' : deliverable.status === 'pending_review' ? 'Por Revisar' : 'Rechazado'}</div>
+    </div>
+    <h2 class="title">Verificación de Entregable Práctico</h2>
+    <div class="meta-grid">
+      <div class="meta-item">
+        <div class="meta-label">Consultor (Junior)</div>
+        <div class="meta-value">\${trainee ? trainee.name : 'N/A'}</div>
+      </div>
+      <div class="meta-item">
+        <div class="meta-label">Tutor Asignado</div>
+        <div class="meta-value">\${tutor ? tutor.name : 'N/A'}</div>
+      </div>
+      <div class="meta-item">
+        <div class="meta-label">Semana y Tema</div>
+        <div class="meta-value">Semana \${weekNum}: \${template ? template.title : 'N/A'}</div>
+      </div>
+      <div class="meta-item">
+        <div class="meta-label">Archivo de Evidencia</div>
+        <div class="meta-value">\${deliverable.fileName} (\${deliverable.fileSize})</div>
+      </div>
+      <div class="meta-item">
+        <div class="meta-label">Fecha de Envío</div>
+        <div class="meta-value">\${new Date(deliverable.submittedAt).toLocaleString('es-CL')}</div>
+      </div>
+      <div class="meta-item">
+        <div class="meta-label">Feedback del Tutor</div>
+        <div class="meta-value">\${progress.comments[weekNum] || 'Sin comentarios adicionales.'}</div>
+      </div>
+    </div>
+    <div class="content-box">
+      <strong>[Archivo de Evidencia Simulado]</strong><br>
+      Este es el reporte del entregable original enviado para revisión. La plataforma MXBoard almacena el registro y trazabilidad contable en Supabase.<br><br>
+      <em>"La parametrización y validación contable de esta semana fue completada exitosamente en el Sandbox de MX.3."</em>
+    </div>
+  </div>
+</body>
+</html>`;
+      
+      const blob = new Blob([htmlContent], { type: 'text/html' });
+      const link = document.createElement('a');
+      link.href = URL.createObjectURL(blob);
+      link.download = `reporte_entregable_semana_\${weekNum}_\${trainee ? trainee.name.replace(/\\s+/g, '_') : 'consultor'}.html`;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      this.showToast("Generando y descargando el reporte del entregable...");
+    }
   },
 
   // Admin evaluation of deliverables
