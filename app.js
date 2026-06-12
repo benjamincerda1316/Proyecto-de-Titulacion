@@ -4880,6 +4880,8 @@ const app = {
 
     const currentState = progress.checklist_states[weekNum][itemIdx] === true;
     progress.checklist_states[weekNum][itemIdx] = !currentState;
+    
+    this.checkWeekCompletion(traineeId, weekNum);
     this.saveDatabase();
 
     // Re-render
@@ -5343,11 +5345,7 @@ const app = {
     this.state.db.historial_evaluaciones = this.state.db.historial_evaluaciones || [];
     this.state.db.historial_evaluaciones.push(nuevoIntento);
 
-    if (aprobo) {
-        if (!progress.completed_weeks.includes(this.quizEngine.semana)) {
-            progress.completed_weeks.push(this.quizEngine.semana);
-        }
-    }
+    this.checkWeekCompletion(userId, this.quizEngine.semana);
 
     this.saveDatabase();
     this.renderConsultantView();
@@ -5613,19 +5611,16 @@ const app = {
       alertType = "success";
       alertMsg = `¡Prueba Aprobada con ${scorePercentage}%!`;
       
-      // Auto unlock logic if NO deliverable is required
-      if (!template.deliverable) {
-        if (!progress.completed_weeks.includes(weekNum)) {
-          progress.completed_weeks.push(weekNum);
-          
-          // Auto trigger complete week 12 logic if user finishes it
-          if (weekNum === 12) {
-            this.triggerCompletionCertificate(userId);
-          }
-        }
-        alertMsg += " Has desbloqueado el siguiente módulo.";
+      this.checkWeekCompletion(userId, weekNum);
+      const isCompletedNow = progress.completed_weeks.includes(weekNum);
+      if (isCompletedNow) {
+        alertMsg += " Has completado la semana y desbloqueado el siguiente módulo.";
       } else {
-        alertMsg += " Sube tu Entregable en la pestaña correspondiente para revisión final.";
+        if (template.deliverable && (!progress.deliverables[weekNum] || progress.deliverables[weekNum].status !== 'approved')) {
+          alertMsg += " Sube tu Entregable en la pestaña correspondiente para revisión final.";
+        } else {
+          alertMsg += " Has aprobado la evaluación. La semana se completará una vez que tu tutor valide todas las tareas del checklist.";
+        }
       }
       
       // SMTP Alert on approved test
@@ -6595,16 +6590,17 @@ const app = {
       progress.deliverables[weekNum].status = status;
       
       if (approve) {
-        // Mark week as completed
-        if (!progress.completed_weeks.includes(weekNum)) {
-          progress.completed_weeks.push(weekNum);
-          
-          if (weekNum === 12) {
-            this.triggerCompletionCertificate(userId);
-          }
+        this.checkWeekCompletion(userId, weekNum);
+        const isCompleted = progress.completed_weeks.includes(weekNum);
+        if (isCompleted) {
+          this.showToast(`Entregable aprobado. Semana ${weekNum} completada.`);
+        } else {
+          this.showToast(`Entregable aprobado. Aún faltan la evaluación o el checklist de la semana.`);
         }
-        this.showToast(`Entregable aprobado. Semana ${weekNum} completada.`);
       } else {
+        if (progress.completed_weeks.includes(weekNum)) {
+          progress.completed_weeks = progress.completed_weeks.filter(w => w !== weekNum);
+        }
         this.showToast(`Entregable rechazado. El consultor deberá resubir.`, "danger");
       }
       
@@ -6632,6 +6628,52 @@ const app = {
     this.saveDatabase();
     this.showToast("Comentario guardado. Visible para el consultor.");
     this.renderAdminView();
+  },
+
+  checkWeekCompletion(userId, weekNum) {
+    const progress = this.state.db.consultant_progress[userId];
+    if (!progress) return;
+
+    const template = this.state.db.week_templates.find(wt => wt.week_number === weekNum);
+    if (!template) return;
+
+    // Condition 1: Passed the test (minimum score or default 70)
+    const testScore = progress.test_scores[weekNum];
+    const minPassing = template.knowledge_test?.min_passing_score || 70;
+    const hasPassedQuiz = testScore !== undefined && testScore !== null && testScore >= minPassing;
+
+    // Condition 2: Checklist fully checked by tutor
+    const weekChecklistState = progress.checklist_states[weekNum] || {};
+    const hasCheckedAll = template.checklist_items.length > 0 &&
+                          template.checklist_items.every((_, idx) => weekChecklistState[idx] === true);
+
+    // Condition 3: Deliverable approved (if required)
+    const requiresDeliverable = !!template.deliverable;
+    const isDeliverableApproved = !requiresDeliverable || (progress.deliverables[weekNum] && progress.deliverables[weekNum].status === 'approved');
+
+    const wasCompleted = progress.completed_weeks.includes(weekNum);
+    const isCompleted = hasPassedQuiz && hasCheckedAll && isDeliverableApproved;
+
+    if (isCompleted && !wasCompleted) {
+      progress.completed_weeks.push(weekNum);
+      if (weekNum === 12) {
+        this.triggerCompletionCertificate(userId);
+      }
+      
+      // Send SMTP Alert simulation
+      const trainee = this.state.db.users.find(u => u.id === userId);
+      if (trainee) {
+        this.sendSMTPAlert(
+          "junior",
+          trainee.email,
+          `Semana ${weekNum} Completada - ¡Felicitaciones!`,
+          `Hola ${trainee.name},\n\n¡Has completado exitosamente la Semana ${weekNum}! Se ha registrado tu aprobación tras completar la evaluación técnica y recibir la validación de tu checklist por parte de tu tutor.`
+        );
+      }
+    } else if (!isCompleted && wasCompleted) {
+      // If any condition is no longer met, remove from completed_weeks
+      progress.completed_weeks = progress.completed_weeks.filter(w => w !== weekNum);
+    }
   },
 
   adminOverrideWeek() {
