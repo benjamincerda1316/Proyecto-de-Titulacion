@@ -6400,7 +6400,7 @@ const app = {
       }
     } catch (err) {
       console.error("Error rendering inspected passport:", err);
-      this.showToast(`Error al cargar pasaporte: ${err.message}`);
+      this.showToast(`Error al cargar Murex Mandatory Onboarding: ${err.message}`);
     }
   },
 
