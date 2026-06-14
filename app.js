@@ -7,506 +7,506 @@
 const HOY_PRESENTE = new Date('2026-05-25T00:00:00');
 
 const bancoPreguntasSemana1 = [
-    {
-        "q": "¿Cuál es la función principal del Front Office?",
-        "opts": [
-            "A) Registrar asientos contables",
-            "B) Vender productos y generar negocios",
-            "C) Liquidar operaciones",
-            "D) Auditar procesos"
-        ],
-        "ans": 1
-    },
-    {
-        "q": "¿Quién normalmente interactúa directamente con los clientes?",
-        "opts": [
-            "A) Auditoría Interna",
-            "B) Back Office",
-            "C) Front Office",
-            "D) Compliance"
-        ],
-        "ans": 2
-    },
-    {
-        "q": "¿Qué área valida los riesgos de las operaciones antes o después de su ejecución?",
-        "opts": [
-            "A) Front Office",
-            "B) Recursos Humanos",
-            "C) Tesorería",
-            "D) Middle Office"
-        ],
-        "ans": 3
-    },
-    {
-        "q": "¿Cuál es una función típica del Back Office?",
-        "opts": [
-            "A) Confirmar y liquidar operaciones",
-            "B) Negociar swaps",
-            "C) Gestionar inversiones",
-            "D) Captar clientes"
-        ],
-        "ans": 0
-    },
-    {
-        "q": "¿Qué ocurre si Front Office ejecuta una operación y Back Office no la liquida?",
-        "opts": [
-            "A) Aumenta la rentabilidad",
-            "B) Existe riesgo operacional",
-            "C) No pasa nada",
-            "D) Mejora la liquidez"
-        ],
-        "ans": 1
-    },
-    {
-        "q": "¿Cuál es el orden correcto?",
-        "opts": [
-            "A) Liquidación → Negociación → Confirmación",
-            "B) Negociación → Confirmación → Liquidación",
-            "C) Confirmación → Negociación → Contabilidad",
-            "D) Contabilidad → Negociación → Confirmación"
-        ],
-        "ans": 1
-    },
-    {
-        "q": "¿Qué significa \"Trade Date\"?",
-        "opts": [
-            "A) Fecha de pago",
-            "B) Fecha contable",
-            "C) Fecha de negociación",
-            "D) Fecha de vencimiento"
-        ],
-        "ans": 2
-    },
-    {
-        "q": "¿Qué significa \"Settlement Date\"?",
-        "opts": [
-            "A) Fecha de negociación",
-            "B) Fecha de emisión",
-            "C) Fecha de aprobación",
-            "D) Fecha de liquidación"
-        ],
-        "ans": 3
-    },
-    {
-        "q": "¿Quién suele generar el trade en un banco?",
-        "opts": [
-            "A) Auditoría",
-            "B) Front Office",
-            "C) Back Office",
-            "D) Compliance"
-        ],
-        "ans": 1
-    },
-    {
-        "q": "¿Qué área suele registrar la contabilidad derivada de una operación?",
-        "opts": [
-            "A) Front Office",
-            "B) Comercial",
-            "C) Finanzas/Contabilidad",
-            "D) Marketing"
-        ],
-        "ans": 2
-    },
-    {
-        "q": "Un activo es:",
-        "opts": [
-            "A) Una obligación",
-            "B) Un gasto",
-            "C) Una pérdida",
-            "D) Algo que genera valor económico"
-        ],
-        "ans": 3
-    },
-    {
-        "q": "Un depósito de un cliente representa para el banco:",
-        "opts": [
-            "A) Pasivo",
-            "B) Patrimonio",
-            "C) Ingreso",
-            "D) Activo"
-        ],
-        "ans": 0
-    },
-    {
-        "q": "Un préstamo otorgado por el banco es:",
-        "opts": [
-            "A) Patrimonio",
-            "B) Pasivo",
-            "C) Activo",
-            "D) Gasto"
-        ],
-        "ans": 2
-    },
-    {
-        "q": "¿Qué ecuación es correcta?",
-        "opts": [
-            "A) Activos + Pasivos = Patrimonio",
-            "B) Activos = Pasivos + Patrimonio",
-            "C) Patrimonio = Activos + Gastos",
-            "D) Ingresos = Activos + Pasivos"
-        ],
-        "ans": 1
-    },
-    {
-        "q": "Cuando aumenta un activo normalmente:",
-        "opts": [
-            "A) Se acredita",
-            "B) Se debita",
-            "C) Se elimina",
-            "D) Se provisiona"
-        ],
-        "ans": 1
-    },
-    {
-        "q": "La Tesorería se encarga principalmente de:",
-        "opts": [
-            "A) Gestionar liquidez y financiamiento",
-            "B) Auditoría",
-            "C) Marketing",
-            "D) Contratar personal"
-        ],
-        "ans": 0
-    },
-    {
-        "q": "¿Qué riesgo controla especialmente Tesorería?",
-        "opts": [
-            "A) Riesgo climático",
-            "B) Riesgo reputacional",
-            "C) Riesgo legal",
-            "D) Riesgo de liquidez"
-        ],
-        "ans": 3
-    },
-    {
-        "q": "Un banco con exceso de efectivo probablemente:",
-        "opts": [
-            "A) Aumentará pérdidas",
-            "B) Cerrará operaciones",
-            "C) Buscará invertirlo",
-            "D) Hará auditorías"
-        ],
-        "ans": 2
-    },
-    {
-        "q": "¿Qué es una posición de caja?",
-        "opts": [
-            "A) Capital social",
-            "B) Flujo neto de efectivo disponible",
-            "C) Patrimonio",
-            "D) Utilidad retenida"
-        ],
-        "ans": 1
-    },
-    {
-        "q": "¿Qué mercado se usa frecuentemente para obtener liquidez de corto plazo?",
-        "opts": [
-            "A) Mercado inmobiliario",
-            "B) Mercado agrícola",
-            "C) Mercado laboral",
-            "D) Mercado interbancario"
-        ],
-        "ans": 3
-    },
-    {
-        "q": "¿Qué es un bono?",
-        "opts": [
-            "A) Acción preferente",
-            "B) Derivado",
-            "C) Instrumento de deuda",
-            "D) Divisa"
-        ],
-        "ans": 2
-    },
-    {
-        "q": "Una acción representa:",
-        "opts": [
-            "A) Deuda",
-            "B) Propiedad parcial de una empresa",
-            "C) Derivado",
-            "D) Préstamo"
-        ],
-        "ans": 1
-    },
-    {
-        "q": "¿Qué es un depósito a plazo?",
-        "opts": [
-            "A) Bono perpetuo",
-            "B) Acción",
-            "C) Derivado",
-            "D) Inversión con vencimiento definido"
-        ],
-        "ans": 3
-    },
-    {
-        "q": "¿Qué instrumento paga intereses periódicos?",
-        "opts": [
-            "A) Futuro",
-            "B) Forward",
-            "C) Opción",
-            "D) Bono"
-        ],
-        "ans": 3
-    },
-    {
-        "q": "¿Qué mercado negocia monedas?",
-        "opts": [
-            "A) Equity",
-            "B) FX",
-            "C) Commodities",
-            "D) Real Estate"
-        ],
-        "ans": 1
-    },
-    {
-        "q": "¿Qué es un derivado?",
-        "opts": [
-            "A) Instrumento cuyo valor depende de otro activo",
-            "B) Un depósito",
-            "C) Una cuenta corriente",
-            "D) Un préstamo"
-        ],
-        "ans": 0
-    },
-    {
-        "q": "¿Qué es un Forward?",
-        "opts": [
-            "A) Un depósito",
-            "B) Una acción",
-            "C) Un bono",
-            "D) Compra/venta futura pactada hoy"
-        ],
-        "ans": 3
-    },
-    {
-        "q": "¿Qué es una opción?",
-        "opts": [
-            "A) Obligación de comprar",
-            "B) Un depósito",
-            "C) Un préstamo",
-            "D) Derecho pero no obligación"
-        ],
-        "ans": 3
-    },
-    {
-        "q": "En una Call Option el comprador espera que:",
-        "opts": [
-            "A) Baje el precio",
-            "B) No cambie",
-            "C) Suba el precio",
-            "D) Quiebre la empresa"
-        ],
-        "ans": 2
-    },
-    {
-        "q": "¿Qué es un Swap?",
-        "opts": [
-            "A) Bono",
-            "B) Intercambio de flujos financieros",
-            "C) Acción",
-            "D) Depósito"
-        ],
-        "ans": 1
-    },
-    {
-        "q": "¿Qué es riesgo de mercado?",
-        "opts": [
-            "A) Cambios en precios, tasas o divisas",
-            "B) Robo físico",
-            "C) Renuncia de empleados",
-            "D) Riesgo legal"
-        ],
-        "ans": 0
-    },
-    {
-        "q": "¿Qué es riesgo de crédito?",
-        "opts": [
-            "A) Riesgo reputacional",
-            "B) Baja liquidez",
-            "C) Incumplimiento de una contraparte",
-            "D) Falla tecnológica"
-        ],
-        "ans": 2
-    },
-    {
-        "q": "¿Qué es riesgo operacional?",
-        "opts": [
-            "A) Variación de FX",
-            "B) Variación de tasas",
-            "C) Pérdidas por errores o fallas de procesos",
-            "D) Variación bursátil"
-        ],
-        "ans": 2
-    },
-    {
-        "q": "¿Qué área suele medir VaR?",
-        "opts": [
-            "A) Ventas",
-            "B) Marketing",
-            "C) RRHH",
-            "D) Middle Office / Riesgos"
-        ],
-        "ans": 3
-    },
-    {
-        "q": "¿Qué significa VaR?",
-        "opts": [
-            "A) Volume at Risk",
-            "B) Variable at Return",
-            "C) Value and Return",
-            "D) Value at Risk"
-        ],
-        "ans": 3
-    },
-    {
-        "q": "¿Para qué sirve el capital regulatorio?",
-        "opts": [
-            "A) Financiar marketing",
-            "B) Absorber pérdidas",
-            "C) Comprar edificios",
-            "D) Pagar salarios"
-        ],
-        "ans": 1
-    },
-    {
-        "q": "¿Qué busca proteger Basilea?",
-        "opts": [
-            "A) Comercio exterior",
-            "B) Ventas",
-            "C) Impuestos",
-            "D) Estabilidad financiera"
-        ],
-        "ans": 3
-    },
-    {
-        "q": "¿Por qué los bancos mantienen reservas?",
-        "opts": [
-            "A) Cumplir exigencias regulatorias y liquidez",
-            "B) Pagar dividendos",
-            "C) Comprar acciones",
-            "D) Reducir clientes"
-        ],
-        "ans": 0
-    },
-    {
-        "q": "¿Qué es una contraparte?",
-        "opts": [
-            "A) Un accionista",
-            "B) Un auditor",
-            "C) Un regulador",
-            "D) La otra parte de una operación financiera"
-        ],
-        "ans": 3
-    },
-    {
-        "q": "¿Qué organismo suele supervisar bancos en Chile?",
-        "opts": [
-            "A) SII",
-            "B) Tesorería General",
-            "C) BancoEstado",
-            "D) CMF"
-        ],
-        "ans": 3
-    },
-    {
-        "q": "Un trader compra un bono. ¿Quién registra inicialmente la operación?",
-        "opts": [
-            "A) Front Office",
-            "B) RRHH",
-            "C) Auditoría",
-            "D) Legal"
-        ],
-        "ans": 0
-    },
-    {
-        "q": "¿Quién verifica que el trade tenga sentido financiero y respete límites?",
-        "opts": [
-            "A) Marketing",
-            "B) RRHH",
-            "C) Comercial",
-            "D) Middle Office"
-        ],
-        "ans": 3
-    },
-    {
-        "q": "¿Quién envía instrucciones de pago?",
-        "opts": [
-            "A) Riesgos",
-            "B) Back Office",
-            "C) Front Office",
-            "D) Auditoría"
-        ],
-        "ans": 1
-    },
-    {
-        "q": "¿Qué área necesita información para elaborar estados financieros?",
-        "opts": [
-            "A) Contabilidad",
-            "B) Marketing",
-            "C) RRHH",
-            "D) Ventas"
-        ],
-        "ans": 0
-    },
-    {
-        "q": "¿Qué sistema suele utilizarse para gestionar derivados y operaciones de mercado?",
-        "opts": [
-            "A) PowerPoint",
-            "B) Excel únicamente",
-            "C) Murex",
-            "D) SAP exclusivamente"
-        ],
-        "ans": 2
-    },
-    {
-        "q": "¿Qué ocurre cuando una contraparte incumple un pago?",
-        "opts": [
-            "A) Riesgo de crédito",
-            "B) Riesgo operacional",
-            "C) Riesgo reputacional",
-            "D) Riesgo climático"
-        ],
-        "ans": 0
-    },
-    {
-        "q": "¿Qué es P&L?",
-        "opts": [
-            "A) Price and Leverage",
-            "B) Position and Liquidity",
-            "C) Profit and Loss",
-            "D) Payment and Liability"
-        ],
-        "ans": 2
-    },
-    {
-        "q": "¿Qué área suele ser responsable del P&L de una mesa de trading?",
-        "opts": [
-            "A) Legal",
-            "B) RRHH",
-            "C) Front Office",
-            "D) Auditoría"
-        ],
-        "ans": 2
-    },
-    {
-        "q": "¿Por qué se realizan conciliaciones contables?",
-        "opts": [
-            "A) Verificar consistencia entre sistemas y registros",
-            "B) Generar ventas",
-            "C) Aumentar riesgos",
-            "D) Crear derivados"
-        ],
-        "ans": 0
-    },
-    {
-        "q": "¿Cuál es el objetivo final de todo el flujo operativo bancario?",
-        "opts": [
-            "A) Aumentar burocracia",
-            "B) Reducir clientes",
-            "C) Procesar operaciones de forma segura, rentable y controlada",
-            "D) Eliminar controles"
-        ],
-        "ans": 2
-    }
+  {
+    "q": "What is the primary function of the Front Office?",
+    "opts": [
+      "A) Record accounting entries",
+      "B) Sell products and generate business",
+      "C) Settle operations",
+      "D) Audit processes"
+    ],
+    "ans": 1
+  },
+  {
+    "q": "Who typically interacts directly with clients?",
+    "opts": [
+      "A) Back Office",
+      "B) Internal Audit",
+      "C) Front Office",
+      "D) Compliance"
+    ],
+    "ans": 2
+  },
+  {
+    "q": "Which department validates transaction risks before or after execution?",
+    "opts": [
+      "A) Front Office",
+      "B) Middle Office",
+      "C) Human Resources",
+      "D) Treasury"
+    ],
+    "ans": 1
+  },
+  {
+    "q": "What is a typical function of the Back Office?",
+    "opts": [
+      "A) Negotiate swaps",
+      "B) Attract clients",
+      "C) Confirm and settle transactions",
+      "D) Manage investments"
+    ],
+    "ans": 2
+  },
+  {
+    "q": "What happens if the Front Office executes a transaction and the Back Office does not settle it?",
+    "opts": [
+      "A) Nothing happens",
+      "B) Operational risk exists",
+      "C) Profitability increases",
+      "D) Liquidity improves"
+    ],
+    "ans": 1
+  },
+  {
+    "q": "What is the correct order of the workflow?",
+    "opts": [
+      "A) Settlement → Negotiation → Confirmation",
+      "B) Confirmation → Negotiation → Accounting",
+      "C) Negotiation → Confirmation → Settlement",
+      "D) Accounting → Negotiation → Confirmation"
+    ],
+    "ans": 2
+  },
+  {
+    "q": "What does \"Trade Date\" mean?",
+    "opts": [
+      "A) Payment date",
+      "B) Negotiation/trade date",
+      "C) Accounting date",
+      "D) Maturity/expiry date"
+    ],
+    "ans": 1
+  },
+  {
+    "q": "What does \"Settlement Date\" mean?",
+    "opts": [
+      "A) Settlement date",
+      "B) Issue date",
+      "C) Approval date",
+      "D) Negotiation/trade date"
+    ],
+    "ans": 0
+  },
+  {
+    "q": "Who typically generates a trade in a bank?",
+    "opts": [
+      "A) Front Office",
+      "B) Back Office",
+      "C) Audit",
+      "D) Compliance"
+    ],
+    "ans": 0
+  },
+  {
+    "q": "Which department typically records the accounting derived from a transaction?",
+    "opts": [
+      "A) Front Office",
+      "B) Tueketing",
+      "C) Finance/Accounting",
+      "D) Commercial"
+    ],
+    "ans": 2
+  },
+  {
+    "q": "An asset is:",
+    "opts": [
+      "A) An obligation",
+      "B) Something that generates economic value",
+      "C) A loss",
+      "D) An expense"
+    ],
+    "ans": 1
+  },
+  {
+    "q": "A customer deposit represents for the bank:",
+    "opts": [
+      "A) An asset",
+      "B) Equity",
+      "C) A liability",
+      "D) Revenue"
+    ],
+    "ans": 2
+  },
+  {
+    "q": "A loan granted by the bank is:",
+    "opts": [
+      "A) A liability",
+      "B) An asset",
+      "C) Equity",
+      "D) An expense"
+    ],
+    "ans": 1
+  },
+  {
+    "q": "Which accounting equation is correct?",
+    "opts": [
+      "A) Assets = Liabilities + Equity",
+      "B) Assets + Liabilities = Equity",
+      "C) Equity = Assets + Expenses",
+      "D) Revenue = Assets + Liabilities"
+    ],
+    "ans": 0
+  },
+  {
+    "q": "When an asset increases, it is normally:",
+    "opts": [
+      "A) Debited",
+      "B) Credited",
+      "C) Deleted",
+      "D) Provisioned"
+    ],
+    "ans": 0
+  },
+  {
+    "q": "Treasury is mainly responsible for:",
+    "opts": [
+      "A) Hiring staff",
+      "B) Managing liquidity and funding",
+      "C) Tueketing",
+      "D) Auditing"
+    ],
+    "ans": 1
+  },
+  {
+    "q": "Which risk does Treasury control in particular?",
+    "opts": [
+      "A) Liquidity risk",
+      "B) Reputational risk",
+      "C) Legal risk",
+      "D) Climate risk"
+    ],
+    "ans": 0
+  },
+  {
+    "q": "A bank with excess cash will probably:",
+    "opts": [
+      "A) Seek to invest it",
+      "B) Close operations",
+      "C) Increase losses",
+      "D) Conduct audits"
+    ],
+    "ans": 0
+  },
+  {
+    "q": "What is a cash position?",
+    "opts": [
+      "A) Net available cash flow",
+      "B) Equity",
+      "C) Share capital",
+      "D) Retained earnings"
+    ],
+    "ans": 0
+  },
+  {
+    "q": "Which market is frequently used to obtain short-term liquidity?",
+    "opts": [
+      "A) Real estate market",
+      "B) Interbank market",
+      "C) Labor market",
+      "D) Agricultural market"
+    ],
+    "ans": 1
+  },
+  {
+    "q": "What is a bond?",
+    "opts": [
+      "A) A derivative",
+      "B) A debt instrument",
+      "C) A preferred stock",
+      "D) A currency"
+    ],
+    "ans": 1
+  },
+  {
+    "q": "A share represents:",
+    "opts": [
+      "A) Debt",
+      "B) Partial ownership of a company",
+      "C) A derivative",
+      "D) A loan"
+    ],
+    "ans": 1
+  },
+  {
+    "q": "What is a time deposit / certificate of deposit?",
+    "opts": [
+      "A) Investment with a defined maturity",
+      "B) A derivative",
+      "C) A perpetual bond",
+      "D) A share"
+    ],
+    "ans": 0
+  },
+  {
+    "q": "Which instrument pays periodic interest?",
+    "opts": [
+      "A) A bond",
+      "B) A forward",
+      "C) An option",
+      "D) A future"
+    ],
+    "ans": 0
+  },
+  {
+    "q": "Which market trades currencies?",
+    "opts": [
+      "A) Equity",
+      "B) FX",
+      "C) Commodities",
+      "D) Real Estate"
+    ],
+    "ans": 1
+  },
+  {
+    "q": "What is a derivative?",
+    "opts": [
+      "A) Instrument whose value depends on an underlying asset",
+      "B) A loan",
+      "C) A checking account",
+      "D) A deposit"
+    ],
+    "ans": 0
+  },
+  {
+    "q": "What is a Forward?",
+    "opts": [
+      "A) Future purchase/sale agreed today",
+      "B) A bond",
+      "C) A deposit",
+      "D) A share"
+    ],
+    "ans": 0
+  },
+  {
+    "q": "What is an option?",
+    "opts": [
+      "A) Obligation to buy",
+      "B) Right but not the obligation",
+      "C) A loan",
+      "D) A deposit"
+    ],
+    "ans": 1
+  },
+  {
+    "q": "In a Call Option, the buyer expects that:",
+    "opts": [
+      "A) The price falls",
+      "B) The price rises",
+      "C) It doesn't change",
+      "D) The company goes bankrupt"
+    ],
+    "ans": 1
+  },
+  {
+    "q": "What is a Swap?",
+    "opts": [
+      "A) Exchange of financial cash flows",
+      "B) A bond",
+      "C) A share",
+      "D) A deposit"
+    ],
+    "ans": 0
+  },
+  {
+    "q": "What is market risk?",
+    "opts": [
+      "A) Changes in prices, interest rates, or exchange rates",
+      "B) Physical theft",
+      "C) Employee resignation",
+      "D) Legal risk"
+    ],
+    "ans": 0
+  },
+  {
+    "q": "What is credit risk?",
+    "opts": [
+      "A) Default of a counterparty",
+      "B) Low liquidity",
+      "C) Technical failure",
+      "D) Reputational risk"
+    ],
+    "ans": 0
+  },
+  {
+    "q": "What is operational risk?",
+    "opts": [
+      "A) Losses due to errors or process failures",
+      "B) Interest rate variation",
+      "C) FX rate variation",
+      "D) Stock market variation"
+    ],
+    "ans": 0
+  },
+  {
+    "q": "Which area typically measures VaR?",
+    "opts": [
+      "A) Middle Office / Risk Management",
+      "B) Tueketing",
+      "C) HR",
+      "D) Sales"
+    ],
+    "ans": 0
+  },
+  {
+    "q": "What does VaR stand for?",
+    "opts": [
+      "A) Value at Risk",
+      "B) Variable at Return",
+      "C) Volume at Risk",
+      "D) Value and Return"
+    ],
+    "ans": 0
+  },
+  {
+    "q": "What is regulatory capital used for?",
+    "opts": [
+      "A) Absorb losses",
+      "B) Pay salaries",
+      "C) Buy buildings",
+      "D) Finance marketing"
+    ],
+    "ans": 0
+  },
+  {
+    "q": "What does Basel aim to protect?",
+    "opts": [
+      "A) Financial stability",
+      "B) Sales",
+      "C) Taxes",
+      "D) Foreign trade"
+    ],
+    "ans": 0
+  },
+  {
+    "q": "Why do banks keep reserves?",
+    "opts": [
+      "A) Meet regulatory requirements and liquidity",
+      "B) Pay dividends",
+      "C) Buy shares",
+      "D) Reduce clients"
+    ],
+    "ans": 0
+  },
+  {
+    "q": "What is a counterparty?",
+    "opts": [
+      "A) The other party in a financial transaction",
+      "B) An auditor",
+      "C) A shareholder",
+      "D) A regulator"
+    ],
+    "ans": 0
+  },
+  {
+    "q": "Which body typically supervises banks in Chile?",
+    "opts": [
+      "A) SII",
+      "B) CMF",
+      "C) BancoEstado",
+      "D) General Treasury"
+    ],
+    "ans": 1
+  },
+  {
+    "q": "A trader buys a bond. Who initially records the transaction?",
+    "opts": [
+      "A) Front Office",
+      "B) HR",
+      "C) Audit",
+      "D) Legal"
+    ],
+    "ans": 0
+  },
+  {
+    "q": "Who verifies that the trade makes financial sense and respects limits?",
+    "opts": [
+      "A) Middle Office",
+      "B) Tueketing",
+      "C) HR",
+      "D) Commercial"
+    ],
+    "ans": 0
+  },
+  {
+    "q": "Who sends payment instructions?",
+    "opts": [
+      "A) Back Office",
+      "B) Front Office",
+      "C) Risks",
+      "D) Audit"
+    ],
+    "ans": 0
+  },
+  {
+    "q": "Which department needs information to prepare financial statements?",
+    "opts": [
+      "A) Accounting",
+      "B) Tueketing",
+      "C) Sales",
+      "D) HR"
+    ],
+    "ans": 0
+  },
+  {
+    "q": "Which system is typically used to manage derivatives and market operations?",
+    "opts": [
+      "A) SAP exclusively",
+      "B) Excel only",
+      "C) Murex",
+      "D) PowerPoint"
+    ],
+    "ans": 2
+  },
+  {
+    "q": "What happens when a counterparty defaults on a payment?",
+    "opts": [
+      "A) Credit risk",
+      "B) Operational risk",
+      "C) Reputational risk",
+      "D) Climate risk"
+    ],
+    "ans": 0
+  },
+  {
+    "q": "What is P&L?",
+    "opts": [
+      "A) Profit and Loss",
+      "B) Position and Liquidity",
+      "C) Price and Leverage",
+      "D) Payment and Liability"
+    ],
+    "ans": 0
+  },
+  {
+    "q": "Which department is typically responsible for the P&L of a trading desk?",
+    "opts": [
+      "A) Front Office",
+      "B) HR",
+      "C) Legal",
+      "D) Audit"
+    ],
+    "ans": 0
+  },
+  {
+    "q": "Why are accounting reconciliations performed?",
+    "opts": [
+      "A) Verify consistency between systems and records",
+      "B) Generate sales",
+      "C) Increase risks",
+      "D) Create derivatives"
+    ],
+    "ans": 0
+  },
+  {
+    "q": "What is the ultimate goal of the entire banking operational workflow?",
+    "opts": [
+      "A) Process operations in a secure, profitable, and controlled manner",
+      "B) Increase bureaucracy",
+      "C) Reduce customers",
+      "D) Eliminate controls"
+    ],
+    "ans": 0
+  }
 ];
 
 // Simulación exacta del contenido de tu archivo CSV para el juego
@@ -559,7 +559,7 @@ const tablasOnboardingGlobal = [
 
 const mxlearnOnboardingModules = {
   financial_markets: {
-    title: "Financial Markets for Newcomers",
+    title: "Financial Tuekets for Newcomers",
     items: [
       "Module: Introduction to Banks",
       "Module: Bank Capital Management",
@@ -573,13 +573,13 @@ const mxlearnOnboardingModules = {
       "Module: Repo and Sell/Buy Back",
       "Module: Securities Lending",
       "Module: Repo/Security Lending and Financial Products",
-      "Module: Introduction to FX Market",
+      "Module: Introduction to FX Tueket",
       "Module: FX Management",
-      "Module: FX Spot Market",
-      "Module: FX Forward Market",
+      "Module: FX Spot Tueket",
+      "Module: FX Forward Tueket",
       "Module: FX Options - Basic Strategies and Risk Parameters",
       "Module: Risk-Free Rates (RFR)",
-      "Module: Money Market I - Single Period Swaps (SPS)",
+      "Module: Money Tueket I - Single Period Swaps (SPS)",
       "Module: Swaps I - Applications",
       "Module: Swaps IV - Cross Currency Swaps"
     ]
@@ -656,27 +656,27 @@ const onboardingItemUrls = {
 
 const bancoPreguntasSemana2 = [
   {
-    "question": "¿Cuál es la función principal del Trade Query en Murex?",
+    "question": "What is the primary function of the Trade Query in Murex?",
     "options": [
-      "Bookear trades",
-      "Realizar eventos a trades",
-      "Buscar y filtrar trades",
-      "Replicar trades"
+      "Book trades",
+      "Perform events on trades",
+      "Search and filter trades",
+      "Replicate trades"
     ],
     "correct": 2
   },
   {
-    "question": "¿Cuál es la función principal del e-Tradepad en Murex?",
+    "question": "What is the primary function of the e-Tradepad in Murex?",
     "options": [
-      "Bookear trades",
-      "Realizar eventos a trades",
-      "Buscar y filtrar trades",
-      "Replicar trades"
+      "Book trades",
+      "Perform events on trades",
+      "Search and filter trades",
+      "Replicate trades"
     ],
     "correct": 0
   },
   {
-    "question": "¿Con qué perfil se inicializa la contabilidad en MX.3?",
+    "question": "With which profile is accounting initialized in MX.3?",
     "options": [
       "MO",
       "FO",
@@ -686,7 +686,7 @@ const bancoPreguntasSemana2 = [
     "correct": 3
   },
   {
-    "question": "¿Con qué perfil se editan las reglas contables en MX.3?",
+    "question": "With which profile are accounting rules edited in MX.3?",
     "options": [
       "MO",
       "FO",
@@ -696,7 +696,7 @@ const bancoPreguntasSemana2 = [
     "correct": 3
   },
   {
-    "question": "¿Con cuál aplicación puedo ver mis vacaciones?",
+    "question": "With which application can I view my vacations?",
     "options": [
       "Workday",
       "MXIntra",
@@ -706,7 +706,7 @@ const bancoPreguntasSemana2 = [
     "correct": 0
   },
   {
-    "question": "¿Cuál aplicación me da información y documentación sobre casos reales de clientes y herramientas para resolver casos?",
+    "question": "Which application provides information and documentation on real client cases and tools to resolve cases?",
     "options": [
       "Pega Case",
       "MXDoc",
@@ -716,7 +716,7 @@ const bancoPreguntasSemana2 = [
     "correct": 0
   },
   {
-    "question": "¿Cuál aplicación tiene la documentación oficial de Murex para configurar?",
+    "question": "Which application has the official Murex documentation for configuration?",
     "options": [
       "Pega Case",
       "MXDoc",
@@ -726,17 +726,17 @@ const bancoPreguntasSemana2 = [
     "correct": 1
   },
   {
-    "question": "¿Cada cuánto se rellena el timesheet?",
+    "question": "How often is the timesheet filled out?",
     "options": [
-      "Cada 1 semana",
-      "Cada 15 días",
-      "Cada 1 mes",
-      "Cada 2 meses"
+      "Every 1 week",
+      "Every 15 days",
+      "Every 1 month",
+      "Every 2 months"
     ],
     "correct": 1
   },
   {
-    "question": "¿A qué estado financiero va un Notional en contabilidad?",
+    "question": "To which financial statement does a Notional go in accounting?",
     "options": [
       "Balance Sheet",
       "Off-Balance Sheet",
@@ -746,7 +746,7 @@ const bancoPreguntasSemana2 = [
     "correct": 1
   },
   {
-    "question": "¿A qué estado financiero va un MTM (Mark-to-Market) en contabilidad?",
+    "question": "To which financial statement does an MTM (Tuek-to-Tueket) go in accounting?",
     "options": [
       "Balance Sheet",
       "Off-Balance Sheet",
@@ -756,37 +756,37 @@ const bancoPreguntasSemana2 = [
     "correct": 0
   },
   {
-    "question": "¿Qué es un FX Swap?",
+    "question": "What is an FX Swap?",
     "options": [
-      "La compra de una divisa a precio spot sin compromiso de devolución",
-      "El intercambio de dos divisas en una fecha spot y el intercambio inverso en una fecha futura pactada",
-      "Un contrato de opción sobre divisas",
-      "Un futuro sobre tipo de cambio negociado en bolsa"
+      "The purchase of a currency at spot price without a commitment to return it",
+      "The exchange of two currencies on a spot date and the reverse exchange on an agreed future date",
+      "A currency option contract",
+      "An exchange rate future traded on an exchange"
     ],
     "correct": 1
   },
   {
-    "question": "¿Cuáles son las dos patas de un FX Swap?",
+    "question": "What are the two legs of an FX Swap?",
     "options": [
-      "Near leg y Far leg",
-      "Buy leg y Sell leg",
-      "Open leg y Close leg",
-      "Long leg y Short leg"
+      "Near leg and Far leg",
+      "Buy leg and Sell leg",
+      "Open leg and Close leg",
+      "Long leg and Short leg"
     ],
     "correct": 0
   },
   {
-    "question": "¿Cuál es la diferencia entre el Trade Date y el Settlement Date?",
+    "question": "What is the difference between the Trade Date and the Settlement Date?",
     "options": [
-      "Son la misma fecha",
-      "El Trade Date es cuando se acuerda la operación; el Settlement Date es cuando se intercambian los fondos",
-      "El Settlement Date es siempre anterior al Trade Date",
-      "El Trade Date aplica solo a opciones"
+      "They are the same date",
+      "The Trade Date is when the transaction is agreed; the Settlement Date is when the funds are exchanged",
+      "The Settlement Date is always before the Trade Date",
+      "The Trade Date applies only to options"
     ],
     "correct": 1
   },
   {
-    "question": "En un FX Spot, ¿cuántos días hábiles después del Trade Date ocurre el Settlement?",
+    "question": "In an FX Spot, how many business days after the Trade Date does Settlement occur?",
     "options": [
       "T+0",
       "T+1",
@@ -796,57 +796,57 @@ const bancoPreguntasSemana2 = [
     "correct": 2
   },
   {
-    "question": "¿Qué representa el \"swap points\" o puntos swap en un FX Swap?",
+    "question": "What do the \"swap points\" represent in an FX Swap?",
     "options": [
-      "La comisión cobrada por el banco",
-      "La diferencia entre el tipo de cambio de la near leg y la far leg, derivada del diferencial de tasas de interés",
-      "El margen de crédito del cliente",
-      "El tipo de cambio spot vigente al vencimiento"
+      "The fee charged by the bank",
+      "The difference between the exchange rate of the near leg and the far leg, derived from the interest rate differential",
+      "The client's credit margin",
+      "The spot exchange rate in effect at maturity"
     ],
     "correct": 1
   },
   {
-    "question": "¿Qué riesgo principal cubre un FX Swap?",
+    "question": "What main risk does an FX Swap cover?",
     "options": [
-      "Riesgo de crédito",
-      "Riesgo de tipo de interés",
-      "Riesgo de liquidez y financiación en divisas",
-      "Riesgo operacional"
+      "Credit risk",
+      "Interest rate risk",
+      "Liquidity and funding risk in foreign currencies",
+      "Operational risk"
     ],
     "correct": 2
   },
   {
-    "question": "¿Qué es el Roll-over en un FX Swap?",
+    "question": "What is the Rolel-over in an FX Swap?",
     "options": [
-      "Cancelar anticipadamente un swap",
-      "Extender la fecha de vencimiento de la far leg a una fecha más lejana",
-      "Cambiar la divisa del contrato",
-      "Convertir un FX Swap en un FX Forward"
+      "Cancel a swap early",
+      "Extend the maturity date of the far leg to a further date",
+      "Change the currency of the contract",
+      "Convert an FX Swap into an FX Forward"
     ],
     "correct": 1
   },
   {
-    "question": "En un FX Swap, ¿qué queda fijo durante toda la vida del contrato?",
+    "question": "In an FX Swap, what remains fixed during the entire life of the contract?",
     "options": [
-      "El tipo de cambio spot de mercado",
-      "El diferencial (swap points) entre ambas patas",
-      "La tasa de interés de mercado",
-      "El MTM de la operación"
+      "The market spot exchange rate",
+      "The differential (swap points) between both legs",
+      "The market interest rate",
+      "The MTM of the transaction"
     ],
     "correct": 1
   },
   {
-    "question": "¿Cómo se registra contablemente la near leg de un FX Swap en la fecha de liquidación?",
+    "question": "How is the near leg of an FX Swap recorded in accounting on the settlement date?",
     "options": [
-      "Como ingreso en el Income Statement",
-      "Como un activo y un pasivo en el Balance Sheet por el intercambio de nominales",
-      "Directamente como Off-Balance Sheet",
-      "Solo se registra al vencimiento"
+      "As income in the Income Statement",
+      "As an asset and a liability in the Balance Sheet due to the exchange of nominals",
+      "Directly as Off-Balance Sheet",
+      "Only recorded at maturity"
     ],
     "correct": 1
   },
   {
-    "question": "¿Qué perfil de Murex se utiliza típicamente para bookear un FX Swap?",
+    "question": "Which Murex profile is typically used to book an FX Swap?",
     "options": [
       "HOUSEKEEPER",
       "CONFIG",
@@ -856,247 +856,247 @@ const bancoPreguntasSemana2 = [
     "correct": 2
   },
   {
-    "question": "¿Un FX Swap genera riesgo de mercado de tipo de cambio neto?",
+    "question": "Does an FX Swap generate net foreign exchange market risk?",
     "options": [
-      "Sí, igual que un spot",
-      "No, porque las dos patas se compensan en montos nominales",
-      "Solo en la far leg",
-      "Solo si el cliente incumple"
+      "Yes, the same as a spot",
+      "No, because the two legs offset each other in nominal amounts",
+      "Only on the far leg",
+      "Only if the client defaults"
     ],
     "correct": 1
   },
   {
-    "question": "¿Qué es una opción Call?",
+    "question": "What is a Call option?",
     "options": [
-      "El derecho a vender un activo a un precio determinado",
-      "La obligación de comprar un activo a un precio determinado",
-      "El derecho a comprar un activo a un precio determinado",
-      "Un contrato de intercambio de flujos"
+      "The right to sell an asset at a set price",
+      "The obligation to buy an asset at a set price",
+      "The right to buy an asset at a set price",
+      "A contract to exchange flows"
     ],
     "correct": 2
   },
   {
-    "question": "¿Qué es una opción Put?",
+    "question": "What is a Put option?",
     "options": [
-      "El derecho a comprar un activo a un precio determinado",
-      "El derecho a vender un activo a un precio determinado",
-      "La obligación de vender un activo",
-      "Un forward con opcionalidad"
+      "The right to buy an asset at a set price",
+      "The right to sell an asset at a set price",
+      "The obligation to sell an asset",
+      "A forward with optionality"
     ],
     "correct": 1
   },
   {
-    "question": "¿Qué es el precio de ejercicio (strike) en una opción?",
+    "question": "What is the exercise price (strike) in an option?",
     "options": [
-      "El precio de mercado del subyacente en la fecha de vencimiento",
-      "El precio al cual el comprador puede ejercer su derecho de compra o venta",
-      "La prima pagada por la opción",
-      "El diferencial entre bid y ask"
+      "The market price of the underlying on the maturity date",
+      "The price at which the buyer can exercise their right to buy or sell",
+      "The premium paid for the option",
+      "The bid-ask spread"
     ],
     "correct": 1
   },
   {
-    "question": "¿Qué es la prima de una opción?",
+    "question": "What is the premium of an option?",
     "options": [
-      "El precio de ejercicio pactado",
-      "El beneficio obtenido al ejercer la opción",
-      "El precio que paga el comprador al vendedor por adquirir el derecho",
-      "La garantía depositada en cámara de compensación"
+      "The agreed strike price",
+      "The profit obtained by exercising the option",
+      "The price paid by the buyer to the seller to acquire the right",
+      "The collateral deposited in the clearing house"
     ],
     "correct": 2
   },
   {
-    "question": "¿Cuándo se dice que una opción Call está \"In the Money\" (ITM)?",
+    "question": "When is a Call option said to be \"In the Money\" (ITM)?",
     "options": [
-      "Cuando el precio del subyacente es igual al strike",
-      "Cuando el precio del subyacente es inferior al strike",
-      "Cuando el precio del subyacente es superior al strike",
-      "Cuando la prima es mayor que el strike"
+      "When the price of the underlying is equal to the strike",
+      "When the price of the underlying is below the strike",
+      "When the price of the underlying is above the strike",
+      "When the premium is greater than the strike"
     ],
     "correct": 2
   },
   {
-    "question": "¿Qué es el Delta de una opción?",
+    "question": "What is the Delta of an option?",
     "options": [
-      "El tiempo restante hasta el vencimiento",
-      "La sensibilidad del precio de la opción ante un cambio de un punto en el subyacente",
-      "La volatilidad implícita de la opción",
-      "La tasa libre de riesgo utilizada en el modelo"
+      "The remaining time until maturity",
+      "The sensitivity of the option's price to a one-point change in the underlying",
+      "The option's implied volatility",
+      "The risk-free rate used in the model"
     ],
     "correct": 1
   },
   {
-    "question": "¿Qué modelo se usa frecuentemente para valorar opciones sobre divisas (FX Options)?",
+    "question": "Which model is frequently used to value currency options (FX Options)?",
     "options": [
-      "Modelo de Vasicek",
+      "Vasicek model",
       "Black-Scholes / Garman-Kohlhagen",
-      "Modelo de Hull-White",
-      "Modelo CIR"
+      "Hull-White model",
+      "CIR model"
     ],
     "correct": 1
   },
   {
-    "question": "¿Qué es una opción europea frente a una americana?",
+    "question": "What is a European option versus an American option?",
     "options": [
-      "La europea solo puede ejercerse al vencimiento; la americana puede ejercerse en cualquier momento hasta el vencimiento",
-      "La europea puede ejercerse en cualquier momento; la americana solo al vencimiento",
-      "Son idénticas en sus derechos",
-      "La diferencia es solo geográfica, no de ejercicio"
+      "A European option can only be exercised at maturity; an American option can be exercised at any time up to maturity",
+      "A European option can be exercised at any time; an American option only at maturity",
+      "They are identical in their rights",
+      "The difference is only geographic, not exercise-related"
     ],
     "correct": 0
   },
   {
-    "question": "¿Qué es la Vega de una opción?",
+    "question": "What is the Vega of an option?",
     "options": [
-      "Sensibilidad al paso del tiempo",
-      "Sensibilidad al cambio en el precio del subyacente",
-      "Sensibilidad al cambio en la volatilidad implícita",
-      "Sensibilidad al cambio en las tasas de interés"
+      "Sensitivity to the passage of time",
+      "Sensitivity to change in the underlying price",
+      "Sensitivity to change in implied volatility",
+      "Sensitivity to change in interest rates"
     ],
     "correct": 2
   },
   {
-    "question": "¿Qué es la Theta de una opción?",
+    "question": "What is the Theta of an option?",
     "options": [
-      "Sensibilidad al cambio en la volatilidad",
-      "Pérdida de valor de la opción con el paso del tiempo (time decay)",
-      "Sensibilidad al cambio en el precio del subyacente",
-      "Sensibilidad a las tasas de interés"
+      "Sensitivity to change in volatility",
+      "Loss of option value over time (time decay)",
+      "Sensitivity to change in the underlying price",
+      "Sensitivity to interest rates"
     ],
     "correct": 1
   },
   {
-    "question": "¿Qué es un contrato de futuros?",
+    "question": "What is a futures contract?",
     "options": [
-      "Un derecho a comprar o vender un activo en el futuro",
-      "Un acuerdo OTC de intercambio de flujos",
-      "Un contrato estandarizado y negociado en bolsa para comprar/vender un activo a un precio y fecha futura determinados",
-      "Una opción sin prima"
+      "A right to buy or sell an asset in the future",
+      "An OTC agreement to exchange flows",
+      "A standardized contract traded on an exchange to buy/sell an asset at a set price and future date",
+      "An option with no premium"
     ],
     "correct": 2
   },
   {
-    "question": "¿Cuál es la principal diferencia entre un futuro y un forward?",
+    "question": "What is the main difference between a future and a forward?",
     "options": [
-      "El futuro tiene un subyacente; el forward no",
-      "El futuro se negocia en mercados organizados y es estandarizado; el forward es OTC y personalizable",
-      "El forward requiere margen diario; el futuro no",
-      "Solo los futuros tienen fecha de vencimiento"
+      "The future has an underlying; the forward does not",
+      "The future is traded on organized markets and is standardized; the forward is OTC and customizable",
+      "The forward requires daily margin; the future does not",
+      "Only futures have a maturity date"
     ],
     "correct": 1
   },
   {
-    "question": "¿Qué es el \"marking to market\" diario en futuros?",
+    "question": "What is daily \"marking to market\" in futures?",
     "options": [
-      "La valoración mensual del contrato",
-      "El ajuste diario de pérdidas y ganancias en la cuenta de margen según el precio de cierre del mercado",
-      "La renovación automática del contrato al vencimiento",
-      "El cálculo de la prima del contrato"
+      "The monthly valuation of the contract",
+      "The daily adjustment of gains and losses in the margin account based on the market closing price",
+      "The automatic rollover of the contract at maturity",
+      "The calculation of the contract premium"
     ],
     "correct": 1
   },
   {
-    "question": "¿Qué es el margen inicial en un contrato de futuros?",
+    "question": "What is the initial margin in a futures contract?",
     "options": [
-      "La ganancia garantizada al entrar en el contrato",
-      "El depósito de garantía que debe mantener el inversor al abrir una posición",
-      "El precio de liquidación al vencimiento",
-      "La comisión de la cámara de compensación"
+      "The guaranteed profit upon entering the contract",
+      "The collateral deposit that the investor must maintain when opening a position",
+      "The settlement price at maturity",
+      "The clearing house fee"
     ],
     "correct": 1
   },
   {
-    "question": "¿Qué ocurre cuando el saldo de la cuenta de margen cae por debajo del margen de mantenimiento?",
+    "question": "What happens when the balance in the margin account falls below the maintenance margin?",
     "options": [
-      "El contrato se cancela automáticamente",
-      "Se emite un margin call y el inversor debe reponer fondos",
-      "La cámara asume la pérdida",
-      "El precio del contrato se ajusta al spot"
+      "The contract is automatically cancelled",
+      "A margin call is issued and the investor must replenish funds",
+      "The clearing house assumes the loss",
+      "The contract price adjusts to spot"
     ],
     "correct": 1
   },
   {
-    "question": "¿Qué es la \"entrega\" en un contrato de futuros?",
+    "question": "What is \"delivery\" in a futures contract?",
     "options": [
-      "El pago de la prima al vencimiento",
-      "La liquidación física del activo subyacente al vencimiento, o liquidación en efectivo según el contrato",
-      "La reposición del margen",
-      "La renovación del contrato por otro período"
+      "Payment of the premium at maturity",
+      "The physical settlement of the underlying asset at maturity, or cash settlement depending on the contract",
+      "The replenishment of the margin",
+      "The renewal of the contract for another period"
     ],
     "correct": 1
   },
   {
-    "question": "¿Qué es el \"open interest\" en futuros?",
+    "question": "What is \"open interest\" in futures?",
     "options": [
-      "El volumen total negociado en el día",
-      "El número total de contratos abiertos que aún no han sido cerrados ni liquidados",
-      "El interés acumulado de la posición larga",
-      "El precio promedio de todos los contratos vigentes"
+      "The total volume traded in the day",
+      "The total number of open contracts that have not yet been closed or settled",
+      "The accumulated interest of the long position",
+      "The average price of all outstanding contracts"
     ],
     "correct": 1
   },
   {
-    "question": "¿Cómo se cierra una posición en futuros sin llegar a la entrega física?",
+    "question": "How is a position in futures closed without reaching physical delivery?",
     "options": [
-      "Solicitando la cancelación a la bolsa",
-      "Tomando una posición opuesta (contraria) del mismo contrato",
-      "Esperando al vencimiento y pagando una penalidad",
-      "Transfiriéndola a otro inversor directamente"
+      "By requesting cancellation from the exchange",
+      "By taking an opposite (offsetting) position of the same contract",
+      "By waiting for maturity and paying a penalty",
+      "By transferring it directly to another investor"
     ],
     "correct": 1
   },
   {
-    "question": "¿Qué es el \"basis\" en futuros?",
+    "question": "What is the \"basis\" in futures?",
     "options": [
-      "El precio spot del activo",
-      "La diferencia entre el precio spot del activo subyacente y el precio del futuro",
-      "El margen de mantenimiento requerido",
-      "La tasa de interés implícita del contrato"
+      "The spot price of the asset",
+      "The difference between the spot price of the underlying asset and the futures price",
+      "The required maintenance margin",
+      "The implied interest rate of the contract"
     ],
     "correct": 1
   },
   {
-    "question": "¿Qué es el \"basis risk\" en una cobertura con futuros?",
+    "question": "What is \"basis risk\" in a hedge with futures?",
     "options": [
-      "El riesgo de que el precio del futuro suba",
-      "El riesgo de que la correlación entre el activo a cubrir y el futuro no sea perfecta, dejando exposición residual",
-      "El riesgo de incumplimiento de la cámara de compensación",
-      "El riesgo de que no haya liquidez en el contrato"
+      "The risk that the futures price goes up",
+      "The risk that the correlation between the asset to be hedged and the future is not perfect, leaving residual exposure",
+      "The risk of default by the clearing house",
+      "The risk that there is no liquidity in the contract"
     ],
     "correct": 1
   },
   {
-    "question": "¿Qué es la fecha de valor (Value Date) en una operación financiera?",
+    "question": "What is the Value Date in a financial transaction?",
     "options": [
-      "La fecha en que se acuerda el trade",
-      "La fecha en que efectivamente se intercambian los fondos o activos",
-      "La fecha en que se contabiliza el MTM",
-      "La fecha de expiración de la opción"
+      "The date the trade is agreed",
+      "The date the funds or assets are actually exchanged",
+      "The date the MTM is recorded",
+      "The expiration date of the option"
     ],
     "correct": 1
   },
   {
-    "question": "¿Qué es la Maturity Date en un instrumento financiero?",
+    "question": "What is the Maturity Date in a financial instrument?",
     "options": [
-      "La fecha de contratación de la operación",
-      "La fecha en que vence el contrato y se realizan los pagos o entregas finales",
-      "La fecha de cálculo del interés devengado",
-      "La fecha de primera revisión de cupón"
+      "The booking date of the transaction",
+      "The date the contract matures and final payments or deliveries are made",
+      "The calculation date of accrued interest",
+      "The first coupon reset date"
     ],
     "correct": 1
   },
   {
-    "question": "¿Qué es el Accrual Date en contabilidad financiera?",
+    "question": "What is the Accrual Date in financial accounting?",
     "options": [
-      "La fecha de liquidación del bono",
-      "La fecha desde la cual se comienza a devengar el interés o resultado de la operación",
-      "La fecha de cierre del libro contable",
-      "La fecha de auditoría del balance"
+      "The bond settlement date",
+      "The date from which the interest or result of the transaction begins to accrue",
+      "The closing date of the ledger",
+      "The balance sheet audit date"
     ],
     "correct": 1
   },
   {
-    "question": "¿A qué estado financiero va el resultado realizado (P&L realizado) de una operación?",
+    "question": "To which financial statement does the realized result (realized P&L) of a transaction go?",
     "options": [
       "Balance Sheet",
       "Off-Balance Sheet",
@@ -1106,52 +1106,52 @@ const bancoPreguntasSemana2 = [
     "correct": 2
   },
   {
-    "question": "¿Cuál es la función del perfil BO (Back Office) en Murex?",
+    "question": "What is the function of the BO (Back Office) profile in Murex?",
     "options": [
-      "Configurar reglas contables",
-      "Bookear trades en FO",
-      "Confirmar, liquidar y gestionar el ciclo de vida post-trade de las operaciones",
-      "Inicializar la contabilidad"
+      "Configure accounting rules",
+      "Book trades in FO",
+      "Confirm, settle, and manage the post-trade lifecycle of transactions",
+      "Initialize accounting"
     ],
     "correct": 2
   },
   {
-    "question": "¿Qué es un evento de \"novación\" en Murex?",
+    "question": "What is a \"novation\" event in Murex?",
     "options": [
-      "Crear un nuevo trade desde cero",
-      "Reemplazar una de las partes de una operación existente por una nueva contraparte",
-      "Cancelar un trade sin reemplazarlo",
-      "Cambiar el nominal de un trade sin modificar la contraparte"
+      "Create a new trade from scratch",
+      "Replace one of the parties of an existing transaction with a new counterparty",
+      "Cancel a trade without replacing it",
+      "Change the nominal of a trade without modifying the counterparty"
     ],
     "correct": 1
   },
   {
-    "question": "¿Qué es el workflow de \"confirmación\" en el ciclo de vida de un trade en Murex?",
+    "question": "What is the \"confirmation\" workflow in the lifecycle of a trade in Murex?",
     "options": [
-      "El proceso de bookeo inicial del trade en FO",
-      "El proceso por el cual ambas partes verifican y validan los términos de la operación antes de la liquidación",
-      "La generación automática del asiento contable",
-      "El cálculo del MTM de la operación"
+      "The initial trade booking process in FO",
+      "The process by which both parties verify and validate the terms of the transaction before settlement",
+      "The automatic generation of the accounting entry",
+      "The calculation of the transaction's MTM"
     ],
     "correct": 1
   },
   {
-    "question": "¿Qué es el Static Data en Murex?",
+    "question": "What is the Static Data in Murex?",
     "options": [
-      "Los datos de mercado en tiempo real",
-      "La información de configuración base del sistema, como contrapartes, instrumentos, curvas y calendarios",
-      "Los trades históricos cerrados",
-      "Los reportes de regulación generados por el sistema"
+      "Real-time market data",
+      "The basic configuration information of the system, as counterparties, instruments, curves, and calendars",
+      "Historical closed trades",
+      "Regulatory reports generated by the system"
     ],
     "correct": 1
   },
   {
-    "question": "¿Qué hace el proceso de \"end of day\" (EOD) en Murex?",
+    "question": "What does the \"end of day\" (EOD) process do in Murex?",
     "options": [
-      "Borra los trades del día anterior",
-      "Ejecuta una serie de procesos automáticos como valoración, generación de asientos contables, cálculo de P&L y cierre del día operativo",
-      "Reinicia los perfiles de usuario",
-      "Envía confirmaciones automáticas a todas las contrapartes"
+      "Delete trades from the previous day",
+      "Run a series of automatic processes such as valuation, generation of accounting entries, P&L calculation, and operational day close",
+      "Reset user profiles",
+      "Send automatic confirmations to all counterparties"
     ],
     "correct": 1
   }
@@ -1219,8 +1219,8 @@ const app = {
   // Simulator game state
   currentGameState: null,
   semanaActualDelJunior: 1,
-  currentViewedWeek: 1,
-  limiteBloqueadoMalla: 3,
+  currentFriwedWeek: 1,
+  limiteLockedMalla: 3,
   quizEngine: {
     semana: 1,
     index: 0,
@@ -1244,9 +1244,9 @@ const app = {
     serverConnected: false, // Tracks connection status to remote Supabase server
     hasLoadedFromServer: false, // Tracks if database was successfully loaded from server in this session
     activeUser: null,      // Logged in user object
-    loginRole: 'consultant', // Current selected tab in login
+    loginRolee: 'consultant', // Current selected tab in login
     selectedWeekNum: null, // Selected week for consultant detail panel
-    inspectedUser: null,   // Currently inspected consultant in Admin View
+    inspectedUser: null,   // Currently inspected consultant in Admin Friw
     inspectedWeekNum: null, // Selected week in Admin Inspector
     activePanelTab: 'checklist', // Active tab in consultant panel (checklist, evaluation, deliverable)
     currentYear: new Date().getFullYear(),
@@ -1323,7 +1323,7 @@ const app = {
         week_number: 2,
         title: "Ciclo de Vida de Trades (FX Swap) y Fundamentos de Registro Contable",
         phase: "Inducción",
-        description: "Módulos Murex: E-tradepad, Trade Query. Objetivos: Primer acercamiento a MX.3, navegación por grupos. Identificar funciones de FO, MO, BO, Config, Housekeeper. Dominar débitos/créditos contables para FX Swap.",
+        description: "Módulos Murex: E-tradepad, Trade Query. Objetivos: Primer acercamiento a MX.3, navegación por grupos. Identificar funciones de FO, MO, BO, Config, Housekeeper. Suninar débitos/créditos contables para FX Swap.",
         checklist_items: [
           "Completar la visualización y estudio del módulo Videos de Onboarding: Murex y Finance Internos (Bloque FX Swaps Teórico)",
           "Ejecutar búsquedas avanzadas y filtrado de transacciones mediante el uso de Trade Query",
@@ -1332,7 +1332,7 @@ const app = {
           "Desarrollar y registrar el PPT explicativo con los asientos contables teóricos para un FX Swap",
           "Cuadrar matemáticamente los libros diarios del ejercicio práctico asegurando la paridad Débito/Crédito",
           "Completar y aprobar el test automatizado de conocimientos generales de la plataforma",
-          "Resolver y aprobar el Juego de Clasificación de Cuentas (mínimo 80% de precisión con 25 cuentas)"
+          "Resolver y aprobar el Thugo de Clasificación de Cuentas (mínimo 80% de precisión con 25 cuentas)"
         ],
         knowledge_test: { num_questions: 50, min_passing_score: 70 },
         deliverable: { type: "ppt", description: "Presentación (PPT) detallada de asientos contables para un FX Swap (fecha, trade, términos, débitos y créditos)", required: true },
@@ -1350,8 +1350,8 @@ const app = {
           "Implementar Cuentas Fórmula aplicando condicionales lógicos para el direccionamiento automatizado de montos",
           "Completar correctamente la Timesheet de la semana siguiendo las reglas de imputación del área",
           "Identificar el propósito de los comités recurrentes (Chile-Brasil, OPS/Finance, Americas, Townhalls)",
-          "Resolver de manera interactiva el \"Juego de las Cuentas\" integrado en el Workspace de la plataforma",
-          "Completar y registrar la visualización de los 21 videos mandatorios del módulo Financial Markets for Newcomers en la sección MXLearn"
+          "Resolver de manera interactiva el \"Thugo de las Cuentas\" integrado en el Workspace de la plataforma",
+          "Completar y registrar la visualización de los 21 videos mandatorios del módulo Financial Tuekets for Newcomers en la sección MXLearn"
         ],
         knowledge_test: { num_questions: 26, min_passing_score: 70 },
         deliverable: { type: "zip", description: "Cuentas dinámicas parametrizadas y funcionales en el entorno de pruebas", required: true },
@@ -1394,12 +1394,12 @@ const app = {
         week_number: 6,
         title: "Cierre de Ciclo Diario, Valoración a Mercado (MTM) y Procesamiento Fin de Día (EOD)",
         phase: "Aprendizaje Estructurado",
-        description: "Módulos Murex: End of Day (EOD) Processing / Mark-to-Market (MTM) Engine. Objetivos: Validar contabilidad bookeando trades. Postear reglas oficiales. Inyectar valoraciones MTM y ejecutar scripts de EOD.",
+        description: "Módulos Murex: End of Day (EOD) Processing / Tuek-to-Tueket (MTM) Engine. Objetivos: Validar contabilidad bookeando trades. Postear reglas oficiales. Inyectar valoraciones MTM y ejecutar scripts de EOD.",
         checklist_items: [
           "Completar la visualización y estudio del módulo Videos de Onboarding: Murex y Finance Internos (Bloque EOD y Motores MTM)",
           "Publicar (postear) de manera oficial las reglas contables de FX Swap y Opciones en producción simulada",
           "Ejecutar transacciones reales (bookear trades) y auditar que la contabilidad impacte de forma limpia",
-          "Configurar e inyectar valores de mercado a la plataforma utilizando el motor de Mark-to-Market (MTM)",
+          "Configurar e inyectar valores de mercado a la plataforma utilizando el motor de Tuek-to-Tueket (MTM)",
           "Programar, lanzar y monitorear la ejecución de los scripts de cierre automatizado de fin de día (EOD)",
           "Generar, extraer y cuadrar el reporte de diario contable consolidado posterior al procesamiento EOD"
         ],
@@ -1411,7 +1411,7 @@ const app = {
         week_number: 7,
         title: "Eventos Contables Avanzados, Correcciones al Pasado (Fixing) e Introducción a Futuros",
         phase: "Aprendizaje Estructurado",
-        description: "Módulos Murex: Market Data / Fixing Engine / Futuros Financieros. Objetivos: Gestión de eventos complejos, inserción con fecha valor en el pasado e introducción a Futuros.",
+        description: "Módulos Murex: Tueket Data / Fixing Engine / Futuros Financieros. Objetivos: Gestión de eventos complejos, inserción con fecha valor en el pasado e introducción a Futuros.",
         checklist_items: [
           "Completar la visualización y estudio del módulo Videos de Onboarding: Murex y Finance Internos (Bloque Eventos Pasados y Futuros)",
           "Insertar manualmente transacciones complejas con fecha valor parametrizada en el pasado (Backdated trades)",
@@ -1452,7 +1452,7 @@ const app = {
           "Procesar las primeras transacciones reales asignadas de los instrumentos FX Swap y FX Forward",
           "Monitorear de forma directa la contabilidad productiva para transacciones de Opciones y Futuros",
           "Extraer reportes operativos diarios en el ambiente productivo para su validación con el equipo técnico",
-          "Disminuir el Índice de Dependencia de Soporte (IDS) reactivo, operando bajo supervisión pasiva"
+          "Disminuir el Índice de Dependencia de Support (IDS) reactivo, operando bajo supervisión pasiva"
         ],
         knowledge_test: { num_questions: 2, min_passing_score: 70 },
         deliverable: { type: "pdf", description: "Primeras transacciones productivas visadas de forma directa", required: true },
@@ -1479,7 +1479,7 @@ const app = {
         week_number: 11,
         title: "Gestión de Calendarios, Feriados Mundiales y Procesos de Devengo (Accruals)",
         phase: "Go Live",
-        description: "Módulos Murex: Configuration Templates / Market Calendars / Accrual Engine. Objetivos: Configurar calendarios geográficos, feriados mundiales y devengos/amortizaciones.",
+        description: "Módulos Murex: Configuration Templates / Tueket Calendars / Accrual Engine. Objetivos: Configurar calendarios geográficos, feriados mundiales y devengos/amortizaciones.",
         checklist_items: [
           "Completar la visualización y estudio del módulo Videos de Onboarding: Murex y Finance Internos (Bloque Accruals y Curvas de Interés)",
           "Configurar tablas geográficas de feriados bancarios internacionales en las plantillas globales del sistema",
@@ -1520,47 +1520,47 @@ const app = {
       "2": bancoPreguntasSemana2,
       "3": [
         {
-          question: "¿Qué es la reunión Town Hall?",
+          question: "What is the Town Hall meeting?",
           options: [
-            "Reunión mensual de Chile para ver los proyectos",
-            "Reunión anual de Murex Americas para ver proyectos",
-            "Reunión semestral de Murex Chile para ver proyectos",
-            "Reunión trimestral de Murex Americas para ver proyectos"
+            "Monthly meeting in Chile to review projects",
+            "Annual meeting of Murex Americas to review projects",
+            "Semi-annual meeting of Murex Chile to review projects",
+            "Quarterly meeting of Murex Americas to review projects"
           ],
           correct: 3
         },
         {
-          question: "¿Qué se hace en la Weekly Meeting de Finance & P&L Chile?",
+          question: "What is done in the Finance & P&L Chile Weekly Meeting?",
           options: [
-            "Debatir sobre temáticas en común del equipo",
-            "Describir el status actual de los proyectos asignados",
-            "Hablar sobre la relación del equipo y RRHH",
-            "Entrega de JIRAs actualizados"
+            "Discuss common team topics",
+            "Describe the current status of assigned projects",
+            "Talk about the team and HR relationship",
+            "Delivery of updated JIRAs"
           ],
           correct: 1
         },
         {
-          question: "¿Qué se hace en la Monthly Meeting con Finance Americas?",
+          question: "What is done in the Monthly Meeting with Finance Americas?",
           options: [
-            "Debatir sobre temáticas en común",
-            "Presentar requerimientos por región",
-            "Describir el status actual de proyectos por región",
-            "Entrega de JIRAs actualizados"
+            "Discuss common topics",
+            "Present requirements by region",
+            "Describe the current status of projects by region",
+            "Delivery of updated JIRAs"
           ],
           correct: 2
         },
         {
-          question: "¿Qué se hace en la Monthly Meeting con OPS Chile/NY?",
+          question: "What is done in the Monthly Meeting with OPS Chile/NY?",
           options: [
-            "Debatir sobre temáticas en común de back office",
-            "Presentar solicitudes de back office y cuadraturas de cuentas de clientes",
-            "Describir el status actual de proyectos por región",
-            "Entrega de JIRAs actualizados de clientes con respecto al processing de operaciones"
+            "Discuss common back office topics",
+            "Present back office requests and client account reconciliations",
+            "Describe the current status of projects by region",
+            "Delivery of updated client JIRAs regarding transaction processing"
           ],
           correct: 3
         },
         {
-          question: "¿Cuál sería el código correcto en el timesheet para agendar la reunión Finance Weekly?",
+          question: "What would be the correct code in the timesheet to schedule the Finance Weekly meeting?",
           options: [
             "AMER-CS-FIN PL-TEAM – GROWING OTHERS",
             "AMER-CS-FIN PL-TEAM – INTERNAL SUPPORT",
@@ -1570,17 +1570,17 @@ const app = {
           correct: 3
         },
         {
-          question: "¿Qué es una FX Option?",
+          question: "What is an FX Option?",
           options: [
-            "Un contrato que obliga a ambas partes a intercambiar dos divisas a un tipo de cambio fijo en una fecha futura",
-            "Un contrato derivado que otorga al comprador el derecho, pero no la obligación, de comprar o vender una divisa a un precio pactado en o antes de una fecha de vencimiento, a cambio del pago de una prima",
-            "Un acuerdo de intercambio de flujos de tasas de interés entre dos contrapartes en distintas monedas",
-            "Un contrato estandarizado negociado en bolsa para comprar divisas a precio spot"
+            "A contract that obligates both parties to exchange two currencies at a fixed exchange rate on a future date",
+            "A derivative contract that gives the buyer the right, but not the obligation, to buy or sell a currency at an agreed price on or before an expiration date, in exchange for the payment of a premium",
+            "An agreement to exchange interest rate flows between two counterparties in different currencies",
+            "A standardized contract traded on an exchange to buy currencies at a spot price"
           ],
           correct: 1
         },
         {
-          question: "En el Step 1 de una FX Option Buy Call, ¿qué cuenta va al Débito en el OBS Commitment de la divisa a recibir (Buy currency)?",
+          question: "In Step 1 of an FX Option Buy Call, which account goes to Debit in the OBS Commitment of the currency to be received (Buy currency)?",
           options: [
             "Contingent Contra",
             "Cont Buy Call Paybl",
@@ -1590,7 +1590,7 @@ const app = {
           correct: 2
         },
         {
-          question: "En el Step 1 de una FX Option Buy Call, ¿qué cuenta va al Crédito en el OBS Commitment de la divisa a pagar (Sell currency)?",
+          question: "In Step 1 of an FX Option Buy Call, which account goes to Credit in the OBS Commitment of the currency to be paid (Sell currency)?",
           options: [
             "Cont Buy Call Recbl",
             "Cont Buy Call Paybl",
@@ -1600,333 +1600,333 @@ const app = {
           correct: 1
         },
         {
-          question: "En el Step 2 (Cash Settlement de la prima), ¿qué cuenta se debita y cuál se acredita?",
+          question: "In Step 2 (Cash Settlement of the premium), which account is debited and which is credited?",
           options: [
-            "Débito: Cash Nostro / Crédito: Premium Payable",
-            "Débito: Deferred Loss / Crédito: Premium Expense",
-            "Débito: Premium Payable / Crédito: Cash Nostro",
-            "Débito: MTM Gain / Crédito: Unrealized Asset"
+            "Debit: Cash Nostro / Credit: Premium Payable",
+            "Debit: Deferred Loss / Credit: Premium Expense",
+            "Debit: Premium Payable / Credit: Cash Nostro",
+            "Debit: MTM Gain / Credit: Unrealized Asset"
           ],
           correct: 2
         },
         {
-          question: "En el Step 3 (Value Measurement con ganancia), ¿qué refleja el asiento contable?",
+          question: "In Step 3 (Value Measurement with gain), what does the accounting entry reflect?",
           options: [
-            "Débito: MTM Gain / Crédito: Unrealized Asset",
-            "Débito: Unrealized Asset / Crédito: MTM Gain",
-            "Débito: Deferred Loss / Crédito: Premium Expense",
-            "Débito: Cash Nostro / Crédito: Unrealized Asset"
+            "Debit: MTM Gain / Credit: Unrealized Asset",
+            "Debit: Unrealized Asset / Credit: MTM Gain",
+            "Debit: Deferred Loss / Credit: Premium Expense",
+            "Debit: Cash Nostro / Credit: Unrealized Asset"
           ],
           correct: 1
         },
         {
-          question: "En el Step 4 al vencimiento, ¿qué ocurre con el OBS Uncommitment de la divisa a recibir?",
+          question: "In Step 4 at maturity, what happens to the OBS Uncommitment of the currency to be received?",
           options: [
-            "Se debita Cont Buy Call Recbl y se acredita Contingent Contra",
-            "Se debita Contingent Contra y se acredita Cont Buy Call Recbl",
-            "Se debita Premium Expense y se acredita Deferred Loss",
-            "Se debita Unrealized Asset y se acredita MTM Gain"
+            "Cont Buy Call Recbl is debited and Contingent Contra is credited",
+            "Contingent Contra is debited and Cont Buy Call Recbl is credited",
+            "Premium Expense is debited and Deferred Loss is credited",
+            "Unrealized Asset is debited and MTM Gain is credited"
           ],
           correct: 1
         },
         {
-          question: "Compraste una Call sobre EUR/USD con strike 1.10 y precio spot actual es 1.15. ¿Cuál es tu situación y qué esperas que ocurra?",
+          question: "You bought a Call on EUR/USD with strike 1.10 and current spot price is 1.15. What is your situation and what do you expect to happen?",
           options: [
-            "Estás Out of the Money y esperas que el spot baje por debajo del strike para ejercer",
-            "Estás In the Money porque el spot supera el strike, y si ejerces compras EUR más barato que el mercado, por lo que tu expectativa era que el EUR se apreciara",
-            "Estás In the Money pero no tiene sentido ejercer porque el spot ya superó el strike",
-            "Estás At the Money y no hay beneficio ni pérdida en ejercer la opción"
+            "You are Out of the Money and expect the spot to fall below the strike to exercise",
+            "You are In the Money because the spot exceeds the strike, and if you exercise you buy EUR cheaper than the market, so your expectation was for EUR to appreciate",
+            "You are In the Money but it makes no sense to exercise because the spot has already exceeded the strike",
+            "You are At the Money and there is no profit or loss in exercising the option"
           ],
           correct: 1
         },
         {
-          question: "Vendiste una Put sobre USD/CLP con strike 900. El spot actual está en 870. ¿Cuál es tu exposición real?",
+          question: "You sold a Put on USD/CLP with strike 900. The current spot is at 870. What is your real exposure?",
           options: [
-            "No tienes exposición porque el spot está por debajo del strike y la opción no se ejercerá",
-            "Tienes una ganancia porque el comprador no querrá ejercer",
-            "El comprador tiene incentivo a ejercer porque puede venderte USD a 900 cuando el mercado paga 870, y tú como vendedor estás obligado a comprar a ese precio, generando una pérdida de 30 pesos por USD nocional",
-            "Tu pérdida máxima está limitada a la prima que recibiste al vender la opción"
+            "You have no exposure because the spot is below the strike and the option will not be exercised",
+            "You have a profit because the buyer will not want to exercise",
+            "The buyer has an incentive to exercise because they can sell you USD at 900 when the market pays 870, and you as the seller are obligated to buy at that price, generating a loss of 30 pesos per USD nominal",
+            "Your maximum loss is limited to the premium you received when selling the option"
           ],
           correct: 2
         },
         {
-          question: "Una FX Option europea sobre GBP/USD tiene strike 1.25 y vence en 30 días. El spot hoy es 1.27. ¿En qué momento puede ejercerse y qué implica que sea europea?",
+          question: "A European FX Option on GBP/USD has strike 1.25 and expires in 30 days. The spot today is 1.27. At what point can it be exercised and what does it mean that it is European?",
           options: [
-            "Puede ejercerse en cualquier momento antes del vencimiento porque está In the Money",
-            "Solo puede ejercerse exactamente en la fecha de vencimiento, independientemente de dónde esté el spot durante la vida de la opción",
-            "Puede ejercerse solo si el spot supera 1.30 antes del vencimiento",
-            "Puede ejercerse en cualquier fecha en que el spot esté por encima del strike"
+            "It can be exercised at any time before expiration because it is In the Money",
+            "It can only be exercised exactly on the expiration date, regardless of where the spot is during the life of the option",
+            "It can be exercised only if the spot exceeds 1.30 before expiration",
+            "It can be exercised on any date when the spot is above the strike"
           ],
           correct: 1
         },
         {
-          question: "Tienes una posición larga en una Call y el subyacente no se mueve durante semanas. ¿Qué le ocurre al valor de tu opción aunque el spot permanezca constante?",
+          question: "You have a long position in a Call and the underlying does not move for weeks. What happens to the value of your option even if the spot remains constant?",
           options: [
-            "El valor permanece estable porque el spot no cambió",
-            "El valor aumenta porque el mercado anticipa movimiento futuro",
-            "El valor disminuye progresivamente por efecto del time decay (Theta negativa), ya que cada día que pasa sin movimiento reduce el valor temporal de la opción",
-            "El valor depende únicamente del Delta, no del tiempo"
+            "The value remains stable because the spot did not change",
+            "The value increases because the market anticipates future movement",
+            "The value progressively decreases due to time decay (negative Theta), since each day that passes without movement reduces the temporal value of the option",
+            "The value depends solely on Delta, not on time"
           ],
           correct: 2
         },
         {
-          question: "En una FX Option, ¿cuál es la diferencia entre precio spot y precio fijo (fixed/strike) y cómo determina si la opción tiene valor intrínseco?",
+          question: "In an FX Option, what is the difference between the spot price and the fixed/strike price, and how does it determine if the option has intrinsic value?",
           options: [
-            "El precio spot es el acordado al inicio del contrato y el strike es el precio de mercado vigente al vencimiento",
-            "El precio spot es el tipo de cambio vigente en el mercado en este momento, mientras que el strike o precio fijo es el acordado en el contrato. El valor intrínseco es la diferencia positiva entre ambos: en una Call es max(Spot - Strike, 0) y en una Put es max(Strike - Spot, 0)",
-            "Ambos precios son iguales al momento del booking y divergen solo si hay volatilidad",
-            "El precio fijo se usa solo para opciones americanas y el spot para europeas"
+            "The spot price is the one agreed upon at the start of the contract and the strike is the prevailing market price at maturity",
+            "The spot price is the exchange rate prevailing in the market at this moment, while the strike or fixed price is the one agreed in the contract. The intrinsic value is the positive difference between the two: in a Call it is max(Spot - Strike, 0) and in a Put it is max(Strike - Spot, 0)",
+            "Both prices are equal at the time of booking and diverge only if there is volatility",
+            "The fixed price is used only for American options and the spot for European ones"
           ],
           correct: 1
         },
         {
-          question: "¿Qué es el Trade Date?",
+          question: "What is the Trade Date?",
           options: [
-            "La fecha en que se intercambian los fondos entre las contrapartes",
-            "La fecha en que se acuerda y se registra la operación, donde quedan fijados todos los términos: precio, nocional, contraparte y vencimiento",
-            "La fecha en que el contrato expira y se realizan los pagos finales",
-            "La fecha desde la cual comienza a correr el devengo de intereses"
+            "The date on which funds are exchanged between counterparties",
+            "The date on which the transaction is agreed and registered, establishing all terms: price, nominal, counterparty, and maturity",
+            "The date on which the contract expires and final payments are made",
+            "The date from which the interest accrual begins"
           ],
           correct: 1
         },
         {
-          question: "¿Qué es el Settlement Date o fecha de liquidación?",
+          question: "What is the Settlement Date?",
           options: [
-            "La fecha en que ambas partes firman el contrato",
-            "La fecha en que se calcula el MTM de la operación",
-            "La fecha en que efectivamente se produce el intercambio de fondos o activos entre las contrapartes, que puede ser T+1, T+2 o según lo pactado",
-            "La fecha de vencimiento del instrumento financiero"
+            "The date on which both parties sign the contract",
+            "The date on which the MTM of the transaction is calculated",
+            "The date on which the exchange of funds or assets between counterparties actually occurs, which can be T+1, T+2, or as agreed",
+            "The maturity date of the financial instrument"
           ],
           correct: 2
         },
         {
-          question: "¿Qué es el Value Date en una operación FX?",
+          question: "What is the Value Date in an FX transaction?",
           options: [
-            "La fecha en que se ingresa la operación al sistema Murex",
-            "La fecha en que el trade genera valor económico para el libro, es decir cuando los fondos están disponibles y la operación produce efecto financiero real, típicamente coincide con el Settlement Date",
-            "La fecha en que se calcula el fixing de la divisa",
-            "La fecha en que el cliente confirma los términos de la operación"
+            "The date on which the transaction is entered into the Murex system",
+            "The date on which the trade generates economic value for the book, meaning when funds are available and the transaction produces real financial effect, typically coinciding with the Settlement Date",
+            "The date on which the fixing of the currency is calculated",
+            "The date on which the client confirms the terms of the transaction"
           ],
           correct: 1
         },
         {
-          question: "¿Qué es el Fixing en una operación FX?",
+          question: "What is the Fixing in an FX transaction?",
           options: [
-            "El precio spot pactado al momento del booking del trade",
-            "El proceso por el cual se corrigen errores en el tipo de cambio de una operación ya booked",
-            "La observación oficial del tipo de cambio de mercado en una fecha y hora específica, publicada por un organismo de referencia como el BCE o el Banco Central, que se usa para liquidar instrumentos cuyo pago depende de ese valor",
-            "El ajuste diario del MTM de posiciones en divisa"
+            "The spot price agreed at the time of booking the trade",
+            "The process by which errors in the exchange rate of an already booked transaction are corrected",
+            "The official observation of the market exchange rate at a specific date and time, published by a reference body such as the ECB or the Central Bank, which is used to settle instruments whose payment depends on that value",
+            "The daily MTM adjustment of currency positions"
           ],
           correct: 2
         },
         {
-          question: "¿Qué es la Maturity Date o fecha de vencimiento?",
+          question: "What is the Maturity Date?",
           options: [
-            "La fecha en que se acuerda el contrato entre las partes",
-            "La fecha en que se liquida la prima de una opción",
-            "La fecha en que el contrato llega a su fin y se realizan los pagos o entregas finales pactados, cerrando todas las obligaciones de ambas partes",
-            "La fecha desde la cual se empieza a calcular el P&L de la posición"
+            "The date on which the contract is agreed between the parties",
+            "The date on which the premium of an option is settled",
+            "The date on which the contract reaches its end and the agreed final payments or deliveries are made, closing all obligations of both parties",
+            "The date from which the P&L of the position begins to be calculated"
           ],
           correct: 2
         },
         {
-          question: "¿Cuál es la diferencia entre el Trade Date y el Value Date en un FX Spot?",
+          question: "What is the difference between the Trade Date and the Value Date in an FX Spot?",
           options: [
-            "Son siempre la misma fecha",
-            "El Trade Date es cuando se acuerda la operación y el Value Date es cuando se intercambian los fondos, típicamente dos días hábiles después en un FX Spot estándar (T+2)",
-            "El Value Date siempre ocurre un mes después del Trade Date",
-            "El Trade Date aplica solo a derivados y el Value Date solo a operaciones spot"
+            "They are always the same date",
+            "The Trade Date is when the transaction is agreed and the Value Date is when funds are exchanged, typically two business days later in a standard FX Spot (T+2)",
+            "The Value Date always occurs one month after the Trade Date",
+            "The Trade Date applies only to derivatives and the Value Date only to spot transactions"
           ],
           correct: 1
         },
         {
-          question: "En una FX Option, ¿cuál es la relación entre el Expiry Date y el Settlement Date?",
+          question: "In an FX Option, what is the relationship between the Expiry Date and the Settlement Date?",
           options: [
-            "Son siempre la misma fecha",
-            "El Expiry Date es cuando la opción deja de poder ejercerse y se determina si hay valor intrínseco; el Settlement Date es cuando, si se ejerció, se produce el intercambio efectivo de divisas, que generalmente ocurre T+2 después del Expiry",
-            "El Settlement Date siempre ocurre antes del Expiry Date",
-            "El Expiry Date aplica solo a opciones americanas"
+            "They are always the same date",
+            "The Expiry Date is when the option can no longer be exercised and it is determined if there is intrinsic value; the Settlement Date is when, if exercised, the actual exchange of currencies occurs, which generally happens T+2 after Expiry",
+            "The Settlement Date always occurs before the Expiry Date",
+            "The Expiry Date applies only to American options"
           ],
           correct: 1
         },
         {
-          question: "¿Qué ocurre contablemente en el Trade Date de una operación antes de que llegue el Settlement Date?",
+          question: "What happens accounting-wise on the Trade Date of a transaction before the Settlement Date arrives?",
           options: [
-            "No se registra nada hasta que ocurra el intercambio de fondos",
-            "Se registran compromisos fuera de balance (Off-Balance Sheet) que reflejan los derechos y obligaciones pactados, sin que aún haya movimiento de caja real",
-            "Se registra directamente el movimiento de caja en el Balance Sheet",
-            "Se registra el MTM como ingreso realizado en el Income Statement"
+            "Nothing is recorded until the exchange of funds occurs",
+            "Off-Balance Sheet commitments are recorded reflecting the agreed rights and obligations, without any actual cash movement yet",
+            "Cash movement is recorded directly on the Balance Sheet",
+            "MTM is recorded as realized income on the Income Statement"
           ],
           correct: 1
         },
         {
-          question: "¿Qué es el Accrual Date y cómo se diferencia del Trade Date?",
+          question: "What is the Accrual Date and how does it differ from the Trade Date?",
           options: [
-            "Son la misma fecha en todos los instrumentos financieros",
-            "El Accrual Date es la fecha desde la cual comienza a devengarse un ingreso o gasto, como el interés de un bono o la prima de una opción, y puede o no coincidir con el Trade Date dependiendo del instrumento y la convención contable aplicada",
-            "El Accrual Date siempre coincide con el Settlement Date",
-            "El Accrual Date solo aplica a instrumentos de renta fija, no a derivados FX"
+            "They are the same date in all financial instruments",
+            "The Accrual Date is the date from which an income or expense starts to accrue, such as the interest on a bond or the premium of an option, and it may or may not coincide with the Trade Date depending on the instrument and the accounting convention applied",
+            "The Accrual Date always coincides with the Settlement Date",
+            "The Accrual Date only applies to fixed-income instruments, not to FX derivatives"
           ],
           correct: 1
         },
         {
-          question: "Si el Trade Date de un FX Forward es el lunes 2 de junio y el contrato vence en 3 meses, ¿qué fechas son relevantes y cuál es el orden correcto?",
+          question: "If the Trade Date of an FX Forward is Monday, June 2nd, and the contract matures in 3 months, which dates are relevant and what is the correct order?",
           options: [
             "Trade Date → Maturity Date → Settlement Date → Value Date",
-            "Trade Date → Value Date (T+2 spot) → Maturity Date → Settlement Date, donde el Settlement ocurre típicamente T+2 después de la Maturity Date",
+            "Trade Date → Value Date (T+2 spot) → Maturity Date → Settlement Date, where Settlement typically occurs T+2 after the Maturity Date",
             "Value Date → Trade Date → Settlement Date → Maturity Date",
-            "Todas las fechas son iguales en un FX Forward"
+            "All dates are equal in an FX Forward"
           ],
           correct: 1
         }
       ],
       "4": [
         {
-          question: "¿Cuál es el propósito de Accounting Rules Interface en MX.3?",
+          question: "What is the purpose of the Accounting Rules Interface in MX.3?",
           options: [
-            "Diseñar reportes gráficos para clientes externos.",
-            "Enlazar las cuentas dinámicas/fórmulas creadas para automatizar la asignación y ruteo de asientos contables en FX Swaps y Opciones.",
-            "Configurar el acceso de usuarios al entorno de producción."
+            "Design graphical reports for external clients.",
+            "Link the dynamic/formula accounts created to automate the assignment and routing of journal entries in FX Swaps and Options.",
+            "Configure user access to the production environment."
           ],
           correct: 1
         },
         {
-          question: "Al configurar las reglas contables para una Opción Financiera, ¿qué se debe considerar?",
+          question: "When configuring accounting rules for a Financial Option, what should be considered?",
           options: [
-            "La prima de la opción y sus cuentas contables específicas para reflejar la valoración justa (Premium/Liability).",
-            "Únicamente el valor nominal del activo subyacente.",
-            "El huso horario del país de emisión del trade."
+            "The option premium and its specific accounting accounts to reflect fair valuation (Premium/Liability).",
+            "Only the nominal value of the underlying asset.",
+            "The time zone of the trade's issuance country."
           ],
           correct: 0
         }
       ],
       "5": [
         {
-          question: "¿Qué optimizan las Accounting Flow Rules en el motor contable de MX.3?",
+          question: "What do the Accounting Flow Rules optimize in the MX.3 accounting engine?",
           options: [
-            "La velocidad de internet de los servidores locales.",
-            "El ruteo y procesamiento de los movimientos de flujos de caja y eventos intermedios dentro del motor contable.",
-            "La exportación de estados financieros a archivos PDF."
+            "The internet speed of local servers.",
+            "The routing and processing of cash flow movements and intermediate events within the accounting engine.",
+            "Exporting financial statements to PDF files."
           ],
           correct: 1
         },
         {
-          question: "¿Qué se requiere para probar las reglas de flujo en el Sandbox?",
+          question: "What is required to test flow rules in the Sandbox?",
           options: [
-            "Una simulación con datos simulados y posterior validación de la consistencia de los diarios.",
-            "El reinicio completo de la base de datos de producción.",
-            "La aprobación del Banco Central de forma síncrona."
+            "A simulation with simulated data and subsequent validation of journal consistency.",
+            "The complete restart of the production database.",
+            "The Central Bank's approval synchronously."
           ],
           correct: 0
         }
       ],
       "6": [
         {
-          question: "¿Qué es el Mark-to-Market (MTM) en MX.3?",
+          question: "What is Tuek-to-Tueket (MTM) in MX.3?",
           options: [
-            "La valoración contable de un instrumento financiero a precios de mercado actuales.",
-            "La impresión física de los diarios contables.",
-            "El proceso de cuadratura de caja de la oficina."
+            "The accounting valuation of a financial instrument at current market prices.",
+            "The physical printing of accounting journals.",
+            "The office cash reconciliation process."
           ],
           correct: 0
         },
         {
-          question: "¿Qué representa el proceso de End of Day (EOD) contable?",
+          question: "What does the accounting End of Day (EOD) process represent?",
           options: [
-            "El apagado físico de los computadores del área.",
-            "La ejecución de scripts automatizados de cierre contable y financiero diario para procesar trades y postear reglas oficiales.",
-            "Una reunión diaria de 15 minutos del equipo de soporte."
+            "The physical shutdown of the area's computers.",
+            "The execution of automated daily accounting and financial closing scripts to process trades and post official rules.",
+            "A daily 15-minute support team meeting."
           ],
           correct: 1
         }
       ],
       "7": [
         {
-          question: "¿Qué es el Fixing Engine en MX.3?",
+          question: "What is the Fixing Engine in MX.3?",
           options: [
-            "El motor encargado de determinar y fijar tasas de interés o índices de referencia de mercado para la liquidación de flujos.",
-            "Un reparador automático de bases de datos corruptas.",
-            "La pantalla para modificar contraseñas de usuarios."
+            "The engine responsible for determining and fixing interest rates or market reference indices for flow settlement.",
+            "An automatic database repair tool.",
+            "The screen to modify user passwords."
           ],
           correct: 0
         },
         {
-          question: "¿Qué consecuencia tiene registrar una transacción con fecha valor en el pasado (Backdated Trade)?",
+          question: "What is the consequence of registering a transaction with a value date in the past (Backdated Trade)?",
           options: [
-            "Se cancela automáticamente el trade.",
-            "El sistema genera eventos de ajuste retrospectivos para corregir la contabilidad histórica y reflejar los efectos devengados correspondientes.",
-            "Se genera una alerta de fraude en el Banco Central."
+            "The trade is automatically cancelled.",
+            "The system generates retrospective adjustment events to correct historical accounting and reflect the corresponding accrued effects.",
+            "A fraud alert is generated in the Central Bank."
           ],
           correct: 1
         }
       ],
       "8": [
         {
-          question: "¿Cuál es el objetivo principal de la jornada de Dress Rehearsal ante el tutor?",
+          question: "What is the main objective of the Dress Rehearsal day before the Tutor?",
           options: [
-            "Diseñar diapositivas comerciales para nuevos clientes.",
-            "Demostrar el control autónomo del entorno de pruebas parametrizado ejecutando transacciones de punta a punta (FX Swap, Opciones, Futuros).",
-            "Presentar el informe de horas del mes."
+            "Design sales slides for new clients.",
+            "Demonstrate autonomous control of the parameterized testing environment by executing end-to-end transactions (FX Swap, Options, Futures).",
+            "Present the monthly hours report."
           ],
           correct: 1
         },
         {
-          question: "¿Qué implica demostrar control de Murex Full Stack Finance?",
+          question: "What does demonstrating control of Murex Full Stack Finance imply?",
           options: [
-            "Dominar todos los módulos integrados previamente y la lógica de negocio detrás de cada cuenta y regla contable parametrizada.",
-            "Saber programar en el lenguaje C++ de la plataforma.",
-            "Tener acceso root a los servidores Unix de la empresa."
+            "Master all previously integrated modules and the business logic behind each account and parameterized accounting rule.",
+            "Knowing how to program in the platform's C++ language.",
+            "Having root access to the company's Unix servers."
           ],
           correct: 0
         }
       ],
       "9": [
         {
-          question: "Al realizar el Go Live en el entorno productivo de Finance, ¿cuál es el paso crítico?",
+          question: "When performing the Go Live in the Finance production environment, what is the critical step?",
           options: [
-            "Operar de manera segura y certificada transacciones reales de FX Swap, FX Forward, Opciones y Futuros.",
-            "Borrar el historial de transacciones de prueba de Sandbox.",
-            "Modificar los parámetros globales del servidor principal de forma directa."
+            "Safely and certified operate real transactions of FX Swap, FX Forward, Options, and Futures.",
+            "Delete the Sandbox test transaction history.",
+            "Directly modify global parameters of the main server."
           ],
           correct: 0
         }
       ],
       "11": [
         {
-          question: "¿Cómo impacta la configuración de feriados mundiales en el Accrual Engine de MX.3?",
+          question: "How does the world holiday configuration impact the MX.3 Accrual Engine?",
           options: [
-            "No tiene impacto contable.",
-            "Determina con precisión los días hábiles para el devengo de intereses y amortización, ajustando las fechas de pago y flujos de caja contables.",
-            "Bloquea la valorización de todos los derivados de tasas."
+            "It has no accounting impact.",
+            "It accurately determines business days for interest accrual and amortization, adjusting payment dates and accounting cash flows.",
+            "It blocks the valuation of all rate derivatives."
           ],
           correct: 1
         },
         {
-          question: "¿Qué es el Accrual Engine?",
+          question: "What is the Accrual Engine?",
           options: [
-            "El motor de cálculo encargado de la amortización periódica y devengo de intereses de instrumentos de inversión y cobertura.",
-            "Una herramienta para importar plantillas de Excel.",
-            "El sistema de control de asistencia del personal."
+            "The calculation engine responsible for periodic amortization and interest accrual of investment and hedging instruments.",
+            "A tool to import Excel templates.",
+            "The personnel attendance control system."
           ],
           correct: 0
         }
       ],
       "12": [
         {
-          question: "¿Qué representa el proceso de liquidación (Liquidation / Settlement) en MX.3?",
+          question: "What does the liquidation/settlement process represent in MX.3?",
           options: [
-            "El despido de personal o término de proyectos comerciales.",
-            "Los flujos de extinción de obligaciones financieras y cierres contables por liquidación de transacciones en cuentas de balance.",
-            "La venta de activos fijos de la oficina."
+            "Dismissal of personnel or termination of commercial projects.",
+            "The flows of extinguishing financial obligations and accounting closures due to transaction settlement in balance sheet accounts.",
+            "The sale of office fixed assets."
           ],
           correct: 1
         },
         {
-          question: "Bajo la óptica contable de Finance & PL, ¿qué se valida al revisar los asientos de liquidación?",
+          question: "Under the accounting perspective of Finance & PL, what is validated when reviewing settlement entries?",
           options: [
-            "La consistencia de los diarios contables y el neteo correcto de las cuentas de puente y liquidación.",
-            "El color de los gráficos en el panel de control.",
-            "La velocidad de transmisión de datos en red."
+            "The consistency of accounting journals and the correct netting of clearing and settlement accounts.",
+            "The color of the charts in the control panel.",
+            "The network data transmission speed."
           ],
           correct: 0
         }
@@ -1966,13 +1966,13 @@ const app = {
       // 1. Bloquear el Clic Derecho (Menú Contextual)
       el.addEventListener('contextmenu', (event) => {
         event.preventDefault();
-        this.showToast("🔒 ALERTA DE SEGURIDAD MUREX: El menú contextual está deshabilitado en esta sección.", "warning");
+        this.showToast("🔒 MUREX SECURITY ALERT: The context menu is disabled in this section.", "warning");
       });
 
       // 2. Bloquear el comando de Copiar (Ctrl + C o Cmd + C)
       el.addEventListener('copy', (event) => {
         event.preventDefault();
-        this.showToast("⚠️ ACCIÓN PROHIBIDA: No está permitido copiar el material de evaluación técnica.", "danger");
+        this.showToast("⚠️ PROHIBITED ACTION: Copying technical evaluation material is not allowed.", "danger");
       });
 
       // 3. Bloquear el comando de Cortar (Ctrl + X)
@@ -2203,7 +2203,7 @@ const app = {
           }
         }
       } catch (e) {
-        console.error("Error al cargar la Base de Datos, reiniciando...", e);
+        console.error("Error loading the Database, restarting...", e);
         this.resetDB();
       }
     } else {
@@ -2223,7 +2223,7 @@ const app = {
     } else {
       badge.className = 'db-status-badge disconnected';
       badge.innerHTML = '<span class="status-dot"></span><i class="ti ti-cloud-off"></i> Local Fallback';
-      badge.title = 'Sin conexión al servidor (Modo Local). Si estás en Vercel, asegúrate de configurar la variable de entorno DATABASE_URL.';
+      badge.title = 'No connection to server (Local Mode). If you are on Vercel, make sure to configure the DATABASE_URL environment variable.';
     }
   },
 
@@ -2420,7 +2420,7 @@ const app = {
 
   resetDB() {
     if (this.state.activeUser && this.state.activeUser.role !== 'admin') {
-      this.showForbiddenError("Error 403: No tienes permisos para reiniciar la base de datos.");
+      this.showForbiddenError("Error 403: You do not have permissions to reset the database.");
       return;
     }
     // Generate initial user progress records dynamically based on week templates
@@ -2450,7 +2450,7 @@ const app = {
             // Setup as completed
             progress[user.id].completed_weeks.push(w);
             
-            // Mark checklists as true
+            // Tuek checklists as true
             progress[user.id].checklist_states[w] = {};
             if (template && template.checklist_items) {
               template.checklist_items.forEach((_, idx) => {
@@ -2539,10 +2539,10 @@ const app = {
     const initialMentoringLogs = [];
 
     const troubleshootingDB = [
-      { code: "err-acc-015", title: "ERR-ACC-015: Accrual Account Missing", description: "Ocurre cuando el motor contable de MX.3 intenta valorizar cupones devengados pero no encuentra una cuenta contable asignada en el plan contable (Chart of Accounts) para registrar el interés acumulado.", steps: ["Ingresar al módulo de parametrización contable contable en el Sandbox MX.3.", "Seleccionar el tipo de instrumento 'Bond' o 'Fixed Income'.", "Añadir una regla contable para el evento 'Accrual' (interés devengado).", "Asignar la cuenta contable de activo correspondiente al libro mayor.", "Guardar cambios, vaciar caché contable y re-procesar los asientos contables en la Sandbox."] },
-      { code: "err-val-032", title: "ERR-VAL-032: Fair Value Discrepancy", description: "Ocurre cuando el Mark-to-Market del derivado (IRS/Forward) calculado por el motor de valoración difiere significativamente del valor reportado por la contraparte o el solucionario. Se debe comúnmente a discrepancias en las curvas de tasas.", steps: ["Ir al visor de curvas de tasas (Yield Curves) en MX.3.", "Validar que la curva de descuento activa (ej. Curva de Cámara) sea la configurada en los parámetros de valoración del portafolio.", "Alinear la base de cálculo de días del instrumento (ej. 30/360 vs Act/360) según la ficha técnica del cliente ficticio.", "Recargar las curvas del día y volver a ejecutar la valoración por lotes."] },
-      { code: "err-ifrs-9-004", title: "ERR-IFRS-9-004: Hedge Effectiveness Failure", description: "Ocurre cuando la relación de cobertura (Hedge Relationship) entre el derivado y el activo subyacente cae fuera del rango de efectividad aceptado (80%-125%) bajo la norma IFRS 9.", steps: ["Revisar el registro de designación de cobertura en la Sandbox.", "Validar que los montos nominales y fechas de vencimiento coincidan exactamente entre el derivado y la partida cubierta.", "Ejecutar la prueba de efectividad prospectiva utilizando el método de regresión lineal.", "Si el resultado está fuera del rango, ajustar los parámetros de regresión o re-balancear el nominal del derivado de cobertura."] },
-      { code: "err-sys-999", title: "ERR-SYS-999: Sandbox Database Connection Lost", description: "Error del sistema que indica pérdida de conexión con la base de datos central de pruebas del Sandbox MX.3 Chile.", steps: ["Verificar el estado de la conexión VPN o red interna.", "Reiniciar el terminal de MX.3 en tu máquina local.", "Si persiste, revisar el canal Slack #sandbox-mx3 para constatar si hay ventanas de mantenimiento activas.", "Como último recurso, notificar al tutor para que solicite el reinicio del servidor de base de datos del sandbox."] }
+      { code: "err-acc-015", title: "ERR-ACC-015: Accrual Account Missing", description: "Occurs when the MX.3 accounting engine attempts to value accrued coupons but cannot find an accounting account assigned in the Chart of Accounts to record the accumulated interest.", steps: ["Enter the accounting parameterization module in the Sandbox MX.3.", "Seleccionar el tipo de instrumento 'Bond' o 'Fixed Income'.", "Add an accounting rule for the 'Accrual' event (accrued interest).", "Asignar la cuenta contable de activo correspondiente al libro mayor.", "Save changes, clear accounting cache, and re-process the journal entries in the Sandbox."] },
+      { code: "err-val-032", title: "ERR-VAL-032: Fair Value Discrepancy", description: "Occurs when the derivative's Tuek-to-Tueket (IRS/Forward) calculated by the valuation engine differs significantly from the value reported by the counterparty or solution key. It is commonly due to rate curve discrepancies.", steps: ["Ir al visor de curvas de tasas (Yield Curves) en MX.3.", "Validate that the active discount curve (e.g., Camera Curve) is the one configured in the portfolio valuation parameters.", "Align the day count convention of the instrument (e.g., 30/360 vs Act/360) according to the fictional client's factsheet.", "Reload the daily curves and re-run batch valuation."] },
+      { code: "err-ifrs-9-004", title: "ERR-IFRS-9-004: Hedge Effectiveness Failure", description: "Occurs when the Hedge Relationship between the derivative and the underlying asset falls outside the accepted effectiveness range (80%-125%) under the IFRS 9 standard.", steps: ["Review the hedge designation registry in the Sandbox.", "Validar que los montos nominales y fechas de vencimiento coincidan exactamente entre el derivado y la partida cubierta.", "Execute the prospective effectiveness test using the linear regression method.", "If the result is outside the range, adjust the regression parameters or re-balance the nominal of the hedging derivative."] },
+      { code: "err-sys-999", title: "ERR-SYS-999: Sandbox Database Connection Lost", description: "System error indicating connection loss to the central testing database of the Sandbox MX.3 Chile.", steps: ["Verify the status of the VPN connection or internal network.", "Restart the MX.3 terminal on your local machine.", "Si persiste, revisar el canal Slack #sandbox-mx3 para constatar si hay ventanas de mantenimiento activas.", "As a last resort, notify the tutor to request a database server restart in the sandbox."] }
     ];
 
     const initialCalendarEvents = [
@@ -2968,12 +2968,12 @@ const app = {
     });
     
     this.saveDatabase();
-    this.showToast("Base de datos reiniciada con datos demo.");
+    this.showToast("Database reset with demo data.");
     
     if (this.state.activeUser) {
       // Re-load user session pointer to updated db values
       this.state.activeUser = this.state.db.users.find(u => u.id === this.state.activeUser.id);
-      this.renderCurrentView();
+      this.renderCurrentFriw();
     }
   },
 
@@ -2986,14 +2986,14 @@ const app = {
         // Sync with actual db values
         this.state.activeUser = this.state.db.users.find(u => u.id === userSession.id);
         if (this.state.activeUser) {
-          this.showView((this.state.activeUser.role === 'admin' || this.state.activeUser.role === 'tutor' || this.state.activeUser.role === 'senior') ? 'view-admin' : 'view-consultant');
+          this.showFriw((this.state.activeUser.role === 'admin' || this.state.activeUser.role === 'tutor' || this.state.activeUser.role === 'senior') ? 'view-admin' : 'view-consultant');
           this.setupHeaderBadge();
-          this.renderCurrentView();
+          this.renderCurrentFriw();
           return;
         }
       } catch (e) {}
     }
-    this.showView('view-login');
+    this.showFriw('view-login');
   },
 
   quickFill(email, password) {
@@ -3019,12 +3019,12 @@ const app = {
       localStorage.setItem('user_role', user.rol || (user.role === 'admin' ? 'MANAGER' : user.role === 'tutor' ? 'TUTOR' : user.role === 'senior' ? 'SENIOR' : 'JUNIOR'));
       this.setupHeaderBadge();
       
-      this.showToast(`Bienvenido, ${user.name}`);
-      this.showView((user.role === 'admin' || user.role === 'tutor' || user.role === 'senior') ? 'view-admin' : 'view-consultant');
-      this.renderCurrentView();
+      this.showToast(`Welcome, ${user.name}`);
+      this.showFriw((user.role === 'admin' || user.role === 'tutor' || user.role === 'senior') ? 'view-admin' : 'view-consultant');
+      this.renderCurrentFriw();
     } else {
       errorMsg.style.display = 'flex';
-      document.getElementById('login-error-text').innerText = "Credenciales incorrectas. Inténtalo de nuevo.";
+      document.getElementById('login-error-text').innerText = "Incorrect credentials. Please try again.";
     }
   },
 
@@ -3037,8 +3037,8 @@ const app = {
     // Reset test state just in case
     this.resetTestState();
     
-    this.showView('view-login');
-    this.showToast("Sesión cerrada correctamente.");
+    this.showFriw('view-login');
+    this.showToast("Logged out successfully.");
   },
 
   setupHeaderBadge() {
@@ -3064,11 +3064,11 @@ const app = {
     }
   },
 
-  showView(viewId) {
+  showFriw(viewId) {
     if (viewId === 'view-admin') {
       const user = this.state.activeUser;
       if (!user || (user.role !== 'admin' && user.role !== 'tutor' && user.role !== 'senior')) {
-        this.showForbiddenError("Error 403 - Forbidden: No tienes permisos para acceder a esta sección.");
+        this.showForbiddenError("Error 403 - Forbidden: You do not have permissions to access this section.");
         return;
       }
     }
@@ -3081,22 +3081,22 @@ const app = {
   },
 
   showForbiddenError(msg) {
-    this.showView('view-forbidden');
+    this.showFriw('view-forbidden');
     this.showToast(msg, "danger");
   },
 
   goHome() {
     if (this.state.activeUser) {
       const r = this.state.activeUser.role;
-      this.showView((r === 'admin' || r === 'tutor' || r === 'senior') ? 'view-admin' : 'view-consultant');
-      this.renderCurrentView();
+      this.showFriw((r === 'admin' || r === 'tutor' || r === 'senior') ? 'view-admin' : 'view-consultant');
+      this.renderCurrentFriw();
     } else {
-      this.showView('view-login');
+      this.showFriw('view-login');
     }
   },
 
-  // View Router Dispatcher
-  renderCurrentView() {
+  // Friw Router Dispatcher
+  renderCurrentFriw() {
     if (!this.state.activeUser) return;
     
     // Render SMTP outbox contents
@@ -3104,9 +3104,9 @@ const app = {
     
     const r = this.state.activeUser.role;
     if (r === 'admin' || r === 'tutor' || r === 'senior') {
-      this.renderAdminView();
+      this.renderAdminFriw();
     } else {
-      this.renderConsultantView();
+      this.renderConsultantFriw();
     }
   },
 
@@ -3115,7 +3115,7 @@ const app = {
   // ==========================================================================
   // CONSULTANT DASHBOARD RENDERING & LOGIC
   // ==========================================================================
-  renderConsultantView() {
+  renderConsultantFriw() {
     const userId = this.state.activeUser.id;
     const progress = this.state.db.consultant_progress[userId];
     
@@ -3137,13 +3137,13 @@ const app = {
     let statusText = '';
     if (avgScore < 70 && completedCount > 3) {
       statusClass = 'at-risk';
-      statusText = 'En Riesgo Teórico';
+      statusText = 'At Theoretical Risk';
     } else if (completedCount >= 11) {
       statusClass = '';
       statusText = 'Listo para Certificar';
     } else {
       statusClass = '';
-      statusText = 'Al día (Estable)';
+      statusText = 'On Track (Stable)';
     }
 
     // Update Profile DB fields dynamically
@@ -3154,8 +3154,8 @@ const app = {
     this.saveDatabase();
 
     // Render Hero widgets
-    document.getElementById('consultant-welcome-title').innerText = `Hola, ${this.state.activeUser.name}`;
-    document.getElementById('consultant-progress-text').innerText = `${completedCount} de ${totalWeeks} semanas completadas (${Math.round((completedCount/totalWeeks)*100)}%)`;
+    document.getElementById('consultant-welcome-title').innerText = `Hello, ${this.state.activeUser.name}`;
+    document.getElementById('consultant-progress-text').innerText = `${completedCount} of ${totalWeeks} weeks completed (${Math.round((completedCount/totalWeeks)*100)}%)`;
     document.getElementById('consultant-progress-fill').style.width = `${(completedCount/totalWeeks)*100}%`;
     document.getElementById('consultant-avg-score').innerText = `${avgScore}%`;
     
@@ -3209,21 +3209,21 @@ const app = {
       
       let stateClass = 'state-locked';
       let stateIcon = '<i class="ti ti-lock"></i>';
-      let stateFooter = 'Bloqueado';
+      let stateFooter = 'Locked';
       
       if (isCompleted) {
         stateClass = 'state-completed';
         stateIcon = '<i class="ti ti-circle-check"></i>';
         const score = this.getWeekScore(progress, w);
-        stateFooter = score !== undefined ? `<span class="week-card-score">${score}% score</span>` : 'Aprobado';
+        stateFooter = score !== undefined ? `<span class="week-card-score">${score}% score</span>` : 'Approved';
       } else if (hasPendingDeliverable) {
         stateClass = 'state-review';
         stateIcon = '<i class="ti ti-clock"></i>';
-        stateFooter = 'En revisión';
+        stateFooter = 'In review';
       } else if (isCurrent) {
         stateClass = 'state-current';
         stateIcon = '<i class="ti ti-circle-dot"></i>';
-        stateFooter = 'En curso';
+        stateFooter = 'In progress';
       }
       
       const card = document.createElement('div');
@@ -3232,7 +3232,7 @@ const app = {
         if (!isLocked) {
           this.goToWeek(w);
         } else {
-          this.showToast("Esta semana está bloqueada. Aprueba las anteriores primero.", "warning");
+          this.showToast("This week is locked. Approve the previous ones first.", "warning");
         }
       };
       
@@ -3257,7 +3257,7 @@ const app = {
   },
 
   loadWeekDetail(weekNum) {
-    this.currentViewedWeek = parseInt(weekNum);
+    this.currentFriwedWeek = parseInt(weekNum);
     const userId = this.state.activeUser.id;
     const progress = this.state.db.consultant_progress[userId];
     const template = this.state.db.week_templates.find(wt => wt.week_number === weekNum);
@@ -3271,7 +3271,7 @@ const app = {
     if (activeContent) activeContent.classList.remove('hidden');
 
     // Load static templates fields
-    document.getElementById('panel-week-number').innerText = `Semana ${weekNum} · ${template.phase}`;
+    document.getElementById('panel-week-number').innerText = `Week ${weekNum} · ${template.phase}`;
     document.getElementById('panel-week-title').innerText = template.title;
     document.getElementById('panel-week-desc').innerText = template.description;
     
@@ -3284,13 +3284,13 @@ const app = {
     statusBadge.className = 'week-status-badge';
     if (isCompleted) {
       statusBadge.classList.add('completed');
-      statusBadge.innerText = 'Completada';
+      statusBadge.innerText = 'Completed';
     } else if (isReview) {
       statusBadge.classList.add('review');
-      statusBadge.innerText = 'En revisión';
+      statusBadge.innerText = 'In review';
     } else {
       statusBadge.classList.add('current');
-      statusBadge.innerText = 'En curso';
+      statusBadge.innerText = 'In progress';
     }
 
     // Load Checklist items
@@ -3305,12 +3305,12 @@ const app = {
     const activeUserId = this.state.activeUser.id;
     const tutorId = this.state.db.tutor_junior_mapping[activeUserId];
     const tutorObj = this.state.db.users.find(u => u.id === tutorId);
-    const tutorName = tutorObj ? tutorObj.name : 'tu tutor';
+    const tutorName = tutorObj ? tutorObj.name : 'your tutor';
 
     // Update help text to reflect read-only status for onboarding juniors
     const paneHelp = document.querySelector('#pane-checklist .pane-help');
     if (paneHelp) {
-      paneHelp.innerHTML = `Visualiza tus tareas prácticas de la semana. Solo tu tutor asignado <strong>(${tutorName})</strong> puede actualizarlas y marcarlas como completadas.`;
+      paneHelp.innerHTML = `Friw your practical tasks for the week. Only your assigned tutor <strong>(${tutorName})</strong> can update and mark them as completed.`;
     }
 
     template.checklist_items.forEach((item, idx) => {
@@ -3505,8 +3505,8 @@ const app = {
                     <td style="font-weight: 500;">${item.plazo}</td>
                     <td style="text-align: right; white-space: nowrap;">
                         ${esSemanaBloqueada 
-                            ? '<span class="induction-badge preview"><i class="ti ti-lock" style="margin-right: 3px;"></i> Bloqueado</span>' 
-                            : (isChecked ? '<span class="induction-badge ok"><i class="ti ti-circle-check" style="margin-right: 3px;"></i> Completado</span>' : '<span class="induction-badge pending"><i class="ti ti-pencil" style="margin-right: 3px;"></i> Editable</span>')
+                            ? '<span class="induction-badge preview"><i class="ti ti-lock" style="margin-right: 3px;"></i> Locked</span>' 
+                            : (isChecked ? '<span class="induction-badge ok"><i class="ti ti-circle-check" style="margin-right: 3px;"></i> Completed</span>' : '<span class="induction-badge pending"><i class="ti ti-pencil" style="margin-right: 3px;"></i> Editable</span>')
                         }
                     </td>
                 </tr>
@@ -3516,7 +3516,7 @@ const app = {
         // CORRECCIÓN DE LA CABECERA: Remueve la etiqueta confusa de 'Modo Lectura' si está en semanas habilitadas
         const badgeEncabezado = esSemanaBloqueada 
             ? '<span class="induction-badge readonly"><i class="ti ti-lock" style="margin-right: 3px;"></i> Vista Protegida</span>' 
-            : '<span class="induction-badge ok"><i class="ti ti-edit" style="margin-right: 3px;"></i> Autogestión Activa</span>';
+            : '<span class="induction-badge ok"><i class="ti ti-edit" style="margin-right: 3px;"></i> Active Self-Management</span>';
 
         tableWrapper.innerHTML = `
             <div class="induction-table-header">
@@ -3595,7 +3595,7 @@ const app = {
     const progress = this.state.db && this.state.db.consultant_progress ? this.state.db.consultant_progress[activeUserId] : null;
     const completedCount = progress ? (progress.completed_weeks ? progress.completed_weeks.length : 0) : 0;
     const currentWeekNum = Math.min(completedCount + 1, 12);
-    const esSemanaBloqueada = (this.currentViewedWeek > currentWeekNum);
+    const esSemanaBloqueada = (this.currentFriwedWeek > currentWeekNum);
     const inputDisabled = esSemanaBloqueada ? 'disabled' : '';
     
     let subfolderHtml = '';
@@ -3664,8 +3664,8 @@ const app = {
           ${itemCellHtml}
           <td style="text-align: right; padding: 10px; white-space: nowrap; padding-right: 15px;">
             ${esSemanaBloqueada 
-              ? '<span class="induction-badge preview"><i class="ti ti-lock" style="margin-right: 3px;"></i> Bloqueado</span>' 
-              : (isChecked ? '<span class="induction-badge ok"><i class="ti ti-circle-check" style="margin-right: 3px;"></i> Completado</span>' : '<span class="induction-badge pending"><i class="ti ti-pencil" style="margin-right: 3px;"></i> Pendiente</span>')
+              ? '<span class="induction-badge preview"><i class="ti ti-lock" style="margin-right: 3px;"></i> Locked</span>' 
+              : (isChecked ? '<span class="induction-badge ok"><i class="ti ti-circle-check" style="margin-right: 3px;"></i> Completed</span>' : '<span class="induction-badge pending"><i class="ti ti-pencil" style="margin-right: 3px;"></i> Pending</span>')
             }
           </td>
         </tr>
@@ -3678,9 +3678,9 @@ const app = {
         <table class="mentor-log-table" style="width: 100%; border-collapse: collapse;">
           <thead>
             <tr style="background-color: var(--neutral-light); border-bottom: 1px solid var(--neutral-border);">
-              <th style="width: 50px; text-align: center; padding: 8px; font-size: 0.75rem; color: var(--neutral-muted);">Estado</th>
-              <th style="text-align: left; padding: 8px; font-size: 0.75rem; color: var(--neutral-muted);">Módulo / Video de Onboarding</th>
-              <th style="text-align: right; padding: 8px; font-size: 0.75rem; color: var(--neutral-muted); padding-right: 15px;">Estatus</th>
+              <th style="width: 50px; text-align: center; padding: 8px; font-size: 0.75rem; color: var(--neutral-muted);">Status</th>
+              <th style="text-align: left; padding: 8px; font-size: 0.75rem; color: var(--neutral-muted);">Module / Onboarding Video</th>
+              <th style="text-align: right; padding: 8px; font-size: 0.75rem; color: var(--neutral-muted); padding-right: 15px;">Progress</th>
             </tr>
           </thead>
           <tbody>
@@ -3692,7 +3692,7 @@ const app = {
   },
 
   navigateWorkspaceWeek(direccion) {
-    const nuevaSemana = this.currentViewedWeek + direccion;
+    const nuevaSemana = this.currentFriwedWeek + direccion;
     
     const userId = this.state.activeUser ? this.state.activeUser.id : 'default';
     const progress = this.state.db && this.state.db.consultant_progress ? this.state.db.consultant_progress[userId] : null;
@@ -3703,7 +3703,7 @@ const app = {
       return; // Bloqueo de seguridad
     }
     
-    this.currentViewedWeek = nuevaSemana;
+    this.currentFriwedWeek = nuevaSemana;
     this.renderWorkspace(nuevaSemana);
   },
 
@@ -3718,15 +3718,15 @@ const app = {
     const currentWeekNum = Math.min(completedCount + 1, 12);
     
     // Flecha Izquierda: Gris solo si estoy en la primera página
-    btnPrev.disabled = (this.currentViewedWeek === 1);
+    btnPrev.disabled = (this.currentFriwedWeek === 1);
     
     // Flecha Derecha: Se apaga y se pone en gris de forma estricta al llegar a la semana actual en curso
-    if (this.currentViewedWeek >= currentWeekNum) {
+    if (this.currentFriwedWeek >= currentWeekNum) {
       btnNext.disabled = true;
-      btnNext.setAttribute('title', `Contenido bloqueado: Semana ${currentWeekNum + 1} bloqueada`);
+      btnNext.setAttribute('title', `Locked content: Week ${currentWeekNum + 1} locked`);
     } else {
       btnNext.disabled = false;
-      btnNext.setAttribute('title', 'Avanzar semana');
+      btnNext.setAttribute('title', 'Advance week');
     }
   },
 
@@ -3743,7 +3743,7 @@ const app = {
 
   classGameInit() {
     const userId = this.state.activeUser ? this.state.activeUser.id : 'default';
-    const weekNum = this.currentViewedWeek || 1;
+    const weekNum = this.currentFriwedWeek || 1;
     const storageKey = `class_game_progress_${userId}_w${weekNum}`;
     const saved = localStorage.getItem(storageKey);
     const count = (weekNum === 2) ? 25 : 15;
@@ -3805,7 +3805,7 @@ const app = {
     this.classGameState.score = 0;
     this.classGameState.classified = [];
     const cloned = JSON.parse(JSON.stringify(classGameAccounts));
-    const weekNum = this.currentViewedWeek || 1;
+    const weekNum = this.currentFriwedWeek || 1;
     const count = (weekNum === 2) ? 25 : 15;
     const shuffled = this.classGameShuffle(cloned);
     this.classGameState.shuffledAccounts = shuffled.slice(0, count);
@@ -3815,7 +3815,7 @@ const app = {
 
   classGameSaveState() {
     const userId = this.state.activeUser ? this.state.activeUser.id : 'default';
-    const weekNum = this.currentViewedWeek || 1;
+    const weekNum = this.currentFriwedWeek || 1;
     const storageKey = `class_game_progress_${userId}_w${weekNum}`;
     localStorage.setItem(storageKey, JSON.stringify(this.classGameState));
   },
@@ -3829,7 +3829,7 @@ const app = {
     const startEl = document.getElementById('class-game-start');
     const totalCount = this.classGameState.shuffledAccounts.length || classGameAccounts.length;
     
-    const weekNum = this.currentViewedWeek || 1;
+    const weekNum = this.currentFriwedWeek || 1;
 
     // Verificar si es la semana 2 y la evaluación ya se completó o guardó
     const userId = this.state.activeUser ? this.state.activeUser.id : 'default';
@@ -3847,9 +3847,9 @@ const app = {
     const gameToolbarTitle = document.querySelector('#workspace-classification-game-zone .game-brand-title');
     if (gameToolbarTitle) {
       if (weekNum === 2) {
-        gameToolbarTitle.innerHTML = `<i class="ti ti-layout-grid-add" style="color: var(--primary);"></i> Semana 2: Desafío de Clasificación (Evaluación Final)`;
+        gameToolbarTitle.innerHTML = `<i class="ti ti-layout-grid-add" style="color: var(--primary);"></i> Week 2: Classification Challenge (Final Evaluation)`;
       } else {
-        gameToolbarTitle.innerHTML = `<i class="ti ti-layout-grid-add" style="color: var(--primary);"></i> Semana 1: Desafío de Clasificación (Práctica)`;
+        gameToolbarTitle.innerHTML = `<i class="ti ti-layout-grid-add" style="color: var(--primary);"></i> Week 1: Classification Challenge (Practice)`;
       }
     }
 
@@ -3961,7 +3961,7 @@ const app = {
               msgEl.style.color = 'var(--warning-text)';
               retryBtn.parentNode.insertBefore(msgEl, retryBtn);
             }
-            msgEl.innerText = "Evaluación Finalizada: Tu puntaje ha sido registrado en la base de datos. Solo se permite 1 intento.";
+            msgEl.innerText = "Evaluation Finished: Your score has been recorded in the database. Only 1 attempt is allowed.";
           } else {
             retryBtn.style.display = 'inline-block';
             const msgEl = document.getElementById('class-game-retry-msg');
@@ -4019,7 +4019,7 @@ const app = {
       
       if (this.classGameState.currentIndex >= totalCount) {
         const userId = this.state.activeUser ? this.state.activeUser.id : 'default';
-        const weekNum = this.currentViewedWeek || 1;
+        const weekNum = this.currentFriwedWeek || 1;
         if (this.state.db && this.state.db.consultant_progress[userId]) {
           const progress = this.state.db.consultant_progress[userId];
           if (!progress.game_scores) progress.game_scores = {};
@@ -4054,7 +4054,7 @@ const app = {
         
         if (this.classGameState.currentIndex >= totalCount) {
           const userId = this.state.activeUser ? this.state.activeUser.id : 'default';
-          const weekNum = this.currentViewedWeek || 1;
+          const weekNum = this.currentFriwedWeek || 1;
           if (this.state.db && this.state.db.consultant_progress[userId]) {
             const progress = this.state.db.consultant_progress[userId];
             if (!progress.game_scores) progress.game_scores = {};
@@ -4099,9 +4099,9 @@ const app = {
   },
 
   classGameReset() {
-    const weekNum = this.currentViewedWeek || 1;
+    const weekNum = this.currentFriwedWeek || 1;
     if (weekNum === 2) {
-      this.showToast("Solo se permite un intento para la evaluación de clasificación de la Semana 2.", "warning");
+      this.showToast("Only one attempt is allowed for the Week 2 classification evaluation.", "warning");
       return;
     }
     this.classGameResetState();
@@ -4199,15 +4199,15 @@ const app = {
     this.simulatorState.answers.clear();
     
     // Hide game board, show home view
-    const homeView = document.getElementById('sim-home-view');
-    const gameView = document.getElementById('sim-game-view');
+    const homeFriw = document.getElementById('sim-home-view');
+    const gameFriw = document.getElementById('sim-game-view');
     const btnBack = document.getElementById('sim-btn-back');
     const btnVal = document.getElementById('sim-btn-validate');
     const btnReset = document.getElementById('sim-btn-reset');
     const prodBadge = document.getElementById('sim-current-product-badge');
     
-    if (homeView) homeView.classList.remove('hidden');
-    if (gameView) gameView.classList.add('hidden');
+    if (homeFriw) homeFriw.classList.remove('hidden');
+    if (gameFriw) gameFriw.classList.add('hidden');
     if (btnBack) btnBack.classList.add('hidden');
     if (btnVal) btnVal.classList.add('hidden');
     if (btnReset) btnReset.classList.add('hidden');
@@ -4236,15 +4236,15 @@ const app = {
     }
     
     // Show game board, hide home view
-    const homeView = document.getElementById('sim-home-view');
-    const gameView = document.getElementById('sim-game-view');
+    const homeFriw = document.getElementById('sim-home-view');
+    const gameFriw = document.getElementById('sim-game-view');
     const btnBack = document.getElementById('sim-btn-back');
     const btnVal = document.getElementById('sim-btn-validate');
     const btnReset = document.getElementById('sim-btn-reset');
     const prodBadge = document.getElementById('sim-current-product-badge');
     
-    if (homeView) homeView.classList.add('hidden');
-    if (gameView) gameView.classList.remove('hidden');
+    if (homeFriw) homeFriw.classList.add('hidden');
+    if (gameFriw) gameFriw.classList.remove('hidden');
     if (btnBack) btnBack.classList.remove('hidden');
     
     if (this.simIsReadOnly()) {
@@ -4329,10 +4329,10 @@ const app = {
         
         summaryBox.innerHTML = `
           <div>
-            <strong style="color: var(--neutral-dark);">Progreso de Evaluación:</strong> ${attemptedCount} de 6 instrumentos evaluados.
+            <strong style="color: var(--neutral-dark);">Evaluation Progress:</strong> ${attemptedCount} of 6 instruments evaluated.
           </div>
           <div>
-            <strong style="color: var(--neutral-dark); margin-right: 0.5rem;">Calificación Promedio:</strong> 
+            <strong style="color: var(--neutral-dark); margin-right: 0.5rem;">Average Score:</strong> 
             <span style="font-size: 0.9rem; padding: 0.2rem 0.6rem; border-radius: 999px; background-color: var(--primary-light); color: var(--primary-text); font-weight: bold; border: 1px solid var(--primary);">${avgScore}%</span>
           </div>
         `;
@@ -4356,10 +4356,10 @@ const app = {
       
       if (isWeek4) {
         if (isAttempted) {
-          statusHtml = `<span style="font-size: 0.75rem; font-weight: bold; color: var(--success); margin-right: 1rem;">Calificación: ${score}%</span>`;
+          statusHtml = `<span style="font-size: 0.75rem; font-weight: bold; color: var(--success); margin-right: 1rem;">Score: ${score}%</span>`;
           btnLabel = 'Review';
         } else {
-          statusHtml = `<span style="font-size: 0.75rem; font-weight: bold; color: var(--warning-text); margin-right: 1rem;">Pendiente (1 Intento)</span>`;
+          statusHtml = `<span style="font-size: 0.75rem; font-weight: bold; color: var(--warning-text); margin-right: 1rem;">Pending (1 Attempt)</span>`;
           btnLabel = 'Open';
         }
       }
@@ -4705,7 +4705,7 @@ const app = {
         return;
       }
       
-      const confirmSubmit = confirm("¿Estás seguro de que deseas validar tus asientos? Solo tienes 1 intento para este instrumento y tu calificación se guardará de forma permanente.");
+      const confirmSubmit = confirm("Are you sure you want to validate your entries? You only have 1 attempt for this instrument and your score will be saved permanently.");
       if (!confirmSubmit) return;
     }
 
@@ -4893,7 +4893,7 @@ const app = {
 
   toggleChecklistItem(weekNum, itemIdx) {
     // Deprecated for juniors/consultants as they are read-only now
-    this.showToast("Solo tu tutor a cargo puede modificar este checklist.", "danger");
+    this.showToast("Only your assigned tutor can modify this checklist.", "danger");
   },
 
   toggleTraineeChecklistItem(traineeId, weekNum, itemIdx) {
@@ -4901,7 +4901,7 @@ const app = {
     const tutorId = this.state.db.tutor_junior_mapping[traineeId];
     
     if (activeUserId !== tutorId) {
-      this.showToast("Solo el tutor a cargo puede modificar este checklist.", "danger");
+      this.showToast("Only the assigned tutor can modify this checklist.", "danger");
       return;
     }
 
@@ -4918,7 +4918,7 @@ const app = {
 
     // Re-render
     this.loadInspectedWeekDetail(traineeId, weekNum);
-    this.showToast("Checklist actualizado.");
+    this.showToast("Checklist updated.");
   },
 
   updateEvaluationTabState(weekNum, progress, template, allChecked) {
@@ -4954,7 +4954,7 @@ const app = {
       // Completed / Approved
       completedState.style.display = 'flex';
       document.getElementById('evaluation-completed-score').innerText = `${testScore || 100}%`;
-      document.getElementById('evaluation-completed-msg').innerText = `Aprobado con éxito. Has superado el umbral requerido del ${template.knowledge_test?.min_passing_score || 70}%.`;
+      document.getElementById('evaluation-completed-msg').innerText = `Approved successfully. You have passed the required threshold of ${template.knowledge_test?.min_passing_score || 70}%.`;
     } else if (isFailedNoAttempts) {
       // Failed and out of attempts for week 1
       if (failedState) {
@@ -4963,7 +4963,7 @@ const app = {
         const failedMsgEl = document.getElementById('evaluation-failed-msg');
         if (failedScoreEl) failedScoreEl.innerText = `${testScore}%`;
         if (failedMsgEl) {
-          failedMsgEl.innerText = `Has reprobado la evaluación con un ${testScore}%. Has agotado tu único intento disponible para esta semana.`;
+          failedMsgEl.innerText = `You have failed the evaluation with a score of ${testScore}%. You have exhausted your only available attempt for this week.`;
         }
       }
     } else if (!allChecked && weekNum !== 1) {
@@ -5009,7 +5009,7 @@ const app = {
     if (!fileData) {
       // No file uploaded
       statusAlert.className = 'deliverable-alert info';
-      statusAlert.innerHTML = '<i class="ti ti-alert-circle"></i> Pendiente de entrega';
+      statusAlert.innerHTML = '<i class="ti ti-alert-circle"></i> Pending submission';
       
       if (allChecked) {
         uploaderBox.style.display = 'flex';
@@ -5019,7 +5019,7 @@ const app = {
         uploaderBox.style.cursor = 'not-allowed';
         uploaderBox.onclick = (e) => {
           e.stopPropagation();
-          this.showToast("Primero completa todo el Checklist semanal.", "warning");
+          this.showToast("Complete all weekly Checklist items first.", "warning");
         };
       }
     } else {
@@ -5031,20 +5031,20 @@ const app = {
       
       if (fileData.status === 'pending_review') {
         statusAlert.className = 'deliverable-alert warning';
-        statusAlert.innerHTML = '<i class="ti ti-clock"></i> Enviado. Esperando revisión del tutor';
+        statusAlert.innerHTML = '<i class="ti ti-clock"></i> Submitted. Awaiting tutor review';
         fileTrashBtn.style.display = 'none'; // Lock deletion during review
       } else if (fileData.status === 'approved') {
         statusAlert.className = 'deliverable-alert success';
-        statusAlert.innerHTML = '<i class="ti ti-circle-check"></i> Entregable Aprobado';
+        statusAlert.innerHTML = '<i class="ti ti-circle-check"></i> Deliverable Approved';
         fileTrashBtn.style.display = 'none';
       } else if (fileData.status === 'rejected') {
         statusAlert.className = 'deliverable-alert danger';
-        statusAlert.innerHTML = '<i class="ti ti-alert-triangle"></i> Rechazado por tutor. Sube una nueva versión';
+        statusAlert.innerHTML = '<i class="ti ti-alert-triangle"></i> Rejected by tutor. Upload a new version';
         fileTrashBtn.style.display = 'flex'; // Allow re-upload
       } else {
         // Mock temporary selected file (before official submission)
         statusAlert.className = 'deliverable-alert info';
-        statusAlert.innerHTML = '<i class="ti ti-file-upload"></i> Archivo cargado. Listo para enviar';
+        statusAlert.innerHTML = '<i class="ti ti-file-upload"></i> File uploaded. Ready to submit';
         fileTrashBtn.style.display = 'flex';
         submitBtn.style.display = 'block';
       }
@@ -5100,7 +5100,7 @@ const app = {
           ping.style.backgroundColor = "var(--danger)";
           ping.className = "w-2 h-2 rounded-full inline-block";
         }
-        this.renderPantallaBloqueo("⛔ INSTANCE LOCKED: INTENTO AGOTADO", "Has completado el límite máximo de 1 intento permitido para esta semana de rampa.");
+        this.renderPantallaBloqueo("⛔ INSTANCE LOCKED: ATTEMPT EXHAUSTED", "You have completed the maximum limit of 1 attempt allowed for this onboarding week.");
         return;
     }
 
@@ -5111,7 +5111,7 @@ const app = {
           ping.style.backgroundColor = "var(--neutral-muted)";
           ping.className = "w-2 h-2 rounded-full inline-block";
         }
-        this.renderPantallaBloqueo("🔒 EVALUACIÓN BLOQUEADA (PREVIEW)", `El material de certificación para la Semana ${this.quizEngine.semana} se encuentra en etapa de validación instruccional.`);
+        this.renderPantallaBloqueo("🔒 EVALUATION LOCKED (PREVIEW)", `Certification material for Week ${this.quizEngine.semana} is undergoing instructional validation.`);
         return;
     }
 
@@ -5133,17 +5133,17 @@ const app = {
         screen.innerHTML = `
             <div style="text-align: center; padding: 24px 16px; font-family: var(--font-primary);">
                 <p style="color: var(--primary); font-weight: bold; font-size: 0.85rem; margin-bottom: 8px;">
-                    📝 EVALUACIÓN DISPONIBLE
+                    📝 EVALUATION AVAILABLE
                 </p>
                 <h4 style="color: var(--neutral-dark); font-size: 14px; font-weight: bold; margin-bottom: 12px; text-transform: uppercase;">
-                    Validación Teórica Semanal
+                    Weekly Theoretical Validation
                 </h4>
                 <p style="font-size: 12px; color: var(--neutral-muted); line-height: 1.5; max-width: 340px; margin: 0 auto 20px auto;">
-                    Esta evaluación consta de preguntas de selección múltiple sobre los contenidos de MX.3. Una vez iniciada, dispones de 25 minutos. 
-                    <br><strong>Límite: 1 intento permitido.</strong>
+                    This evaluation consists of multiple-choice questions about the contents of MX.3. Once started, you have 25 minutes. 
+                    <br><strong>Limit: 1 attempt allowed.</strong>
                 </p>
                 <button class="btn btn-primary" onclick="app.irAPantallaConfirmacion()" style="padding: 8px 24px; font-weight: 600; font-size: 0.85rem; letter-spacing: 0.05em;">
-                    COMENZAR EVALUACIÓN
+                    START EVALUATION
                 </button>
             </div>
         `;
@@ -5153,17 +5153,17 @@ const app = {
         screen.innerHTML = `
         <div style="text-align: center; padding: 24px 16px; font-family: var(--font-primary); background-color: #fff4e5; border-radius: 8px; border: 1px dashed #ffe8cc; margin: 10px 0;">
             <p style="color: var(--warning-text); font-weight: bold; font-size: 0.85rem; margin-bottom: 8px; display: flex; align-items: center; justify-content: center; gap: 6px;">
-                ⚠️ ADVERTENCIA CRÍTICA de ramp-up
+                ⚠️ CRITICAL RAMP-UP WARNING
             </p>
             <p style="color: var(--neutral-dark); font-size: 13px; font-weight: 600; margin-bottom: 12px; max-width: 320px; margin-left: auto; margin-right: auto; line-height: 1.4;">
-                Una vez iniciado el test, no se puede pausar ni salir. Si abandonas la pestaña o cierras el navegador, tu intento se registrará como fallido con 0%.
+                Once the test has started, it cannot be paused or exited. If you leave the tab or close the browser, your attempt will be recorded as failed with 0%.
             </p>
             <div style="display: flex; gap: 12px; justify-content: center; margin-top: 16px;">
                 <button class="btn btn-success" onclick="app.comenzarEvaluacionEfectiva()" style="padding: 6px 16px; font-size: 0.8rem; font-weight: 600;">
-                    ACEPTAR
+                    CONFIRM
                 </button>
                 <button class="btn btn-outline btn-neutral" onclick="app.initEvaluacionSemanalUI(${this.quizEngine.semana})" style="padding: 6px 16px; font-size: 0.8rem; font-weight: 600;">
-                    CANCELAR
+                    CANCEL
                 </button>
             </div>
         </div>
@@ -5256,8 +5256,8 @@ const app = {
     screen.innerHTML = `
         <div class="animate-fadeIn" style="display: flex; flex-direction: column; gap: 16px; font-family: var(--font-primary);">
             <div style="display: flex; justify-content: space-between; font-size: 0.65rem; color: var(--neutral-muted); font-weight: 600; border-bottom: 1px solid var(--neutral-border); padding-bottom: 8px; width: 100%;">
-                <span>PROCESANDO: PREGUNTA ${idx + 1} DE ${quizPool.length}</span>
-                <span style="color: var(--primary);">PROGRESO: ${Math.round((idx / quizPool.length) * 100)}%</span>
+                <span>PROCESSING: QUESTION ${idx + 1} OF ${quizPool.length}</span>
+                <span style="color: var(--primary);">PROGRESS: ${Math.round((idx / quizPool.length) * 100)}%</span>
             </div>
 
             <div style="font-size: 0.85rem; font-weight: 600; color: var(--neutral-dark); background-color: var(--neutral-light); padding: 16px; border-radius: 8px; border: 1px solid var(--neutral-border); line-height: 1.6; box-shadow: 0 1px 3px rgba(0,0,0,0.02); word-wrap: break-word; break-words: break-all;">
@@ -5285,7 +5285,7 @@ const app = {
 
             <div style="margin-top: 16px; padding-top: 12px; border-top: 1px solid var(--neutral-border); display: flex; justify-content: flex-end;">
                 <button onclick="app.terminarYMostrarResultado()" style="background: var(--neutral-light); border: 1px solid var(--neutral-border); color: var(--neutral-muted); font-weight: bold; font-size: 0.75rem; padding: 8px 16px; border-radius: 6px; cursor: pointer; transition: all 0.2s;" onmouseover="this.style.color='var(--danger-text)'; this.style.borderColor='var(--danger)';" onmouseout="this.style.color='var(--neutral-muted)'; this.style.borderColor='var(--neutral-border)';">
-                    FINALIZAR TEST
+                    SUBMIT TEST
                 </button>
             </div>
         </div>
@@ -5381,7 +5381,7 @@ const app = {
     this.checkWeekCompletion(userId, this.quizEngine.semana);
 
     this.saveDatabase();
-    this.renderConsultantView();
+    this.renderConsultantFriw();
   },
 
   // Mock upload handlers
@@ -5390,13 +5390,13 @@ const app = {
     if (!file) return;
     
     if (file.type !== 'application/pdf') {
-      this.showToast("Solo se aceptan archivos PDF.", "danger");
+      this.showToast("Only PDF files are accepted.", "danger");
       return;
     }
 
     // Vercel serverless request body size limit is 4.5MB. We limit to 4.0MB to be safe.
     if (file.size > 4 * 1024 * 1024) {
-      this.showToast("El archivo es muy grande. El límite máximo es 4MB.", "danger");
+      this.showToast("The file is too large. The maximum limit is 4MB.", "danger");
       return;
     }
     
@@ -5443,8 +5443,8 @@ const app = {
     };
     
     this.saveDatabase();
-    this.renderConsultantView();
-    this.showToast("Archivo cargado localmente. Haz clic en Enviar.");
+    this.renderConsultantFriw();
+    this.showToast("File uploaded locally. Click Submit.");
   },
 
   removeUploadedFile() {
@@ -5454,8 +5454,8 @@ const app = {
     
     delete progress.deliverables[weekNum];
     this.saveDatabase();
-    this.renderConsultantView();
-    this.showToast("Archivo eliminado.");
+    this.renderConsultantFriw();
+    this.showToast("File removed.");
   },
 
   submitDeliverable() {
@@ -5468,8 +5468,8 @@ const app = {
       progress.deliverables[weekNum].status = 'pending_review';
       progress.deliverables[weekNum].submittedAt = new Date().toISOString();
       this.saveDatabase();
-      this.renderConsultantView();
-      this.showToast("Entregable enviado con éxito al tutor.");
+      this.renderConsultantFriw();
+      this.showToast("Deliverable successfully submitted to the tutor.");
       
       // SMTP Alert simulation to Tutor
       const mapping = this.state.db.tutor_junior_mapping[userId];
@@ -5479,8 +5479,8 @@ const app = {
           this.sendSMTPAlert(
             "tutor",
             tutor.email,
-            `Entregable Pendiente de Revisión: ${this.state.activeUser.name}`,
-            `Estimado(a) ${tutor.name},\n\nTu Junior asignado(a) ${this.state.activeUser.name} ha subido el entregable para la Semana ${weekNum} (${template.title}) y está listo para tu calificación.`
+            `Deliverable Pending Review: ${this.state.activeUser.name}`,
+            `Dear ${tutor.name},\n\nYour assigned Junior ${this.state.activeUser.name} has uploaded the deliverable for Week ${weekNum} (${template.title}) and it is ready for your grading.`
           );
         }
       }
@@ -5498,14 +5498,14 @@ const app = {
     const progress = this.state.db.consultant_progress[userId];
     const attempts = progress.test_attempts[weekNum] || 0;
     if (weekNum === 1 && attempts >= 1) {
-      this.showToast("No tienes más intentos disponibles para esta evaluación.", "danger");
+      this.showToast("You have no more attempts available for this evaluation.", "danger");
       return;
     }
     
     // Confirm starting the test
     const confirmMsg = weekNum === 1
-      ? "¿Estás seguro de que deseas comenzar la evaluación de la Semana 1? Tienes un único intento disponible y 50 preguntas que responder."
-      : "¿Estás seguro de que deseas comenzar la evaluación?";
+      ? "Are you sure you want to start the Week 1 evaluation? You have a single attempt available and 50 questions to answer."
+      : "Are you sure you want to start the evaluation?";
     if (!confirm(confirmMsg)) {
       return;
     }
@@ -5515,23 +5515,23 @@ const app = {
     if (!quizPool) {
       // Fallback procedural questions if week questions not seeded
       const template = this.state.db.week_templates.find(wt => wt.week_number === weekNum);
-      const topicsText = template ? template.description : "temas del módulo";
+      const topicsText = template ? template.description : "module topics";
       quizPool = [
         {
-          question: `¿Cuál es el factor crítico en el éxito de ${template.title}?`,
+          question: `What is the critical factor in the success of ${template.title}?`,
           options: [
-            "Configurar de forma estructurada según la documentación y validar resultados.",
-            "Saltarse las validaciones teóricas y pasar directo a producción.",
-            "Esperar que el soporte global resuelva todos los pasos de configuración."
+            "Configure in a structured way according to the documentation and validate results.",
+            "Skip theoretical validations and go straight to production.",
+            "Expect global support to resolve all configuration steps."
           ],
           correct: 0
         },
         {
-          question: `¿Qué estándar rige principalmente el desarrollo de ${template.title}?`,
+          question: `Which standard mainly governs the development of ${template.title}?`,
           options: [
-            "Directrices globales Murex y normativas contables asociadas.",
-            "Leyes locales no vinculadas a finanzas.",
-            "Criterios informales del equipo de desarrollo local."
+            "Murex global guidelines and associated accounting regulations.",
+            "Local laws not linked to finance.",
+            "Informal criteria of the local development team."
           ],
           correct: 0
         }
@@ -5556,7 +5556,7 @@ const app = {
     this.renderQuizQuestion();
     
     // Update Layout Tabs State
-    this.renderConsultantView();
+    this.renderConsultantFriw();
   },
 
   updateTestTimer() {
@@ -5582,7 +5582,7 @@ const app = {
     const question = this.state.testState.questions[idx];
     const total = this.state.testState.questions.length;
     
-    document.getElementById('test-question-counter').innerText = `Pregunta ${idx + 1} de ${total}`;
+    document.getElementById('test-question-counter').innerText = `Question ${idx + 1} of ${total}`;
     document.getElementById('test-question-text').innerText = question.question;
     document.getElementById('test-progress-bar-fill').style.width = `${((idx + 1) / total) * 100}%`;
     
@@ -5623,7 +5623,7 @@ const app = {
 
   nextQuestion() {
     if (this.state.testState.answers[this.state.testState.currentQuestionIdx] === undefined) {
-      this.showToast("Por favor selecciona una alternativa.", "warning");
+      this.showToast("Please select an option.", "warning");
       return;
     }
     this.state.testState.currentQuestionIdx++;
@@ -5642,7 +5642,7 @@ const app = {
       // Check that all questions have been answered
       const unanswered = this.state.testState.questions.some((_, idx) => this.state.testState.answers[idx] === undefined);
       if (unanswered) {
-        this.showToast("Debes responder todas las preguntas.", "warning");
+        this.showToast("You must answer all questions.", "warning");
         return;
       }
     }
@@ -5678,17 +5678,17 @@ const app = {
 
     if (passed) {
       alertType = "success";
-      alertMsg = `¡Prueba Aprobada con ${scorePercentage}%!`;
+      alertMsg = `Test Approved with ${scorePercentage}%!`;
       
       this.checkWeekCompletion(userId, weekNum);
       const isCompletedNow = progress.completed_weeks.includes(weekNum);
       if (isCompletedNow) {
-        alertMsg += " Has completado la semana y desbloqueado el siguiente módulo.";
+        alertMsg += " You have completed the week and unlocked the next module.";
       } else {
         if (template.deliverable && (!progress.deliverables[weekNum] || progress.deliverables[weekNum].status !== 'approved')) {
-          alertMsg += " Sube tu Entregable en la pestaña correspondiente para revisión final.";
+          alertMsg += " Upload your Deliverable in the corresponding tab for final review.";
         } else {
-          alertMsg += " Has aprobado la evaluación. La semana se completará una vez que tu tutor valide todas las tareas del checklist.";
+          alertMsg += " You have passed the evaluation. The week will be completed once your tutor validates all checklist tasks.";
         }
       }
       
@@ -5696,12 +5696,12 @@ const app = {
       this.sendSMTPAlert(
         "junior",
         this.state.activeUser.email,
-        `Prueba Aprobada - Semana ${weekNum}`,
-        `Hola ${this.state.activeUser.name},\n\nHas aprobado con éxito la prueba teórica de la Semana ${weekNum} con un resultado de ${scorePercentage}%.\n\n${template.deliverable ? 'Recuerda que debes subir tu entregable práctico para completar el módulo.' : 'El siguiente módulo ya está desbloqueado en tu cronograma.'}`
+        `Test Passed - Week ${weekNum}`,
+        `Hello ${this.state.activeUser.name},\n\nYou have successfully passed the theoretical test for Week ${weekNum} with a score of ${scorePercentage}%.\n\n${template.deliverable ? 'Remember that you must upload your practical deliverable to complete the module.' : 'The next module is already unlocked in your schedule.'}`
       );
     } else {
       alertType = "danger";
-      alertMsg = `Prueba Reprobada con ${scorePercentage}%. Mínimo requerido: ${minScore}%. Inténtalo de nuevo.`;
+      alertMsg = `Test Failed with ${scorePercentage}%. Minimum required: ${minScore}%. Try again.`;
       
       // Trigger SMTP alert to Manager for Critical Block (failed twice or more)
       const attempts = progress.test_attempts[weekNum] || 0;
@@ -5709,8 +5709,8 @@ const app = {
         this.sendSMTPAlert(
           "admin",
           "luana@murex.cl",
-          `Alerta de Bloqueo Crítico: ${this.state.activeUser.name}`,
-          `Estimado(a) Manager Luana Ortega,\n\nSe ha detectado un bloqueo prolongado del Junior Consultant ${this.state.activeUser.name} en la Semana ${weekNum} (${template.title}).\n\nEl consultor ha reprobado la evaluación teórica por segunda vez consecutiva con una calificación de ${scorePercentage}% (mínimo de aprobación: ${minScore}%).`
+          `Critical Block Alert: ${this.state.activeUser.name}`,
+          `Dear Manager Luana Ortega,\n\nA prolonged block has been detected for Junior Consultant ${this.state.activeUser.name} on Week ${weekNum} (${template.title}).\n\nThe consultant has failed the theoretical evaluation for the second consecutive time with a score of ${scorePercentage}% (passing minimum: ${minScore}%).`
         );
       }
     }
@@ -5719,7 +5719,7 @@ const app = {
     this.saveDatabase();
     
     // Render and show results
-    this.renderConsultantView();
+    this.renderConsultantFriw();
     this.showToast(alertMsg, alertType);
   },
 
@@ -5739,7 +5739,7 @@ const app = {
     document.getElementById('cert-uuid').innerText = `MX3-FPL-${Math.random().toString(36).substr(2, 9).toUpperCase()}`;
     
     const options = { year: 'numeric', month: 'long', day: 'numeric' };
-    document.getElementById('cert-date').innerText = new Date().toLocaleDateString('es-CL', options);
+    document.getElementById('cert-date').innerText = new Date().toLocaleDateString('en-US', options);
     
     // Render modal
     document.getElementById('completion-certificate-modal').style.display = 'flex';
@@ -5752,7 +5752,7 @@ const app = {
   // Consultant Score ChartJS Render
   renderConsultantChart(progress) {
     if (typeof Chart === 'undefined') {
-      console.warn("Chart.js no está cargado. Omitiendo renderizado de gráfico.");
+      console.warn("Chart.js is not loaded. Skipping rendering of chart.");
       return;
     }
     const ctx = document.getElementById('consultant-chart').getContext('2d');
@@ -5853,14 +5853,14 @@ const app = {
     
     const counterText = document.getElementById('tutor-session-countdown');
     if (counterText) {
-      counterText.innerText = `En ${diffDays} días, ${diffHours} horas y ${diffMins} minutos.`;
+      counterText.innerText = `In ${diffDays} days, ${diffHours} hours and ${diffMins} minutes.`;
     }
   },
 
   // ==========================================================================
   // ADMIN DASHBOARD RENDERING & LOGIC
   // ==========================================================================
-  renderAdminView() {
+  renderAdminFriw() {
     const isTutor = this.state.activeUser.role === 'tutor' || this.state.activeUser.role === 'senior';
     const isSenior = this.state.activeUser.role === 'senior';
     const isAdmin = this.state.activeUser.role === 'admin';
@@ -5875,16 +5875,16 @@ const app = {
     
     if (roleBadge) {
       if (isSenior) {
-        roleBadge.innerHTML = '<i class="ti ti-users"></i> Panel Senior';
+        roleBadge.innerHTML = '<i class="ti ti-users"></i> Senior Panel';
       } else {
-        roleBadge.innerHTML = isTutor ? '<i class="ti ti-users"></i> Panel de Tutoría' : '<i class="ti ti-shield-check"></i> Panel de Administración';
+        roleBadge.innerHTML = isTutor ? '<i class="ti ti-users"></i> Tutoring Panel' : '<i class="ti ti-shield-check"></i> Admin Panel';
       }
     }
     if (welcomeTitle) {
       if (isSenior) {
-        welcomeTitle.innerText = `Panel Senior — Consultor: ${this.state.activeUser.name}`;
+        welcomeTitle.innerText = `Senior Panel — Consultant: ${this.state.activeUser.name}`;
       } else {
-        welcomeTitle.innerText = isTutor ? `Panel de Tutoría — Mentor: ${this.state.activeUser.name}` : `Bienvenida, ${this.state.activeUser.name}`;
+        welcomeTitle.innerText = isTutor ? `Tutoring Panel — Mentor: ${this.state.activeUser.name}` : `Welcome, ${this.state.activeUser.name}`;
       }
     }
     if (welcomeSubtitle) {
@@ -5961,18 +5961,18 @@ const app = {
         const isAtRisk = t.status === 'at_risk';
         const scoreBadgeClass = isAtRisk ? 'table-score-badge low' : 'table-score-badge';
         const alertBadgeClass = isAtRisk ? 'alert-badge danger' : 'alert-badge ok';
-        const alertBadgeText = isAtRisk ? '⚠ Alerta' : '✓ Normal';
+        const alertBadgeText = isAtRisk ? '⚠ Alert' : '✓ Normal';
 
         // Check if has pending deliverable
         const hasReview = Object.values(prog.deliverables).some(d => d.status === 'pending_review');
-        const actionBtnLabel = hasReview ? 'Revisar ⚠' : 'Inspeccionar';
+        const actionBtnLabel = hasReview ? 'Review ⚠' : 'Inspect';
         const actionBtnClass = hasReview ? 'btn-warning' : 'btn-outline';
 
         // Render Tutor Assignment Cell
         let tutorMappingHtml = '';
         const mappedTutorId = this.state.db.tutor_junior_mapping[t.id];
         const mappedTutorObj = this.state.db.users.find(u => u.id === mappedTutorId);
-        const mappedTutorName = mappedTutorObj ? mappedTutorObj.name : 'Sin asignar';
+        const mappedTutorName = mappedTutorObj ? mappedTutorObj.name : 'Unassigned';
         
         if (isAdmin) {
           // Render dropdown for Manager to dynamically change mapping
@@ -5981,7 +5981,7 @@ const app = {
             `<option value="${tutor.id}" ${tutor.id === mappedTutorId ? 'selected' : ''}>${tutor.name}</option>`
           ).join('');
           tutorMappingHtml = `<select class="tutor-mapping-select" onchange="app.changeTutorMapping('${t.id}', this.value)">
-            <option value="" ${!mappedTutorId ? 'selected' : ''}>-- Asignar Tutor --</option>
+            <option value="" ${!mappedTutorId ? 'selected' : ''}>-- Assign Tutor --</option>
             ${optionsHtml}
           </select>`;
         } else {
@@ -5999,7 +5999,7 @@ const app = {
               </div>
             </div>
           </td>
-          <td>Semana ${t.current_week}</td>
+          <td>Week ${t.current_week}</td>
           <td>
             <div class="table-progress-bar-wrapper">
               <div class="table-progress-bar-bg">
@@ -6025,7 +6025,7 @@ const app = {
     // 3. Render Team Curve Cohort Chart
     this.renderCohortChart();
 
-    // 4. Update/Render Active Inspector View
+    // 4. Update/Render Active Inspector Friw
     if (this.state.inspectedUser) {
       // Validate that the inspected trainee is still in the list (crucial for Tutors who only see a subset)
       const stillVisible = trainees.some(t => t.id === this.state.inspectedUser.id);
@@ -6049,7 +6049,7 @@ const app = {
     this.state.inspectedWeekNum = currentWeekNum;
 
     this.renderInspectorPanel(userId);
-    this.showToast(`Inspeccionando a ${user.name}`);
+    this.showToast(`Inspecting ${user.name}`);
   },
 
   renderInspectorPanel(userId) {
@@ -6088,7 +6088,7 @@ const app = {
     for (let w = 1; w <= 12; w++) {
       const opt = document.createElement('option');
       opt.value = w;
-      opt.innerText = `Semana ${w} ${w > maxUnlockedWeek ? '(Bloqueada)' : ''}`;
+      opt.innerText = `Week ${w} ${w > maxUnlockedWeek ? '(Locked)' : ''}`;
       if (w === this.state.inspectedWeekNum) {
         opt.selected = true;
       }
@@ -6155,7 +6155,7 @@ const app = {
       }
     } catch (err) {
       console.error("Error switching inspector tab:", err);
-      this.showToast(`Error al cambiar pestaña: ${err.message}`);
+      this.showToast(`Error changing tab: ${err.message}`);
     }
   },
 
@@ -6274,8 +6274,8 @@ const app = {
             ${itemCellHtml}
             <td style="text-align: right; padding: 10px 5px; padding-right: 15px;">
               ${isChecked 
-                ? '<span class="induction-badge ok"><i class="ti ti-check" style="margin-right: 3px;"></i> Completado</span>' 
-                : '<span class="induction-badge pending"><i class="ti ti-clock" style="margin-right: 3px;"></i> Pendiente</span>'
+                ? '<span class="induction-badge ok"><i class="ti ti-check" style="margin-right: 3px;"></i> Completed</span>' 
+                : '<span class="induction-badge pending"><i class="ti ti-clock" style="margin-right: 3px;"></i> Pending</span>'
               }
             </td>
           </tr>
@@ -6306,7 +6306,7 @@ const app = {
       const progressPercent = document.getElementById('inspect-onboarding-progress-percent');
       
       if (progressText) {
-        progressText.innerText = `${completedCount} de ${totalItems} completados`;
+        progressText.innerText = `${completedCount} of ${totalItems} completed`;
       }
       if (progressBar) {
         progressBar.style.width = `${percent}%`;
@@ -6319,7 +6319,7 @@ const app = {
       let generalTotal = 37;
       let generalCompleted = 0;
 
-      // 1. Financial Markets (21 items)
+      // 1. Financial Tuekets (21 items)
       mxlearnOnboardingModules.financial_markets.items.forEach(item => {
         if (this.getOnboardingCheckState(userId, item)) {
           generalCompleted++;
@@ -6351,7 +6351,7 @@ const app = {
       const genPercent = document.getElementById('inspect-onboarding-general-percent');
 
       if (genText) {
-        genText.innerText = `${generalCompleted} de ${generalTotal} videos/módulos completados`;
+        genText.innerText = `${generalCompleted} of ${generalTotal} videos/modules completed`;
       }
       if (genBar) {
         genBar.style.width = `${generalPercent}%`;
@@ -6361,7 +6361,7 @@ const app = {
       }
     } catch (err) {
       console.error("Error rendering inspected onboarding modules:", err);
-      this.showToast(`Error al cargar módulos onboarding: ${err.message}`);
+      this.showToast(`Error loading onboarding modules: ${err.message}`);
     }
   },
 
@@ -6396,11 +6396,11 @@ const app = {
       // Update stats label
       const statsEl = document.getElementById('inspect-passport-donut-stats');
       if (statsEl) {
-        statsEl.innerText = `${checkedCount} de ${totalItems} hitos completados`;
+        statsEl.innerText = `${checkedCount} of ${totalItems} milestones completed`;
       }
     } catch (err) {
       console.error("Error rendering inspected passport:", err);
-      this.showToast(`Error al cargar Murex Mandatory Onboarding: ${err.message}`);
+      this.showToast(`Error loading Murex Mandatory Onboarding: ${err.message}`);
     }
   },
 
@@ -6439,7 +6439,7 @@ const app = {
       }
       
       this.saveDatabase();
-      this.showToast(`¡Intento de prueba desbloqueado para ${this.state.inspectedUser.name}!`);
+      this.showToast(`Test attempt unlocked for ${this.state.inspectedUser.name}!`);
       
       // Re-render inspector detail
       this.loadInspectedWeekDetail(userId, weekNum);
@@ -6450,10 +6450,10 @@ const app = {
       }
       
       // Re-render the admin view so the status indicators in the trainee list update immediately!
-      this.renderAdminView();
+      this.renderAdminFriw();
     } catch (err) {
       console.error("Error unlocking test attempt:", err);
-      this.showToast(`Error al desbloquear intento: ${err.message}`, "danger");
+      this.showToast(`Error unlocking attempt: ${err.message}`, "danger");
     }
   },
 
@@ -6474,19 +6474,19 @@ const app = {
 
     if (isLocked) {
       statusLabel.classList.add('locked');
-      statusLabel.innerText = 'Bloqueado';
+      statusLabel.innerText = 'Locked';
     } else if (isCompleted) {
       statusLabel.classList.add('completed');
-      statusLabel.innerText = 'Completado';
+      statusLabel.innerText = 'Completed';
     } else if (isReview) {
       statusLabel.classList.add('review');
-      statusLabel.innerText = 'Por Revisar';
+      statusLabel.innerText = 'Pending Review';
     } else {
       statusLabel.classList.add('current');
-      statusLabel.innerText = 'En Curso';
+      statusLabel.innerText = 'In Progress';
     }
     
-    document.getElementById('inspect-week-card-title').innerText = `Semana ${weekNum}: ${template.title}`;
+    document.getElementById('inspect-week-card-title').innerText = `Week ${weekNum}: ${template.title}`;
     document.getElementById('inspect-week-card-desc').innerText = template.description;
 
     // 1. Render Checklist status in inspector
@@ -6501,9 +6501,9 @@ const app = {
     const subSections = document.querySelectorAll('#admin-inspector-active-content .inspect-sub-section h5');
     if (subSections.length > 0) {
       if (isTutorInCharge) {
-        subSections[0].innerHTML = `<i class="ti ti-list-check"></i> Estado de Checklist <span class="badge badge-green" style="font-size:0.6rem; padding:2px 6px; margin-left: 8px;">Tutor a Cargo (Editable)</span>`;
+        subSections[0].innerHTML = `<i class="ti ti-list-check"></i> Checklist Status <span class="badge badge-green" style="font-size:0.6rem; padding:2px 6px; margin-left: 8px;">Tutor in Charge (Editable)</span>`;
       } else {
-        subSections[0].innerHTML = `<i class="ti ti-list-check"></i> Estado de Checklist <span class="badge" style="font-size:0.6rem; padding:2px 6px; margin-left: 8px; background-color: var(--neutral-light); color: var(--neutral-muted); border: 1px solid var(--neutral-border);">Solo Lectura</span>`;
+        subSections[0].innerHTML = `<i class="ti ti-list-check"></i> Checklist Status <span class="badge" style="font-size:0.6rem; padding:2px 6px; margin-left: 8px; background-color: var(--neutral-light); color: var(--neutral-muted); border: 1px solid var(--neutral-border);">Read Only</span>`;
       }
     }
     
@@ -6515,7 +6515,7 @@ const app = {
       if (isTutorInCharge && !isCompleted && !isLocked) {
         li.style.cursor = 'pointer';
         li.onclick = () => this.toggleTraineeChecklistItem(userId, weekNum, idx);
-        li.title = "Haga clic para marcar/desmarcar esta tarea";
+        li.title = "Click to check/uncheck this task";
       } else {
         li.style.cursor = 'default';
       }
@@ -6540,17 +6540,17 @@ const app = {
       scoreVal.innerText = `${testScore}%`;
       scoreVal.style.display = 'flex';
       
-      let detailsText = `Umbral: ${template.knowledge_test?.min_passing_score || 70}%\nIntentos totales: ${attempts}`;
+      let detailsText = `Threshold: ${template.knowledge_test?.min_passing_score || 70}%\nTotal attempts: ${attempts}`;
       if (testTime) {
-        detailsText += `\nTiempo empleado: ${testTime}`;
+        detailsText += `\nTime spent: ${testTime}`;
       }
-      detailsText += `\nResultado: ${testScore >= (template.knowledge_test?.min_passing_score || 70) ? 'Aprobado' : 'Reprobado'}`;
+      detailsText += `\nResult: ${testScore >= (template.knowledge_test?.min_passing_score || 70) ? 'Passed' : 'Failed'}`;
       
       scoreDetails.innerText = detailsText;
       if (actionArea) actionArea.style.display = 'block';
     } else {
       scoreVal.innerText = '-';
-      scoreDetails.innerText = 'Evaluación teórica pendiente.';
+      scoreDetails.innerText = 'Theoretical evaluation pending.';
       if (actionArea) actionArea.style.display = 'none';
     }
 
@@ -6569,10 +6569,10 @@ const app = {
           gameScoreDisplay.innerText = `${pct}%`;
           gameScoreDisplay.style.display = 'flex';
           
-          gameDetailsDisplay.innerText = `Respuestas correctas: ${gameScore.score}/${gameScore.total}\nEstado: Completado\nFecha: ${new Date(gameScore.completedAt).toLocaleDateString('es-CL')}`;
+          gameDetailsDisplay.innerText = `Correct answers: ${gameScore.score}/${gameScore.total}\nStatus: Completed\nDate: ${new Date(gameScore.completedAt).toLocaleDateString('en-US')}`;
         } else {
           gameScoreDisplay.innerText = '-';
-          gameDetailsDisplay.innerText = 'Desafío de clasificación de cuentas pendiente.';
+          gameDetailsDisplay.innerText = 'Account classification challenge pending.';
         }
       } else {
         gameSection.style.display = 'none';
@@ -6599,15 +6599,15 @@ const app = {
         fileRow.style.display = 'flex';
         document.getElementById('inspect-file-name').innerText = deliverable.fileName;
         
-        const dateFormatted = new Date(deliverable.submittedAt).toLocaleDateString('es-CL');
-        document.getElementById('inspect-file-date').innerText = `Enviado: ${dateFormatted} (${deliverable.fileSize})`;
+        const dateFormatted = new Date(deliverable.submittedAt).toLocaleDateString('en-US');
+        document.getElementById('inspect-file-date').innerText = `Submitted: ${dateFormatted} (${deliverable.fileSize})`;
         
         if (deliverable.status === 'pending_review') {
           actionBtns.style.display = 'flex';
         } else if (deliverable.status === 'approved') {
-          fileRow.querySelector('.file-name').innerHTML = `${deliverable.fileName} <span class="badge badge-green" style="font-size:0.6rem; padding:2px 6px;">Aprobado</span>`;
+          fileRow.querySelector('.file-name').innerHTML = `${deliverable.fileName} <span class="badge badge-green" style="font-size:0.6rem; padding:2px 6px;">Approved</span>`;
         } else if (deliverable.status === 'rejected') {
-          fileRow.querySelector('.file-name').innerHTML = `${deliverable.fileName} <span class="badge badge-red" style="font-size:0.6rem; padding:2px 6px;">Rechazado</span>`;
+          fileRow.querySelector('.file-name').innerHTML = `${deliverable.fileName} <span class="badge badge-red" style="font-size:0.6rem; padding:2px 6px;">Rejected</span>`;
         }
       }
     }
@@ -6656,7 +6656,7 @@ const app = {
     
     // Try to fetch from server if not in-memory
     if (!inMemoryFile) {
-      this.showToast("Buscando entregable en el servidor...");
+      this.showToast("Searching for deliverable on the server...");
       try {
         const response = await fetch(`/api/download-file?user_id=${userId}&week_number=${weekNum}`);
         if (response.ok) {
@@ -6681,7 +6681,7 @@ const app = {
       document.body.appendChild(link);
       link.click();
       document.body.removeChild(link);
-      this.showToast("Descargando el entregable original enviado por el alumno...");
+      this.showToast("Downloading the original deliverable submitted by the consultant...");
     } else {
       // Fallback: Generate a beautiful HTML report representing the deliverable
       const template = this.state.db.week_templates.find(wt => wt.week_number === weekNum);
@@ -6691,10 +6691,10 @@ const app = {
       
       const htmlContent = `
 <!DOCTYPE html>
-<html lang="es">
+<html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Entregable - Semana ${weekNum} - ${trainee ? trainee.name : 'Consultor'}</title>
+  <title>Deliverable - Week ${weekNum} - ${trainee ? trainee.name : 'Consultant'}</title>
   <style>
     body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; color: #333; margin: 0; padding: 40px; background-color: #f3f4f6; }
     .card { background: white; max-width: 700px; margin: 0 auto; border-radius: 12px; box-shadow: 0 4px 20px rgba(0,0,0,0.05); padding: 40px; border-top: 6px solid #e11d48; }
@@ -6717,39 +6717,39 @@ const app = {
   <div class="card">
     <div class="header">
       <div class="logo"><span>MX</span>Board</div>
-      <div class="badge badge-\${deliverable.status}">\${deliverable.status === 'approved' ? 'Aprobado' : deliverable.status === 'pending_review' ? 'Por Revisar' : 'Rechazado'}</div>
+      <div class="badge badge-\${deliverable.status}">\${deliverable.status === 'approved' ? 'Approved' : deliverable.status === 'pending_review' ? 'Pending Review' : 'Rejected'}</div>
     </div>
-    <h2 class="title">Verificación de Entregable Práctico</h2>
+    <h2 class="title">Practical Deliverable Verification</h2>
     <div class="meta-grid">
       <div class="meta-item">
-        <div class="meta-label">Consultor (Junior)</div>
+        <div class="meta-label">Consultant (Junior)</div>
         <div class="meta-value">\${trainee ? trainee.name : 'N/A'}</div>
       </div>
       <div class="meta-item">
-        <div class="meta-label">Tutor Asignado</div>
+        <div class="meta-label">Assigned Tutor</div>
         <div class="meta-value">\${tutor ? tutor.name : 'N/A'}</div>
       </div>
       <div class="meta-item">
-        <div class="meta-label">Semana y Tema</div>
-        <div class="meta-value">Semana \${weekNum}: \${template ? template.title : 'N/A'}</div>
+        <div class="meta-label">Week and Topic</div>
+        <div class="meta-value">Week \${weekNum}: \${template ? template.title : 'N/A'}</div>
       </div>
       <div class="meta-item">
-        <div class="meta-label">Archivo de Evidencia</div>
+        <div class="meta-label">Evidence File</div>
         <div class="meta-value">\${deliverable.fileName} (\${deliverable.fileSize})</div>
       </div>
       <div class="meta-item">
-        <div class="meta-label">Fecha de Envío</div>
-        <div class="meta-value">\${new Date(deliverable.submittedAt).toLocaleString('es-CL')}</div>
+        <div class="meta-label">Submission Date</div>
+        <div class="meta-value">\${new Date(deliverable.submittedAt).toLocaleString('en-US')}</div>
       </div>
       <div class="meta-item">
-        <div class="meta-label">Feedback del Tutor</div>
-        <div class="meta-value">\${progress.comments[weekNum] || 'Sin comentarios adicionales.'}</div>
+        <div class="meta-label">Tutor Feedback</div>
+        <div class="meta-value">\${progress.comments[weekNum] || 'No additional comments.'}</div>
       </div>
     </div>
     <div class="content-box">
-      <strong>[Archivo de Evidencia Simulado]</strong><br>
-      Este es el reporte del entregable original enviado para revisión. La plataforma MXBoard almacena el registro y trazabilidad contable en Supabase.<br><br>
-      <em>"La parametrización y validación contable de esta semana fue completada exitosamente en el Sandbox de MX.3."</em>
+      <strong>[Simulated Evidence File]</strong><br>
+      This is the report of the original deliverable submitted for review. The MXBoard platform stores accounting records and traceability in Supabase.<br><br>
+      <em>"The parameterization and accounting validation for this week was successfully completed in the MX.3 Sandbox."</em>
     </div>
   </div>
 </body>
@@ -6758,11 +6758,11 @@ const app = {
       const blob = new Blob([htmlContent], { type: 'text/html' });
       const link = document.createElement('a');
       link.href = URL.createObjectURL(blob);
-      link.download = `reporte_entregable_semana_\${weekNum}_\${trainee ? trainee.name.replace(/\\s+/g, '_') : 'consultor'}.html`;
+      link.download = `deliverable_report_week_\${weekNum}_\${trainee ? trainee.name.replace(/\\s+/g, '_') : 'consultant'}.html`;
       document.body.appendChild(link);
       link.click();
       document.body.removeChild(link);
-      this.showToast("Generando y descargando el reporte del entregable...");
+      this.showToast("Generating and downloading the deliverable report...");
     }
   },
 
@@ -6781,15 +6781,15 @@ const app = {
         this.checkWeekCompletion(userId, weekNum);
         const isCompleted = progress.completed_weeks.includes(weekNum);
         if (isCompleted) {
-          this.showToast(`Entregable aprobado. Semana ${weekNum} completada.`);
+          this.showToast(`Deliverable approved. Week ${weekNum} completed.`);
         } else {
-          this.showToast(`Entregable aprobado. Aún faltan la evaluación o el checklist de la semana.`);
+          this.showToast(`Deliverable approved. Weekly evaluation or checklist is still pending.`);
         }
       } else {
         if (progress.completed_weeks.includes(weekNum)) {
           progress.completed_weeks = progress.completed_weeks.filter(w => w !== weekNum);
         }
-        this.showToast(`Entregable rechazado. El consultor deberá resubir.`, "danger");
+        this.showToast(`Deliverable rejected. The consultant must resubmit.`, "danger");
       }
       
       this.saveDatabase();
@@ -6798,11 +6798,11 @@ const app = {
       this.sendSMTPAlert(
         "junior",
         trainee.email,
-        `Resultado de Evaluación de Entregable - Semana ${weekNum}`,
-        `Hola ${trainee.name},\n\nTu tutor ha calificado tu entregable práctico de la Semana ${weekNum} como: ${approve ? 'APROBADO' : 'RECHAZADO'}.\n\nFeedback del tutor: "${progress.comments[weekNum] || 'Sin comentarios adicionales.'}"`
+        `Deliverable Evaluation Result - Week ${weekNum}`,
+        `Hello ${trainee.name},\n\nYour tutor has graded your practical deliverable for Week ${weekNum} as: ${approve ? 'APPROVED' : 'REJECTED'}.\n\nTutor Feedback: "${progress.comments[weekNum] || 'No additional comments.'}"`
       );
       
-      this.renderAdminView();
+      this.renderAdminFriw();
     }
   },
 
@@ -6814,8 +6814,8 @@ const app = {
     
     progress.comments[weekNum] = text;
     this.saveDatabase();
-    this.showToast("Comentario guardado. Visible para el consultor.");
-    this.renderAdminView();
+    this.showToast("Comment saved. Visible to the consultant.");
+    this.renderAdminFriw();
   },
 
   checkWeekCompletion(userId, weekNum) {
@@ -6854,8 +6854,8 @@ const app = {
         this.sendSMTPAlert(
           "junior",
           trainee.email,
-          `Semana ${weekNum} Completada - ¡Felicitaciones!`,
-          `Hola ${trainee.name},\n\n¡Has completado exitosamente la Semana ${weekNum}! Se ha registrado tu aprobación tras completar la evaluación técnica y recibir la validación de tu checklist por parte de tu tutor.`
+          `Week ${weekNum} Completed - Congratulations!`,
+          `Hello ${trainee.name},\n\nYou have successfully completed Week ${weekNum}! Your approval has been registered after completing the technical evaluation and receiving checklist validation from your tutor.`
         );
       }
     } else if (!isCompleted && wasCompleted) {
@@ -6878,7 +6878,7 @@ const app = {
       const template = this.state.db.week_templates.find(wt => wt.week_number === weekNum);
       if (template.deliverable) {
         progress.deliverables[weekNum] = progress.deliverables[weekNum] || {
-          fileName: `bypass_administrativo_s${weekNum}.pdf`,
+          fileName: `administrative_bypass_w${weekNum}.pdf`,
           fileSize: "0 KB",
           status: 'approved',
           submittedAt: new Date().toISOString()
@@ -6890,8 +6890,8 @@ const app = {
       }
       
       this.saveDatabase();
-      this.renderAdminView();
-      this.showToast(`Forzado de aprobación exitoso para Semana ${weekNum}.`, "warning");
+      this.renderAdminFriw();
+      this.showToast(`Force approval successful for Week ${weekNum}.`, "warning");
     }
   },
 
@@ -6917,7 +6917,7 @@ const app = {
     }
     
     for (let w = 1; w <= weekCount; w++) {
-      labels.push(`Semana ${w}`);
+      labels.push(`Week ${w}`);
       
       let sum = 0;
       let count = 0;
@@ -7020,25 +7020,25 @@ const app = {
     if (!tutor) {
       this.state.db.tutor_junior_mapping[traineeId] = null;
       this.saveDatabase();
-      this.showToast(`Tutor desasignado.`);
-      this.renderAdminView();
+      this.showToast(`Tutor unassigned.`);
+      this.renderAdminFriw();
       return;
     }
     
     this.state.db.tutor_junior_mapping[traineeId] = tutorId;
     this.saveDatabase();
     
-    this.showToast(`Tutor ${tutor.name} asignado a ${trainee.name}.`);
+    this.showToast(`Tutor ${tutor.name} assigned to ${trainee.name}.`);
     
     // SMTP Alert simulation
     this.sendSMTPAlert(
       "tutor",
       tutor.email,
-      `Nueva Asignación de Tutoría: ${trainee.name}`,
-      `Estimado(a) ${tutor.name},\n\nEl Manager del área te ha asignado como Tutor a cargo del proceso de rampa (Habilitación Activa) del Junior Consultant ${trainee.name}.\n\nYa puedes acceder a tu panel de control para visualizar su progreso, recibir notificaciones y calificar sus entregables semanales.`
+      `New Tutoring Assignment: ${trainee.name}`,
+      `Dear ${tutor.name},\n\nThe Area Manager has assigned you as Tutor in charge of the active ramp-up process of Junior Consultant ${trainee.name}.\n\nYou can now access your control panel to view their progress, receive notifications, and grade their weekly deliverables.`
     );
     
-    this.renderAdminView();
+    this.renderAdminFriw();
   },
 
 
@@ -7069,13 +7069,13 @@ const app = {
     this.switchJuniorTimelineTab('workspace');
   },
 
-  switchJuniorViewTab(tabName) {
+  switchJuniorFriwTab(tabName) {
     // Tab buttons active state toggle
     document.querySelectorAll('.junior-tab-btn').forEach(btn => {
       btn.classList.toggle('active', btn.id === `junior-tab-${tabName}`);
     });
     
-    // View panes toggle
+    // Friw panes toggle
     document.querySelectorAll('.junior-view-pane').forEach(pane => {
       pane.classList.toggle('active', pane.id === `junior-pane-${tabName}`);
     });
@@ -7126,7 +7126,7 @@ const app = {
     );
     
     if (myRequests.length === 0) {
-      tbody.innerHTML = `<tr><td colspan="5" style="text-align:center; padding: 20px; color:var(--neutral-muted);">No tienes solicitudes pendientes todavía.</td></tr>`;
+      tbody.innerHTML = `<tr><td colspan="5" style="text-align:center; padding: 20px; color:var(--neutral-muted);">You do not have pending requests yet.</td></tr>`;
       return;
     }
     
@@ -7137,7 +7137,7 @@ const app = {
       const tr = document.createElement('tr');
       const expertObj = this.state.db.users.find(u => u.id === e.expert_id);
       const expertName = expertObj ? expertObj.name : 'N/A';
-      const formattedDate = new Date(e.block_day + "T00:00:00").toLocaleDateString('es-CL');
+      const formattedDate = new Date(e.block_day + "T00:00:00").toLocaleDateString('en-US');
       
       let statusKey = e.status;
       if (statusKey === 'pendiente_aprobacion') statusKey = 'solicitada';
@@ -7145,28 +7145,28 @@ const app = {
       if (statusKey === 'rechazado') statusKey = 'rechazada';
       if (statusKey === 'ejecutado') statusKey = 'ejecutada';
 
-      let badgeLabel = 'Pendiente';
+      let badgeLabel = 'Pending';
       let badgeClass = 'badge-solicitada';
       if (statusKey === 'aprobada') {
-        badgeLabel = 'Aceptada';
+        badgeLabel = 'Accepted';
         badgeClass = 'badge-aprobada';
       } else if (statusKey === 'rechazada') {
-        badgeLabel = 'Cancelada';
+        badgeLabel = 'Cancelled';
         badgeClass = 'badge-rechazada';
       } else if (statusKey === 'ejecutada') {
-        badgeLabel = 'Ejecutada';
+        badgeLabel = 'Executed';
         badgeClass = 'badge-ejecutada';
       }
       
-      const cleanTitle = e.title.replace(/^(Soporte Extra:|Coaching:|Tutoría:)\s*/, '');
-      const typeLabel = e.type === 'coaching' ? 'Coaching' : (e.type === 'tutoring' ? 'Tutoría' : 'Soporte');
+      const cleanTitle = e.title.replace(/^(Extra Support:|Coaching:|Tutoría:|Tutoring:)\s*/, '');
+      const typeLabel = e.type === 'coaching' ? 'Coaching' : (e.type === 'tutoring' ? 'Tutoring' : 'Support');
 
       tr.innerHTML = `
         <td><strong>${cleanTitle} <span class="badge" style="font-size:0.6rem; padding: 1px 4px; font-weight: normal; background-color: var(--neutral-light); border: 1px solid var(--neutral-border);">${typeLabel}</span></strong></td>
         <td>${expertName}</td>
         <td>${formattedDate}<br><span style="font-weight:600; font-size:0.8rem;">${e.time_start} - ${e.time_end} (${e.planned_minutes} min)</span></td>
         <td><span class="calendar-event-card-status ${badgeClass}">${badgeLabel}</span></td>
-        <td><span style="font-size:0.8rem; color:var(--neutral-muted);">${e.block_reason || 'Sin comentarios'}</span></td>
+        <td><span style="font-size:0.8rem; color:var(--neutral-muted);">${e.block_reason || 'No comments'}</span></td>
       `;
       tbody.appendChild(tr);
     });
@@ -7199,7 +7199,7 @@ const app = {
     const logs = (this.state.db.mentoring_logs || []).filter(l => l.junior_id === userId);
     
     if (logs.length === 0) {
-      tbody.innerHTML = `<tr><td colspan="5" style="text-align:center; padding: 20px; color:var(--neutral-muted);">No has registrado sesiones en tu bitácora todavía.</td></tr>`;
+      tbody.innerHTML = `<tr><td colspan="5" style="text-align:center; padding: 20px; color:var(--neutral-muted);">You have not registered any mentoring sessions in your log yet.</td></tr>`;
       return;
     }
     
@@ -7210,20 +7210,20 @@ const app = {
       const tr = document.createElement('tr');
       
       let idsClass = 'ids-low';
-      let idsLabel = 'Bajo (Autónomo)';
+      let idsLabel = 'Low (Autonomous)';
       if (l.ids >= 4) {
         idsClass = 'ids-high';
-        idsLabel = 'Alto (Dependiente)';
+        idsLabel = 'High (Dependent)';
       } else if (l.ids >= 3) {
         idsClass = 'ids-medium';
-        idsLabel = 'Medio (Moderado)';
+        idsLabel = 'Medium (Moderate)';
       }
       
       tr.innerHTML = `
-        <td>${new Date(l.date).toLocaleDateString('es-CL')}</td>
+        <td>${new Date(l.date).toLocaleDateString('en-US')}</td>
         <td>${l.tutor_name}</td>
         <td>${l.topic}</td>
-        <td>${l.duration} minutos</td>
+        <td>${l.duration} minutes</td>
         <td><span class="ids-badge ${idsClass}">${l.ids} - ${idsLabel}</span></td>
       `;
       tbody.appendChild(tr);
@@ -7258,7 +7258,7 @@ const app = {
     this.renderMentoringLogsList();
     document.getElementById('mentor-session-form').reset();
     
-    this.showToast("Sesión de mentoría guardada en tu bitácora.");
+    this.showToast("Mentorship session saved in your log.");
     
     // SMTP Alert simulation
     const mapping = this.state.db.tutor_junior_mapping[this.state.activeUser.id];
@@ -7268,8 +7268,8 @@ const app = {
         this.sendSMTPAlert(
           "tutor",
           tutor.email,
-          `Nueva Sesión de Bitácora: ${this.state.activeUser.name}`,
-          `Estimado(a) ${tutor.name},\n\nTu Junior asignado(a) ${this.state.activeUser.name} ha registrado una sesión de mentoría en su bitácora:\n\nFecha: ${date}\nTema: ${topic}\nDuración: ${duration} mins\nÍndice de Dependencia de Soporte (IDS): ${ids}/5.`
+          `New Mentoring Log Session: ${this.state.activeUser.name}`,
+          `Dear ${tutor.name},\n\nYour assigned Junior ${this.state.activeUser.name} has registered a mentoring session in their log:\n\nDate: ${date}\nTopic: ${topic}\nDuration: ${duration} mins\nSupport Dependency Index (IDS): ${ids}/5.`
         );
       }
     }
@@ -7280,7 +7280,7 @@ const app = {
     const resultsContainer = document.getElementById('trouble-search-results');
     
     if (!input) {
-      this.showToast("Por favor ingresa un término de búsqueda.", "warning");
+      this.showToast("Please enter a search term.", "warning");
       return;
     }
     
@@ -7299,8 +7299,8 @@ const app = {
       resultsContainer.innerHTML = `
         <div class="smtp-empty-state">
           <i class="ti ti-zoom-cancel"></i>
-          <h4>No se encontraron resultados</h4>
-          <p>No hay guías documentadas para '${input}'. Intenta con 'ERR-ACC-015', 'discrepancia', 'cobertura' o consulta a tu tutor.</p>
+          <h4>No results found</h4>
+          <p>No documented guides found for '${input}'. Try searching for 'ERR-ACC-015', 'discrepancy', 'coverage', or consult your tutor.</p>
         </div>
       `;
       return;
@@ -7316,7 +7316,7 @@ const app = {
         <h4><i class="ti ti-alert-triangle" style="color:var(--primary);"></i> ${m.title}</h4>
         <p style="font-size:0.875rem; color:var(--neutral-muted); margin-bottom: 12px;">${m.description}</p>
         <div class="divider" style="margin: 10px 0;"></div>
-        <strong style="font-size:0.85rem; text-transform:uppercase; color:var(--neutral-muted); font-weight:600;">Instrucciones de Solución Paso a Paso:</strong>
+        <strong style="font-size:0.85rem; text-transform:uppercase; color:var(--neutral-muted); font-weight:600;">Step-by-Step Resolution Instructions:</strong>
         <ul class="trouble-solution-steps">
           ${stepsHtml}
         </ul>
@@ -7324,17 +7324,17 @@ const app = {
       resultsContainer.appendChild(card);
     });
     
-    this.showToast(`Se encontraron ${matches.length} coincidencias.`);
+    this.showToast(`Found ${matches.length} matches.`);
   },
 
-  sendSMTPAlert(toRole, toEmail, subject, body) {
+  sendSMTPAlert(toRolee, toEmail, subject, body) {
     if (!this.state.db.smtp_outbox) {
       this.state.db.smtp_outbox = [];
     }
     
     const newMail = {
       id: `mail-${Math.random().toString(36).substr(2, 9)}`,
-      to_role: toRole,
+      to_role: toRolee,
       to_email: toEmail,
       subject: subject,
       body: body,
@@ -7373,7 +7373,7 @@ const app = {
       list.innerHTML = `
         <div class="smtp-empty-state" id="smtp-empty-state">
           <i class="ti ti-mail-opened"></i>
-          <p>No se han registrado envíos de correos automáticos SMTP todavía.</p>
+          <p>No automatic SMTP emails have been sent yet.</p>
         </div>
       `;
       return;
@@ -7387,16 +7387,16 @@ const app = {
       const card = document.createElement('div');
       card.className = 'smtp-mail-card';
       
-      let roleLabel = 'Consultor';
-      if (m.to_role === 'tutor') roleLabel = 'Tutor asignado';
-      if (m.to_role === 'admin') roleLabel = 'Manager global';
+      let roleLabel = 'Consultant';
+      if (m.to_role === 'tutor') roleLabel = 'Assigned Tutor';
+      if (m.to_role === 'admin') roleLabel = 'Global Manager';
       
-      const sentTime = new Date(m.sent_at).toLocaleTimeString('es-CL', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
+      const sentTime = new Date(m.sent_at).toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
       
       card.innerHTML = `
         <div class="smtp-mail-header">
-          <strong>Para:</strong> ${m.to_email} (${roleLabel})<br>
-          <strong>Enviado:</strong> Hoy, ${sentTime} via SMTP Servidor
+          <strong>To:</strong> ${m.to_email} (${roleLabel})<br>
+          <strong>Sent:</strong> Today, ${sentTime} via SMTP Server
         </div>
         <div class="smtp-mail-subject">${m.subject}</div>
         <div class="smtp-mail-body">${m.body}</div>
@@ -7422,29 +7422,29 @@ const app = {
     this.state.db.cert_checklists[userId][hitoNum] = !currentState;
     this.saveDatabase();
     
-    this.showToast("Hito de certificación actualizado.");
+    this.showToast("Certification milestone updated.");
     
     // Check if all certification checklist hitos are checked
     const hitos = this.state.db.cert_checklists[userId];
     const allChecked = hitos[1] && hitos[2] && hitos[3] && hitos[4];
     
     if (allChecked) {
-      this.showToast(`¡Todos los hitos de certificación han sido validados para ${this.state.inspectedUser.name}!`);
+      this.showToast(`All certification milestones have been validated for ${this.state.inspectedUser.name}!`);
       
       // Send SMTP alert to Manager
       this.sendSMTPAlert(
         "admin",
         "luana@murex.cl",
-        `Habilitación Certificada: ${this.state.inspectedUser.name}`,
-        `Estimado(a) Manager Luana Ortega,\n\nTodos los hitos de certificación técnica y habilidades operativas han sido aprobados por el Tutor de ${this.state.inspectedUser.name}.\n\nEl consultor está formalmente habilitado para salir a clientes reales. Se ha emitido el Certificado de Habilitación.`
+        `Certified Authorization: ${this.state.inspectedUser.name}`,
+        `Dear Manager Luana Ortega,\n\nAll technical certification milestones and operational skills have been approved by the Tutor of ${this.state.inspectedUser.name}.\n\nThe consultant is formally authorized to go live with real clients. The Certificate of Authorization has been issued.`
       );
       
       // Send to Junior
       this.sendSMTPAlert(
         "junior",
         this.state.inspectedUser.email,
-        "¡Felicitaciones! Has completado tu Habilitación Técnica",
-        `Estimado(a) ${this.state.inspectedUser.name},\n\nHemos completado tu evaluación final de onboarding de 12 semanas. Tu tutor y manager han certificado tus competencias técnicas Finance & PL.\n\nYa puedes descargar tu Certificado de Habilitación en la plataforma.`
+        "Congratulations! You have completed your Technical Authorization",
+        `Dear ${this.state.inspectedUser.name},\n\nWe have completed your final 12-week onboarding evaluation. Your tutor and manager have certified your technical Finance & PL competencies.\n\nYou can now download your Certificate of Authorization on the platform.`
       );
 
       // Open certificate modal
@@ -7489,10 +7489,10 @@ const app = {
         if (expertId && expertId !== "MUREX_LEARNING_CORP") {
           const isExpertInvolved = e.expert_id === expertId || (e.expertos_asistentes_ids && e.expertos_asistentes_ids.includes(expertId));
           if (isExpertInvolved) {
-            const expertName = this.state.db.users.find(u => u.id === expertId)?.name || 'Experto';
+            const expertName = this.state.db.users.find(u => u.id === expertId)?.name || 'Expert';
             return {
               collision: true,
-              reason: `Conflicto en agenda de ${expertName}: Ya tiene programada la sesión "${e.title}" (${e.time_start} - ${e.time_end})`
+              reason: `Schedule conflict for ${expertName}: Already scheduled for "${e.title}" (${e.time_start} - ${e.time_end})`
             };
           }
         }
@@ -7500,7 +7500,7 @@ const app = {
           const juniorName = this.state.db.users.find(u => u.id === juniorId)?.name || 'Junior';
           return {
             collision: true,
-            reason: `Conflicto en agenda de ${juniorName}: Ya tiene programada la sesión "${e.title}" (${e.time_start} - ${e.time_end})`
+            reason: `Schedule conflict for ${juniorName}: Already scheduled for "${e.title}" (${e.time_start} - ${e.time_end})`
           };
         }
       }
@@ -7508,7 +7508,7 @@ const app = {
     return { collision: false };
   },
 
-  switchAdminViewTab(tabName) {
+  switchAdminFriwTab(tabName) {
     if (this.state.activeUser && this.state.activeUser.role === 'senior' && tabName === 'academic') {
       tabName = 'calendar';
     }
@@ -7532,7 +7532,7 @@ const app = {
   },
 
   switchAdminSessionTab(tabName) {
-    const activeRole = this.state.activeUser ? this.state.activeUser.role : '';
+    const activeRolee = this.state.activeUser ? this.state.activeUser.role : '';
     
     // Hide/show tabs dynamically based on user role
     const tabSchedule = document.getElementById('admin-session-tab-schedule');
@@ -7540,16 +7540,16 @@ const app = {
     const tabCert = document.getElementById('admin-session-tab-certification');
     const tabTeam = document.getElementById('admin-session-tab-team');
     
-    if (tabSchedule) tabSchedule.style.display = (activeRole === 'admin' || activeRole === 'tutor') ? 'inline-flex' : 'none';
-    if (tabPending) tabPending.style.display = (activeRole === 'admin' || activeRole === 'tutor') ? 'inline-flex' : 'none';
-    if (tabCert) tabCert.style.display = (activeRole === 'admin' || activeRole === 'tutor') ? 'inline-flex' : 'none';
-    if (tabTeam) tabTeam.style.display = (activeRole === 'admin') ? 'inline-flex' : 'none';
+    if (tabSchedule) tabSchedule.style.display = (activeRolee === 'admin' || activeRolee === 'tutor') ? 'inline-flex' : 'none';
+    if (tabPending) tabPending.style.display = (activeRolee === 'admin' || activeRolee === 'tutor') ? 'inline-flex' : 'none';
+    if (tabCert) tabCert.style.display = (activeRolee === 'admin' || activeRolee === 'tutor') ? 'inline-flex' : 'none';
+    if (tabTeam) tabTeam.style.display = (activeRolee === 'admin') ? 'inline-flex' : 'none';
     
     // Block unauthorized tab switching at logic level
-    if (activeRole === 'senior' && tabName !== 'calendar') {
+    if (activeRolee === 'senior' && tabName !== 'calendar') {
       tabName = 'calendar';
     }
-    if (tabName === 'team' && activeRole !== 'admin') {
+    if (tabName === 'team' && activeRolee !== 'admin') {
       this.showForbiddenError("Error 403 - Forbidden: No tienes privilegios para acceder a la gestión de equipo.");
       return;
     }
@@ -7647,14 +7647,14 @@ const app = {
     const today = new Date(HOY_PRESENTE);
     today.setHours(0,0,0,0);
     if (selectedDate < today) {
-      this.showToast("No puedes agendar tutorías en fechas pasadas.", "warning");
+      this.showToast("You cannot schedule tutoring sessions on past dates.", "warning");
       return;
     }
     
     // Collision check
     const collisionResult = this.checkCollision(date, time, duration, this.state.activeUser.id, juniorId);
     if (collisionResult.collision) {
-      alert(`⚠️ ERROR DE COLISIÓN:\n\n${collisionResult.reason}\n\nPor favor propone otro bloque horario.`);
+      alert(`⚠️ COLLISION ERROR:\n\n${collisionResult.reason}\n\nPlease propose another time slot.`);
       return;
     }
 
@@ -7668,7 +7668,7 @@ const app = {
 
     const newEvent = {
       id: `ev-${Math.random().toString(36).substr(2, 9)}`,
-      title: `Tutoría: ${topic}`,
+      title: `Tutoring: ${topic}`,
       type: "tutoring",
       junior_id: juniorId,
       expert_id: this.state.activeUser.id,
@@ -7678,7 +7678,7 @@ const app = {
       planned_minutes: duration,
       executed_minutes: null,
       status: "aprobada",
-      block_reason: `Tutoría agendada directamente por el Tutor ${this.state.activeUser.name}`,
+      block_reason: `Tutoring session scheduled directly by Tutor ${this.state.activeUser.name}`,
       week_number: weekNum,
       organizador_id: this.state.activeUser.id,
       estado_confirmacion: "FIXED",
@@ -7691,7 +7691,7 @@ const app = {
     this.state.db.calendar_events.push(newEvent);
     this.saveDatabase();
     
-    this.showToast("Sesión de tutoría agendada con éxito.");
+    this.showToast("Tutoring session successfully scheduled.");
     
     // Send SMTP to junior
     const junior = this.state.db.users.find(u => u.id === juniorId);
@@ -7699,8 +7699,8 @@ const app = {
       this.sendSMTPAlert(
         "junior",
         junior.email,
-        "Nueva Tutoría Agendada",
-        `Estimado(a) ${junior.name},\n\nTu tutor ${this.state.activeUser.name} ha agendado una tutoría ordinaria:\n\nTema: ${topic}\nFecha: ${date}\nHorario: ${time} - ${endTime}\n\nLa sesión ya está bloqueada en tu calendario.`
+        "New Tutoring Scheduled",
+        `Dear ${junior.name},\n\nYour tutor ${this.state.activeUser.name} has scheduled a regular tutoring session:\n\nTopic: ${topic}\nDate: ${date}\nTime: ${time} - ${endTime}\n\nThe session is already blocked in your calendar.`
       );
     }
 
@@ -7718,7 +7718,7 @@ const app = {
     );
     
     if (pendingEvents.length === 0) {
-      tbody.innerHTML = `<tr><td colspan="4" style="text-align:center; padding: 20px; color:var(--neutral-muted);">No tienes solicitudes pendientes por responder.</td></tr>`;
+      tbody.innerHTML = `<tr><td colspan="4" style="text-align:center; padding: 20px; color:var(--neutral-muted);">You do not have any pending requests to answer.</td></tr>`;
       return;
     }
     
@@ -7726,19 +7726,19 @@ const app = {
       const tr = document.createElement('tr');
       const juniorObj = this.state.db.users.find(u => u.id === e.junior_id);
       const juniorName = juniorObj ? juniorObj.name : 'N/A';
-      const formattedDate = new Date(e.block_day + "T00:00:00").toLocaleDateString('es-CL');
+      const formattedDate = new Date(e.block_day + "T00:00:00").toLocaleDateString('en-US');
       
       tr.innerHTML = `
         <td><strong>${juniorName}</strong></td>
         <td>
-          <div style="font-weight:600;">${e.title.replace('Soporte Extra: ', '')}</div>
+          <div style="font-weight:600;">${e.title.replace('Extra Support: ', '')}</div>
           <div style="font-size:0.75rem; color:var(--neutral-muted); max-width:250px;">"${e.block_reason}"</div>
         </td>
         <td>${formattedDate}<br><span style="font-weight:600; font-size:0.8rem;">${e.time_start} - ${e.time_end} (${e.planned_minutes} min)</span></td>
         <td>
           <div style="display:flex; gap:6px;">
-            <button class="btn btn-success btn-xs" onclick="app.expertApproveRequest('${e.id}')"><i class="ti ti-check"></i> Aceptar</button>
-            <button class="btn btn-danger btn-xs" onclick="app.expertRejectRequest('${e.id}')"><i class="ti ti-x"></i> Rechazar</button>
+            <button class="btn btn-success btn-xs" onclick="app.expertApproveRequest('${e.id}')"><i class="ti ti-check"></i> Accept</button>
+            <button class="btn btn-danger btn-xs" onclick="app.expertRejectRequest('${e.id}')"><i class="ti ti-x"></i> Reject</button>
           </div>
         </td>
       `;
@@ -7752,13 +7752,13 @@ const app = {
     
     const collisionResult = this.checkCollision(event.block_day, event.time_start, event.planned_minutes, event.expert_id, event.junior_id, eventId);
     if (collisionResult.collision) {
-      alert(`⚠️ ERROR DE COLISIÓN AL APROBAR:\n\n${collisionResult.reason}\n\nNo es posible aprobar esta solicitud en el horario actual. Sugiere reagendar.`);
+      alert(`⚠️ COLLISION ERROR ON APPROVAL:\n\n${collisionResult.reason}\n\nIt is not possible to approve this request in the current slot. Suggest rescheduling.`);
       return;
     }
     
     event.status = 'aprobada';
     this.saveDatabase();
-    this.showToast("Solicitud aprobada e integrada a tu calendario.");
+    this.showToast("Request approved and integrated into your calendar.");
     
     const junior = this.state.db.users.find(u => u.id === event.junior_id);
     const expert = this.state.activeUser;
@@ -7766,8 +7766,8 @@ const app = {
     this.sendSMTPAlert(
       "junior",
       junior.email,
-      "Aprobada: Tu Solicitud de Soporte Extra",
-      `Hola ${junior.name},\n\nTu solicitud de consulta técnica extra sobre "${event.title}" ha sido ACEPTADA por el experto ${expert.name}.\n\nFecha: ${event.block_day}\nHorario: ${event.time_start} - ${event.time_end}\n\nLa sesión ha sido confirmada en tu agenda.`
+      "Approved: Your Extra Support Request",
+      `Hello ${junior.name},\n\nYour request for extra technical support on "${event.title}" has been ACCEPTED by expert ${expert.name}.\n\nDate: ${event.block_day}\nTime: ${event.time_start} - ${event.time_end}\n\nThe session has been confirmed in your calendar.`
     );
     
     this.renderExpertPendingRequests();
@@ -7780,7 +7780,7 @@ const app = {
     
     event.status = 'rechazada';
     this.saveDatabase();
-    this.showToast("Solicitud rechazada.");
+    this.showToast("Request rejected.");
     
     const junior = this.state.db.users.find(u => u.id === event.junior_id);
     const expert = this.state.activeUser;
@@ -7788,8 +7788,8 @@ const app = {
     this.sendSMTPAlert(
       "junior",
       junior.email,
-      "Rechazada: Solicitud de Soporte Extra",
-      `Hola ${junior.name},\n\nTu solicitud de soporte extra sobre "${event.title}" para el ${event.block_day} ha sido RECHAZADA por el experto ${expert.name} debido a incompatibilidad horaria o indisponibilidad.\n\nPor favor intenta proponer otro horario o ponte en contacto directo para coordinar.`
+      "Rejected: Extra Support Request",
+      `Hello ${junior.name},\n\nYour request for extra support on "${event.title}" for ${event.block_day} has been REJECTED by expert ${expert.name} due to scheduling conflicts or unavailability.\n\nPlease try to propose another time slot or contact them directly to coordinate.`
     );
     
     this.renderExpertPendingRequests();
@@ -7818,20 +7818,20 @@ const app = {
       const expertObj = this.state.db.users.find(u => u.id === e.expert_id);
       const juniorName = juniorObj ? juniorObj.name : 'N/A';
       const expertName = expertObj ? expertObj.name : 'N/A';
-      const formattedDate = new Date(e.block_day + "T00:00:00").toLocaleDateString('es-CL');
+      const formattedDate = new Date(e.block_day + "T00:00:00").toLocaleDateString('en-US');
       
       tr.innerHTML = `
         <td><strong>${juniorName}</strong></td>
         <td>
           <div style="font-weight:600;">${e.title}</div>
-          <div style="font-size:0.75rem; color:var(--neutral-muted); max-width:250px;">"${e.block_reason || 'Sin detalles'}"</div>
+          <div style="font-size:0.75rem; color:var(--neutral-muted); max-width:250px;">"${e.block_reason || 'No details'}"</div>
         </td>
         <td>${expertName}</td>
         <td>${formattedDate}<br><span style="font-weight:600; font-size:0.8rem;">${e.time_start} - ${e.time_end} (${e.planned_minutes} min)</span></td>
         <td>
           <div style="display:flex; gap:6px;">
-            <button class="btn btn-success btn-xs" onclick="app.approveSupportRequest('${e.id}')"><i class="ti ti-check"></i> Aprobar</button>
-            <button class="btn btn-danger btn-xs" onclick="app.rejectSupportRequest('${e.id}')"><i class="ti ti-x"></i> Rechazar</button>
+            <button class="btn btn-success btn-xs" onclick="app.approveSupportRequest('${e.id}')"><i class="ti ti-check"></i> Approve</button>
+            <button class="btn btn-danger btn-xs" onclick="app.rejectSupportRequest('${e.id}')"><i class="ti ti-x"></i> Reject</button>
           </div>
         </td>
       `;
@@ -7877,14 +7877,14 @@ const app = {
       if (Object.keys(expertMap).length === 0) {
         rowsHtml = `
           <tr>
-            <td colspan="4" style="text-align:center; padding:15px; color:var(--neutral-muted);">Sin registros de interacciones.</td>
+            <td colspan="4" style="text-align:center; padding:15px; color:var(--neutral-muted);">No interaction records.</td>
           </tr>
         `;
       } else {
         Object.keys(expertMap).forEach(expertId => {
           const expertEvents = expertMap[expertId];
           const expertObj = this.state.db.users.find(u => u.id === expertId);
-          const expertName = expertObj ? expertObj.name : 'Experto N/A';
+          const expertName = expertObj ? expertObj.name : 'Expert N/A';
           
           let roleLabel = 'Tutor';
           if (expertObj) {
@@ -7892,27 +7892,27 @@ const app = {
             else if (expertObj.role === 'senior') roleLabel = 'Senior';
             else if (expertObj.role === 'tutor') {
               const mappingTutorId = this.state.db.tutor_junior_mapping[junior.id];
-              roleLabel = expertObj.id === mappingTutorId ? 'Tutor a Cargo' : 'Tutor';
+              roleLabel = expertObj.id === mappingTutorId ? 'Tutor in Charge' : 'Tutor';
             }
           }
           
           // Group by type to get friendly interaction string
           const typeCounts = {};
           expertEvents.forEach(e => {
-            let friendlyType = 'Soporte';
-            if (e.type === 'tutoring') friendlyType = 'Tutoría';
+            let friendlyType = 'Support';
+            if (e.type === 'tutoring') friendlyType = 'Tutoring';
             else if (e.type === 'masterclass') friendlyType = 'Masterclass';
             else if (e.type === 'coaching') friendlyType = 'Coaching';
-            else if (e.type === 'extra_support') friendlyType = 'Soporte Extra';
+            else if (e.type === 'extra_support') friendlyType = 'Extra Support';
             typeCounts[friendlyType] = (typeCounts[friendlyType] || 0) + 1;
           });
           
           const typeList = [];
-          if (typeCounts['Tutoría']) typeList.push(`Tutorías (${typeCounts['Tutoría']})`);
+          if (typeCounts['Tutoring']) typeList.push(`Tutoring (${typeCounts['Tutoring']})`);
           if (typeCounts['Masterclass']) typeList.push(`Masterclass (${typeCounts['Masterclass']})`);
           if (typeCounts['Coaching']) typeList.push(`Coaching (${typeCounts['Coaching']})`);
-          if (typeCounts['Soporte Extra']) typeList.push(`Soporte Extra (${typeCounts['Soporte Extra']})`);
-          const interDetails = typeList.join(' + ') || 'Ninguna';
+          if (typeCounts['Extra Support']) typeList.push(`Extra Support (${typeCounts['Extra Support']})`);
+          const interDetails = typeList.join(' + ') || 'None';
           
           const sessionsCount = expertEvents.length;
           const expertTotalHours = expertEvents.reduce((sum, e) => {
@@ -7943,7 +7943,7 @@ const app = {
             Junior: <strong>${junior.name}</strong> (Onboarding)
           </span>
           <span class="hours-badge ${isHighLoad ? 'high-load' : ''}">
-            Total: ${totalHours.toFixed(1)} Hrs Consumidas
+            Total: ${totalHours.toFixed(1)} Hrs Spent
           </span>
         </button>
         
@@ -7951,10 +7951,10 @@ const app = {
           <table class="audit-table">
             <thead>
               <tr>
-                <th>Consultor Experto</th>
-                <th>Tipo de Interacción</th>
-                <th style="text-align: center;">Sesiones</th>
-                <th style="text-align: right;">Tiempo Real</th>
+                <th>Expert Consultant</th>
+                <th>Interaction Type</th>
+                <th style="text-align: center;">Sessions</th>
+                <th style="text-align: right;">Real Time</th>
               </tr>
             </thead>
             <tbody>
@@ -8030,29 +8030,29 @@ const app = {
       <div class="cert-checklist-item" style="display: flex; align-items: center; gap: 12px; margin-bottom: 15px; padding: 12px; border: 1px solid var(--neutral-border); border-radius: 6px; background-color: white;">
         <input type="checkbox" id="admin-cert-hito-1" ${hitos[1] ? 'checked' : ''} ${isMyTrainee ? '' : 'disabled'} onchange="app.toggleCertHitoForJunior('${juniorId}', 1)" style="width: 18px; height: 18px; cursor: ${isMyTrainee ? 'pointer' : 'not-allowed'};">
         <div>
-          <strong style="display: block; font-size: 0.95rem; color: var(--neutral-dark);">Autonomía técnica en Sandbox MX.3</strong>
-          <span style="font-size: 0.8rem; color: var(--neutral-muted);">Demostrar soltura en configuración de curvas y parametrizaciones de portafolio.</span>
+          <strong style="display: block; font-size: 0.95rem; color: var(--neutral-dark);">Technical Autonomy in Sandbox MX.3</strong>
+          <span style="font-size: 0.8rem; color: var(--neutral-muted);">Demonstrate proficiency in curve configuration and portfolio parameterization.</span>
         </div>
       </div>
       <div class="cert-checklist-item" style="display: flex; align-items: center; gap: 12px; margin-bottom: 15px; padding: 12px; border: 1px solid var(--neutral-border); border-radius: 6px; background-color: white;">
         <input type="checkbox" id="admin-cert-hito-2" ${hitos[2] ? 'checked' : ''} ${isMyTrainee ? '' : 'disabled'} onchange="app.toggleCertHitoForJunior('${juniorId}', 2)" style="width: 18px; height: 18px; cursor: ${isMyTrainee ? 'pointer' : 'not-allowed'};">
         <div>
-          <strong style="display: block; font-size: 0.95rem; color: var(--neutral-dark);">Comprensión contable IFRS 9 / GAAP</strong>
-          <span style="font-size: 0.8rem; color: var(--neutral-muted);">Validar y reportar estados contables bajo normas internacionales.</span>
+          <strong style="display: block; font-size: 0.95rem; color: var(--neutral-dark);">IFRS 9 / GAAP Accounting Understanding</strong>
+          <span style="font-size: 0.8rem; color: var(--neutral-muted);">Validate and report financial statements under international standards.</span>
         </div>
       </div>
       <div class="cert-checklist-item" style="display: flex; align-items: center; gap: 12px; margin-bottom: 15px; padding: 12px; border: 1px solid var(--neutral-border); border-radius: 6px; background-color: white;">
         <input type="checkbox" id="admin-cert-hito-3" ${hitos[3] ? 'checked' : ''} ${isMyTrainee ? '' : 'disabled'} onchange="app.toggleCertHitoForJunior('${juniorId}', 3)" style="width: 18px; height: 18px; cursor: ${isMyTrainee ? 'pointer' : 'not-allowed'};">
         <div>
-          <strong style="display: block; font-size: 0.95rem; color: var(--neutral-dark);">Habilidades blandas y roleplays</strong>
-          <span style="font-size: 0.8rem; color: var(--neutral-muted);">Participación satisfactoria en simulaciones de reuniones técnicas con clientes.</span>
+          <strong style="display: block; font-size: 0.95rem; color: var(--neutral-dark);">Soft Skills and Roleplays</strong>
+          <span style="font-size: 0.8rem; color: var(--neutral-muted);">Satisfactory participation in technical client meeting simulations.</span>
         </div>
       </div>
       <div class="cert-checklist-item" style="display: flex; align-items: center; gap: 12px; margin-bottom: 15px; padding: 12px; border: 1px solid var(--neutral-border); border-radius: 6px; background-color: white;">
         <input type="checkbox" id="admin-cert-hito-4" ${hitos[4] ? 'checked' : ''} ${isMyTrainee ? '' : 'disabled'} onchange="app.toggleCertHitoForJunior('${juniorId}', 4)" style="width: 18px; height: 18px; cursor: ${isMyTrainee ? 'pointer' : 'not-allowed'};">
         <div>
-          <strong style="display: block; font-size: 0.95rem; color: var(--neutral-dark);">Aprobación de la entrevista final con Manager</strong>
-          <span style="font-size: 0.8rem; color: var(--neutral-muted);">Validación conceptual integradora final con Luana Ortega.</span>
+          <strong style="display: block; font-size: 0.95rem; color: var(--neutral-dark);">Approval of the Final Interview with Manager</strong>
+          <span style="font-size: 0.8rem; color: var(--neutral-muted);">Final comprehensive conceptual validation with Luana Ortega.</span>
         </div>
       </div>
     `;
@@ -8061,13 +8061,13 @@ const app = {
       notice.className = 'alert-banner success mt-15';
       notice.innerHTML = `
         <i class="ti ti-circle-check" style="font-size: 1.2rem; color: #16a34a;"></i>
-        <span>Eres el Tutor asignado para <strong>${juniorObj.name}</strong>. Tienes permisos activos para validar estos hitos.</span>
+        <span>You are the assigned Tutor for <strong>${juniorObj.name}</strong>. You have active permissions to validate these milestones.</span>
       `;
     } else {
       notice.className = 'alert-banner warning mt-15';
       notice.innerHTML = `
         <i class="ti ti-alert-triangle" style="font-size: 1.2rem; color: #d97706;"></i>
-        <span>El tutor asignado para ${juniorObj.name} es <strong>${tutorName}</strong>. Los controles están bloqueados para ti.</span>
+        <span>The assigned tutor for ${juniorObj.name} is <strong>${tutorName}</strong>. Controls are locked for you.</span>
       `;
     }
   },
@@ -8076,14 +8076,14 @@ const app = {
     const isManager = this.state.activeUser.role === 'admin';
     const isJuniorTutor = this.state.db.tutor_junior_mapping[juniorId] === this.state.activeUser.id;
     if (!isManager && !isJuniorTutor) {
-      this.showForbiddenError("Error 403: No tienes permisos para certificar hitos de este junior.");
+      this.showForbiddenError("Error 403: You do not have permissions to certify milestones for this junior.");
       return;
     }
     const currentState = this.state.db.cert_checklists[juniorId][hitoNum] === true;
     this.state.db.cert_checklists[juniorId][hitoNum] = !currentState;
     this.saveDatabase();
     
-    this.showToast("Hito de certificación actualizado.");
+    this.showToast("Certification milestone updated.");
     
     // Check if all certification checklist hitos are checked
     const hitos = this.state.db.cert_checklists[juniorId];
@@ -8091,21 +8091,21 @@ const app = {
     
     if (allChecked) {
       const juniorObj = this.state.db.users.find(u => u.id === juniorId);
-      this.showToast(`¡Todos los hitos de certificación han sido validados para ${juniorObj.name}!`);
+      this.showToast(`All certification milestones have been validated for ${juniorObj.name}!`);
       
       // Send SMTP alerts
       this.sendSMTPAlert(
         "admin",
         "luana@murex.cl",
-        `Habilitación Certificada: ${juniorObj.name}`,
-        `Estimado(a) Manager Luana Ortega,\n\nTodos los hitos de certificación técnica y habilidades operativas han sido aprobados por el Tutor de ${juniorObj.name}.\n\nEl consultor está formalmente habilitado para salir a clientes reales. Se ha emitido el Certificado de Habilitación.`
+        `Certified Authorization: ${juniorObj.name}`,
+        `Dear Manager Luana Ortega,\n\nAll technical certification milestones and operational skills have been approved by the Tutor of ${juniorObj.name}.\n\nThe consultant is formally authorized to go live with real clients. The Certificate of Authorization has been issued.`
       );
       
       this.sendSMTPAlert(
         "junior",
         juniorObj.email,
         "¡Felicitaciones! Has completado tu Habilitación Técnica",
-        `Estimado(a) ${juniorObj.name},\n\nHemos completado tu evaluación final de onboarding de 12 semanas. Tu tutor y manager han certificado tus competencias técnicas Finance & PL.\n\nYa puedes descargar tu Certificado de Habilitación en la plataforma.`
+        `Dear ${juniorObj.name},\n\nWe have completed your final 12-week onboarding evaluation. Your tutor and manager have certified your technical Finance & PL competencies.\n\nYou can now download your Certificate of Authorization on the platform.`
       );
     }
     
@@ -8186,7 +8186,7 @@ const app = {
     const activeEl = document.querySelector(`.id-suggestion-${this.activeSuggestionIndex}`);
     if (activeEl) {
       activeEl.classList.add('selected');
-      activeEl.scrollIntoView({ block: 'nearest' });
+      activeEl.scrollIntoFriw({ block: 'nearest' });
     }
   },
 
@@ -8322,7 +8322,7 @@ const app = {
       for (let i = 1; i <= 12; i++) {
         const opt = document.createElement('option');
         opt.value = i;
-        opt.innerText = `Semana ${i}`;
+        opt.innerText = `Week ${i}`;
         weekSelect.appendChild(opt);
       }
     }
@@ -8435,7 +8435,7 @@ const app = {
       } else if (exp.role === 'senior') {
         roleLabel = 'Senior';
       } else if (exp.role === 'tutor') {
-        roleLabel = exp.id === tutorId ? 'Tutor a Cargo' : 'Tutor';
+        roleLabel = exp.id === tutorId ? 'Tutor in Charge' : 'Tutor';
       }
       
       opt.innerText = `${exp.name} (${roleLabel})`;
@@ -8448,14 +8448,14 @@ const app = {
     });
   },
 
-  renderMonthlyCalendarGrid(containerId, viewRole) {
+  renderMonthlyCalendarGrid(containerId, viewRolee) {
     const container = document.getElementById(containerId);
     if (!container) return;
     
     container.innerHTML = '';
     
     // 1. Render Days of Week Header
-    const weekdays = ['Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb', 'Dom'];
+    const weekdays = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
     const headerRow = document.createElement('div');
     headerRow.className = 'calendar-grid-header';
     headerRow.style.display = 'contents';
@@ -8513,17 +8513,17 @@ const app = {
       const allEvents = this.state.db.calendar_events || [];
       let dayEvents = [];
       
-      if (viewRole === 'junior') {
+      if (viewRolee === 'junior') {
         // Show events for the logged-in junior
         dayEvents = allEvents.filter(e => e.block_day === dateStr && e.junior_id === this.state.activeUser.id);
-      } else if (viewRole === 'tutor') {
+      } else if (viewRolee === 'tutor') {
         // Show events for the logged-in tutor/expert, or coaching sessions where they are the recipient
         dayEvents = allEvents.filter(e => e.block_day === dateStr && (
           e.expert_id === this.state.activeUser.id || 
           (e.expertos_asistentes_ids && e.expertos_asistentes_ids.includes(this.state.activeUser.id)) ||
           (e.type === 'coaching' && e.junior_id === this.state.activeUser.id)
         ));
-      } else if (viewRole === 'manager') {
+      } else if (viewRolee === 'manager') {
         // Show events for the selected junior in the manager's select
         const selectedJuniorId = this.state.managerCalendarSelectedJuniorId || (this.state.db.users.find(u => u.role === 'consultant') || {}).id;
         dayEvents = allEvents.filter(e => e.block_day === dateStr && e.junior_id === selectedJuniorId);
@@ -8577,16 +8577,16 @@ const app = {
         let badgeLabel = '';
         let badgeClass = '';
         if (statusKey === 'solicitada') {
-          badgeLabel = 'Pendiente';
+          badgeLabel = 'Pending';
           badgeClass = 'badge-solicitada';
         } else if (statusKey === 'aprobada') {
-          badgeLabel = 'Aceptada';
+          badgeLabel = 'Accepted';
           badgeClass = 'badge-aprobada';
         } else if (statusKey === 'ejecutada') {
-          badgeLabel = `Ejecutada (${e.executed_minutes}m)`;
+          badgeLabel = `Executed (${e.executed_minutes}m)`;
           badgeClass = 'badge-ejecutada';
         } else if (statusKey === 'rechazada') {
-          badgeLabel = 'Cancelada';
+          badgeLabel = 'Cancelled';
           badgeClass = 'badge-rechazada';
         }
         
@@ -8596,16 +8596,16 @@ const app = {
           </div>
           <div class="calendar-event-card-title" style="font-size:0.7rem; font-weight:600; line-height:1.1; margin:2px 0;">${e.title}</div>
           <div class="calendar-event-card-expert" style="font-size:0.65rem;">
-            ${viewRole === 'tutor' ? (e.junior_id === this.state.activeUser.id ? `Con: ${expertName}` : `Junior: ${juniorName}`) : `Tutor: ${expertName}`}
+            ${viewRolee === 'tutor' ? (e.junior_id === this.state.activeUser.id ? `Con: ${expertName}` : `Junior: ${juniorName}`) : `Tutor: ${expertName}`}
           </div>
           <span class="calendar-event-card-status ${badgeClass}" style="font-size:0.6rem; margin-top:2px;">${badgeLabel}</span>
         `;
         
-        if (viewRole === 'tutor' && (e.status === 'aprobada' || e.status === 'aprobado')) {
-          card.setAttribute('title', 'Haga clic para cerrar la sesión y registrar el tiempo real.');
+        if (viewRolee === 'tutor' && (e.status === 'aprobada' || e.status === 'aprobado')) {
+          card.setAttribute('title', 'Click to close the session and record real time.');
           card.onclick = () => this.selectCloseSession(e.id);
         } else {
-          card.setAttribute('title', `Detalle: ${e.block_reason || 'Sin detalles'}`);
+          card.setAttribute('title', `Details: ${e.block_reason || 'No details'}`);
         }
         
         // Wrap card in a event-wrapper for popover
@@ -8640,12 +8640,12 @@ const app = {
         }
 
         popoverDiv.innerHTML = `
-          <p class="font-bold text-gray-800" style="margin: 0 0 6px 0; font-weight: 700; border-b: 1px solid #f1f5f9; padding-bottom: 4px;">Gobernanza de Reunión</p>
+          <p class="font-bold text-gray-800" style="margin: 0 0 6px 0; font-weight: 700; border-b: 1px solid #f1f5f9; padding-bottom: 4px;">Meeting Governance</p>
           <div style="font-size: 10px; color: #4b5563; margin-bottom: 6px; display: flex; flex-direction: column; gap: 2px; line-height: 1.3;">
-            <div><strong>Tema:</strong> ${e.title}</div>
-            <div><strong>Organizador:</strong> ${organizerName}</div>
-            <div><strong>Invitado:</strong> ${inviteeName}</div>
-            <div><strong>Estado:</strong> <span class="popover-status-label" style="font-weight: 600;">${e.estado_confirmacion || 'PENDIENTE'}</span></div>
+            <div><strong>Topic:</strong> ${e.title}</div>
+            <div><strong>Organizer:</strong> ${organizerName}</div>
+            <div><strong>Invitee:</strong> ${inviteeName}</div>
+            <div><strong>Status:</strong> <span class="popover-status-label" style="font-weight: 600;">${e.estado_confirmacion || 'PENDING'}</span></div>
           </div>
           <div id="popover-actions-${e.id}" class="flex flex-col gap-1.5" style="display: flex; flex-direction: column; gap: 6px;">
           </div>
@@ -8672,8 +8672,8 @@ const app = {
 
   updateMonthDisplay() {
     const monthNames = [
-      "Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio",
-      "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"
+      "January", "February", "March", "April", "May", "June",
+      "July", "August", "September", "October", "November", "December"
     ];
     const text = `${monthNames[this.state.currentMonth]} ${this.state.currentYear}`;
     
@@ -8757,11 +8757,11 @@ const app = {
     if (nuevoEstado === 'aprobada') {
       const collisionResult = this.checkCollision(event.block_day, event.time_start, event.planned_minutes, event.expert_id, event.junior_id, eventId);
       if (collisionResult.collision) {
-        alert(`⚠️ ERROR DE COLISIÓN AL APROBAR:\n\n${collisionResult.reason}\n\nNo es posible aprobar esta solicitud en el horario actual. Sugiere reagendar.`);
+        alert(`⚠️ COLLISION ERROR ON APPROVAL:\n\n${collisionResult.reason}\n\nIt is not possible to approve this request in the current slot. Suggest rescheduling.`);
         return;
       }
       event.status = 'aprobada';
-      this.showToast("Solicitud aceptada e integrada a tu calendario.");
+      this.showToast("Request accepted and integrated into your calendar.");
       
       const junior = this.state.db.users.find(u => u.id === event.junior_id);
       const expert = this.state.activeUser;
@@ -8769,12 +8769,12 @@ const app = {
       this.sendSMTPAlert(
         "junior",
         junior.email,
-        "Aprobada: Tu Solicitud de Soporte Extra",
+        "Aprobada: Tu Solicitud de Extra Support",
         `Hola ${junior.name},\n\nTu solicitud de consulta técnica extra sobre "${event.title}" ha sido ACEPTADA por el experto ${expert.name}.\n\nFecha: ${event.block_day}\nHorario: ${event.time_start} - ${event.time_end}\n\nLa sesión ha sido confirmada en tu agenda.`
       );
     } else if (nuevoEstado === 'rechazada') {
       event.status = 'rechazada';
-      this.showToast("Solicitud declinada.");
+      this.showToast("Request declined.");
       
       const junior = this.state.db.users.find(u => u.id === event.junior_id);
       const expert = this.state.activeUser;
@@ -8782,7 +8782,7 @@ const app = {
       this.sendSMTPAlert(
         "junior",
         junior.email,
-        "Rechazada: Solicitud de Soporte Extra",
+        "Rechazada: Solicitud de Extra Support",
         `Hola ${junior.name},\n\nTu solicitud de soporte extra sobre "${event.title}" para el ${event.block_day} ha sido RECHAZADA por el experto ${expert.name} debido a incompatibilidad horaria o indisponibilidad.\n\nPor favor intenta proponer otro horario o ponte en contacto directo para coordinar.`
       );
     }
@@ -8817,7 +8817,7 @@ const app = {
 
     // Regla A: Inmutabilidad Corporativa Global
     if (evento.tipo_sesion === 'MUREX_LEARNING' || evento.bloqueado_edicion) {
-        accionesContainer.innerHTML = `<span class="text-gray-400 italic text-[11px]">Horario fijo corporativo</span>`;
+        accionesContainer.innerHTML = `<span class="text-gray-400 italic text-[11px]">Fixed corporate schedule</span>`;
         return;
     }
 
@@ -8827,7 +8827,7 @@ const app = {
     
     // Regla B: Inmutabilidad del Pasado (Auditoría Histórica Fija)
     if (fechaEvento <= HOY_PRESENTE) {
-        accionesContainer.innerHTML = `<span class="text-green-600 font-medium text-[11px] flex items-center gap-1">✓ Ejecutada e Histórica</span>`;
+        accionesContainer.innerHTML = `<span class="text-green-600 font-medium text-[11px] flex items-center gap-1">✓ Executed & Historical</span>`;
         return; // Detiene la inyección de botones (Imposible modificar o cancelar el pasado)
     }
 
@@ -8841,14 +8841,14 @@ const app = {
     if (isManager) {
         if (evento.estado_confirmacion === 'PENDIENTE_ORGANIZER' || evento.estado_confirmacion === 'PENDIENTE_INVITADO') {
             accionesContainer.innerHTML += `
-                <button onclick="event.stopPropagation(); app.confirmarHorario('${eventoId}')" class="bg-green-600 text-white p-1.5 rounded font-medium text-[11px] cursor-pointer text-center" style="display: block; width: 100%; border: none;">Aceptar y Fijar</button>
-                <button onclick="event.stopPropagation(); app.abrirModalModificar('${eventoId}')" class="bg-gray-100 hover:bg-pink-50 text-pink-600 p-1.5 rounded font-medium text-[11px] cursor-pointer text-center" style="display: block; width: 100%; border: none;">Modificar Horario</button>
-                <button onclick="event.stopPropagation(); app.cancelarReunion('${eventoId}')" class="bg-red-50 hover:bg-red-100 text-red-600 p-1.5 rounded font-medium text-[11px] cursor-pointer text-center" style="display: block; width: 100%; border: none;">Cancelar Reunión</button>
+                <button onclick="event.stopPropagation(); app.confirmarHorario('${eventoId}')" class="bg-green-600 text-white p-1.5 rounded font-medium text-[11px] cursor-pointer text-center" style="display: block; width: 100%; border: none;">Accept & Fix</button>
+                <button onclick="event.stopPropagation(); app.abrirModalModificar('${eventoId}')" class="bg-gray-100 hover:bg-pink-50 text-pink-600 p-1.5 rounded font-medium text-[11px] cursor-pointer text-center" style="display: block; width: 100%; border: none;">Modify Schedule</button>
+                <button onclick="event.stopPropagation(); app.cancelarReunion('${eventoId}')" class="bg-red-50 hover:bg-red-100 text-red-600 p-1.5 rounded font-medium text-[11px] cursor-pointer text-center" style="display: block; width: 100%; border: none;">Cancel Meeting</button>
             `;
         } else {
             accionesContainer.innerHTML += `
-                <button onclick="event.stopPropagation(); app.abrirModalModificar('${eventoId}')" class="bg-gray-100 hover:bg-pink-50 text-pink-600 p-1.5 rounded font-medium text-[11px] cursor-pointer text-center" style="display: block; width: 100%; border: none;">Modificar Horario</button>
-                <button onclick="event.stopPropagation(); app.cancelarReunion('${eventoId}')" class="bg-red-50 hover:bg-red-100 text-red-600 p-1.5 rounded font-medium text-[11px] cursor-pointer text-center" style="display: block; width: 100%; border: none;">Cancelar Reunión</button>
+                <button onclick="event.stopPropagation(); app.abrirModalModificar('${eventoId}')" class="bg-gray-100 hover:bg-pink-50 text-pink-600 p-1.5 rounded font-medium text-[11px] cursor-pointer text-center" style="display: block; width: 100%; border: none;">Modify Schedule</button>
+                <button onclick="event.stopPropagation(); app.cancelarReunion('${eventoId}')" class="bg-red-50 hover:bg-red-100 text-red-600 p-1.5 rounded font-medium text-[11px] cursor-pointer text-center" style="display: block; width: 100%; border: none;">Cancel Meeting</button>
             `;
         }
         return;
@@ -8858,26 +8858,26 @@ const app = {
     if (esOrganizador) {
         if (evento.estado_confirmacion === 'PENDIENTE_ORGANIZER') {
             // El invitado me la movió, yo debo aceptar su contrapropuesta
-            accionesContainer.innerHTML += `<button onclick="event.stopPropagation(); app.confirmarHorario('${eventoId}')" class="bg-green-600 text-white p-1.5 rounded font-medium text-[11px] cursor-pointer text-center" style="display: block; width: 100%; border: none;">Aceptar Contrapropuesta</button>`;
+            accionesContainer.innerHTML += `<button onclick="event.stopPropagation(); app.confirmarHorario('${eventoId}')" class="bg-green-600 text-white p-1.5 rounded font-medium text-[11px] cursor-pointer text-center" style="display: block; width: 100%; border: none;">Accept Counterproposal</button>`;
         } else if (evento.estado_confirmacion === 'PENDIENTE_INVITADO') {
-            accionesContainer.innerHTML += `<span class="text-gray-400 italic text-[11px]" style="margin-bottom: 4px; display: block; text-align: center;">Esperando respuesta...</span>`;
+            accionesContainer.innerHTML += `<span class="text-gray-400 italic text-[11px]" style="margin-bottom: 4px; display: block; text-align: center;">Waiting for response...</span>`;
         }
         // El organizador siempre puede alterar el futuro de su evento creado
         accionesContainer.innerHTML += `
-            <button onclick="event.stopPropagation(); app.abrirModalModificar('${eventoId}')" class="bg-gray-100 hover:bg-pink-50 text-pink-600 p-1.5 rounded font-medium text-[11px] cursor-pointer text-center" style="display: block; width: 100%; border: none;">Modificar Horario</button>
-            <button onclick="event.stopPropagation(); app.cancelarReunion('${eventoId}')" class="bg-red-50 hover:bg-red-100 text-red-600 p-1.5 rounded font-medium text-[11px] cursor-pointer text-center" style="display: block; width: 100%; border: none;">Cancelar Reunión</button>
+            <button onclick="event.stopPropagation(); app.abrirModalModificar('${eventoId}')" class="bg-gray-100 hover:bg-pink-50 text-pink-600 p-1.5 rounded font-medium text-[11px] cursor-pointer text-center" style="display: block; width: 100%; border: none;">Modify Schedule</button>
+            <button onclick="event.stopPropagation(); app.cancelarReunion('${eventoId}')" class="bg-red-50 hover:bg-red-100 text-red-600 p-1.5 rounded font-medium text-[11px] cursor-pointer text-center" style="display: block; width: 100%; border: none;">Cancel Meeting</button>
         `;
     } 
     // Flujo de Negociación si soy el invitado experto requerido
     else if (esInvitado) {
         if (evento.estado_confirmacion === 'PENDIENTE_INVITADO') {
             accionesContainer.innerHTML += `
-                <button onclick="event.stopPropagation(); app.confirmarHorario('${eventoId}')" class="bg-green-600 text-white p-1.5 rounded font-medium text-[11px] cursor-pointer text-center" style="display: block; width: 100%; border: none;">Aceptar y Fijar</button>
-                <button onclick="event.stopPropagation(); app.abrirModalModificar('${eventoId}')" class="bg-gray-100 hover:bg-pink-50 text-pink-600 p-1.5 rounded font-medium text-[11px] cursor-pointer text-center" style="display: block; width: 100%; border: none;">Proponer Cambio</button>
+                <button onclick="event.stopPropagation(); app.confirmarHorario('${eventoId}')" class="bg-green-600 text-white p-1.5 rounded font-medium text-[11px] cursor-pointer text-center" style="display: block; width: 100%; border: none;">Accept & Fix</button>
+                <button onclick="event.stopPropagation(); app.abrirModalModificar('${eventoId}')" class="bg-gray-100 hover:bg-pink-50 text-pink-600 p-1.5 rounded font-medium text-[11px] cursor-pointer text-center" style="display: block; width: 100%; border: none;">Propose Change</button>
             `;
         } else if (evento.estado_confirmacion === 'FIXED') {
             // El experto puede cancelar su asistencia a un evento futuro por contingencias
-            accionesContainer.innerHTML += `<button onclick="event.stopPropagation(); app.cancelarReunion('${eventoId}')" class="bg-red-50 hover:bg-red-100 text-red-600 p-1.5 rounded font-medium text-[11px] cursor-pointer text-center" style="display: block; width: 100%; border: none;">Cancelar Asistencia</button>`;
+            accionesContainer.innerHTML += `<button onclick="event.stopPropagation(); app.cancelarReunion('${eventoId}')" class="bg-red-50 hover:bg-red-100 text-red-600 p-1.5 rounded font-medium text-[11px] cursor-pointer text-center" style="display: block; width: 100%; border: none;">Cancel Attendance</button>`;
         }
     }
   },
@@ -8910,7 +8910,7 @@ const app = {
     }
     
     this.saveDatabase();
-    alert("Horario propuesto modificado con éxito. Se ha enviado una alerta de negociación a la contraparte.");
+    alert("Proposed schedule successfully modified. A negotiation alert has been sent to the counterparty.");
     
     // Notify the counterparty via SMTP
     let targetUserIds = [];
@@ -8928,17 +8928,17 @@ const app = {
       if (otherUser && otherUser.id !== this.state.activeUser.id) {
         let msg = '';
         if (this.state.activeUser.role === 'admin') {
-          msg = `Hola ${otherUser.name},\n\nLa Manager Luana Ortega ha reprogramado directamente la reunión "${evento.title}":\n\nNuevo Horario: ${nuevaFecha} de ${nuevaHoraInicio} a ${nuevaHoraFin}.\n\nRevisa el Calendario Hub para ver los detalles.`;
+          msg = `Hello ${otherUser.name},\n\nManager Luana Ortega has directly rescheduled the meeting "${evento.title}":\n\nNew Time: ${nuevaFecha} from ${nuevaHoraInicio} to ${nuevaHoraFin}.\n\nPlease check the Calendar Hub to see the details.`;
         } else if (this.state.activeUser.id === evento.organizador_id) {
-          msg = `Estimado(a) ${otherUser.name},\n\nEl organizador de la reunión, ${this.state.activeUser.name}, ha propuesto una modificación de horario para "${evento.title}":\n\nNuevo Horario: ${nuevaFecha} de ${nuevaHoraInicio} a ${nuevaHoraFin}.\n\nPor favor ingresa a tu MXBoard para revisar y confirmar.`;
+          msg = `Dear ${otherUser.name},\n\nThe meeting organizer, ${this.state.activeUser.name}, has proposed a schedule modification for "${evento.title}":\n\nNew Time: ${nuevaFecha} from ${nuevaHoraInicio} to ${nuevaHoraFin}.\n\nPlease log in to your MXBoard to review and confirm.`;
         } else {
-          msg = `Hola ${otherUser.name},\n\nTu tutor/invitado ${this.state.activeUser.name} ha propuesto una modificación de horario para "${evento.title}":\n\nNuevo Horario: ${nuevaFecha} de ${nuevaHoraInicio} a ${nuevaHoraFin}.\n\nRevisa el Calendario Hub para ver la propuesta.`;
+          msg = `Hello ${otherUser.name},\n\nYour tutor/guest ${this.state.activeUser.name} has proposed a schedule modification for "${evento.title}":\n\nNew Time: ${nuevaFecha} from ${nuevaHoraInicio} to ${nuevaHoraFin}.\n\nPlease check the Calendar Hub to see the proposal.`;
         }
         
         this.sendSMTPAlert(
           otherUser.role || 'junior',
           otherUser.email,
-          "Modificación de Horario: Reunión HUB",
+          "Schedule Modification: HUB Meeting",
           msg
         );
       }
@@ -8958,14 +8958,14 @@ const app = {
     
     const collisionResult = this.checkCollision(event.block_day, event.time_start, event.planned_minutes, event.expert_id, event.junior_id, eventId);
     if (collisionResult.collision) {
-      alert(`⚠️ ERROR DE COLISIÓN AL APROBAR:\n\n${collisionResult.reason}\n\nNo es posible aprobar esta solicitud en el horario actual. Sugiere reagendar.`);
+      alert(`⚠️ COLLISION ERROR ON APPROVAL:\n\n${collisionResult.reason}\n\nIt is not possible to approve this request in the current slot. Suggest rescheduling.`);
       return;
     }
     
     event.status = 'aprobada';
     event.estado_confirmacion = 'FIXED';
     this.saveDatabase();
-    this.showToast("Reunión confirmada y fijada con éxito.");
+    this.showToast("Meeting confirmed and scheduled successfully.");
     
     let targetUserIds = [];
     if (this.state.activeUser.id === event.organizador_id) {
@@ -8983,8 +8983,8 @@ const app = {
         this.sendSMTPAlert(
           otherUser.role || 'junior',
           otherUser.email,
-          "Confirmación de Horario: Reunión Fijada",
-          `Estimado(a) ${otherUser.name},\n\nLa sesión "${event.title}" ha sido CONFIRMADA y fijada en el calendario por ${this.state.activeUser.name}.\n\nFecha: ${event.block_day}\nHorario: ${event.time_start} - ${event.time_end}\n\nLa reunión queda confirmada.`
+          "Schedule Confirmation: Meeting Fixed",
+          `Dear ${otherUser.name},\n\nThe session "${event.title}" has been CONFIRMED and fixed on the calendar by ${this.state.activeUser.name}.\n\nDate: ${event.block_day}\nHours: ${event.time_start} - ${event.time_end}\n\nThe meeting is now confirmed.`
         );
       }
     });
@@ -9004,7 +9004,7 @@ const app = {
     event.status = 'rechazada';
     event.estado_confirmacion = 'CANCELLED';
     this.saveDatabase();
-    this.showToast("Reunión cancelada.");
+    this.showToast("Meeting cancelled.");
     
     let targetUserIds = [];
     if (this.state.activeUser.id === event.organizador_id) {
@@ -9022,8 +9022,8 @@ const app = {
         this.sendSMTPAlert(
           otherUser.role || 'junior',
           otherUser.email,
-          "Reunión Cancelada / Rechazada",
-          `Estimado(a) ${otherUser.name},\n\nLa sesión "${event.title}" programada para el ${event.block_day} de ${event.time_start} a ${event.time_end} ha sido CANCELADA / RECHAZADA por ${this.state.activeUser.name}.\n\nPor favor coordina un nuevo horario si es necesario.`
+          "Meeting Cancelled / Rejected",
+          `Dear ${otherUser.name},\n\nThe session "${event.title}" scheduled for ${event.block_day} from ${event.time_start} to ${event.time_end} has been CANCELLED / REJECTED by ${this.state.activeUser.name}.\n\nPlease coordinate a new time slot if necessary.`
         );
       }
     });
@@ -9041,7 +9041,7 @@ const app = {
     if (!event) return;
     
     if (event.bloqueado_edicion) {
-      this.showToast("Esta reunión corporativa está bloqueada para edición.", "warning");
+      this.showToast("This corporate meeting is locked for editing.", "warning");
       return;
     }
     
@@ -9070,7 +9070,7 @@ const app = {
     const newEnd = document.getElementById('modify-event-end').value;
     
     if (!newDate || !newStart || !newEnd) {
-      this.showToast("Por favor completa todos los campos para modificar.", "warning");
+      this.showToast("Please fill in all fields to modify.", "warning");
       return;
     }
     
@@ -9078,7 +9078,7 @@ const app = {
     if (!event) return;
     
     if (event.bloqueado_edicion) {
-      this.showToast("Esta reunión corporativa está bloqueada para edición.", "warning");
+      this.showToast("This corporate meeting is locked for editing.", "warning");
       return;
     }
     
@@ -9088,13 +9088,13 @@ const app = {
     const duration = (h2 * 60 + m2) - (h1 * 60 + m1);
     
     if (duration <= 0) {
-      alert("⚠️ Error: La hora de fin debe ser posterior a la hora de inicio.");
+      alert("⚠️ Error: The end time must be after the start time.");
       return;
     }
     
     const collisionResult = this.checkCollision(newDate, newStart, duration, event.expert_id, event.junior_id, eventId);
     if (collisionResult.collision) {
-      alert(`⚠️ ERROR DE COLISIÓN AL MODIFICAR:\n\n${collisionResult.reason}\n\nEl horario seleccionado entra en colisión con otra sesión.`);
+      alert(`⚠️ COLLISION ERROR ON UPDATE:\n\n${collisionResult.reason}\n\nThe selected slot collides with another session.`);
       return;
     }
     
@@ -9117,13 +9117,13 @@ const app = {
     const today = new Date(HOY_PRESENTE);
     today.setHours(0,0,0,0);
     if (selectedDate < today) {
-      this.showToast("No puedes solicitar soporte para fechas pasadas.", "warning");
+      this.showToast("You cannot request support for past dates.", "warning");
       return;
     }
     
     const collisionResult = this.checkCollision(date, time, duration, expertId, this.state.activeUser.id);
     if (collisionResult.collision) {
-      alert(`⚠️ ERROR DE COLISIÓN:\n\n${collisionResult.reason}\n\nPor favor propone otro bloque horario.`);
+      alert(`⚠️ COLLISION ERROR:\n\n${collisionResult.reason}\n\nPlease propose another time slot.`);
       return;
     }
     
@@ -9142,24 +9142,24 @@ const app = {
     
     if (supportType === 'coaching') {
       eventTitle = `Coaching: ${category}`;
-      emailSubject = `Solicitud de Reunión de Coaching Recibida: ${this.state.activeUser.name}`;
-      emailBody = `Estimado(a) Senior Manager,\n\nLa consultora Junior ${this.state.activeUser.name} ha levantado una solicitud de reunión de coaching:\n\nTema: ${category}\nFecha: ${date} de ${time} a ${endTime}\nDetalle: "${reason}"\n\nPor favor ingresa a la pestaña "Solicitudes Pendientes" para responder a esta solicitud.`;
+      emailSubject = `Coaching Session Request Received: ${this.state.activeUser.name}`;
+      emailBody = `Dear Senior Manager,\n\nJunior Consultant ${this.state.activeUser.name} has submitted a coaching session request:\n\nTopic: ${category}\nDate: ${date} from ${time} to ${endTime}\nDetail: "${reason}"\n\nPlease go to the "Pending Requests" tab to respond to this request.`;
     } else if (supportType === 'tutoring') {
-      eventTitle = `Tutoría: ${category}`;
-      emailSubject = `Solicitud de Tutoría Ordinaria Recibida: ${this.state.activeUser.name}`;
-      emailBody = `Estimado(a) Tutor,\n\nLa consultora Junior ${this.state.activeUser.name} ha levantado una solicitud de tutoría ordinaria:\n\nTema: ${category}\nFecha: ${date} de ${time} a ${endTime}\nDetalle: "${reason}"\n\nPor favor ingresa a la pestaña "Solicitudes Pendientes" para responder a esta solicitud.`;
+      eventTitle = `Tutoring: ${category}`;
+      emailSubject = `Regular Tutoring Request Received: ${this.state.activeUser.name}`;
+      emailBody = `Dear Tutor,\n\nJunior Consultant ${this.state.activeUser.name} has submitted a regular tutoring request:\n\nTopic: ${category}\nDate: ${date} from ${time} to ${endTime}\nDetail: "${reason}"\n\nPlease go to the "Pending Requests" tab to respond to this request.`;
     } else if (supportType === 'masterclass') {
       eventTitle = `Masterclass: ${category}`;
-      emailSubject = `Solicitud de Masterclass Especial Recibida: ${this.state.activeUser.name}`;
-      emailBody = `Estimado(a) Relator,\n\nLa consultora Junior ${this.state.activeUser.name} ha levantado una solicitud de masterclass especial:\n\nTema: ${category}\nFecha: ${date} de ${time} a ${endTime}\nDetalle: "${reason}"\n\nPor favor ingresa a la pestaña "Solicitudes Pendientes" para responder a esta solicitud.`;
+      emailSubject = `Special Masterclass Request Received: ${this.state.activeUser.name}`;
+      emailBody = `Dear Speaker,\n\nJunior Consultant ${this.state.activeUser.name} has submitted a special masterclass request:\n\nTopic: ${category}\nDate: ${date} from ${time} to ${endTime}\nDetail: "${reason}"\n\nPlease go to the "Pending Requests" tab to respond to this request.`;
     } else if (supportType === 'MUREX_LEARNING') {
       eventTitle = `Murex Learning: ${category}`;
-      emailSubject = `Sesión Corporativa Registrada: ${category}`;
-      emailBody = `Estimado(a) Junior,\n\nSe ha registrado tu asistencia a la reunión corporativa Murex Learning:\n\nTema: ${category}\nFecha: ${date} de ${time} a ${endTime}\nDetalle: "${reason}"\n\nEsta sesión queda confirmada de forma automática.`;
+      emailSubject = `Corporate Session Registered: ${category}`;
+      emailBody = `Dear Junior,\n\nYour attendance at the corporate Murex Learning meeting has been registered:\n\nTopic: ${category}\nDate: ${date} from ${time} to ${endTime}\nDetail: "${reason}"\n\nThis session is automatically confirmed.`;
     } else {
-      eventTitle = `Soporte Extra: ${category}`;
-      emailSubject = `Solicitud de Soporte Extra Recibida: ${this.state.activeUser.name}`;
-      emailBody = `Estimado(a) Experto,\n\nLa consultora Junior ${this.state.activeUser.name} ha levantado una solicitud de soporte extra reactivo:\n\nTema: ${category}\nFecha: ${date} de ${time} a ${endTime}\nDetalle: "${reason}"\n\nPor favor ingresa a la pestaña "Solicitudes Pendientes" de tu MXBoard para Aceptar o Rechazar esta sesión.`;
+      eventTitle = `Extra Support: ${category}`;
+      emailSubject = `Extra Support Request Received: ${this.state.activeUser.name}`;
+      emailBody = `Dear Expert,\n\nJunior Consultant ${this.state.activeUser.name} has submitted a request for reactive extra support:\n\nTopic: ${category}\nDate: ${date} from ${time} to ${endTime}\nDetail: "${reason}"\n\nPlease go to the "Pending Requests" tab of your MXBoard to Accept or Reject this session.`;
     }
 
     const newEvent = {
@@ -9199,7 +9199,7 @@ const app = {
     this.state.db.calendar_events.push(newEvent);
     this.saveDatabase();
     
-    this.showToast(supportType === 'MUREX_LEARNING' ? "Sesión corporativa Murex Learning registrada." : "Solicitud de sesión enviada directamente.");
+    this.showToast(supportType === 'MUREX_LEARNING' ? "Murex Learning corporate session registered." : "Session request submitted directly.");
     
     const junior = this.state.activeUser;
     
@@ -9238,7 +9238,7 @@ const app = {
     const pendingEvents = (this.state.db.calendar_events || []).filter(e => e.status === 'pendiente_aprobacion');
     
     if (pendingEvents.length === 0) {
-      tbody.innerHTML = `<tr><td colspan="5" style="text-align:center; padding: 20px; color:var(--neutral-muted);">No hay solicitudes de soporte extra pendientes de aprobación.</td></tr>`;
+      tbody.innerHTML = `<tr><td colspan="5" style="text-align:center; padding: 20px; color:var(--neutral-muted);">There are no pending extra support requests awaiting approval.</td></tr>`;
       return;
     }
     
@@ -9248,20 +9248,20 @@ const app = {
       const expertObj = this.state.db.users.find(u => u.id === e.expert_id);
       const juniorName = juniorObj ? juniorObj.name : 'N/A';
       const expertName = expertObj ? expertObj.name : 'N/A';
-      const formattedDate = new Date(e.block_day + "T00:00:00").toLocaleDateString('es-CL');
+      const formattedDate = new Date(e.block_day + "T00:00:00").toLocaleDateString('en-US');
       
       tr.innerHTML = `
         <td><strong>${juniorName}</strong></td>
         <td>
-          <div style="font-weight:600;">${e.title.replace('Soporte Extra: ', '')}</div>
+          <div style="font-weight:600;">${e.title.replace('Extra Support: ', '')}</div>
           <div style="font-size:0.75rem; color:var(--neutral-muted); max-width:250px;">"${e.block_reason}"</div>
         </td>
         <td>${expertName}</td>
         <td>${formattedDate}<br><span style="font-weight:600; font-size:0.8rem;">${e.time_start} - ${e.time_end} (${e.planned_minutes} min)</span></td>
         <td>
           <div style="display:flex; gap:6px;">
-            <button class="btn btn-success btn-xs" onclick="app.approveSupportRequest('${e.id}')"><i class="ti ti-check"></i> Aprobar</button>
-            <button class="btn btn-danger btn-xs" onclick="app.rejectSupportRequest('${e.id}')"><i class="ti ti-x"></i> Rechazar</button>
+            <button class="btn btn-success btn-xs" onclick="app.approveSupportRequest('${e.id}')"><i class="ti ti-check"></i> Approve</button>
+            <button class="btn btn-danger btn-xs" onclick="app.rejectSupportRequest('${e.id}')"><i class="ti ti-x"></i> Reject</button>
           </div>
         </td>
       `;
@@ -9275,13 +9275,13 @@ const app = {
     
     const collisionResult = this.checkCollision(event.block_day, event.time_start, event.planned_minutes, event.expert_id, event.junior_id, eventId);
     if (collisionResult.collision) {
-      alert(`⚠️ ERROR DE COLISIÓN AL APROBAR:\n\n${collisionResult.reason}\n\nNo es posible aprobar esta solicitud en el horario actual. Sugiera reagendar.`);
+      alert(`⚠️ COLLISION ERROR ON APPROVAL:\n\n${collisionResult.reason}\n\nIt is not possible to approve this request in the current slot. Suggest rescheduling.`);
       return;
     }
     
     event.status = 'aprobado';
     this.saveDatabase();
-    this.showToast("Solicitud aprobada y bloqueada en agendas.");
+    this.showToast("Request approved and blocked in calendars.");
     
     const junior = this.state.db.users.find(u => u.id === event.junior_id);
     const expert = this.state.db.users.find(u => u.id === event.expert_id);
@@ -9289,15 +9289,15 @@ const app = {
     this.sendSMTPAlert(
       "junior",
       junior.email,
-      "Aprobado: Tu Solicitud de Soporte Extra",
-      `Estimado(a) ${junior.name},\n\nTu solicitud de soporte técnico extra sobre "${event.title}" ha sido APROBADA por la Manager Luana Ortega.\n\nFecha: ${event.block_day}\nHorario: ${event.time_start} - ${event.time_end}\nExperto: ${expert?.name || 'N/A'}\n\nLa sesión ha sido agendada en tu Calendario Hub.`
+      "Approved: Your Extra Support Request",
+      `Dear ${junior.name},\n\nYour request for extra technical support on "${event.title}" has been APPROVED by Manager Luana Ortega.\n\nDate: ${event.block_day}\nTime: ${event.time_start} - ${event.time_end}\nExpert: ${expert?.name || 'N/A'}\n\nThe session has been scheduled in your Calendar Hub.`
     );
     
     this.sendSMTPAlert(
       expert.role,
       expert.email,
-      `Nueva Sesión de Soporte Extra Asignada: ${junior.name}`,
-      `Estimado(a) ${expert.name},\n\nLa Manager Luana Ortega ha aprobado y agendado una sesión de soporte extra donde eres el experto:\n\nJunior: ${junior.name}\nTema: ${event.title}\nFecha: ${event.block_day}\nHorario: ${event.time_start} - ${event.time_end}\n\nPor favor conéctate en el horario y, al finalizar, registra el cierre de la sesión en tu Calendario Operacional.`
+      `New Extra Support Session Assigned: ${junior.name}`,
+      `Dear ${expert.name},\n\nManager Luana Ortega has approved and scheduled an extra support session where you are the expert:\n\nJunior: ${junior.name}\nTheme: ${event.title}\nDate: ${event.block_day}\nHours: ${event.time_start} - ${event.time_end}\n\nPlease log in at the scheduled time and, once finished, record the session closure in your Operational Calendar.`
     );
     
     this.renderManagerPendingApprovals();
@@ -9312,14 +9312,14 @@ const app = {
     
     event.status = 'rechazado';
     this.saveDatabase();
-    this.showToast("Solicitud rechazada.");
+    this.showToast("Request rejected.");
     
     const junior = this.state.db.users.find(u => u.id === event.junior_id);
     this.sendSMTPAlert(
       "junior",
       junior.email,
-      "Rechazado: Solicitud de Soporte Extra",
-      `Estimado(a) ${junior.name},\n\nTu solicitud de soporte extra sobre "${event.title}" para el ${event.block_day} ha sido RECHAZADA por la Manager Luana Ortega.\n\nPor favor habla con tu tutor para coordinar otro bloque u obtener ayuda asíncrona.`
+      "Rejected: Extra Support Request",
+      `Dear ${junior.name},\n\nYour request for extra support on "${event.title}" for ${event.block_day} has been REJECTED by Manager Luana Ortega.\n\nPlease speak with your tutor to coordinate another slot or get asynchronous help.`
     );
     
     this.renderManagerPendingApprovals();
@@ -9338,14 +9338,14 @@ const app = {
     const timeBlock = document.getElementById('masterclass-time-block').value;
     
     if (!topic || !date || !timeBlock) {
-      this.showToast("Por favor rellene todos los campos.", "warning");
+      this.showToast("Please fill out all fields.", "warning");
       return;
     }
     
     const expertosIds = [...this.state.selectedExpertsIds];
     
     if (expertosIds.length === 0) {
-      this.showToast("Por favor seleccione al menos un experto asistente.", "warning");
+      this.showToast("Please select at least one attending expert.", "warning");
       return;
     }
     
@@ -9354,7 +9354,7 @@ const app = {
         e => e.week_number === weekNum && e.junior_id === juniorId && e.type === 'masterclass' && e.status !== 'rechazado' && e.status !== 'rechazada'
       );
       if (existingMc) {
-        this.showToast(`El Junior seleccionado ya tiene una Masterclass programada para la Semana ${weekNum}.`, "warning");
+        this.showToast(`The selected Junior already has a Masterclass scheduled for Week ${weekNum}.`, "warning");
         return;
       }
     }
@@ -9365,14 +9365,14 @@ const app = {
     for (const expId of expertosIds) {
       const collisionResult = this.checkCollision(date, timeStart, 60, expId, juniorId);
       if (collisionResult.collision) {
-        alert(`⚠️ ERROR DE COLISIÓN:\n\n${collisionResult.reason}\n\nPor favor propone otro horario.`);
+        alert(`⚠️ COLLISION ERROR:\n\n${collisionResult.reason}\n\nPlease propose another time slot.`);
         return;
       }
     }
     
     const eventType = sessionType === 'MUREX_LEARNING' ? 'MUREX_LEARNING' : (sessionType === 'FEEDBACK_ALINEAMIENTO' ? 'FEEDBACK_ALINEAMIENTO' : 'masterclass');
     const eventTitle = sessionType === 'MUREX_LEARNING' ? `Murex Learning: ${topic}` : (sessionType === 'FEEDBACK_ALINEAMIENTO' ? `Feedback: ${topic}` : `Masterclass: ${topic}`);
-    const eventReason = sessionType === 'MUREX_LEARNING' ? `Reunión Interna Murex (Global): ${topic}` : (sessionType === 'FEEDBACK_ALINEAMIENTO' ? `Sesión de Feedback / Alineamiento: ${topic}. Semana de la malla: ${weekNum}.` : `Clase magistral individual: ${topic}. Semana de la malla: ${weekNum}.`);
+    const eventReason = sessionType === 'MUREX_LEARNING' ? `Internal Murex Meeting (Global): ${topic}` : (sessionType === 'FEEDBACK_ALINEAMIENTO' ? `Feedback / Alignment Session: ${topic}. Syllabus week: ${weekNum}.` : `Individual masterclass: ${topic}. Syllabus week: ${weekNum}.`);
     
     const newMc = {
       id: `ev-${Math.random().toString(36).substr(2, 9)}`,
@@ -9408,7 +9408,7 @@ const app = {
     this.state.db.calendar_events.push(newMc);
     this.saveDatabase();
     
-    this.showToast(sessionType === 'MUREX_LEARNING' ? `Sesión corporativa programada con éxito.` : `Sesión de Semana ${weekNum} programada con éxito.`);
+    this.showToast(sessionType === 'MUREX_LEARNING' ? `Corporate session scheduled successfully.` : `Week ${weekNum} session scheduled successfully.`);
     
     const junior = this.state.db.users.find(u => u.id === juniorId);
     
@@ -9416,12 +9416,12 @@ const app = {
       expertosIds.forEach(expId => {
         const expert = this.state.db.users.find(u => u.id === expId);
         if (expert && junior) {
-          const typeLabel = sessionType === 'FEEDBACK_ALINEAMIENTO' ? 'Feedback / Alineamiento' : 'Masterclass';
+          const typeLabel = sessionType === 'FEEDBACK_ALINEAMIENTO' ? 'Feedback / Alignment' : 'Masterclass';
           this.sendSMTPAlert(
             expert.role,
             expert.email,
-            `Sesión Asignada: Semana ${weekNum}`,
-            `Estimado(a) ${expert.name},\n\nLa Manager Luana Ortega te ha asignado como relator de la sesión (${typeLabel}) de la Semana ${weekNum}:\n\nTema: ${topic}\nJunior Receptor: ${junior.name}\nFecha: ${date}\nHorario: ${timeStart} - ${timeEnd}\n\nPor favor conéctate a tiempo para dictar la sesión. Al finalizar, recuerda cerrarla en tu panel.`
+            `Assigned Session: Week ${weekNum}`,
+            `Dear ${expert.name},\n\nManager Luana Ortega has assigned you as the speaker for the week ${weekNum} session (${typeLabel}):\n\nTopic: ${topic}\nReceiving Junior: ${junior.name}\nDate: ${date}\nHours: ${timeStart} - ${timeEnd}\n\nPlease connect on time to deliver the session. Once finished, remember to close it in your panel.`
           );
         }
       });
@@ -9429,8 +9429,8 @@ const app = {
       this.sendSMTPAlert(
         "admin",
         "learning.corp@murex.com",
-        `Sesión Corporativa Registrada: ${topic}`,
-        `Registro corporativo para la sesión de Murex Learning: ${topic}.\nFecha: ${date}\nHorario: ${timeStart} - ${timeEnd}`
+        `Corporate Session Registered: ${topic}`,
+        `Corporate registration for the Murex Learning session: ${topic}.\nDate: ${date}\nHours: ${timeStart} - ${timeEnd}`
       );
     }
     
@@ -9441,14 +9441,14 @@ const app = {
       } else {
         relatorName = expertosIds.map(id => this.state.db.users.find(u => u.id === id)?.name || 'N/A').join(', ');
       }
-      const typeLabel = sessionType === 'FEEDBACK_ALINEAMIENTO' ? 'Feedback / Alineamiento' : 'Masterclass';
+      const typeLabel = sessionType === 'FEEDBACK_ALINEAMIENTO' ? 'Feedback / Alignment' : 'Masterclass';
       this.sendSMTPAlert(
         junior.role,
         junior.email,
-        sessionType === 'MUREX_LEARNING' ? `Nueva Sesión Corporativa: ${topic}` : `Nueva Sesión Programada: Semana ${weekNum}`,
+        sessionType === 'MUREX_LEARNING' ? `New Corporate Session: ${topic}` : `New Scheduled Session: Week ${weekNum}`,
         sessionType === 'MUREX_LEARNING' ? 
-          `Estimado(a) ${junior.name},\n\nSe ha programado una Reunión Interna Murex (Global) para ti:\n\nTema: ${topic}\nFecha: ${date}\nHorario: ${timeStart} - ${timeEnd}\n\nEsta sesión no tiene costos locales y ha sido registrada por la Manager Luana Ortega.` :
-          `Estimado(a) ${junior.name},\n\nLa Manager Luana Ortega ha programado una sesión de ${typeLabel} para ti para la Semana ${weekNum}:\n\nTema: ${topic}\nRelator (Senior / Tutor): ${relatorName}\nFecha: ${date}\nHorario: ${timeStart} - ${timeEnd}\n\nLa sesión se ha bloqueado en tu Calendario Hub.`
+          `Dear ${junior.name},\n\nAn Internal Murex Meeting (Global) has been scheduled for you:\n\nTopic: ${topic}\nDate: ${date}\nHours: ${timeStart} - ${timeEnd}\n\nThis session has no local costs and has been registered by Manager Luana Ortega.` :
+          `Dear ${junior.name},\n\nManager Luana Ortega has scheduled a ${typeLabel} session for you for Week ${weekNum}:\n\nTopic: ${topic}\nSpeaker (Senior / Tutor): ${relatorName}\nDate: ${date}\nHours: ${timeStart} - ${timeEnd}\n\nThe session has been blocked in your Calendar Hub.`
       );
     }
     
@@ -9473,7 +9473,7 @@ const app = {
     const time = document.getElementById('coaching-time').value;
     
     if (!topic || !date || !time) {
-      this.showToast("Por favor rellene todos los campos para el Coaching.", "warning");
+      this.showToast("Please fill out all fields for Coaching.", "warning");
       return;
     }
     
@@ -9484,7 +9484,7 @@ const app = {
     
     const collisionResult = this.checkCollision(date, time, 60, "USR-LUANA", juniorId);
     if (collisionResult.collision) {
-      alert(`⚠️ ERROR DE COLISIÓN:\n\n${collisionResult.reason}\n\nPor favor propone otro horario.`);
+      alert(`⚠️ COLLISION ERROR:\n\n${collisionResult.reason}\n\nPlease propose another time slot.`);
       return;
     }
     
@@ -9500,7 +9500,7 @@ const app = {
       planned_minutes: 60,
       executed_minutes: null,
       status: "aprobado",
-      block_reason: `Reunión de coaching individual para evaluar avance y soft skills.`,
+      block_reason: `Individual coaching meeting to evaluate progress and soft skills.`,
       week_number: this.getWeekForJunior(juniorId, date),
       organizador_id: this.state.activeUser.id,
       estado_confirmacion: "FIXED",
@@ -9510,14 +9510,14 @@ const app = {
     this.state.db.calendar_events.push(newCoaching);
     this.saveDatabase();
     
-    this.showToast("Sesión de Coaching agendada con éxito.");
+    this.showToast("Coaching session successfully scheduled.");
     
     const userObj = this.state.db.users.find(u => u.id === juniorId);
     this.sendSMTPAlert(
       userObj.role,
       userObj.email,
-      "Nueva Sesión de Coaching Agendada",
-      `Hola ${userObj.name},\n\nLa Manager Luana Ortega ha agendado una sesión 1-on-1 contigo para coaching y feedback:\n\nTema: ${topic}\nFecha: ${date}\nHorario: ${time} - ${endTime}\n\nSe ha bloqueado la sesión en tu Calendario Hub.`
+      "New Coaching Session Scheduled",
+      `Hello ${userObj.name},\n\nManager Luana Ortega has scheduled a 1-on-1 session with you for coaching and feedback:\n\nTopic: ${topic}\nDate: ${date}\nTime: ${time} - ${endTime}\n\nThe session has been blocked in your Calendar Hub.`
     );
     
     document.getElementById('coaching-topic').value = '';
@@ -9546,7 +9546,7 @@ const app = {
     const sortedMcList = Object.values(uniqueMcs).sort((a,b) => a.week_number - b.week_number);
     
     if (sortedMcList.length === 0) {
-      tbody.innerHTML = `<tr><td colspan="5" style="text-align:center; padding: 20px; color:var(--neutral-muted);">No hay sesiones programadas todavía.</td></tr>`;
+      tbody.innerHTML = `<tr><td colspan="5" style="text-align:center; padding: 20px; color:var(--neutral-muted);">No sessions scheduled yet.</td></tr>`;
       return;
     }
     
@@ -9563,12 +9563,12 @@ const app = {
         expertName = expertObj ? expertObj.name : 'N/A';
       }
       
-      const formattedDate = new Date(e.block_day + "T00:00:00").toLocaleDateString('es-CL');
+      const formattedDate = new Date(e.block_day + "T00:00:00").toLocaleDateString('en-US');
       
-      let statusLabel = 'Programada';
+      let statusLabel = 'Scheduled';
       let statusClass = 'badge-approved';
       if (e.status === 'ejecutado' || e.status === 'ejecutada') {
-        statusLabel = 'Ejecutada';
+        statusLabel = 'Executed';
         statusClass = 'badge-executed';
       }
       
@@ -9580,7 +9580,7 @@ const app = {
       }
       
       tr.innerHTML = `
-        <td><span class="badge" style="${badgeStyle}">Semana ${e.week_number}</span></td>
+        <td><span class="badge" style="${badgeStyle}">Week ${e.week_number}</span></td>
         <td><strong>${e.title.replace('Masterclass: ', '').replace('Murex Learning: ', '').replace('Feedback: ', '')}</strong></td>
         <td>${expertName}</td>
         <td>${formattedDate} (${e.time_start} - ${e.time_end})</td>
@@ -9625,17 +9625,17 @@ const app = {
     if (tbody) {
       tbody.innerHTML = '';
       if (executedEvents.length === 0) {
-        tbody.innerHTML = `<tr><td colspan="3" style="text-align:center; padding:15px; color:var(--neutral-muted);">Sin registros auditados.</td></tr>`;
+        tbody.innerHTML = `<tr><td colspan="3" style="text-align:center; padding:15px; color:var(--neutral-muted);">No audited records.</td></tr>`;
       } else {
         const sortedExecuted = [...executedEvents].sort((a,b) => new Date(b.block_day) - new Date(a.block_day));
         sortedExecuted.forEach(e => {
           const tr = document.createElement('tr');
           const expertObj = this.state.db.users.find(u => u.id === e.expert_id);
-          const formattedDate = new Date(e.block_day + "T00:00:00").toLocaleDateString('es-CL', { day: '2-digit', month: '2-digit' });
+          const formattedDate = new Date(e.block_day + "T00:00:00").toLocaleDateString('en-US', { day: '2-digit', month: '2-digit' });
           
-          let shortType = 'Tutoría';
+          let shortType = 'Tutoring';
           if (e.type === 'masterclass') shortType = 'Masterclass';
-          if (e.type === 'extra_support') shortType = 'Soporte';
+          if (e.type === 'extra_support') shortType = 'Support';
           if (e.type === 'coaching') shortType = 'Coaching';
           
           tr.innerHTML = `
@@ -9656,7 +9656,7 @@ const app = {
 
   renderManagerCharts() {
     if (typeof Chart === 'undefined') {
-      console.warn("Chart.js no está cargado. Omitiendo renderizado de gráficos de auditoría.");
+      console.warn("Chart.js is not loaded. Skipping rendering of audit charts.");
       return;
     }
     const executedEvents = (this.state.db.calendar_events || []).filter(e => e.status === 'ejecutado' || e.status === 'ejecutada');
@@ -9694,7 +9694,7 @@ const app = {
         data: {
           labels: labelsResource,
           datasets: [{
-            label: 'Horas Reales',
+            label: 'Real Hours',
             data: dataResource,
             backgroundColor: 'rgba(166, 25, 46, 0.7)',
             borderColor: '#A6192E',
@@ -9722,9 +9722,9 @@ const app = {
     
     const types = ['tutoring', 'masterclass', 'extra_support', 'coaching'];
     const typeLabels = {
-      'tutoring': 'Tutoría',
+      'tutoring': 'Tutoring',
       'masterclass': 'Masterclass',
-      'extra_support': 'Soporte',
+      'extra_support': 'Support',
       'coaching': 'Coaching'
     };
     
@@ -9753,7 +9753,7 @@ const app = {
           labels: labelsDev,
           datasets: [
             {
-              label: 'Planificado (hrs)',
+              label: 'Planned (hrs)',
               data: dataPlanned,
               backgroundColor: 'rgba(100, 116, 139, 0.5)',
               borderColor: '#64748b',
@@ -9826,8 +9826,8 @@ const app = {
       const juniorName = juniorObj ? juniorObj.name : 'N/A';
       detailsEl.innerHTML = `
         <strong>Junior:</strong> ${juniorName}<br>
-        <strong>Planificado:</strong> ${event.planned_minutes} min (${event.time_start} - ${event.time_end})<br>
-        <strong>Fecha:</strong> ${event.block_day}
+        <strong>Planned:</strong> ${event.planned_minutes} min (${event.time_start} - ${event.time_end})<br>
+        <strong>Date:</strong> ${event.block_day}
       `;
     }
     if (minutesInput) {
@@ -9845,7 +9845,7 @@ const app = {
     
     const event = this.state.db.calendar_events.find(e => e.id === eventId);
     if (!event) {
-      this.showToast("Error: No se encontró la sesión.", "danger");
+      this.showToast("Error: Session not found.", "danger");
       return;
     }
     
@@ -9853,14 +9853,14 @@ const app = {
     event.executed_minutes = realMinutes;
     
     this.saveDatabase();
-    this.showToast("Sesión cerrada y auditada con éxito.");
+    this.showToast("Session successfully closed and audited.");
     
     const expert = this.state.activeUser;
     this.sendSMTPAlert(
       "admin",
       "luana@murex.cl",
-      `Sesión Cerrada y Auditada: ${event.title}`,
-      `Estimada Manager Luana Ortega,\n\nEl experto ${expert.name} ha cerrado y registrado la duración real de la sesión:\n\nSesión: ${event.title}\nJunior: ${this.state.db.users.find(u => u.id === event.junior_id)?.name || 'N/A'}\nTiempo Real Ejecutado: ${realMinutes} minutos.\n\nLa sesión ha sido registrada en el historial de tiempos.`
+      `Session Closed and Audited: ${event.title}`,
+      `Dear Manager Luana Ortega,\n\nExpert ${expert.name} has closed and registered the actual duration of the session:\n\nSession: ${event.title}\nJunior: ${this.state.db.users.find(u => u.id === event.junior_id)?.name || 'N/A'}\nActual Time Executed: ${realMinutes} minutes.\n\nThe session has been recorded in the timesheet history.`
     );
     
     formContainer.classList.add('hidden');
@@ -9875,7 +9875,7 @@ const app = {
     
     this.state.db.calendar_events = initialCalendarEvents;
     this.saveDatabase();
-    this.showToast("Historial de horas de calendario restablecido.");
+    this.showToast("Calendar hours history reset.");
     
     this.renderManagerPendingApprovals();
     this.renderManagerAuditAccordion();
@@ -9965,22 +9965,22 @@ const app = {
 
     const userInDb = this.state.db.users.find(u => u.email.toLowerCase() === email);
     if (!userInDb) {
-      this.showToast("El correo electrónico no existe en el sistema.", "danger");
+      this.showToast("Email address does not exist in the system.", "danger");
       return;
     }
 
     if (currentPass !== userInDb.password) {
-      this.showToast("La contraseña actual es incorrecta.", "danger");
+      this.showToast("Current password is incorrect.", "danger");
       return;
     }
 
     if (newPass !== confirmPass) {
-      this.showToast("Las contraseñas nuevas no coinciden.", "danger");
+      this.showToast("New passwords do not match.", "danger");
       return;
     }
 
     if (newPass.length < 4) {
-      this.showToast("La nueva contraseña debe tener al menos 4 caracteres.", "warning");
+      this.showToast("New password must be at least 4 characters long.", "warning");
       return;
     }
 
@@ -9989,11 +9989,11 @@ const app = {
       this.state.activeUser.password = newPass;
     }
     this.saveDatabase();
-    this.showToast("Contraseña actualizada con éxito.");
+    this.showToast("Password updated successfully.");
     this.closeChangePasswordModal();
   },
 
-  handleNewMemberRoleChange(value) {
+  handleNewMemberRoleeChange(value) {
     const tutorGroup = document.getElementById('new-member-tutor-group');
     if (tutorGroup) {
       tutorGroup.style.display = value === 'JUNIOR' ? 'block' : 'none';
@@ -10021,11 +10021,11 @@ const app = {
     
     const name = document.getElementById('new-member-name').value.trim();
     const email = document.getElementById('new-member-email').value.trim();
-    const selectedRol = document.getElementById('new-member-role').value;
+    const selectedRole = document.getElementById('new-member-role').value;
     
     // Validate uniqueness of email
     if (this.state.db.users.some(u => u.email.toLowerCase() === email.toLowerCase())) {
-      this.showToast("El correo electrónico ya está registrado.", "danger");
+      this.showToast("Email address is already registered.", "danger");
       return;
     }
     
@@ -10038,12 +10038,12 @@ const app = {
       email: email,
       password: "password",
       avatar_initials: initials,
-      rol: selectedRol,
-      role: selectedRol === 'SENIOR' ? 'senior' : (selectedRol === 'TUTOR' ? 'tutor' : 'consultant')
+      rol: selectedRole,
+      role: selectedRole === 'SENIOR' ? 'senior' : (selectedRole === 'TUTOR' ? 'tutor' : 'consultant')
     };
 
     let tutorId = null;
-    if (selectedRol === 'JUNIOR') {
+    if (selectedRole === 'JUNIOR') {
       newMember.current_week = 1;
       newMember.avg_score = 0;
       newMember.status = "on_track";
@@ -10077,10 +10077,10 @@ const app = {
       // Initialize empty certification checklist
       this.state.db.cert_checklists[newId] = { 1: false, 2: false, 3: false, 4: false };
 
-      // Automatically create a "Llegada" calendar event
+      // Automatically create an Arrival calendar event
       const arrivalEvent = {
         id: `ev-llegada-${newId}`,
-        title: `Llegada de ${name}`,
+        title: `Arrival of ${name}`,
         type: "llegada",
         junior_id: newId,
         expert_id: "USR-LUANA",
@@ -10090,7 +10090,7 @@ const app = {
         planned_minutes: 60,
         executed_minutes: null,
         status: "aprobado",
-        block_reason: `Primer día de ingreso del Junior ${name} al equipo de Finance & PL.`,
+        block_reason: `First day of Junior ${name} entry to the Finance & PL team.`,
         week_number: 1,
         organizador_id: "USR-LUANA",
         estado_confirmacion: "FIXED",
@@ -10104,28 +10104,28 @@ const app = {
     this.state.db.users.push(newMember);
     this.saveDatabase();
     
-    this.showToast(`Colaborador ${name} registrado con éxito.`);
+    this.showToast(`Contributor ${name} successfully registered.`);
     this.closeAddMemberModal();
     this.renderTeamTable();
-    this.renderAdminView();
-
-    if (selectedRol === 'JUNIOR' && tutorId) {
+    this.renderAdminFriw();
+ 
+    if (selectedRole === 'JUNIOR' && tutorId) {
       const tutor = this.state.db.users.find(u => u.id === tutorId);
       if (tutor) {
         // Send to Junior
         this.sendSMTPAlert(
           "junior",
           email,
-          "Bienvenido al Plan de Habilitación Activa (Murex Finance & PL)",
-          `Hola ${name},\n\nSe ha creado tu perfil de onboarding en MXBoard. Tu plan consta de 12 semanas para habilitarte formalmente.\n\nTu tutor asignado es ${tutor.name}. Tu contraseña inicial es 'password'.`
+          "Welcome to the Active Qualification Plan (Murex Finance & PL)",
+          `Hello ${name},\n\nYour onboarding profile has been created in MXBoard. Your plan consists of 12 weeks to get formally qualified.\n\nYour assigned tutor is ${tutor.name}. Your initial password is 'password'.`
         );
         
         // Send to Tutor
         this.sendSMTPAlert(
           "tutor",
           tutor.email,
-          `Nuevo Junior Asignado: ${name}`,
-          `Estimado(a) ${tutor.name},\n\nSe ha registrado a un nuevo consultor Junior ${name} en el sistema, y has sido asignado como su Tutor.\n\nPor favor, ponte en contacto con él para agendar tu primera sesión de tutoría.`
+          `New Junior Assigned: ${name}`,
+          `Dear ${tutor.name},\n\nA new Junior Consultant ${name} has been registered in the system, and you have been assigned as their Tutor.\n\nPlease get in touch with them to schedule your first tutoring session.`
         );
       }
     }
@@ -10146,36 +10146,36 @@ const app = {
         const today = new Date();
         const todayStr = `${today.getFullYear()}-${(today.getMonth()+1).toString().padStart(2, '0')}-${today.getDate().toString().padStart(2, '0')}`;
         const cronWeek = this.getWeekForJunior(user.id, todayStr);
-        const entryDateFormatted = user.entry_date ? user.entry_date : 'No registrada';
+        const entryDateFormatted = user.entry_date ? user.entry_date : 'Not registered';
         
         estadoMalla = `
           <div style="display: flex; flex-direction: column; gap: 4px; align-items: flex-start;">
             <span class="text-xs bg-pink-100 text-pink-700 px-2.5 py-1 rounded-full font-medium">
-              Semana ${user.semana_actual || user.current_week || 1} (Progreso)
+              Week ${user.semana_actual || user.current_week || 1} (Progress)
             </span>
             <span class="text-xs text-gray-500" style="margin-left: 4px; font-weight: 500;">
-              Semana ${cronWeek} (Cronológica)
+              Week ${cronWeek} (Chronological)
             </span>
             <span class="text-xs text-gray-400" style="margin-left: 4px; font-style: italic;">
-              Ingreso: ${entryDateFormatted}
+              Entry: ${entryDateFormatted}
             </span>
           </div>
         `;
       } else {
-        estadoMalla = `<span class="text-xs bg-green-100 text-green-700 px-2.5 py-1 rounded-full font-medium">Habilitado (Autónomo)</span>`;
+        estadoMalla = `<span class="text-xs bg-green-100 text-green-700 px-2.5 py-1 rounded-full font-medium">Enabled (Autonomous)</span>`;
       }
 
       // Use user.rol in uppercase if set, otherwise fallback from user.role mapping
-      const currentRol = user.rol || (user.role === 'admin' ? 'MANAGER' : user.role === 'tutor' ? 'TUTOR' : user.role === 'senior' ? 'SENIOR' : 'JUNIOR');
+      const currentRole = user.rol || (user.role === 'admin' ? 'MANAGER' : user.role === 'tutor' ? 'TUTOR' : user.role === 'senior' ? 'SENIOR' : 'JUNIOR');
 
       // Tutor Selection
       let tutorCell = '';
-      if (currentRol === 'JUNIOR') {
+      if (currentRole === 'JUNIOR') {
         const currentTutorId = this.state.db.tutor_junior_mapping[user.id] || '';
         const tutorsList = this.state.db.users.filter(u => u.role === 'tutor' || u.role === 'senior');
         tutorCell = `
           <select id="tutor-select-${user.id}" class="bg-gray-50 border border-gray-300 rounded-md p-1.5 text-xs focus:ring-pink-500 team-role-select" style="max-width: 150px;">
-            <option value="" ${currentTutorId === '' ? 'selected' : ''}>Sin asignar</option>
+            <option value="" ${currentTutorId === '' ? 'selected' : ''}>Unassigned</option>
             ${tutorsList.map(t => `<option value="${t.id}" ${t.id === currentTutorId ? 'selected' : ''}>${t.nombre || t.name}</option>`).join('')}
           </select>
         `;
@@ -10188,16 +10188,16 @@ const app = {
         <td class="p-4 text-gray-600">${user.email}</td>
         <td class="p-4">
           <select id="role-select-${user.id}" class="bg-gray-50 border border-gray-300 rounded-md p-1.5 text-xs focus:ring-pink-500 team-role-select">
-            <option value="JUNIOR" ${currentRol === 'JUNIOR' ? 'selected' : ''}>Junior (En Onboarding)</option>
-            <option value="TUTOR" ${currentRol === 'TUTOR' ? 'selected' : ''}>Tutor (Junior Habilitado)</option>
-            <option value="SENIOR" ${currentRol === 'SENIOR' ? 'selected' : ''}>Senior Consultant</option>
-            <option value="MANAGER" ${currentRol === 'MANAGER' ? 'selected' : ''}>Manager / Admin</option>
+            <option value="JUNIOR" ${currentRole === 'JUNIOR' ? 'selected' : ''}>Junior (En Onboarding)</option>
+            <option value="TUTOR" ${currentRole === 'TUTOR' ? 'selected' : ''}>Tutor (Junior Habilitado)</option>
+            <option value="SENIOR" ${currentRole === 'SENIOR' ? 'selected' : ''}>Senior Consultant</option>
+            <option value="MANAGER" ${currentRole === 'MANAGER' ? 'selected' : ''}>Manager / Admin</option>
           </select>
         </td>
         <td class="p-4">${tutorCell}</td>
         <td class="p-4">${estadoMalla}</td>
         <td class="p-4 text-right">
-          <button onclick="app.handleUpdateMemberRole('${user.id}')" class="btn btn-xs" style="background-color: rgba(219, 39, 119, 0.08); color: #db2777; border: 1px solid rgba(219, 39, 119, 0.18); font-weight: 600; display: inline-flex; align-items: center; gap: 4px; transition: all 0.2s ease;" onmouseover="this.style.backgroundColor='rgba(219, 39, 119, 0.15)'" onmouseout="this.style.backgroundColor='rgba(219, 39, 119, 0.08)'">
+          <button onclick="app.handleUpdateMemberRolee('${user.id}')" class="btn btn-xs" style="background-color: rgba(219, 39, 119, 0.08); color: #db2777; border: 1px solid rgba(219, 39, 119, 0.18); font-weight: 600; display: inline-flex; align-items: center; gap: 4px; transition: all 0.2s ease;" onmouseover="this.style.backgroundColor='rgba(219, 39, 119, 0.15)'" onmouseout="this.style.backgroundColor='rgba(219, 39, 119, 0.08)'">
             <i class="ti ti-refresh" style="font-size: 0.85rem;"></i> Actualizar
           </button>
         </td>
@@ -10206,25 +10206,25 @@ const app = {
     });
   },
 
-  handleUpdateMemberRole(userId) {
+  handleUpdateMemberRolee(userId) {
     if (!this.state.activeUser || this.state.activeUser.role !== 'admin') {
       this.showForbiddenError("Error 403: No tienes permisos para modificar roles.");
       return;
     }
     const selectElement = document.getElementById(`role-select-${userId}`);
     if (!selectElement) return;
-    const nuevoRol = selectElement.value;
+    const nuevoRole = selectElement.value;
 
     const user = this.state.db.users.find(u => u.id === userId);
     if (user) {
-      const oldRol = user.rol || (user.role === 'admin' ? 'MANAGER' : user.role === 'tutor' ? 'TUTOR' : user.role === 'senior' ? 'SENIOR' : 'JUNIOR');
-      user.rol = nuevoRol;
+      const oldRole = user.rol || (user.role === 'admin' ? 'MANAGER' : user.role === 'tutor' ? 'TUTOR' : user.role === 'senior' ? 'SENIOR' : 'JUNIOR');
+      user.rol = nuevoRole;
       
       // Cascade update to legacy .role property
-      if (nuevoRol === 'MANAGER') user.role = 'admin';
-      else if (nuevoRol === 'SENIOR') user.role = 'senior';
-      else if (nuevoRol === 'TUTOR') user.role = 'tutor';
-      else if (nuevoRol === 'JUNIOR') user.role = 'consultant';
+      if (nuevoRole === 'MANAGER') user.role = 'admin';
+      else if (nuevoRole === 'SENIOR') user.role = 'senior';
+      else if (nuevoRole === 'TUTOR') user.role = 'tutor';
+      else if (nuevoRole === 'JUNIOR') user.role = 'consultant';
 
       // Update tutor mapping if selector exists
       const tutorSelect = document.getElementById(`tutor-select-${userId}`);
@@ -10238,7 +10238,7 @@ const app = {
       }
 
       // Business Rule: Initialize progress mapping if user is updated to JUNIOR and didn't have it
-      if (nuevoRol === 'JUNIOR' && oldRol !== 'JUNIOR') {
+      if (nuevoRole === 'JUNIOR' && oldRole !== 'JUNIOR') {
         user.current_week = 1;
         user.semana_actual = 1;
         user.avg_score = 0;
@@ -10268,7 +10268,7 @@ const app = {
         if (!this.state.db.cert_checklists[userId]) {
           this.state.db.cert_checklists[userId] = { 1: false, 2: false, 3: false, 4: false };
         }
-      } else if (nuevoRol !== 'JUNIOR' && oldRol === 'JUNIOR') {
+      } else if (nuevoRole !== 'JUNIOR' && oldRole === 'JUNIOR') {
         // Business Rule: Transition from Junior to another role (e.g. Tutor)
         // Remove or mark onboarding progress variables as completed/clean
         delete user.semana_actual;
@@ -10279,9 +10279,9 @@ const app = {
       }
 
       this.saveDatabase();
-      this.showToast(`Datos de ${user.nombre || user.name} actualizados con éxito.`);
+      this.showToast(`Data for ${user.nombre || user.name} updated successfully.`);
       this.renderTeamTable();
-      this.renderAdminView();
+      this.renderAdminFriw();
     }
   },
 
@@ -10295,7 +10295,7 @@ const app = {
     );
 
     if (!attempt) {
-      this.renderPantallaBloqueo("⛔ INSTANCE LOCKED: INTENTO AGOTADO", "Has completado el límite máximo de 1 intento permitido para esta semana de rampa.");
+      this.renderPantallaBloqueo("⛔ INSTANCE LOCKED: ATTEMPT EXHAUSTED", "You have completed the maximum limit of 1 attempt allowed for this onboarding week.");
       return;
     }
 
@@ -10313,8 +10313,8 @@ const app = {
     let html = `
       <div class="animate-fadeIn" style="display: flex; flex-direction: column; gap: 16px; font-family: var(--font-primary);">
         <div style="display: flex; justify-content: space-between; font-size: 0.7rem; color: var(--neutral-muted); font-weight: 700; border-bottom: 1px solid var(--neutral-border); padding-bottom: 8px; width: 100%;">
-          <span>VISTA DE REVISIÓN: EVALUACIÓN SEMANA ${semanaNumero}</span>
-          <span style="color: var(--primary); font-weight: bold;">NOTA: ${attempt.puntaje_obtenido}%</span>
+          <span>REVIEW VIEW: WEEK ${semanaNumero} EVALUATION</span>
+          <span style="color: var(--primary); font-weight: bold;">SCORE: ${attempt.puntaje_obtenido}%</span>
         </div>
         
         <div class="eval-detail-viewer-content" style="max-height: 450px;">
@@ -10407,12 +10407,12 @@ const app = {
 
       card.innerHTML = `
         <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 6px;">
-          <p style="font-weight: 700; color: var(--neutral-dark); font-size: 0.8rem; margin: 0;">${usuario ? usuario.name : 'Consultor'}</p>
-          <span style="font-size: 0.65rem; font-weight: 700; padding: 2px 6px; border-radius: 4px; background: var(--neutral-light); border: 1px solid var(--neutral-border); color: var(--neutral-muted);">Semana ${intento.semana_malla}</span>
+          <p style="font-weight: 700; color: var(--neutral-dark); font-size: 0.8rem; margin: 0;">${usuario ? usuario.name : 'Consultant'}</p>
+          <span style="font-size: 0.65rem; font-weight: 700; padding: 2px 6px; border-radius: 4px; background: var(--neutral-light); border: 1px solid var(--neutral-border); color: var(--neutral-muted);">Week ${intento.semana_malla}</span>
         </div>
         <div style="display: flex; justify-content: space-between; align-items: center; font-size: 0.7rem; color: var(--neutral-muted);">
-          <span>Rendido: ${intento.fecha_rendicion}</span>
-          <span style="font-weight: 700; color: ${scoreColor}">Nota: ${intento.puntaje_obtenido}%</span>
+          <span>Taken: ${intento.fecha_rendicion}</span>
+          <span style="font-weight: 700; color: ${scoreColor}">Score: ${intento.puntaje_obtenido}%</span>
         </div>
       `;
       listContainer.appendChild(card);
@@ -10429,7 +10429,7 @@ const app = {
 
     const intento = (this.state.db.historial_evaluaciones || []).find(h => h.evaluacion_id === evaluacionId);
     if (!intento) {
-      viewer.innerHTML = '<div class="eval-detail-viewer-empty">Error: Intento no encontrado.</div>';
+      viewer.innerHTML = '<div class="eval-detail-viewer-empty">Error: Attempt not found.</div>';
       viewer.className = 'eval-detail-viewer-empty';
       return;
     }
@@ -10474,13 +10474,13 @@ const app = {
     filterBar.style.borderBottom = '1px solid var(--neutral-border)';
     filterBar.innerHTML = `
       <button class="btn btn-outline active btn-xs eval-filter-btn" data-filter="all" onclick="app.filterAuditQuestions(this, 'all')" style="cursor: pointer;">
-        Todas (${quizPool.length})
+        All (${quizPool.length})
       </button>
       <button class="btn btn-outline btn-xs eval-filter-btn" data-filter="correct" onclick="app.filterAuditQuestions(this, 'correct')" style="cursor: pointer;">
-        <span style="color: var(--success); margin-right: 4px;">●</span> Buenas (${correctCount})
+        <span style="color: var(--success); margin-right: 4px;">●</span> Correct (${correctCount})
       </button>
       <button class="btn btn-outline btn-xs eval-filter-btn" data-filter="incorrect" onclick="app.filterAuditQuestions(this, 'incorrect')" style="cursor: pointer;">
-        <span style="color: var(--danger); margin-right: 4px;">●</span> Malas (${incorrectCount})
+        <span style="color: var(--danger); margin-right: 4px;">●</span> Incorrect (${incorrectCount})
       </button>
     `;
     viewer.appendChild(filterBar);
@@ -10505,14 +10505,14 @@ const app = {
         if (oIdx === markedIdx) {
           if (markedIdx === correctIdx) {
             rowClass = 'correct-selected';
-            badgeHtml = `<span class="badge-green eval-badge-status"><i class="ti ti-circle-check"></i> Marcó Correcta</span>`;
+            badgeHtml = `<span class="badge-green eval-badge-status"><i class="ti ti-circle-check"></i> Marked Correct</span>`;
           } else {
             rowClass = 'incorrect-selected';
-            badgeHtml = `<span class="badge-red eval-badge-status"><i class="ti ti-circle-x"></i> Marcó Incorrecta</span>`;
+            badgeHtml = `<span class="badge-red eval-badge-status"><i class="ti ti-circle-x"></i> Marked Incorrect</span>`;
           }
         } else if (oIdx === correctIdx) {
           rowClass = 'correct-option';
-          badgeHtml = `<span class="badge-green eval-badge-status" style="opacity: 0.8;">(Respuesta Correcta)</span>`;
+          badgeHtml = `<span class="badge-green eval-badge-status" style="opacity: 0.8;">(Correct Answer)</span>`;
         }
 
         optionsHtml += `
@@ -10525,7 +10525,7 @@ const app = {
 
       viewerContent.innerHTML += `
         <div class="eval-audit-question-card ${isCorrect ? 'is-correct-card' : 'is-incorrect-card'}" style="display: block; margin-bottom: 15px;">
-          <p class="eval-audit-question-title">Pregunta ${idx + 1}: ${q.question}</p>
+          <p class="eval-audit-question-title">Question ${idx + 1}: ${q.question}</p>
           <div class="eval-audit-options-list">
             ${optionsHtml}
           </div>
@@ -10592,10 +10592,10 @@ const app = {
     // 1. Calculate hours by session type
     const types = ['tutoring', 'masterclass', 'extra_support', 'coaching'];
     const typeLabels = {
-      'tutoring': 'Tutoría',
+      'tutoring': 'Tutoring',
       'masterclass': 'Masterclass',
-      'extra_support': 'Soporte',
-      'support': 'Soporte',
+      'extra_support': 'Support',
+      'support': 'Support',
       'coaching': 'Coaching'
     };
     const hoursByType = { tutoring: 0, masterclass: 0, extra_support: 0, coaching: 0 };
@@ -10653,7 +10653,7 @@ const app = {
       expertListContainer.innerHTML = '';
       const sortedExperts = Object.entries(hoursByExpert).sort((a, b) => b[1] - a[1]);
       if (sortedExperts.length === 0) {
-        expertListContainer.innerHTML = '<div style="color: var(--neutral-muted); font-size: 0.75rem; text-align: center; padding: 15px;">Sin horas registradas con expertos.</div>';
+        expertListContainer.innerHTML = '<div style="color: var(--neutral-muted); font-size: 0.75rem; text-align: center; padding: 15px;">No hours registered with experts.</div>';
       } else {
         const maxExpVal = Math.max(...sortedExperts.map(e => e[1]), 1);
         sortedExperts.forEach(([name, hrs]) => {
@@ -10732,7 +10732,7 @@ const app = {
         : juniorEvents.filter(e => e.expert_id === selectedExpertId || (e.expertos_asistentes_ids && e.expertos_asistentes_ids.includes(selectedExpertId)));
 
       if (filteredEvents.length === 0) {
-        tbody.innerHTML = `<tr><td colspan="4" style="text-align:center; padding:15px; color:var(--neutral-muted);">No hay registros para el experto seleccionado.</td></tr>`;
+        tbody.innerHTML = `<tr><td colspan="4" style="text-align:center; padding:15px; color:var(--neutral-muted);">No records found for the selected expert.</td></tr>`;
       } else {
         const sortedEvents = [...filteredEvents].sort((a, b) => new Date(b.block_day) - new Date(a.block_day));
         sortedEvents.forEach(e => {
@@ -10743,10 +10743,10 @@ const app = {
             const expertObj = this.state.db.users.find(u => u.id === e.expert_id);
             expertNameStr = expertObj ? expertObj.name : 'N/A';
           }
-          const formattedDate = new Date(e.block_day + "T00:00:00").toLocaleDateString('es-CL', { day: '2-digit', month: '2-digit' });
+          const formattedDate = new Date(e.block_day + "T00:00:00").toLocaleDateString('en-US', { day: '2-digit', month: '2-digit' });
           
           let typeBadgeStyle = 'background-color:rgba(22, 163, 74, 0.1); color:#16a34a; font-weight:700;'; // tutoring
-          let shortType = 'Tutoría';
+          let shortType = 'Tutoring';
           const typeLower = (e.type || '').toLowerCase();
           
           if (typeLower === 'masterclass') {
@@ -10754,7 +10754,7 @@ const app = {
             shortType = 'Masterclass';
           } else if (typeLower === 'extra_support' || typeLower === 'support') {
             typeBadgeStyle = 'background-color:rgba(239, 159, 39, 0.1); color:#b26500; font-weight:700;';
-            shortType = 'Soporte';
+            shortType = 'Support';
           } else if (typeLower === 'coaching') {
             typeBadgeStyle = 'background-color:rgba(139, 92, 246, 0.1); color:#7c3aed; font-weight:700;';
             shortType = 'Coaching';
@@ -10773,8 +10773,8 @@ const app = {
               <div style="font-size:0.65rem; color:var(--neutral-muted); font-weight:500; white-space:nowrap; margin-top:2px;">${e.time_start || '00:00'} - ${e.time_end || '00:00'}</div>
             </td>
             <td>
-              <div style="font-weight:600;">${e.title || 'Sesión'}</div>
-              <span class="badge" style="font-size:0.65rem; padding:1px 4px; ${typeBadgeStyle}">Semana ${e.week_number} - ${shortType}</span>
+              <div style="font-weight:600;">${e.title || 'Session'}</div>
+              <span class="badge" style="font-size:0.65rem; padding:1px 4px; ${typeBadgeStyle}">Week ${e.week_number} - ${shortType}</span>
             </td>
             <td>${expertNameStr}</td>
             <td><strong>${e.executed_minutes}m</strong></td>
@@ -10791,7 +10791,7 @@ const app = {
       expertBarsContainer.innerHTML = '';
       const sortedForChart = Object.entries(hoursByExpert).sort((a, b) => b[1] - a[1]);
       if (sortedForChart.length === 0) {
-        expertBarsContainer.innerHTML = '<div style="color:var(--neutral-muted);font-size:0.75rem;text-align:center;padding:20px;">Sin datos</div>';
+        expertBarsContainer.innerHTML = '<div style="color:var(--neutral-muted);font-size:0.75rem;text-align:center;padding:20px;">No data</div>';
       } else {
         const maxVal = Math.max(...sortedForChart.map(e => e[1]), 1);
         sortedForChart.forEach(([name, hrs]) => {
@@ -10811,7 +10811,7 @@ const app = {
       }
     }
 
-    // Render CSS bar chart: Desviación Planificado vs Real
+    // Render CSS bar chart: Desviación Planned vs Real
     const desvBarsContainer = document.getElementById('inspect-chart-deviation-bars');
     if (desvBarsContainer) {
       desvBarsContainer.innerHTML = '';
@@ -10825,10 +10825,10 @@ const app = {
           realHours[t]    += (e.executed_minutes || 0) / 60;
         }
       });
-      const devLabels = [['Tutoría','tutoring'],['Masterclass','masterclass'],['Soporte','extra_support'],['Coaching','coaching']];
+      const devLabels = [['Tutoring','tutoring'],['Masterclass','masterclass'],['Support','extra_support'],['Coaching','coaching']];
       const maxDev = Math.max(...devLabels.map(([,k]) => plannedHours[k]), 1);
       desvBarsContainer.innerHTML += `<div style="display:flex;gap:12px;font-size:0.68rem;margin-bottom:8px;">
-        <span style="display:flex;align-items:center;gap:4px;"><span style="display:inline-block;width:10px;height:10px;border-radius:2px;background:#64748b;"></span>Planificado</span>
+        <span style="display:flex;align-items:center;gap:4px;"><span style="display:inline-block;width:10px;height:10px;border-radius:2px;background:#64748b;"></span>Planned</span>
         <span style="display:flex;align-items:center;gap:4px;"><span style="display:inline-block;width:10px;height:10px;border-radius:2px;background:#A6192E;"></span>Real</span>
       </div>`;
       devLabels.forEach(([label, key]) => {
@@ -10895,14 +10895,14 @@ const app = {
     if (Object.keys(expertMap).length === 0) {
       rowsHtml = `
         <tr>
-          <td colspan="4" style="text-align:center; padding:15px; color:var(--neutral-muted);">Sin registros de interacciones.</td>
+          <td colspan="4" style="text-align:center; padding:15px; color:var(--neutral-muted);">No interaction records.</td>
         </tr>
       `;
     } else {
       Object.keys(expertMap).forEach(expertId => {
         const expertEvents = expertMap[expertId];
         const expertObj = this.state.db.users.find(u => u.id === expertId);
-        const expertName = expertObj ? expertObj.name : 'Experto N/A';
+        const expertName = expertObj ? expertObj.name : 'Expert N/A';
         
         let roleLabel = 'Tutor';
         if (expertObj) {
@@ -10910,28 +10910,28 @@ const app = {
           else if (expertObj.role === 'senior') roleLabel = 'Senior';
           else if (expertObj.role === 'tutor') {
             const mappingTutorId = this.state.db.tutor_junior_mapping[junior.id];
-            roleLabel = expertObj.id === mappingTutorId ? 'Tutor a Cargo' : 'Tutor';
+            roleLabel = expertObj.id === mappingTutorId ? 'Tutor in Charge' : 'Tutor';
           }
         }
         
         // Group by type to get friendly interaction string
         const typeCounts = {};
         expertEvents.forEach(e => {
-          let friendlyType = 'Soporte';
+          let friendlyType = 'Support';
           const typeLower = (e.type || '').toLowerCase();
-          if (typeLower === 'tutoring') friendlyType = 'Tutoría';
+          if (typeLower === 'tutoring') friendlyType = 'Tutoring';
           else if (typeLower === 'masterclass') friendlyType = 'Masterclass';
           else if (typeLower === 'coaching') friendlyType = 'Coaching';
-          else if (typeLower === 'extra_support' || typeLower === 'support') friendlyType = 'Soporte Extra';
+          else if (typeLower === 'extra_support' || typeLower === 'support') friendlyType = 'Extra Support';
           typeCounts[friendlyType] = (typeCounts[friendlyType] || 0) + 1;
         });
         
         const typeList = [];
-        if (typeCounts['Tutoría']) typeList.push(`Tutorías (${typeCounts['Tutoría']})`);
+        if (typeCounts['Tutoring']) typeList.push(`Tutoring (${typeCounts['Tutoring']})`);
         if (typeCounts['Masterclass']) typeList.push(`Masterclass (${typeCounts['Masterclass']})`);
         if (typeCounts['Coaching']) typeList.push(`Coaching (${typeCounts['Coaching']})`);
-        if (typeCounts['Soporte Extra']) typeList.push(`Soporte Extra (${typeCounts['Soporte Extra']})`);
-        const interDetails = typeList.join(' + ') || 'Ninguna';
+        if (typeCounts['Extra Support']) typeList.push(`Extra Support (${typeCounts['Extra Support']})`);
+        const interDetails = typeList.join(' + ') || 'None';
         
         const sessionsCount = expertEvents.length;
         const expertTotalHours = expertEvents.reduce((sum, e) => {
@@ -10959,15 +10959,15 @@ const app = {
     card.innerHTML = `
       <div class="card-header" style="padding: 10px 15px; display: flex; justify-content: space-between; align-items: center;">
         <h3 class="card-title" style="font-size: 0.8rem; margin: 0;">
-          <i class="ti ti-shield-check" style="color: var(--primary);"></i> Bitácora de Auditoría de Interacciones
+          <i class="ti ti-shield-check" style="color: var(--primary);"></i> Interaction Audit Log
         </h3>
       </div>
       <div style="padding: 15px; font-size: 0.75rem;">
         <table class="audit-table" style="width: 100%;">
           <thead>
             <tr>
-              <th>Consultor Experto</th>
-              <th>Tipo de Interacción</th>
+              <th>Expert Consultant</th>
+              <th>Interaction Type</th>
               <th style="text-align: center;">Sesiones</th>
               <th style="text-align: right;">Tiempo Real</th>
             </tr>

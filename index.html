@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="en">
 
 <head>
   <meta charset="UTF-8">
@@ -39,7 +39,7 @@
           <span class="logo-accent">MX</span>Board
         </div>
         <span class="logo-subtitle">Onboarding Tracker</span>
-        <div class="db-status-badge disconnected" id="db-status-badge" title="Verificando conexión...">
+        <div class="db-status-badge disconnected" id="db-status-badge" title="Verifying connection...">
           <span class="status-dot"></span>
           <i class="ti ti-cloud-off"></i> Local Fallback
         </div>
@@ -51,12 +51,12 @@
           <div class="user-avatar" id="header-user-avatar">BM</div>
           <div class="user-details">
             <span class="user-name" id="header-user-name">Benjamín Merino</span>
-            <span class="user-role-label" id="header-user-role">Consultor</span>
+            <span class="user-role-label" id="header-user-role">Consultant</span>
           </div>
         </div>
         <!-- Logout Button -->
         <button id="btn-logout" class="btn-logout" style="display: none;" onclick="app.logout()">
-          <i class="ti ti-logout"></i> Cerrar Sesión
+          <i class="ti ti-logout"></i> Log Out
         </button>
       </div>
     </header>
@@ -74,13 +74,13 @@
               <img src="Logos/Murex_logo.png" alt="Murex Logo"
                 style="height: 48px; margin-bottom: 12px; display: inline-block;">
               <div class="login-logo" style="margin-top: 5px;"><span class="logo-accent">MX</span>Board</div>
-              <h2>Bienvenido al Tracker</h2>
-              <p>Monitoreo del onboarding técnico Finance & PL de Murex Chile</p>
+              <h2>Welcome to the Tracker</h2>
+              <p>Monitoring of Murex Chile's Finance & PL technical onboarding</p>
             </div>
 
             <form id="login-form" onsubmit="app.handleLogin(event)">
               <div class="form-group">
-                <label for="login-email">Correo Electrónico</label>
+                <label for="login-email">Email Address</label>
                 <div class="input-wrapper">
                   <i class="ti ti-mail"></i>
                   <input type="email" id="login-email" required placeholder="correo@murex.cl">
@@ -88,7 +88,7 @@
               </div>
 
               <div class="form-group">
-                <label for="login-password">Contraseña</label>
+                <label for="login-password">Password</label>
                 <div class="input-wrapper">
                   <i class="ti ti-lock"></i>
                   <input type="password" id="login-password" required placeholder="••••••••">
@@ -97,17 +97,17 @@
 
               <div id="login-error-msg" class="error-banner" style="display: none;">
                 <i class="ti ti-alert-triangle"></i>
-                <span id="login-error-text">Credenciales inválidas</span>
+                <span id="login-error-text">Invalid credentials</span>
               </div>
 
               <button type="submit" class="btn btn-primary btn-block">
-                Iniciar Sesión <i class="ti ti-arrow-right"></i>
+                Log In <i class="ti ti-arrow-right"></i>
               </button>
             </form>
 
             <div style="margin-top: 15px; text-align: center; border-top: 1px dashed var(--neutral-border); padding-top: 12px;">
               <a href="#" onclick="app.openChangePasswordModal()" style="font-size: 0.85rem; color: var(--primary); font-weight: 500; text-decoration: none; display: inline-flex; align-items: center; gap: 6px;">
-                <i class="ti ti-key"></i> Cambiar Contraseña
+                <i class="ti ti-key"></i> Change Password
               </a>
             </div>
           </div>
@@ -121,15 +121,15 @@
           <!-- Consultant Hero Header -->
           <div class="hero-card glass-card animate-fade-in">
             <div class="hero-left">
-              <span class="phase-pill" id="consultant-phase-badge">Fase: Inducción</span>
-              <h1 id="consultant-welcome-title">Hola, Javier Pérez</h1>
-              <p>Tu viaje técnico en Murex Chile. Completa las tareas y evaluaciones semanales para habilitarte.</p>
+              <span class="phase-pill" id="consultant-phase-badge">Phase: Induction</span>
+              <h1 id="consultant-welcome-title">Hello, Javier Pérez</h1>
+              <p>Your technical journey at Murex Chile. Complete the weekly tasks and evaluations to get qualified.</p>
 
               <!-- Progress Container -->
               <div class="progress-container">
                 <div class="progress-label">
-                  <span>Progreso del Onboarding</span>
-                  <span id="consultant-progress-text">6 de 12 semanas completadas (50%)</span>
+                  <span>Onboarding Progress</span>
+                  <span id="consultant-progress-text">6 of 12 weeks completed (50%)</span>
                 </div>
                 <div class="progress-track">
                   <div class="progress-fill" id="consultant-progress-fill" style="width: 50%;"></div>
@@ -147,11 +147,11 @@
                 </svg>
                 <div class="score-ring-content">
                   <span class="score-val" id="consultant-avg-score">78%</span>
-                  <span class="score-lbl">Score Promedio</span>
+                  <span class="score-lbl">Average Score</span>
                 </div>
               </div>
               <div class="status-indicator-badge" id="consultant-status-badge">
-                <i class="ti ti-chart-arrows"></i> Al día
+                <i class="ti ti-chart-arrows"></i> On track
               </div>
             </div>
           </div>
@@ -160,16 +160,16 @@
           <div class="junior-tabs-container animate-fade-in">
             <button id="junior-tab-timeline" class="junior-tab-btn active"
               onclick="app.switchJuniorViewTab('timeline')">
-              <i class="ti ti-calendar-event"></i> Mi Cronograma
+              <i class="ti ti-calendar-event"></i> My Timeline
             </button>
             <button id="junior-tab-calendar" class="junior-tab-btn" onclick="app.switchJuniorViewTab('calendar')">
-              <i class="ti ti-calendar"></i> Calendario Hub
+              <i class="ti ti-calendar"></i> Calendar Hub
             </button>
             <button id="junior-tab-trouble" class="junior-tab-btn" onclick="app.switchJuniorViewTab('trouble')">
-              <i class="ti ti-book"></i> Centro de Documentación
+              <i class="ti ti-book"></i> Documentation Center
             </button>
             <button id="junior-tab-mentor" class="junior-tab-btn" onclick="app.switchJuniorViewTab('mentor')">
-              <i class="ti ti-messages"></i> Registro de Mentoría
+              <i class="ti ti-messages"></i> Mentorship Log
             </button>
             <button id="junior-tab-timesheet" class="junior-tab-btn" onclick="app.switchJuniorViewTab('timesheet')">
               <i class="ti ti-notes"></i> Timesheet
@@ -181,11 +181,11 @@
             <div class="session-tabs-container animate-fade-in" style="margin-bottom: 20px;">
               <button class="session-tab-btn active" id="junior-timeline-tab-roadmap"
                 onclick="app.switchJuniorTimelineTab('roadmap')">
-                <i class="ti ti-school"></i> Vista 12 Semanas (Hoja de Ruta)
+                <i class="ti ti-school"></i> 12-Week View (Roadmap)
               </button>
               <button class="session-tab-btn" id="junior-timeline-tab-workspace"
                 onclick="app.switchJuniorTimelineTab('workspace')">
-                <i class="ti ti-layout-dashboard"></i> Semana Actual (Workspace)
+                <i class="ti ti-layout-dashboard"></i> Current Week (Workspace)
               </button>
             </div>
 
@@ -197,8 +197,8 @@
                 <div class="dashboard-main-col" style="grid-column: span 2;">
                   <div id="global-roadmap">
                     <div class="section-header">
-                      <h2><i class="ti ti-calendar-event"></i> Hoja de Ruta de Aprendizaje (12 Semanas)</h2>
-                      <p>Haz clic en cualquier semana desbloqueada para abrir su Workspace de trabajo correspondiente.
+                      <h2><i class="ti ti-calendar-event"></i> Learning Roadmap (12 Weeks)</h2>
+                      <p>Click on any unlocked week to open its corresponding Workspace.
                       </p>
                     </div>
                     <div class="weeks-grid-container" id="weeks-grid">
@@ -212,7 +212,7 @@
                   <!-- Personal Score Trend Chart -->
                   <div class="card glass-card">
                     <div class="card-header">
-                      <h3 class="card-title"><i class="ti ti-trending-up"></i> Historial de Desempeño</h3>
+                      <h3 class="card-title"><i class="ti ti-trending-up"></i> Performance History</h3>
                     </div>
                     <div class="chart-container">
                       <canvas id="consultant-chart"></canvas>
@@ -223,10 +223,9 @@
                   <div class="card glass-card info-card mt-20">
                     <div class="info-card-icon"><i class="ti ti-calendar-time"></i></div>
                     <div class="info-card-content">
-                      <h4>Siguiente Sesión de Tutoría</h4>
-                      <p id="tutor-session-countdown">Cargando...</p>
-                      <span class="info-card-sub">Sesión semanal obligatoria de resolución de dudas con tu tutor
-                        asignado.</span>
+                      <h4>Next Tutoring Session</h4>
+                      <p id="tutor-session-countdown">Loading...</p>
+                      <span class="info-card-sub">Mandatory weekly Q&A session with your assigned tutor.</span>
                     </div>
                   </div>
                 </div>
@@ -244,20 +243,20 @@
                   style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px;">
                   <div>
                     <span class="badge" id="panel-week-number"
-                      style="background-color: rgba(219, 39, 119, 0.1); color: var(--primary); font-weight: 600; padding: 4px 10px; border-radius: 4px;">Semana
+                      style="background-color: rgba(219, 39, 119, 0.1); color: var(--primary); font-weight: 600; padding: 4px 10px; border-radius: 4px;">Week
                       1</span>
-                    <h2 id="panel-week-title" style="margin-top: 8px; margin-bottom: 4px;">Tema de la semana</h2>
+                    <h2 id="panel-week-title" style="margin-top: 8px; margin-bottom: 4px;">Topic of the week</h2>
                     <p id="panel-week-desc" style="font-size: 0.85rem; color: var(--neutral-muted); margin-bottom: 0;">
-                      Descripción...</p>
+                      Description...</p>
                   </div>
                   <div style="display: flex; align-items: center; gap: 15px;">
-                    <span class="week-status-badge" id="panel-week-status">En Curso</span>
+                    <span class="week-status-badge" id="panel-week-status">In Progress</span>
 
                     <!-- Controles de Navegación del Workspace -->
                     <div
                       style="display: flex; align-items: center; gap: 4px; background-color: var(--neutral-light); padding: 4px; border-radius: var(--radius-sm); border: 1px solid var(--neutral-border);">
                       <button id="btn-workspace-prev" onclick="app.navigateWorkspaceWeek(-1)" class="workspace-nav-btn"
-                        title="Semana Anterior">
+                        title="Previous Week">
                         <svg style="width: 16px; height: 16px;" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M15 19l-7-7 7-7" />
                         </svg>
@@ -267,7 +266,7 @@
                         style="height: 14px; width: 1px; background-color: var(--neutral-border); margin: 0 4px;"></span>
 
                       <button id="btn-workspace-next" onclick="app.navigateWorkspaceWeek(1)" class="workspace-nav-btn"
-                        title="Semana Siguiente (Preview Máximo)">
+                        title="Next Week (Max Preview)">
                         <svg style="width: 16px; height: 16px;" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 5l7 7-7 7" />
                         </svg>
@@ -288,7 +287,7 @@
                     <div class="section-header"
                       style="border-bottom: 1px solid var(--neutral-border); padding-bottom: 15px; margin-bottom: 15px;">
                       <h3 style="margin: 0; font-size: 1.15rem; color: var(--neutral-dark);"><i class="ti ti-checkbox"
-                          style="color: var(--primary); margin-right: 8px;"></i> Tareas Prácticas y Objetivos</h3>
+                          style="color: var(--primary); margin-right: 8px;"></i> Practical Tasks and Objectives</h3>
                       <p class="pane-help"
                         style="font-size: 0.8rem; color: var(--neutral-muted); margin-top: 5px; margin-bottom: 0;"></p>
                     </div>
@@ -298,7 +297,7 @@
                     <div id="comment-area-consultant" class="comment-area"
                       style="display:none; margin-top: 20px; padding: 15px; background: rgba(37, 99, 235, 0.05); border-left: 3px solid #2563eb; border-radius: 4px;">
                       <h5 style="margin: 0 0 5px 0; font-size: 0.85rem; color: #2563eb;"><i class="ti ti-messages"></i>
-                        Feedback del Tutor</h5>
+                        Tutor Feedback</h5>
                       <blockquote id="comment-box-text"
                         style="margin: 0; font-style: italic; font-size: 0.8rem; color: var(--neutral-dark);">
                       </blockquote>
@@ -313,7 +312,7 @@
                       <h3
                         style="margin: 0; font-size: 1.15rem; color: var(--neutral-dark); display: flex; align-items: center; gap: 8px;">
                         <i class="ti ti-shield-check" style="color: var(--primary);"></i> Murex Mandatory Onboarding
-                        (Persistente S1/S2)
+                        (Persistent W1/W2)
                       </h3>
                     </div>
                     <div id="real-induction-tables-container" style="display: flex; flex-direction: column; gap: 24px;">
@@ -327,9 +326,9 @@
                       style="border-bottom: 1px solid var(--neutral-border); padding-bottom: 15px; margin-bottom: 15px; display: flex; justify-content: space-between; align-items: center;">
                       <h3
                         style="margin: 0; font-size: 1.15rem; color: var(--neutral-dark); display: flex; align-items: center; gap: 8px;">
-                        <i class="ti ti-folders" style="color: var(--primary);"></i> Módulos de Onboarding MXLearn
+                        <i class="ti ti-folders" style="color: var(--primary);"></i> MXLearn Onboarding Modules
                       </h3>
-                      <span class="induction-badge ok"><i class="ti ti-edit" style="margin-right: 3px;"></i> Autogestión Activa</span>
+                      <span class="induction-badge ok"><i class="ti ti-edit" style="margin-right: 3px;"></i> Active Self-Management</span>
                     </div>
                     <!-- Folder tabs navigation -->
                     <div class="onboarding-folders-tabs" style="display: flex; gap: 10px; margin-bottom: 15px; border-bottom: 2px solid var(--neutral-border); padding-bottom: 5px;">
@@ -383,20 +382,17 @@
                     <div class="section-header"
                       style="border-bottom: 1px solid var(--neutral-border); padding-bottom: 15px; margin-bottom: 15px;">
                       <h3 style="margin: 0; font-size: 1.15rem; color: var(--neutral-dark);"><i
-                          class="ti ti-device-gamepad" style="color: var(--primary); margin-right: 8px;"></i> Desafío de
-                        Simulación (Gamificación)</h3>
+                          class="ti ti-device-gamepad" style="color: var(--primary); margin-right: 8px;"></i> Simulation Challenge (Gamification)</h3>
                       <p style="font-size: 0.8rem; color: var(--neutral-muted); margin-top: 5px; margin-bottom: 0;">
-                        Practica y refuerza los conocimientos técnicos de esta semana mediante nuestro simulador
-                        interactivo.</p>
+                        Practice and reinforce the technical knowledge of this week using our interactive simulator.</p>
                     </div>
                     <div id="game-placeholder"
                       style="aspect-ratio: 16/9; width: 100%; max-width: 100%; background-color: var(--neutral-light); border: 2px dashed var(--neutral-border); border-radius: var(--radius-md); display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 20px;">
                       <i class="ti ti-lock"
                         style="font-size: 2.5rem; color: var(--neutral-muted); margin-bottom: 10px;"></i>
-                      <h4 style="color: var(--neutral-muted);">Módulo de Simulación en Preparación</h4>
+                      <h4 style="color: var(--neutral-muted);">Simulation Module in Preparation</h4>
                       <p style="font-size: 0.8rem; color: var(--neutral-muted); max-width: 350px; margin-bottom: 0;">
-                        Este simulador se habilitará próximamente para complementar tu aprendizaje práctico en el
-                        Sandbox.</p>
+                        This simulator will be enabled soon to complement your practical learning in the Sandbox.</p>
                     </div>
 
                     <!-- Week 1 Account Classification Game Zone -->
@@ -434,19 +430,18 @@
                         </div>
                         <h3
                           style="color: var(--primary); margin: 0; font-family: var(--font-display); font-weight: 700; font-size: 1.4rem;">
-                          Evaluacion Tecnica: Clasificacion de Cuentas MX.3
+                          Technical Evaluation: MX.3 Account Classification
                         </h3>
                         <p
                           style="font-size: 0.9rem; color: var(--neutral-dark); max-width: 480px; margin: 0; line-height: 1.6;">
-                          <strong>MODO EVALUACION:</strong> Tienes exactamente <strong>25 cuentas</strong> financieras
-                          para clasificar entre activos (Assets), pasivos (Liabilities) y patrimonio (Equity).
+                          <strong>EVALUATION MODE:</strong> You have exactly <strong>25 financial accounts</strong> to classify into assets (Assets), liabilities (Liabilities), and equity (Equity).
                           <br><br>
-                          Se te asignara una puntuacion oficial que se guardara en tu historial de onboarding.
-                          <strong>Esta actividad no es de practica.</strong>
+                          You will be assigned an official score that will be saved in your onboarding history.
+                          <strong>This is not a practice activity.</strong>
                         </p>
                         <button class="btn btn-primary" onclick="app.classGameStartChallenge()"
                           style="background-color: var(--primary); border-color: var(--primary); color: white; padding: 12px 30px; font-weight: bold; border-radius: 8px; font-size: 0.9rem; display: flex; align-items: center; gap: 8px; box-shadow: 0 4px 12px rgba(225, 29, 72, 0.2); cursor: pointer; transition: all 0.2s;">
-                          <i class="ti ti-player-play"></i> Comenzar Desafio
+                          <i class="ti ti-player-play"></i> Start Challenge
                         </button>
                       </div>
 
@@ -472,7 +467,7 @@
                             style="background: var(--neutral-light); border: 2px solid var(--neutral-border); border-radius: var(--radius-sm); padding: 15px; display: flex; flex-direction: column; gap: 10px;">
                             <div
                               style="font-family: var(--font-display); font-weight: 600; font-size: 0.9rem; text-align: center; border-bottom: 2px solid var(--neutral-border); padding-bottom: 8px; color: var(--neutral-dark); display: flex; align-items: center; justify-content: center; gap: 6px;">
-                              <i class="ti ti-circle-plus" style="color: var(--success);"></i> ASSETS (Activo)
+                              <i class="ti ti-circle-plus" style="color: var(--success);"></i> ASSETS
                             </div>
                             <div id="column-list-asset"
                               style="display: flex; flex-direction: column; gap: 8px; flex-grow: 1; overflow-y: auto; max-height: 220px;">
@@ -484,7 +479,7 @@
                             style="background: var(--neutral-light); border: 2px solid var(--neutral-border); border-radius: var(--radius-sm); padding: 15px; display: flex; flex-direction: column; gap: 10px;">
                             <div
                               style="font-family: var(--font-display); font-weight: 600; font-size: 0.9rem; text-align: center; border-bottom: 2px solid var(--neutral-border); padding-bottom: 8px; color: var(--neutral-dark); display: flex; align-items: center; justify-content: center; gap: 6px;">
-                              <i class="ti ti-circle-minus" style="color: var(--primary);"></i> LIABILITIES (Pasivo)
+                              <i class="ti ti-circle-minus" style="color: var(--primary);"></i> LIABILITIES
                             </div>
                             <div id="column-list-liability"
                               style="display: flex; flex-direction: column; gap: 8px; flex-grow: 1; overflow-y: auto; max-height: 220px;">
@@ -496,7 +491,7 @@
                             style="background: var(--neutral-light); border: 2px solid var(--neutral-border); border-radius: var(--radius-sm); padding: 15px; display: flex; flex-direction: column; gap: 10px;">
                             <div
                               style="font-family: var(--font-display); font-weight: 600; font-size: 0.9rem; text-align: center; border-bottom: 2px solid var(--neutral-border); padding-bottom: 8px; color: var(--neutral-dark); display: flex; align-items: center; justify-content: center; gap: 6px;">
-                              <i class="ti ti-scales" style="color: var(--warning);"></i> EQUITY (Patrimonio)
+                              <i class="ti ti-scales" style="color: var(--warning);"></i> EQUITY
                             </div>
                             <div id="column-list-equity"
                               style="display: flex; flex-direction: column; gap: 8px; flex-grow: 1; overflow-y: auto; max-height: 220px;">
@@ -532,11 +527,11 @@
                         </div>
                         <h3
                           style="color: var(--success-text); margin: 0; font-family: var(--font-display); font-weight: 700; font-size: 1.3rem;">
-                          Evaluación Finalizada: Clasificación de Cuentas
+                          Evaluation Finished: Account Classification
                         </h3>
                         <p
                           style="font-size: 0.95rem; color: var(--neutral-dark); max-width: 480px; margin: 0; line-height: 1.6;">
-                          Intento realizado. Tu puntaje fue: <strong id="completed-game-score-text" style="color: var(--success-text); font-size: 1.25rem;">0/25</strong> correctas.
+                          Attempt completed. Your score was: <strong id="completed-game-score-text" style="color: var(--success-text); font-size: 1.25rem;">0/25</strong> correct.
                         </p>
                       </div>
                     </div>
@@ -562,15 +557,15 @@
                       <!-- 1. PRODUCT SELECTION VIEW -->
                       <div id="sim-home-view">
                         <div class="sim-home-header">
-                          <h4>Selecciona un Producto Financiero</h4>
-                          <p>Elige un producto contable para empezar el desafío de parametrización.</p>
+                          <h4>Select a Financial Product</h4>
+                          <p>Select an accounting product to start the parameterization challenge.</p>
                         </div>
                         <div id="sim-evaluation-summary" class="hidden"
                           style="background-color: var(--neutral-light); border: 1px solid var(--neutral-border); border-radius: 12px; padding: 1rem; margin-bottom: 1rem; display: flex; align-items: center; justify-content: space-between; font-size: 0.85rem;">
                           <!-- Inyectado dinámicamente -->
                         </div>
                         <div style="margin-bottom: 1rem;">
-                          <input id="sim-home-search" type="search" class="search-input" placeholder="Buscar producto…"
+                          <input id="sim-home-search" type="search" class="search-input" placeholder="Search product…"
                             oninput="app.simFilterProducts()">
                         </div>
                         <div id="sim-home-products" class="product-grid">
@@ -594,7 +589,7 @@
                               <i class="ti ti-list-numbers"></i> 1) Lifecycle steps & entries
                             </div>
                             <div id="sim-steps-container" class="small-note">
-                              Cargando pasos...
+                              Loading steps...
                             </div>
                           </div>
 
@@ -641,29 +636,26 @@
                     <div class="section-header"
                       style="border-bottom: 1px solid var(--neutral-border); padding-bottom: 15px; margin-bottom: 15px;">
                       <h3 style="margin: 0; font-size: 1.15rem; color: var(--neutral-dark);"><i
-                          class="ti ti-file-upload" style="color: var(--primary); margin-right: 8px;"></i> Gestión de
-                        Documentación</h3>
+                          class="ti ti-file-upload" style="color: var(--primary); margin-right: 8px;"></i> Documentation Management</h3>
                     </div>
 
                     <div id="deliverable-not-required" class="deliverable-state"
                       style="display: none; text-align: center; padding: 20px 10px;">
                       <i class="ti ti-info-circle"
                         style="font-size: 2rem; color: var(--neutral-muted); margin-bottom: 10px; display: block;"></i>
-                      <h4>No requiere entregable</h4>
-                      <p style="font-size: 0.8rem; color: var(--neutral-muted); margin-bottom: 0;">Esta semana no
-                        requiere entrega de archivos físicos. Tu aprobación depende de la evaluación.</p>
+                      <h4>No deliverable required</h4>
+                      <p style="font-size: 0.8rem; color: var(--neutral-muted); margin-bottom: 0;">This week does not require physical file submissions. Your approval depends on the evaluation.</p>
                     </div>
 
                     <div id="deliverable-active-state" class="deliverable-state">
                       <h4 id="deliverable-requirements-title"
-                        style="font-size: 0.95rem; font-weight: 600; margin-bottom: 5px;">Entregable</h4>
+                        style="font-size: 0.95rem; font-weight: 600; margin-bottom: 5px;">Deliverable</h4>
                       <p class="deliverable-desc" id="deliverable-requirements-desc"
-                        style="font-size: 0.8rem; color: var(--neutral-muted); margin-bottom: 15px;">Subir evidencias de
-                        parametrización en formato PDF.</p>
+                        style="font-size: 0.8rem; color: var(--neutral-muted); margin-bottom: 15px;">Upload parameterization evidence in PDF format.</p>
 
                       <div id="deliverable-status-alert" class="deliverable-alert info" style="margin-bottom: 15px;">
                         <i class="ti ti-clock"></i>
-                        <span id="deliverable-status-label">Pendiente de entrega</span>
+                        <span id="deliverable-status-label">Pending submission</span>
                       </div>
 
                       <!-- Drag & Drop Upload Zone -->
@@ -671,10 +663,8 @@
                         onclick="document.getElementById('file-input-mock').click()">
                         <i class="ti ti-cloud-upload"
                           style="font-size: 2rem; color: var(--primary); margin-bottom: 8px; display: block;"></i>
-                        <p style="font-size: 0.85rem; font-weight: 500; margin-bottom: 4px;">Arrastra tu archivo PDF
-                          aquí o <span>haz clic para buscar</span></p>
-                        <span class="file-limits" style="font-size: 0.75rem; color: var(--neutral-muted);">Formato
-                          aceptado: PDF (Máx. 10MB)</span>
+                        <p style="font-size: 0.85rem; font-weight: 500; margin-bottom: 4px;">Drag your PDF file here or <span>click to browse</span></p>
+                        <span class="file-limits" style="font-size: 0.75rem; color: var(--neutral-muted);">Accepted format: PDF (Max 10MB)</span>
                         <input type="file" id="file-input-mock" style="display: none;" accept=".pdf"
                           onchange="app.handleMockUpload(event)">
                       </div>
@@ -684,8 +674,7 @@
                         <div class="file-icon"><i class="ti ti-file-type-pdf"></i></div>
                         <div class="file-meta">
                           <span class="file-name" id="uploaded-file-name">ejercicio_semana_1.pdf</span>
-                          <span class="file-size" style="font-size: 0.7rem; color: var(--neutral-muted);">2.4 MB · Listo
-                            para enviar</span>
+                          <span class="file-size" style="font-size: 0.7rem; color: var(--neutral-muted);">2.4 MB · Ready to submit</span>
                         </div>
                         <button class="btn-icon-danger" onclick="app.removeUploadedFile()"><i
                             class="ti ti-trash"></i></button>
@@ -693,7 +682,7 @@
 
                       <button id="btn-submit-deliverable" class="btn btn-primary btn-block"
                         style="display: none; margin-top: 15px; width: 100%;" onclick="app.submitDeliverable()">
-                        Enviar Entregable para Revisión
+                        Submit Deliverable for Review
                       </button>
                     </div>
                   </div>
@@ -713,10 +702,10 @@
               <div class="doc-hero-section">
                 <div class="doc-hero-content">
                   <div style="display: flex; align-items: center; gap: 12px; flex-wrap: wrap;">
-                    <h2 class="doc-hero-title">📚 Centro de Documentación y Búsqueda</h2>
-                    <span class="doc-resource-badge">5 Recursos Disponibles</span>
+                    <h2 class="doc-hero-title">📚 Documentation & Search Center</h2>
+                    <span class="doc-resource-badge">5 Resources Available</span>
                   </div>
-                  <p class="doc-hero-subtitle">Accede a toda la documentación, capacitación y soporte oficial de Murex.
+                  <p class="doc-hero-subtitle">Access all official Murex documentation, training, and support.
                   </p>
                 </div>
                 <div class="doc-hero-icon-wrapper">
@@ -733,9 +722,9 @@
                     <span class="doc-card-icon">📂</span>
                     <h3 class="doc-card-title">OnBoarding Docs</h3>
                   </div>
-                  <p class="doc-card-desc">Accede a las guías de orientación, documentos del proceso de inducción y material introductorio para tu incorporación.</p>
+                  <p class="doc-card-desc">Access orientation guides, induction process documents, and introductory material for your onboarding.</p>
                   <div class="doc-card-action">
-                    <span>Ver guías de inducción</span>
+                    <span>View onboarding guides</span>
                     <span class="doc-card-arrow">→</span>
                   </div>
                 </a>
@@ -746,9 +735,9 @@
                     <span class="doc-card-icon">📄</span>
                     <h3 class="doc-card-title">MXDoc</h3>
                   </div>
-                  <p class="doc-card-desc">Documentación oficial del software MX.3; descubre cómo configurar el sistema y sus módulos desde cero.</p>
+                  <p class="doc-card-desc">Official documentation of MX.3 software; discover how to configure the system and its modules from scratch.</p>
                   <div class="doc-card-action">
-                    <span>Abrir documentación</span>
+                    <span>Open documentation</span>
                     <span class="doc-card-arrow">→</span>
                   </div>
                 </a>
@@ -759,9 +748,9 @@
                     <span class="doc-card-icon">🌐</span>
                     <h3 class="doc-card-title">MXWiki</h3>
                   </div>
-                  <p class="doc-card-desc">Navega por los dominios oficiales de la suite y descubre información significativa y guías clave para tu trabajo diario.</p>
+                  <p class="doc-card-desc">Navigate the official domains of the suite and discover meaningful information and key guides for your daily work.</p>
                   <div class="doc-card-action">
-                    <span>Abrir wiki oficial</span>
+                    <span>Open official wiki</span>
                     <span class="doc-card-arrow">→</span>
                   </div>
                 </a>
@@ -772,9 +761,9 @@
                     <span class="doc-card-icon">🎓</span>
                     <h3 class="doc-card-title">MXLearn</h3>
                   </div>
-                  <p class="doc-card-desc">Portal oficial de onboarding institucional; contiene videos, evaluaciones de progreso y rutas específicas de aprendizaje.</p>
+                  <p class="doc-card-desc">Official portal for institutional onboarding; contains videos, progress evaluations, and specific learning paths.</p>
                   <div class="doc-card-action">
-                    <span>Iniciar aprendizaje</span>
+                    <span>Start learning</span>
                     <span class="doc-card-arrow">→</span>
                   </div>
                 </a>
@@ -785,9 +774,9 @@
                     <span class="doc-card-icon">🛠️</span>
                     <h3 class="doc-card-title">PegaCase</h3>
                   </div>
-                  <p class="doc-card-desc">Portal maestro de tickets y casos; busca cómo resolver incidencias, ideas de configuración y problemas detectados en clientes reales para tener referencias directas a la hora de estructurar soluciones.</p>
+                  <p class="doc-card-desc">Master ticket and case portal; search how to resolve incidents, configuration ideas, and issues detected in real clients to have direct references when structuring solutions.</p>
                   <div class="doc-card-action">
-                    <span>Consultar casos</span>
+                    <span>Consult cases</span>
                     <span class="doc-card-arrow">→</span>
                   </div>
                 </a>
@@ -800,18 +789,18 @@
           <div id="junior-pane-mentor" class="junior-view-pane">
             <div class="card glass-card">
               <div class="section-header">
-                <h2><i class="ti ti-messages"></i> Registro de Sesiones de Mentoría</h2>
-                <p>Historial de sesiones semanales con tu tutor asignado y Masterclasses dictadas por Seniors.</p>
+                <h2><i class="ti ti-messages"></i> Mentorship Sessions Log</h2>
+                <p>History of weekly sessions with your assigned tutor and Masterclasses taught by Seniors.</p>
               </div>
               <div style="overflow-x: auto;">
                 <table class="mentor-log-table">
                   <thead>
                     <tr>
-                      <th>Fecha</th>
-                      <th>Tutor / Relator</th>
-                      <th>Tema Tratado</th>
-                      <th>Duración</th>
-                      <th>Nivel de Soporte (IDS)</th>
+                      <th>Date</th>
+                      <th>Tutor / Speaker</th>
+                      <th>Topic Discussed</th>
+                      <th>Duration</th>
+                      <th>Support Level (IDS)</th>
                     </tr>
                   </thead>
                   <tbody id="mentor-log-tbody">
@@ -829,19 +818,19 @@
             <div class="session-tabs-container animate-fade-in">
               <button class="session-tab-btn active" id="junior-session-tab-calendar"
                 onclick="app.switchJuniorSessionTab('calendar')">
-                <i class="ti ti-calendar"></i> Vista Calendario
+                <i class="ti ti-calendar"></i> Calendar View
               </button>
               <button class="session-tab-btn" id="junior-session-tab-schedule"
                 onclick="app.switchJuniorSessionTab('schedule')">
-                <i class="ti ti-calendar-plus"></i> Agendar Nueva Sesión
+                <i class="ti ti-calendar-plus"></i> Schedule New Session
               </button>
               <button class="session-tab-btn" id="junior-session-tab-pending"
                 onclick="app.switchJuniorSessionTab('pending')">
-                <i class="ti ti-clock"></i> Solicitudes Pendientes
+                <i class="ti ti-clock"></i> Pending Requests
               </button>
               <button class="session-tab-btn" id="junior-session-tab-certification"
                 onclick="app.switchJuniorSessionTab('certification')">
-                <i class="ti ti-award"></i> Checklist de Certificación
+                <i class="ti ti-award"></i> Certification Checklist
               </button>
             </div>
 
@@ -850,14 +839,14 @@
               <div class="card glass-card">
                 <div class="section-header" style="display: flex; justify-content: space-between; align-items: center;">
                   <div>
-                    <h2><i class="ti ti-calendar"></i> Mi Calendario Hub</h2>
-                    <p>Horario mensual de tutorías obligatorias, masterclasses y consultas.</p>
+                    <h2><i class="ti ti-calendar"></i> My Calendar Hub</h2>
+                    <p>Monthly schedule of mandatory tutoring, masterclasses, and consultations.</p>
                   </div>
                   <div style="display: flex; gap: 8px; align-items: center;">
                     <button class="btn btn-outline btn-xs" onclick="app.prevMonth()"><i class="ti ti-chevron-left"></i>
-                      Mes Ant.</button>
+                      Prev Month</button>
                     <span id="junior-month-display" style="font-weight: 600; font-size: 0.9rem;">Mayo 2026</span>
-                    <button class="btn btn-outline btn-xs" onclick="app.nextMonth()">Mes Sig. <i
+                    <button class="btn btn-outline btn-xs" onclick="app.nextMonth()">Next Month <i
                         class="ti ti-chevron-right"></i></button>
                   </div>
                 </div>
@@ -872,22 +861,22 @@
                   style="display: flex; gap: 15px; flex-wrap: wrap; font-size: 0.8rem; border-top: 1px solid var(--neutral-border); padding-top: 15px;">
                   <div style="display: flex; align-items: center; gap: 5px;"><span
                       style="display: inline-block; width: 12px; height: 12px; border-radius: 3px; background-color: rgba(37, 99, 235, 0.15); border: 1px solid #2563eb;"></span>
-                    Tutoría Semanal (Benjamín)</div>
+                    Weekly Tutoring (Benjamín)</div>
                   <div style="display: flex; align-items: center; gap: 5px;"><span
                       style="display: inline-block; width: 12px; height: 12px; border-radius: 3px; background-color: rgba(147, 51, 234, 0.15); border: 1px solid #9333ea;"></span>
                     Masterclass (Seniors)</div>
                   <div style="display: flex; align-items: center; gap: 5px;"><span
                       style="display: inline-block; width: 12px; height: 12px; border-radius: 3px; background-color: rgba(234, 179, 8, 0.15); border: 1px solid #eab308;"></span>
-                    Soporte Extra Solicitado</div>
+                    Requested Extra Support</div>
                   <div style="display: flex; align-items: center; gap: 5px;"><span
                       style="display: inline-block; width: 12px; height: 12px; border-radius: 3px; background-color: rgba(22, 163, 74, 0.15); border: 1px solid #16a34a;"></span>
-                    Soporte Extra Aprobado</div>
+                    Approved Extra Support</div>
                   <div style="display: flex; align-items: center; gap: 5px;"><span
                       style="display: inline-block; width: 12px; height: 12px; border-radius: 3px; background-color: rgba(249, 115, 22, 0.15); border: 1px solid #f97316;"></span>
-                    Sesión Manager (Luana Ortega)</div>
+                    Manager Session (Luana Ortega)</div>
                   <div style="display: flex; align-items: center; gap: 5px;"><span
                       style="display: inline-block; width: 12px; height: 12px; border-radius: 3px; background-color: rgba(100, 116, 139, 0.1); border: 1px solid #64748b;"></span>
-                    Sesión Ejecutada</div>
+                    Executed Session</div>
                 </div>
               </div>
             </div>
@@ -896,32 +885,30 @@
             <div class="session-tab-pane" id="junior-session-pane-schedule">
               <div class="card glass-card" style="max-width: 600px; margin: 0 auto;">
                 <div class="card-header">
-                  <h3 class="card-title"><i class="ti ti-help-hexagon"></i> Agendar Nueva Sesión</h3>
+                  <h3 class="card-title"><i class="ti ti-help-hexagon"></i> Schedule New Session</h3>
                 </div>
-                <p class="override-desc mt-5" style="font-size: 0.8rem; color: var(--neutral-muted);">Solicita una
-                  sesión técnica o de apoyo técnico. La solicitud se notificará directamente al experto seleccionado por
-                  correo.</p>
+                <p class="override-desc mt-5" style="font-size: 0.8rem; color: var(--neutral-muted);">Request a technical or support session. The request will be notified directly to the selected expert by email.</p>
 
                 <form id="junior-support-request-form" onsubmit="app.handleRequestSupport(event)"
                   style="margin-top: 15px;">
                   <div class="form-group">
-                    <label for="support-type">Tipo de Sesión</label>
+                    <label for="support-type">Session Type</label>
                     <div class="input-wrapper">
                       <i class="ti ti-presentation-analytics" style="z-index: 10;"></i>
                       <select id="support-type" required
                         style="width: 100%; padding: 12px 14px 12px 42px; font-size: 0.9rem; background-color: var(--neutral-light); border: 1px solid var(--neutral-border); border-radius: var(--radius-sm); outline: none;"
                         onchange="app.updateSupportExpertOptions()">
-                        <option value="tutoring">Tutoría ordinaria (con Tutor a cargo)</option>
-                        <option value="coaching">Reunión con Senior Manager (Luana Ortega)</option>
-                        <option value="extra_support">Consulta adicional (Soporte Extra)</option>
-                        <option value="masterclass">Masterclass especial</option>
-                        <option value="MUREX_LEARNING">Reunión Interna Murex (Global)</option>
+                        <option value="tutoring">Regular Tutoring (with assigned Tutor)</option>
+                        <option value="coaching">Meeting with Senior Manager (Luana Ortega)</option>
+                        <option value="extra_support">Additional Inquiry (Extra Support)</option>
+                        <option value="masterclass">Special Masterclass</option>
+                        <option value="MUREX_LEARNING">Internal Murex Meeting (Global)</option>
                       </select>
                     </div>
                   </div>
 
                   <div class="form-group">
-                    <label for="support-expert">Tutor o Senior Manager Requerido</label>
+                    <label for="support-expert">Required Tutor or Senior Manager</label>
                     <div class="input-wrapper">
                       <i class="ti ti-user-check" style="z-index: 10;"></i>
                       <select id="support-expert" required
@@ -932,23 +919,23 @@
                   </div>
 
                   <div class="form-group">
-                    <label for="support-category">Categoría del Bloqueo / Tema</label>
+                    <label for="support-category">Block Category / Topic</label>
                     <div class="input-wrapper">
                       <i class="ti ti-tags" style="z-index: 10;"></i>
                       <select id="support-category" required
                         style="width: 100%; padding: 12px 14px 12px 42px; font-size: 0.9rem; background-color: var(--neutral-light); border: 1px solid var(--neutral-border); border-radius: var(--radius-sm); outline: none;">
                         <option value="IFRS 9 / GAAP Accounting">IFRS 9 / GAAP Accounting</option>
-                        <option value="Parametrización en Sandbox">Parametrización en Sandbox</option>
-                        <option value="Swaps de Tasas (IRS)">Swaps de Tasas (IRS)</option>
-                        <option value="FX Forwards & Opciones">FX Forwards & Opciones</option>
-                        <option value="Troubleshooting / Mensajes de Error">Troubleshooting / Mensajes de Error</option>
-                        <option value="Metodología Murex / Entregables">Metodología Murex / Entregables</option>
+                        <option value="Parametrización en Sandbox">Sandbox Parameterization</option>
+                        <option value="Swaps de Tasas (IRS)">Interest Rate Swaps (IRS)</option>
+                        <option value="FX Forwards & Opciones">FX Forwards & Options</option>
+                        <option value="Troubleshooting / Mensajes de Error">Troubleshooting / Error Messages</option>
+                        <option value="Metodología Murex / Entregables">Murex Methodology / Deliverables</option>
                       </select>
                     </div>
                   </div>
 
                   <div class="form-group">
-                    <label for="support-date">Fecha Propuesta</label>
+                    <label for="support-date">Proposed Date</label>
                     <div class="input-wrapper">
                       <i class="ti ti-calendar"></i>
                       <input type="date" id="support-date" required
@@ -958,7 +945,7 @@
 
                   <div class="form-row" style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
                     <div class="form-group">
-                      <label for="support-time">Hora de Inicio</label>
+                      <label for="support-time">Start Time</label>
                       <div class="input-wrapper">
                         <i class="ti ti-clock"></i>
                         <input type="time" id="support-time" required
@@ -966,29 +953,29 @@
                       </div>
                     </div>
                     <div class="form-group">
-                      <label for="support-duration">Duración</label>
+                      <label for="support-duration">Duration</label>
                       <div class="input-wrapper">
                         <i class="ti ti-hourglass" style="z-index: 10;"></i>
                         <select id="support-duration" required
                           style="width: 100%; padding: 12px 10px 12px 42px; font-size: 0.9rem; background-color: var(--neutral-light); border: 1px solid var(--neutral-border); border-radius: var(--radius-sm); outline: none;">
                           <option value="30">30 min</option>
-                          <option value="60" selected>1 hora</option>
-                          <option value="90">1.5 horas</option>
-                          <option value="120">2 horas</option>
+                          <option value="60" selected>1 hour</option>
+                          <option value="90">1.5 hours</option>
+                          <option value="120">2 hours</option>
                         </select>
                       </div>
                     </div>
                   </div>
 
                   <div class="form-group">
-                    <label for="support-reason">Pregunta / Detalle del Bloqueo</label>
+                    <label for="support-reason">Question / Block Details</label>
                     <textarea id="support-reason" required
-                      placeholder="Describe específicamente el error o bloqueo técnico..."
+                      placeholder="Describe specifically the error or technical block..."
                       style="width: 100%; padding: 10px; font-size: 0.9rem; min-height: 80px; background-color: var(--neutral-light); border: 1px solid var(--neutral-border); border-radius: var(--radius-sm); outline: none; resize: vertical;"></textarea>
                   </div>
 
                   <button type="submit" class="btn btn-primary btn-block">
-                    Enviar Solicitud <i class="ti ti-send"></i>
+                    Send Request <i class="ti ti-send"></i>
                   </button>
                 </form>
               </div>
@@ -998,19 +985,18 @@
             <div class="session-tab-pane" id="junior-session-pane-pending">
               <div class="card glass-card">
                 <div class="card-header">
-                  <h3 class="card-title"><i class="ti ti-clock"></i> Mis Solicitudes de Horas Extras</h3>
+                  <h3 class="card-title"><i class="ti ti-clock"></i> My Extra Hours Requests</h3>
                 </div>
-                <p class="override-desc mt-5" style="font-size: 0.8rem; color: var(--neutral-muted);">Estado en tiempo
-                  real de tus solicitudes de soporte extra enviadas a los consultores.</p>
+                <p class="override-desc mt-5" style="font-size: 0.8rem; color: var(--neutral-muted);">Real-time status of your extra support requests sent to consultants.</p>
                 <div style="overflow-x: auto; margin-top: 15px;">
                   <table class="mentor-log-table">
                     <thead>
                       <tr>
-                        <th>Tema / Categoría</th>
-                        <th>Experto Solicitado</th>
-                        <th>Fecha y Hora</th>
-                        <th>Estado de Negociación</th>
-                        <th>Detalle</th>
+                        <th>Topic / Category</th>
+                        <th>Requested Expert</th>
+                        <th>Date & Time</th>
+                        <th>Negotiation Status</th>
+                        <th>Details</th>
                       </tr>
                     </thead>
                     <tbody id="junior-pending-requests-tbody">
@@ -1025,10 +1011,9 @@
             <div class="session-tab-pane" id="junior-session-pane-certification">
               <div class="card glass-card" style="max-width: 650px; margin: 0 auto;">
                 <div class="card-header">
-                  <h3 class="card-title"><i class="ti ti-award"></i> Checklist de Certificación de Habilitación</h3>
+                  <h3 class="card-title"><i class="ti ti-award"></i> Qualification Certification Checklist</h3>
                 </div>
-                <p class="override-desc mt-5" style="font-size: 0.85rem; color: var(--neutral-muted);">Matriz de
-                  competencias e hitos de autonomía técnica requeridos para salir a producción con clientes reales.</p>
+                <p class="override-desc mt-5" style="font-size: 0.85rem; color: var(--neutral-muted);">Matrix of competencies and technical autonomy milestones required to go to production with real clients.</p>
                 <div class="divider" style="margin: 15px 0;"></div>
 
                 <div class="cert-checklist-wrapper" style="padding: 10px 0;">
@@ -1037,10 +1022,8 @@
                     <input type="checkbox" id="junior-cert-hito-1" disabled
                       style="width: 18px; height: 18px; cursor: not-allowed;">
                     <div>
-                      <strong style="display: block; font-size: 0.95rem; color: var(--neutral-dark);">Autonomía técnica
-                        en Sandbox MX.3</strong>
-                      <span style="font-size: 0.8rem; color: var(--neutral-muted);">Demostrar soltura en configuración
-                        de curvas y parametrizaciones de portafolio.</span>
+                      <strong style="display: block; font-size: 0.95rem; color: var(--neutral-dark);">Technical autonomy in Sandbox MX.3</strong>
+                      <span style="font-size: 0.8rem; color: var(--neutral-muted);">Demonstrate fluency in curve configuration and portfolio parameterizations.</span>
                     </div>
                   </div>
                   <div class="cert-checklist-item"
@@ -1048,10 +1031,8 @@
                     <input type="checkbox" id="junior-cert-hito-2" disabled
                       style="width: 18px; height: 18px; cursor: not-allowed;">
                     <div>
-                      <strong style="display: block; font-size: 0.95rem; color: var(--neutral-dark);">Comprensión
-                        contable IFRS 9 / GAAP</strong>
-                      <span style="font-size: 0.8rem; color: var(--neutral-muted);">Validar y reportar estados contables
-                        bajo normas internacionales.</span>
+                      <strong style="display: block; font-size: 0.95rem; color: var(--neutral-dark);">Accounting understanding under IFRS 9 / GAAP</strong>
+                      <span style="font-size: 0.8rem; color: var(--neutral-muted);">Validate and report accounting statements under international standards.</span>
                     </div>
                   </div>
                   <div class="cert-checklist-item"
@@ -1059,10 +1040,8 @@
                     <input type="checkbox" id="junior-cert-hito-3" disabled
                       style="width: 18px; height: 18px; cursor: not-allowed;">
                     <div>
-                      <strong style="display: block; font-size: 0.95rem; color: var(--neutral-dark);">Habilidades
-                        blandas y roleplays</strong>
-                      <span style="font-size: 0.8rem; color: var(--neutral-muted);">Participación satisfactoria en
-                        simulaciones de reuniones técnicas con clientes.</span>
+                      <strong style="display: block; font-size: 0.95rem; color: var(--neutral-dark);">Soft skills and roleplays</strong>
+                      <span style="font-size: 0.8rem; color: var(--neutral-muted);">Satisfactory participation in technical meeting simulations with clients.</span>
                     </div>
                   </div>
                   <div class="cert-checklist-item"
@@ -1070,10 +1049,8 @@
                     <input type="checkbox" id="junior-cert-hito-4" disabled
                       style="width: 18px; height: 18px; cursor: not-allowed;">
                     <div>
-                      <strong style="display: block; font-size: 0.95rem; color: var(--neutral-dark);">Aprobación de la
-                        entrevista final con Manager</strong>
-                      <span style="font-size: 0.8rem; color: var(--neutral-muted);">Validación conceptual integradora
-                        final con Luana Ortega.</span>
+                      <strong style="display: block; font-size: 0.95rem; color: var(--neutral-dark);">Approval of final interview with Manager</strong>
+                      <span style="font-size: 0.8rem; color: var(--neutral-muted);">Final integration conceptual validation with Luana Ortega.</span>
                     </div>
                   </div>
                 </div>
@@ -1081,8 +1058,7 @@
                 <div class="alert-banner info mt-10"
                   style="display: flex; align-items: center; gap: 10px; background-color: rgba(37, 99, 235, 0.08); border: 1px solid rgba(37, 99, 235, 0.2); padding: 12px; border-radius: 6px; color: var(--neutral-dark); font-size: 0.85rem;">
                   <i class="ti ti-info-circle" style="font-size: 1.2rem; color: #2563eb;"></i>
-                  <span><strong>Nota de Gobernanza:</strong> Tu Tutor asignado <strong>Benjamín Cerda</strong> es el
-                    único facultado para certificar y otorgar el check de validación a cada hito de autonomía.</span>
+                  <span><strong>Governance Note:</strong> Your assigned Tutor <strong>Benjamín Cerda</strong> is the only one authorized to certify and grant the validation check for each autonomy milestone.</span>
                 </div>
               </div>
             </div>
@@ -1097,19 +1073,19 @@
                   <i class="ti ti-calendar-time" style="font-size: 1.8rem; color: var(--primary);"></i>
                 </div>
                 <div>
-                  <h3 class="card-title" style="margin: 0; font-family: var(--font-display);">Timesheet Portal & Guía de Registro</h3>
-                  <p style="font-size: 0.8rem; color: var(--neutral-muted); margin: 4px 0 0 0;">Información, códigos del área y herramienta de conversión de horas para newcomers.</p>
+                  <h3 class="card-title" style="margin: 0; font-family: var(--font-display);">Timesheet Portal & Registration Guide</h3>
+                  <p style="font-size: 0.8rem; color: var(--neutral-muted); margin: 4px 0 0 0;">Information, department codes, and hour conversion tool for newcomers.</p>
                 </div>
               </div>
 
               <!-- Timesheet Link Box -->
               <div style="background: var(--neutral-light); border: 1px solid var(--neutral-border); padding: 20px; border-radius: 8px; margin-top: 20px; display: flex; justify-content: space-between; align-items: center; gap: 20px; flex-wrap: wrap;">
                 <div style="flex: 1; min-width: 250px;">
-                  <h4 style="font-size: 0.95rem; font-weight: bold; color: var(--neutral-dark); margin: 0 0 6px 0;">Plataforma de Timesheet</h4>
-                  <p style="font-size: 0.75rem; color: var(--neutral-muted); margin: 0;">Ingresa tus horas trabajadas en el portal oficial utilizando los códigos asignados a tu perfil.</p>
+                  <h4 style="font-size: 0.95rem; font-weight: bold; color: var(--neutral-dark); margin: 0 0 6px 0;">Timesheet Platform</h4>
+                  <p style="font-size: 0.75rem; color: var(--neutral-muted); margin: 0;">Enter your hours worked in the official portal using the codes assigned to your profile.</p>
                 </div>
                 <a href="http://mxtime/" target="_blank" class="btn btn-primary" style="padding: 10px 20px; text-decoration: none; border-radius: var(--radius-sm); font-weight: 600;">
-                  <i class="ti ti-external-link" style="margin-right: 6px;"></i> Ir al Portal Timesheet
+                  <i class="ti ti-external-link" style="margin-right: 6px;"></i> Go to Timesheet Portal
                 </a>
               </div>
 
@@ -1117,27 +1093,27 @@
               <div class="eval-audit-grid" style="display: grid; grid-template-columns: 1fr 1.2fr; gap: 20px; margin-top: 20px;">
                 <!-- Column 1: Interactive Converter -->
                 <div style="background: #ffffff; border: 1px solid var(--neutral-border); padding: 16px; border-radius: 8px; display: flex; flex-direction: column; gap: 12px;">
-                  <h4 style="font-size: 0.85rem; font-weight: bold; color: var(--neutral-dark); margin: 0; text-transform: uppercase; letter-spacing: 0.5px;">Calculadora de Conversión</h4>
-                  <p style="font-size: 0.75rem; color: var(--neutral-muted); margin: 0;">El sistema de Timesheet utiliza una escala decimal donde una jornada completa de <strong>8 horas equivale a 1.0</strong> (1 hora = 0.125 y media hora = 0.0625).</p>
+                  <h4 style="font-size: 0.85rem; font-weight: bold; color: var(--neutral-dark); margin: 0; text-transform: uppercase; letter-spacing: 0.5px;">Conversion Calculator</h4>
+                  <p style="font-size: 0.75rem; color: var(--neutral-muted); margin: 0;">The Timesheet system uses a decimal scale where a full 8-hour workday equals 1.0 (1 hour = 0.125 and half an hour = 0.0625).</p>
                   
                   <!-- Custom Manual Input -->
                   <div style="border-top: 1px dashed var(--neutral-border); padding-top: 12px; margin-top: 6px;">
-                    <label style="font-size: 0.75rem; font-weight: 600; color: var(--neutral-muted); display: block; margin-bottom: 8px;">Conversor personalizado:</label>
+                    <label style="font-size: 0.75rem; font-weight: 600; color: var(--neutral-muted); display: block; margin-bottom: 8px;">Custom converter:</label>
                     
                     <div style="display: flex; gap: 15px; align-items: center; margin-bottom: 15px;">
                       <div style="display: flex; flex-direction: column; gap: 4px;">
-                        <span style="font-size: 0.65rem; color: var(--neutral-muted); font-weight: 600;">HORAS</span>
+                        <span style="font-size: 0.65rem; color: var(--neutral-muted); font-weight: 600;">HOURS</span>
                         <input type="number" id="timesheet-custom-hours" value="8" min="0" max="24" step="0.1" oninput="app.calculateTimesheetFromHours()" style="padding: 8px; border: 1px solid var(--neutral-border); border-radius: 6px; width: 90px; font-size: 0.8rem; background: var(--bg-app); color: var(--neutral-dark); text-align: center;">
                       </div>
-                      <div style="font-size: 1.1rem; color: var(--neutral-muted); font-weight: bold; margin-top: 15px;">ó</div>
+                      <div style="font-size: 1.1rem; color: var(--neutral-muted); font-weight: bold; margin-top: 15px;">or</div>
                       <div style="display: flex; flex-direction: column; gap: 4px;">
-                        <span style="font-size: 0.65rem; color: var(--neutral-muted); font-weight: 600;">MINUTOS</span>
+                        <span style="font-size: 0.65rem; color: var(--neutral-muted); font-weight: 600;">MINUTES</span>
                         <input type="number" id="timesheet-custom-minutes" value="480" min="0" max="1440" step="5" oninput="app.calculateTimesheetFromMinutes()" style="padding: 8px; border: 1px solid var(--neutral-border); border-radius: 6px; width: 90px; font-size: 0.8rem; background: var(--bg-app); color: var(--neutral-dark); text-align: center;">
                       </div>
                     </div>
 
                     <div style="background: var(--neutral-light); border: 1px solid var(--neutral-border); padding: 12px; border-radius: 6px; display: flex; justify-content: space-between; align-items: center;">
-                      <span style="font-size: 0.75rem; font-weight: 600; color: var(--neutral-muted);">Resultado en Timesheet:</span>
+                      <span style="font-size: 0.75rem; font-weight: 600; color: var(--neutral-muted);">Result in Timesheet:</span>
                       <span id="timesheet-custom-result" style="font-size: 1.2rem; font-weight: bold; color: var(--primary);">1.0</span>
                     </div>
                   </div>
@@ -1145,14 +1121,14 @@
 
                 <!-- Column 2: Newcomer Codes Table -->
                 <div style="background: #ffffff; border: 1px solid var(--neutral-border); padding: 16px; border-radius: 8px; display: flex; flex-direction: column; gap: 12px;">
-                  <h4 style="font-size: 0.85rem; font-weight: bold; color: var(--neutral-dark); margin: 0; text-transform: uppercase; letter-spacing: 0.5px;">Códigos de Imputación (Newcomers)</h4>
+                  <h4 style="font-size: 0.85rem; font-weight: bold; color: var(--neutral-dark); margin: 0; text-transform: uppercase; letter-spacing: 0.5px;">Charging Codes (Newcomers)</h4>
                   <div style="overflow-x: auto;">
                     <table class="mentor-log-table" style="width: 100%; font-size: 0.72rem;">
                       <thead>
                         <tr>
                           <th style="padding: 6px 10px;">Project</th>
                           <th style="padding: 6px 10px;">Activity</th>
-                          <th style="padding: 6px 10px; text-align: center;">Aplica Newcomer</th>
+                          <th style="padding: 6px 10px; text-align: center;">Applies to Newcomer</th>
                         </tr>
                       </thead>
                       <tbody>
@@ -1164,7 +1140,7 @@
                         <tr>
                           <td style="padding: 8px 10px;">AMER-CS-FIN PL-TEAM</td>
                           <td style="padding: 8px 10px;">INTERNAL SUPPORT</td>
-                          <td style="padding: 8px 10px; text-align: center;"><span class="badge badge-green" style="font-size: 0.65rem; font-weight: bold; padding: 2px 6px;">Sí</span></td>
+                          <td style="padding: 8px 10px; text-align: center;"><span class="badge badge-green" style="font-size: 0.65rem; font-weight: bold; padding: 2px 6px;">Yes</span></td>
                         </tr>
                         <tr>
                           <td style="padding: 8px 10px;">AMER-CS-FIN PL-TEAM</td>
@@ -1174,17 +1150,17 @@
                         <tr>
                           <td style="padding: 8px 10px;">AMER-CS-FIN PL-TEAM</td>
                           <td style="padding: 8px 10px;">ORG-MEETING</td>
-                          <td style="padding: 8px 10px; text-align: center;"><span class="badge badge-green" style="font-size: 0.65rem; font-weight: bold; padding: 2px 6px;">Sí</span></td>
+                          <td style="padding: 8px 10px; text-align: center;"><span class="badge badge-green" style="font-size: 0.65rem; font-weight: bold; padding: 2px 6px;">Yes</span></td>
                         </tr>
                         <tr>
                           <td style="padding: 8px 10px;">AMER-CS-FIN PL-NEWHIRE ONBD</td>
                           <td style="padding: 8px 10px;">TRAINING-ATTENDANCE</td>
-                          <td style="padding: 8px 10px; text-align: center;"><span class="badge badge-green" style="font-size: 0.65rem; font-weight: bold; padding: 2px 6px;">Sí</span></td>
+                          <td style="padding: 8px 10px; text-align: center;"><span class="badge badge-green" style="font-size: 0.65rem; font-weight: bold; padding: 2px 6px;">Yes</span></td>
                         </tr>
                         <tr>
                           <td style="padding: 8px 10px;">AMER-CS-FIN PL-NEWHIRE ONBD</td>
                           <td style="padding: 8px 10px;">TRAINING-PREPARATION & PRESENT</td>
-                          <td style="padding: 8px 10px; text-align: center;"><span class="badge badge-green" style="font-size: 0.65rem; font-weight: bold; padding: 2px 6px;">Sí</span></td>
+                          <td style="padding: 8px 10px; text-align: center;"><span class="badge badge-green" style="font-size: 0.65rem; font-weight: bold; padding: 2px 6px;">Yes</span></td>
                         </tr>
                       </tbody>
                     </table>
@@ -1197,11 +1173,11 @@
                 <div style="display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 15px;">
                   <div>
                     <h4 style="font-size: 0.9rem; font-weight: bold; color: var(--neutral-dark); margin: 0 0 4px 0; text-transform: uppercase; letter-spacing: 0.5px; display: flex; align-items: center; gap: 8px;">
-                      <i class="ti ti-table" style="color: var(--primary); font-size: 1.1rem;"></i> Ejemplo de Registro Semanal (Semana Ilustrativa)
+                      <i class="ti ti-table" style="color: var(--primary); font-size: 1.1rem;"></i> Weekly Registration Example (Sample Week)
                     </h4>
                     <p style="font-size: 0.78rem; color: var(--neutral-muted); margin: 0; max-width: 800px;">
-                      Esta tabla interactiva muestra cómo se distribuyen y registran las horas en una semana típica de onboarding. 
-                      <strong style="color: var(--primary-text);">Nota importante:</strong> Este ejemplo ilustra <strong>1 semana</strong> (40 horas = 5.0 en Timesheet) para facilitar el entendimiento, pero recuerda que el registro real en el portal se realiza de forma <strong>quincenal (cada 15 días)</strong>.
+                      This interactive table shows how hours are distributed and recorded in a typical onboarding week. 
+                      <strong style="color: var(--primary-text);">Important note:</strong> This example illustrates <strong>1 week</strong> (40 hours = 5.0 in Timesheet) for easier understanding, but remember that the actual registration in the portal is done <strong>semi-monthly (every 15 days)</strong>.
                     </p>
                   </div>
                 </div>
@@ -1215,12 +1191,12 @@
                         <th style="padding: 10px 12px; width: 180px;">Activity</th>
                         <th style="padding: 10px 12px; width: 140px;">Locality</th>
                         <th style="padding: 10px 12px; width: 80px;">Billing</th>
-                        <th style="padding: 10px 8px; text-align: center; width: 75px;">Day 1 (Lun)</th>
-                        <th style="padding: 10px 8px; text-align: center; width: 75px;">Day 2 (Mar)</th>
-                        <th style="padding: 10px 8px; text-align: center; width: 75px;">Day 3 (Mié)</th>
-                        <th style="padding: 10px 8px; text-align: center; width: 75px;">Day 4 (Jue)</th>
-                        <th style="padding: 10px 8px; text-align: center; width: 75px;">Day 5 (Vie)</th>
-                        <th style="padding: 10px 12px; text-align: center; width: 110px; background-color: rgba(166, 25, 46, 0.05); font-weight: bold; color: var(--primary-text);">Total Imputado</th>
+                        <th style="padding: 10px 8px; text-align: center; width: 75px;">Day 1 (Mon)</th>
+                        <th style="padding: 10px 8px; text-align: center; width: 75px;">Day 2 (Tue)</th>
+                        <th style="padding: 10px 8px; text-align: center; width: 75px;">Day 3 (Wed)</th>
+                        <th style="padding: 10px 8px; text-align: center; width: 75px;">Day 4 (Thu)</th>
+                        <th style="padding: 10px 8px; text-align: center; width: 75px;">Day 5 (Fri)</th>
+                        <th style="padding: 10px 12px; text-align: center; width: 110px; background-color: rgba(166, 25, 46, 0.05); font-weight: bold; color: var(--primary-text);">Total Charged</th>
                         <th style="padding: 10px 12px; width: 90px;">Case ID</th>
                         <th style="padding: 10px 12px; width: 240px;">Comments</th>
                       </tr>
@@ -1233,14 +1209,14 @@
                         <td style="padding: 10px 12px; color: var(--neutral-dark);">TRAINING-ATTENDANCE</td>
                         <td style="padding: 10px 12px; color: var(--neutral-muted);">018 - MUREX Office</td>
                         <td style="padding: 10px 12px;"><span class="badge" style="background: #e9ecef; color: #495057; font-size: 0.65rem; padding: 2px 6px;">Internal</span></td>
-                        <td style="padding: 10px 8px; text-align: center; font-weight: 500;" title="0.75 equivale a 6 horas de entrenamiento">0.75 <span style="display:block; font-size:0.65rem; color: var(--neutral-muted); font-weight: normal;">6h</span></td>
-                        <td style="padding: 10px 8px; text-align: center; font-weight: 500;" title="0.75 equivale a 6 horas de entrenamiento">0.75 <span style="display:block; font-size:0.65rem; color: var(--neutral-muted); font-weight: normal;">6h</span></td>
-                        <td style="padding: 10px 8px; text-align: center; font-weight: 500;" title="0.50 equivale a 4 horas de entrenamiento">0.50 <span style="display:block; font-size:0.65rem; color: var(--neutral-muted); font-weight: normal;">4h</span></td>
-                        <td style="padding: 10px 8px; text-align: center; font-weight: 500;" title="1.00 equivale a 8 horas de entrenamiento">1.00 <span style="display:block; font-size:0.65rem; color: var(--neutral-muted); font-weight: normal;">8h</span></td>
-                        <td style="padding: 10px 8px; text-align: center; font-weight: 500;" title="1.00 equivale a 8 horas de entrenamiento">1.00 <span style="display:block; font-size:0.65rem; color: var(--neutral-muted); font-weight: normal;">8h</span></td>
-                        <td style="padding: 10px 12px; text-align: center; font-weight: bold; color: var(--primary-text); background-color: rgba(166, 25, 46, 0.02);" title="Total de 32 horas en MX Learn">
+                        <td style="padding: 10px 8px; text-align: center; font-weight: 500;" title="0.75 equals 6 hours of training">0.75 <span style="display:block; font-size:0.65rem; color: var(--neutral-muted); font-weight: normal;">6h</span></td>
+                        <td style="padding: 10px 8px; text-align: center; font-weight: 500;" title="0.75 equals 6 hours of training">0.75 <span style="display:block; font-size:0.65rem; color: var(--neutral-muted); font-weight: normal;">6h</span></td>
+                        <td style="padding: 10px 8px; text-align: center; font-weight: 500;" title="0.50 equals 4 hours of training">0.50 <span style="display:block; font-size:0.65rem; color: var(--neutral-muted); font-weight: normal;">4h</span></td>
+                        <td style="padding: 10px 8px; text-align: center; font-weight: 500;" title="1.00 equals 8 hours of training">1.00 <span style="display:block; font-size:0.65rem; color: var(--neutral-muted); font-weight: normal;">8h</span></td>
+                        <td style="padding: 10px 8px; text-align: center; font-weight: 500;" title="1.00 equals 8 hours of training">1.00 <span style="display:block; font-size:0.65rem; color: var(--neutral-muted); font-weight: normal;">8h</span></td>
+                        <td style="padding: 10px 12px; text-align: center; font-weight: bold; color: var(--primary-text); background-color: rgba(166, 25, 46, 0.02);" title="Total of 32 hours in MX Learn">
                           4.00
-                          <span style="display:block; font-size:0.65rem; color: var(--neutral-muted); font-weight: normal;">(32 horas)</span>
+                          <span style="display:block; font-size:0.65rem; color: var(--neutral-muted); font-weight: normal;">(32 hours)</span>
                         </td>
                         <td style="padding: 10px 12px; color: var(--neutral-muted); font-style: italic;">-</td>
                         <td style="padding: 10px 12px; color: var(--neutral-dark);">Time Spent at MX Learn</td>
@@ -1252,14 +1228,14 @@
                         <td style="padding: 10px 12px; color: var(--neutral-dark);">ORG-MEETING</td>
                         <td style="padding: 10px 12px; color: var(--neutral-muted);">018 - MUREX Office</td>
                         <td style="padding: 10px 12px;"><span class="badge" style="background: #e9ecef; color: #495057; font-size: 0.65rem; padding: 2px 6px;">Internal</span></td>
-                        <td style="padding: 10px 8px; text-align: center; font-weight: 500;" title="0.25 equivale a 2 horas de reunión semanal">0.25 <span style="display:block; font-size:0.65rem; color: var(--neutral-muted); font-weight: normal;">2h</span></td>
+                        <td style="padding: 10px 8px; text-align: center; font-weight: 500;" title="0.25 equals 2 hours of weekly meeting">0.25 <span style="display:block; font-size:0.65rem; color: var(--neutral-muted); font-weight: normal;">2h</span></td>
                         <td style="padding: 10px 8px; text-align: center; color: var(--neutral-muted);">0.00 <span style="display:block; font-size:0.65rem; color: var(--neutral-muted); font-weight: normal;">0h</span></td>
                         <td style="padding: 10px 8px; text-align: center; color: var(--neutral-muted);">0.00 <span style="display:block; font-size:0.65rem; color: var(--neutral-muted); font-weight: normal;">0h</span></td>
                         <td style="padding: 10px 8px; text-align: center; color: var(--neutral-muted);">0.00 <span style="display:block; font-size:0.65rem; color: var(--neutral-muted); font-weight: normal;">0h</span></td>
                         <td style="padding: 10px 8px; text-align: center; color: var(--neutral-muted);">0.00 <span style="display:block; font-size:0.65rem; color: var(--neutral-muted); font-weight: normal;">0h</span></td>
-                        <td style="padding: 10px 12px; text-align: center; font-weight: bold; color: var(--primary-text); background-color: rgba(166, 25, 46, 0.02);" title="Total de 2 horas de reunión semanal">
+                        <td style="padding: 10px 12px; text-align: center; font-weight: bold; color: var(--primary-text); background-color: rgba(166, 25, 46, 0.02);" title="Total of 2 hours of weekly meeting">
                           0.25
-                          <span style="display:block; font-size:0.65rem; color: var(--neutral-muted); font-weight: normal;">(2 horas)</span>
+                          <span style="display:block; font-size:0.65rem; color: var(--neutral-muted); font-weight: normal;">(2 hours)</span>
                         </td>
                         <td style="padding: 10px 12px; color: var(--neutral-muted); font-style: italic;">-</td>
                         <td style="padding: 10px 12px; color: var(--neutral-dark);">Meeting: Finance CL P&L Weekly</td>
@@ -1271,14 +1247,14 @@
                         <td style="padding: 10px 12px; color: var(--neutral-dark);">ORG-MEETING</td>
                         <td style="padding: 10px 12px; color: var(--neutral-muted);">018 - MUREX Office</td>
                         <td style="padding: 10px 12px;"><span class="badge" style="background: #e9ecef; color: #495057; font-size: 0.65rem; padding: 2px 6px;">Internal</span></td>
-                        <td style="padding: 10px 8px; text-align: center; color: var(--neutral-muted);">0.00 <span style="display:block; font-size:0.65rem; color: var(--neutral-muted); font-weight: normal;">0h</span></td>
-                        <td style="padding: 10px 8px; text-align: center; font-weight: 500;" title="0.25 equivale a 2 horas de reunión mensual">0.25 <span style="display:block; font-size:0.65rem; color: var(--neutral-muted); font-weight: normal;">2h</span></td>
-                        <td style="padding: 10px 8px; text-align: center; color: var(--neutral-muted);">0.00 <span style="display:block; font-size:0.65rem; color: var(--neutral-muted); font-weight: normal;">0h</span></td>
+                        <td style="padding: 10px 8px; text-align: center; font-weight: 500;" title="0.25 equals 2 hours of monthly meeting">0.25 <span style="display:block; font-size:0.65rem; color: var(--neutral-muted); font-weight: normal;">2h</span></td>
                         <td style="padding: 10px 8px; text-align: center; color: var(--neutral-muted);">0.00 <span style="display:block; font-size:0.65rem; color: var(--neutral-muted); font-weight: normal;">0h</span></td>
                         <td style="padding: 10px 8px; text-align: center; color: var(--neutral-muted);">0.00 <span style="display:block; font-size:0.65rem; color: var(--neutral-muted); font-weight: normal;">0h</span></td>
-                        <td style="padding: 10px 12px; text-align: center; font-weight: bold; color: var(--primary-text); background-color: rgba(166, 25, 46, 0.02);" title="Total de 2 horas de reunión mensual">
+                        <td style="padding: 10px 8px; text-align: center; color: var(--neutral-muted);">0.00 <span style="display:block; font-size:0.65rem; color: var(--neutral-muted); font-weight: normal;">0h</span></td>
+                        <td style="padding: 10px 8px; text-align: center; color: var(--neutral-muted);">0.00 <span style="display:block; font-size:0.65rem; color: var(--neutral-muted); font-weight: normal;">0h</span></td>
+                        <td style="padding: 10px 12px; text-align: center; font-weight: bold; color: var(--primary-text); background-color: rgba(166, 25, 46, 0.02);" title="Total of 2 hours of monthly meeting">
                           0.25
-                          <span style="display:block; font-size:0.65rem; color: var(--neutral-muted); font-weight: normal;">(2 horas)</span>
+                          <span style="display:block; font-size:0.65rem; color: var(--neutral-muted); font-weight: normal;">(2 hours)</span>
                         </td>
                         <td style="padding: 10px 12px; color: var(--neutral-muted); font-style: italic;">-</td>
                         <td style="padding: 10px 12px; color: var(--neutral-dark);">Meeting: Finance Americas P&L Monthly</td>
@@ -1292,12 +1268,12 @@
                         <td style="padding: 10px 12px;"><span class="badge badge-orange" style="font-size: 0.65rem; padding: 2px 6px;">Nonbill</span></td>
                         <td style="padding: 10px 8px; text-align: center; color: var(--neutral-muted);">0.00 <span style="display:block; font-size:0.65rem; color: var(--neutral-muted); font-weight: normal;">0h</span></td>
                         <td style="padding: 10px 8px; text-align: center; color: var(--neutral-muted);">0.00 <span style="display:block; font-size:0.65rem; color: var(--neutral-muted); font-weight: normal;">0h</span></td>
-                        <td style="padding: 10px 8px; text-align: center; font-weight: 500;" title="0.50 equivale a 4 horas dedicadas al caso">0.50 <span style="display:block; font-size:0.65rem; color: var(--neutral-muted); font-weight: normal;">4h</span></td>
+                        <td style="padding: 10px 8px; text-align: center; font-weight: 500;" title="0.50 equals 4 hours dedicated to the case">0.50 <span style="display:block; font-size:0.65rem; color: var(--neutral-muted); font-weight: normal;">4h</span></td>
                         <td style="padding: 10px 8px; text-align: center; color: var(--neutral-muted);">0.00 <span style="display:block; font-size:0.65rem; color: var(--neutral-muted); font-weight: normal;">0h</span></td>
                         <td style="padding: 10px 8px; text-align: center; color: var(--neutral-muted);">0.00 <span style="display:block; font-size:0.65rem; color: var(--neutral-muted); font-weight: normal;">0h</span></td>
-                        <td style="padding: 10px 12px; text-align: center; font-weight: bold; color: var(--primary-text); background-color: rgba(166, 25, 46, 0.02);" title="Total de 4 horas dedicadas al caso">
+                        <td style="padding: 10px 12px; text-align: center; font-weight: bold; color: var(--primary-text); background-color: rgba(166, 25, 46, 0.02);" title="Total of 4 hours dedicated to the case">
                           0.50
-                          <span style="display:block; font-size:0.65rem; color: var(--neutral-muted); font-weight: normal;">(4 horas)</span>
+                          <span style="display:block; font-size:0.65rem; color: var(--neutral-muted); font-weight: normal;">(4 hours)</span>
                         </td>
                         <td style="padding: 10px 12px;"><span style="font-family: monospace; font-size: 0.72rem; background: var(--neutral-light); padding: 2px 6px; border-radius: 4px; border: 1px solid var(--neutral-border); font-weight: 600; color: var(--neutral-dark);">C-123456</span></td>
                         <td style="padding: 10px 12px; color: var(--neutral-dark);">Time Spent Solving the Case</td>
@@ -1305,7 +1281,7 @@
                       <!-- Total Row -->
                       <tr style="background: var(--neutral-light); font-weight: bold; border-top: 2px solid var(--neutral-border);">
                         <td style="padding: 12px 8px; text-align: center; color: var(--neutral-dark);">Total</td>
-                        <td style="padding: 12px 12px; font-size: 0.8rem; font-family: var(--font-display);" colspan="4">Total Timesheet Diarios (Deben sumar 1.0)</td>
+                        <td style="padding: 12px 12px; font-size: 0.8rem; font-family: var(--font-display);" colspan="4">Total Daily Timesheet (Must sum up to 1.0)</td>
                         <td style="padding: 12px 8px; text-align: center; color: var(--neutral-dark); background-color: rgba(166, 25, 46, 0.01);">1.00 <span style="display:block; font-size:0.65rem; color: var(--neutral-muted); font-weight: normal;">8h</span></td>
                         <td style="padding: 12px 8px; text-align: center; color: var(--neutral-dark); background-color: rgba(166, 25, 46, 0.01);">1.00 <span style="display:block; font-size:0.65rem; color: var(--neutral-muted); font-weight: normal;">8h</span></td>
                         <td style="padding: 12px 8px; text-align: center; color: var(--neutral-dark); background-color: rgba(166, 25, 46, 0.01);">1.00 <span style="display:block; font-size:0.65rem; color: var(--neutral-muted); font-weight: normal;">8h</span></td>
@@ -1313,10 +1289,10 @@
                         <td style="padding: 12px 8px; text-align: center; color: var(--neutral-dark); background-color: rgba(166, 25, 46, 0.01);">1.00 <span style="display:block; font-size:0.65rem; color: var(--neutral-muted); font-weight: normal;">8h</span></td>
                         <td style="padding: 12px 12px; text-align: center; font-weight: 800; color: var(--primary-text); background-color: rgba(166, 25, 46, 0.08); font-size: 0.85rem;">
                           5.00
-                          <span style="display:block; font-size:0.65rem; color: var(--primary-text); font-weight: 600;">(40 horas)</span>
+                          <span style="display:block; font-size:0.65rem; color: var(--primary-text); font-weight: 600;">(40 hours)</span>
                         </td>
                         <td style="padding: 12px 12px; color: var(--neutral-muted); font-style: italic;">-</td>
-                        <td style="padding: 12px 12px; color: var(--neutral-muted); font-weight: normal; font-size: 0.7rem;">Suma total semanal registrada</td>
+                        <td style="padding: 12px 12px; color: var(--neutral-muted); font-weight: normal; font-size: 0.7rem;">Total weekly sum recorded</td>
                       </tr>
                     </tbody>
                   </table>
@@ -1327,34 +1303,34 @@
                   <div style="background: var(--bg-app); border: 1px solid var(--neutral-border); padding: 12px; border-radius: 6px; display: flex; flex-direction: column; gap: 4px; transition: transform 0.2s, box-shadow 0.2s;" onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='var(--shadow-sm)';" onmouseout="this.style.transform='none'; this.style.boxShadow='none';">
                     <div style="display: flex; align-items: center; gap: 6px;">
                       <div style="width: 8px; height: 8px; border-radius: 50%; background-color: var(--primary);"></div>
-                      <span style="font-size: 0.65rem; font-weight: bold; color: var(--neutral-muted); text-transform: uppercase;">1. Entrenamiento (MX Learn)</span>
+                      <span style="font-size: 0.65rem; font-weight: bold; color: var(--neutral-muted); text-transform: uppercase;">1. Training (MX Learn)</span>
                     </div>
-                    <span style="font-size: 0.88rem; font-weight: bold; color: var(--neutral-dark);">32 Horas en Plataforma</span>
-                    <p style="font-size: 0.72rem; color: var(--neutral-muted); margin: 0; line-height: 1.3;">Equivale a <strong>4.00</strong> en total. Registrado de lunes a viernes (Día 1: 0.75, Día 2: 0.75, Día 3: 0.50, Día 4: 1.00, Día 5: 1.00).</p>
+                    <span style="font-size: 0.88rem; font-weight: bold; color: var(--neutral-dark);">32 Hours on Platform</span>
+                    <p style="font-size: 0.72rem; color: var(--neutral-muted); margin: 0; line-height: 1.3;">Equals <strong>4.00</strong> in total. Recorded Monday to Friday (Day 1: 0.75, Day 2: 0.75, Day 3: 0.50, Day 4: 1.00, Day 5: 1.00).</p>
                   </div>
                   <div style="background: var(--bg-app); border: 1px solid var(--neutral-border); padding: 12px; border-radius: 6px; display: flex; flex-direction: column; gap: 4px; transition: transform 0.2s, box-shadow 0.2s;" onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='var(--shadow-sm)';" onmouseout="this.style.transform='none'; this.style.boxShadow='none';">
                     <div style="display: flex; align-items: center; gap: 6px;">
                       <div style="width: 8px; height: 8px; border-radius: 50%; background-color: #0d6efd;"></div>
-                      <span style="font-size: 0.65rem; font-weight: bold; color: var(--neutral-muted); text-transform: uppercase;">2. Reunión Semanal (Weekly)</span>
+                      <span style="font-size: 0.65rem; font-weight: bold; color: var(--neutral-muted); text-transform: uppercase;">2. Weekly Meeting</span>
                     </div>
-                    <span style="font-size: 0.88rem; font-weight: bold; color: var(--neutral-dark);">2 Horas de Reunión</span>
-                    <p style="font-size: 0.72rem; color: var(--neutral-muted); margin: 0; line-height: 1.3;">Equivale a <strong>0.25</strong>. Registrado únicamente el Día 1 (Lunes) bajo el código <em>Finance CL P&L Weekly</em>.</p>
+                    <span style="font-size: 0.88rem; font-weight: bold; color: var(--neutral-dark);">2 Hours of Meeting</span>
+                    <p style="font-size: 0.72rem; color: var(--neutral-muted); margin: 0; line-height: 1.3;">Equals <strong>0.25</strong>. Recorded only on Day 1 (Monday) under the code <em>Finance CL P&L Weekly</em>.</p>
                   </div>
                   <div style="background: var(--bg-app); border: 1px solid var(--neutral-border); padding: 12px; border-radius: 6px; display: flex; flex-direction: column; gap: 4px; transition: transform 0.2s, box-shadow 0.2s;" onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='var(--shadow-sm)';" onmouseout="this.style.transform='none'; this.style.boxShadow='none';">
                     <div style="display: flex; align-items: center; gap: 6px;">
                       <div style="width: 8px; height: 8px; border-radius: 50%; background-color: #6f42c1;"></div>
-                      <span style="font-size: 0.65rem; font-weight: bold; color: var(--neutral-muted); text-transform: uppercase;">3. Reunión Mensual (Monthly)</span>
+                      <span style="font-size: 0.65rem; font-weight: bold; color: var(--neutral-muted); text-transform: uppercase;">3. Monthly Meeting</span>
                     </div>
-                    <span style="font-size: 0.88rem; font-weight: bold; color: var(--neutral-dark);">2 Horas de Reunión</span>
-                    <p style="font-size: 0.72rem; color: var(--neutral-muted); margin: 0; line-height: 1.3;">Equivale a <strong>0.25</strong>. Registrado únicamente el Día 2 (Martes) bajo el código <em>Finance Americas P&L Monthly</em>.</p>
+                    <span style="font-size: 0.88rem; font-weight: bold; color: var(--neutral-dark);">2 Hours of Meeting</span>
+                    <p style="font-size: 0.72rem; color: var(--neutral-muted); margin: 0; line-height: 1.3;">Equals <strong>0.25</strong>. Recorded only on Day 2 (Tuesday) under the code <em>Finance Americas P&L Monthly</em>.</p>
                   </div>
                   <div style="background: var(--bg-app); border: 1px solid var(--neutral-border); padding: 12px; border-radius: 6px; display: flex; flex-direction: column; gap: 4px; transition: transform 0.2s, box-shadow 0.2s;" onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='var(--shadow-sm)';" onmouseout="this.style.transform='none'; this.style.boxShadow='none';">
                     <div style="display: flex; align-items: center; gap: 6px;">
                       <div style="width: 8px; height: 8px; border-radius: 50%; background-color: var(--warning);"></div>
-                      <span style="font-size: 0.65rem; font-weight: bold; color: var(--neutral-muted); text-transform: uppercase;">4. Caso de Soporte (Support)</span>
+                      <span style="font-size: 0.65rem; font-weight: bold; color: var(--neutral-muted); text-transform: uppercase;">4. Support Case</span>
                     </div>
-                    <span style="font-size: 0.88rem; font-weight: bold; color: var(--neutral-dark);">4 Horas Resolviendo Caso</span>
-                    <p style="font-size: 0.72rem; color: var(--neutral-muted); margin: 0; line-height: 1.3;">Equivale a <strong>0.50</strong>. Registrado el Día 3 (Miércoles) bajo el ID de Caso <strong>C-123456</strong>.</p>
+                    <span style="font-size: 0.88rem; font-weight: bold; color: var(--neutral-dark);">4 Hours Solving Case</span>
+                    <p style="font-size: 0.72rem; color: var(--neutral-muted); margin: 0; line-height: 1.3;">Equals <strong>0.50</strong>. Recorded on Day 3 (Wednesday) under Case ID <strong>C-123456</strong>.</p>
                   </div>
                 </div>
               </div>
@@ -1371,21 +1347,20 @@
           <!-- Admin Dashboard Header / Welcome -->
           <div class="admin-header-row animate-fade-in">
             <div>
-              <span class="admin-badge" id="admin-role-badge"><i class="ti ti-shield-check"></i> Panel de
-                Administración</span>
-              <h1 id="admin-welcome-title">Bienvenida, Luana Ortega</h1>
-              <p id="admin-welcome-subtitle">Monitoreo técnico de los consultores de Murex Chile en entrenamiento.</p>
+              <span class="admin-badge" id="admin-role-badge"><i class="ti ti-shield-check"></i> Administration Panel</span>
+              <h1 id="admin-welcome-title">Welcome, Luana Ortega</h1>
+              <p id="admin-welcome-subtitle">Technical monitoring of Murex Chile consultants in training.</p>
             </div>
             <div class="admin-header-actions">
               <button id="btn-admin-register-newcomer" class="btn btn-primary" onclick="app.openAddMemberModal()"><i
-                  class="ti ti-user-plus"></i> Registrar Newcomer</button>
+                  class="ti ti-user-plus"></i> Register Newcomer</button>
             </div>
           </div>
 
           <!-- Admin Tabs -->
           <div class="admin-tabs-container animate-fade-in" id="admin-tabs-container">
             <button id="admin-tab-academic" class="admin-tab-btn active" onclick="app.switchAdminViewTab('academic')">
-              <i class="ti ti-school"></i> Seguimiento Académico
+              <i class="ti ti-school"></i> Academic Tracking
             </button>
             <button id="admin-tab-calendar" class="admin-tab-btn" onclick="app.switchAdminViewTab('calendar')">
               <i class="ti ti-calendar-event"></i> Calendario Hub
@@ -1398,45 +1373,45 @@
             <div class="metrics-grid">
               <div class="metric-card glass-card">
                 <div class="metric-card-header">
-                  <span>Consultores Activos</span>
+                  <span>Active Consultants</span>
                   <i class="ti ti-users"></i>
                 </div>
                 <div class="metric-card-value" id="metric-active-consultants">5</div>
                 <div class="metric-card-footer">
-                  <span class="text-success"><i class="ti ti-arrow-up-right"></i> +1 este mes</span>
+                  <span class="text-success"><i class="ti ti-arrow-up-right"></i> +1 this month</span>
                 </div>
               </div>
 
               <div class="metric-card glass-card">
                 <div class="metric-card-header">
-                  <span>Semana Promedio</span>
+                  <span>Average Week</span>
                   <i class="ti ti-calendar-stats"></i>
                 </div>
                 <div class="metric-card-value" id="metric-avg-week">11.2</div>
                 <div class="metric-card-footer">
-                  <span>de un máximo de 12 semanas</span>
+                  <span>out of a maximum of 12 weeks</span>
                 </div>
               </div>
 
               <div class="metric-card glass-card">
                 <div class="metric-card-header">
-                  <span>Tasa de Aprobación</span>
+                  <span>Passing Rate</span>
                   <i class="ti ti-discount-check"></i>
                 </div>
                 <div class="metric-card-value" id="metric-avg-score">87%</div>
                 <div class="metric-card-footer">
-                  <span class="text-success"><i class="ti ti-trending-up"></i> ↑ vs meta de 70%</span>
+                  <span class="text-success"><i class="ti ti-trending-up"></i> ↑ vs target of 70%</span>
                 </div>
               </div>
 
               <div class="metric-card glass-card">
                 <div class="metric-card-header">
-                  <span>Revisiones Pendientes</span>
+                  <span>Pending Reviews</span>
                   <i class="ti ti-clipboard-list"></i>
                 </div>
                 <div class="metric-card-value text-warning" id="metric-pending-reviews">2</div>
                 <div class="metric-card-footer">
-                  <span class="text-warning">Requieren evaluación de entregable</span>
+                  <span class="text-warning">Require deliverable evaluation</span>
                 </div>
               </div>
             </div>
@@ -1448,20 +1423,20 @@
               <div class="dashboard-main-col">
                 <div class="card glass-card">
                   <div class="card-header">
-                    <h3 class="card-title"><i class="ti ti-user-star"></i> Listado de Consultores en Onboarding</h3>
+                    <h3 class="card-title"><i class="ti ti-user-star"></i> Consultants in Onboarding List</h3>
                   </div>
 
                   <div class="consultant-table-container">
                     <table class="consultant-table">
                       <thead>
                         <tr>
-                          <th>Consultor</th>
-                          <th>Semana Actual</th>
-                          <th>Progreso General</th>
-                          <th>Score Promedio</th>
-                          <th>Tutor Asignado</th>
-                          <th>Estado Alerta</th>
-                          <th>Acción</th>
+                          <th>Consultant</th>
+                          <th>Current Week</th>
+                          <th>Overall Progress</th>
+                          <th>Average Score</th>
+                          <th>Assigned Tutor</th>
+                          <th>Alert Status</th>
+                          <th>Action</th>
                         </tr>
                       </thead>
                       <tbody id="admin-consultant-table-body">
@@ -1478,10 +1453,8 @@
 
                   <div class="card-empty-state" id="admin-inspector-empty-state">
                     <i class="ti ti-id-badge animate-pulse"></i>
-                    <h3>Inspector de Consultores</h3>
-                    <p>Haz clic en el botón <strong>"Inspeccionar"</strong> de cualquier consultor en la lista de la
-                      izquierda para abrir su expediente de onboarding, descargar sus entregables, revisar sus
-                      respuestas, darle feedback o forzar su desbloqueo.</p>
+                    <h3>Consultant Inspector</h3>
+                    <p>Click the <strong>"Inspect"</strong> button of any consultant in the list on the left to open their onboarding file, download their deliverables, review their answers, give feedback, or force unlock.</p>
                   </div>
 
                   <div class="inspector-content hidden" id="admin-inspector-active-content">
@@ -1495,13 +1468,10 @@
                       <div class="inspector-user-score-badge" id="inspector-user-avg-score">78%</div>
                     </div>
 
-                    <div class="divider" style="margin-bottom: 12px;"></div>
-
-                    <!-- Tabs Navigation for Inspector -->
-                    <div class="inspector-tabs-container">
+                    <div class="divider" style="margin-bottom: 15px;">
                       <button class="inspector-tab-btn active" id="btn-inspect-tab-weekly"
                         onclick="app.switchInspectorTab('weekly')">
-                        <i class="ti ti-calendar-event"></i> Detalle Semanal
+                        <i class="ti ti-calendar-event"></i> Weekly Details
                       </button>
                       <button class="inspector-tab-btn" id="btn-inspect-tab-passport"
                         onclick="app.switchInspectorTab('passport')">
@@ -1509,15 +1479,15 @@
                       </button>
                       <button class="inspector-tab-btn" id="btn-inspect-tab-evaluations"
                         onclick="app.switchInspectorTab('evaluations')">
-                        <i class="ti ti-checklist"></i> Historial Evaluaciones
+                        <i class="ti ti-checklist"></i> Evaluation History
                       </button>
                        <button class="inspector-tab-btn" id="btn-inspect-tab-hours"
                         onclick="app.switchInspectorTab('hours')">
-                        <i class="ti ti-clock"></i> Horas por Experto
+                        <i class="ti ti-clock"></i> Hours per Expert
                       </button>
                       <button class="inspector-tab-btn" id="btn-inspect-tab-onboarding"
                         onclick="app.switchInspectorTab('onboarding')">
-                        <i class="ti ti-folders"></i> Módulos Onboarding
+                        <i class="ti ti-folders"></i> Onboarding Modules
                       </button>
                     </div>
 
@@ -1525,7 +1495,7 @@
                     <div id="inspect-panel-weekly" class="inspector-tab-panel">
                       <!-- Weeks selector for inspected trainee -->
                       <div class="inspector-week-selector">
-                        <label for="admin-inspect-week-select">Semana a Inspeccionar:</label>
+                        <label for="admin-inspect-week-select">Week to Inspect:</label>
                         <select id="admin-inspect-week-select" onchange="app.inspectWeekChanged()">
                           <!-- 12 options generated in JS -->
                         </select>
@@ -1534,15 +1504,15 @@
                       <!-- Selected week status info -->
                       <div class="inspect-week-card">
                         <div class="inspect-week-card-header">
-                          <h4 id="inspect-week-card-title">Semana 12: Contabilidad Avanzada</h4>
-                          <span class="week-status-badge" id="inspect-week-card-status">En Curso</span>
+                          <h4 id="inspect-week-card-title">Week 12: Advanced Accounting</h4>
+                          <span class="week-status-badge" id="inspect-week-card-status">In Progress</span>
                         </div>
-                        <p class="inspect-week-desc" id="inspect-week-card-desc">Detalles del módulo...</p>
+                        <p class="inspect-week-desc" id="inspect-week-card-desc">Module details...</p>
                       </div>
 
                       <!-- Checklist status list -->
                       <div class="inspect-sub-section">
-                        <h5><i class="ti ti-list-check"></i> Estado de Checklist</h5>
+                        <h5><i class="ti ti-list-check"></i> Checklist Status</h5>
                         <ul class="inspect-checklist-list" id="inspect-checklist-status-list">
                           <!-- Checklist progress items -->
                         </ul>
@@ -1550,40 +1520,40 @@
 
                       <!-- Knowledge test score -->
                       <div class="inspect-sub-section">
-                        <h5><i class="ti ti-award"></i> Calificación Prueba Teórica</h5>
+                        <h5><i class="ti ti-award"></i> Theory Test Score</h5>
                         <div class="inspect-score-row">
                           <div class="inspect-score-val" id="inspect-test-score-display">-</div>
                           <div class="inspect-score-details" id="inspect-test-details-display">
-                            Sin responder todavía
+                            Not answered yet
                           </div>
                         </div>
                         <div id="inspect-test-action-area" style="margin-top: 10px; display: none;">
                           <button class="btn btn-outline btn-warning btn-xs" id="btn-unlock-test-attempt"
                             onclick="app.unlockTestAttempt()"
                             style="width: 100%; justify-content: center; display: flex; align-items: center; gap: 6px;">
-                            <i class="ti ti-lock-open"></i> Desbloquear Nuevo Intento
+                            <i class="ti ti-lock-open"></i> Unlock New Attempt
                           </button>
                         </div>
                       </div>
 
                       <!-- Account Classification Game score -->
                       <div class="inspect-sub-section" id="inspect-game-section" style="display: none;">
-                        <h5><i class="ti ti-trophy"></i> Desafío de Clasificación de Cuentas</h5>
+                        <h5><i class="ti ti-trophy"></i> Account Classification Challenge</h5>
                         <div class="inspect-score-row">
                           <div class="inspect-score-val" id="inspect-game-score-display">-</div>
                           <div class="inspect-score-details" id="inspect-game-details-display">
-                            No resuelto todavía
+                            Not solved yet
                           </div>
                         </div>
                       </div>
 
                       <!-- Deliverable validation area -->
                       <div class="inspect-sub-section" id="inspect-deliverable-area">
-                        <h5><i class="ti ti-file-symlink"></i> Entregable de la Semana</h5>
+                        <h5><i class="ti ti-file-symlink"></i> Deliverable of the Week</h5>
                         <div class="inspect-deliverable-box">
                           <div id="inspect-deliverable-empty" class="inspect-deliverable-state-info">
                             <i class="ti ti-file-off"></i>
-                            <span>No se ha enviado ningún entregable</span>
+                            <span>No deliverable submitted</span>
                           </div>
 
                           <div id="inspect-deliverable-submitted" class="inspect-deliverable-state-info"
@@ -1591,11 +1561,11 @@
                             <i class="ti ti-file-text text-primary"></i>
                             <div class="file-details">
                               <span class="file-name" id="inspect-file-name">ejercicio_semana_12.pdf</span>
-                              <span class="file-date" id="inspect-file-date">Enviado: 23-05-2026</span>
+                              <span class="file-date" id="inspect-file-date">Submitted: 23-05-2026</span>
                             </div>
                             <a href="#" class="btn btn-outline btn-xs" id="btn-mock-download"
                               onclick="app.downloadMockFile(event)">
-                              <i class="ti ti-download"></i> Descargar
+                              <i class="ti ti-download"></i> Download
                             </a>
                           </div>
 
@@ -1603,10 +1573,10 @@
                           <div class="inspect-deliverable-actions mt-10" id="inspect-deliverable-decision-buttons"
                             style="display: none;">
                             <button class="btn btn-success btn-xs" onclick="app.reviewDeliverable(true)">
-                              <i class="ti ti-check"></i> Aprobar
+                              <i class="ti ti-check"></i> Approve
                             </button>
                             <button class="btn btn-danger btn-xs" onclick="app.reviewDeliverable(false)">
-                              <i class="ti ti-x"></i> Rechazar
+                              <i class="ti ti-x"></i> Reject
                             </button>
                           </div>
                         </div>
@@ -1614,37 +1584,37 @@
 
                       <!-- Feedback and comments -->
                       <div class="inspect-sub-section">
-                        <h5><i class="ti ti-message-dots"></i> Feedback del Tutor</h5>
+                        <h5><i class="ti ti-message-dots"></i> Tutor Feedback</h5>
                         <div class="feedback-composer">
                           <textarea id="inspect-feedback-text"
-                            placeholder="Escribe un comentario o recomendación técnica para el consultor..."></textarea>
+                            placeholder="Write a comment or technical recommendation for the consultant..."></textarea>
                           <button class="btn btn-primary btn-xs mt-10" onclick="app.saveFeedbackComment()">
-                            Guardar Comentario
+                            Save Comment
                           </button>
                         </div>
                       </div>
 
                       <!-- Certification Checklist (Only active if they are on Week 12) -->
                       <div class="inspect-sub-section" id="cert-checklist-section" style="display: none;">
-                        <h5><i class="ti ti-award"></i> Hitos de Certificación (Semana 12)</h5>
-                        <p class="override-desc" style="margin-bottom: 10px;">Valida las competencias finales del
-                          consultor antes de autorizar su egreso del onboarding.</p>
+                        <h5><i class="ti ti-award"></i> Certification Milestones (Week 12)</h5>
+                        <p class="override-desc" style="margin-bottom: 10px;">Validate the final competencies of the
+                          consultant before authorizing graduation from onboarding.</p>
                         <div class="cert-checklist-wrapper">
                           <label class="cert-checklist-item">
                             <input type="checkbox" id="cert-hito-1" onchange="app.toggleCertHito(1)">
-                            <span>Autonomía técnica en Sandbox MX.3</span>
+                            <span>Technical autonomy in Sandbox MX.3</span>
                           </label>
                           <label class="cert-checklist-item">
                             <input type="checkbox" id="cert-hito-2" onchange="app.toggleCertHito(2)">
-                            <span>Comprensión contable IFRS 9 / GAAP</span>
+                            <span>Accounting understanding IFRS 9 / GAAP</span>
                           </label>
                           <label class="cert-checklist-item">
                             <input type="checkbox" id="cert-hito-3" onchange="app.toggleCertHito(3)">
-                            <span>Habilidades blandas y roleplays</span>
+                            <span>Soft skills and roleplays</span>
                           </label>
                           <label class="cert-checklist-item">
                             <input type="checkbox" id="cert-hito-4" onchange="app.toggleCertHito(4)">
-                            <span>Aprobación de la entrevista final con Manager</span>
+                            <span>Approval of the final interview with Manager</span>
                           </label>
                         </div>
                       </div>
@@ -1653,12 +1623,12 @@
 
                       <!-- Administrative Override Control -->
                       <div class="inspect-override-box">
-                        <h5><i class="ti ti-lock-open"></i> Controles Especiales</h5>
-                        <p class="override-desc">Puedes forzar la habilitación y desbloqueo de esta semana para el
-                          consultor de manera manual, saltando los requisitos.</p>
+                        <h5><i class="ti ti-lock-open"></i> Special Controls</h5>
+                        <p class="override-desc">You can manually force the enabling and unlocking of this week for the
+                          consultant, bypassing the requirements.</p>
                         <button class="btn btn-outline btn-warning btn-block" id="btn-admin-override"
                           onclick="app.adminOverrideWeek()">
-                          <i class="ti ti-bolt"></i> Forzar Habilitación de Semana
+                          <i class="ti ti-bolt"></i> Force Enable Week
                         </button>
                       </div>
                     </div>
@@ -1692,17 +1662,17 @@
                     <div id="inspect-panel-evaluations" class="inspector-tab-panel" style="display: none; padding: 15px 0;">
                       <div style="margin-bottom: 20px;">
                         <h4 style="font-size: 1.1rem; font-weight: bold; color: var(--neutral-dark); margin: 0 0 6px 0; font-family: var(--font-display);">
-                          Auditoría e Inspección de Evaluaciones
+                          Evaluations Audit & Inspection
                         </h4>
                         <p style="font-size: 0.8rem; color: var(--neutral-muted); margin: 0;">
-                          Revisa los intentos, respuestas marcadas, aciertos y fallas del consultor en sus evaluaciones semanales.
+                          Review the attempts, marked answers, successes, and failures of the consultant in their weekly evaluations.
                         </p>
                       </div>
 
                       <div class="eval-audit-grid" style="display: grid; grid-template-columns: 1.2fr 2fr; gap: 20px;">
                         <!-- Columna 1: Historial de Intentos -->
                         <div class="eval-audit-col-list">
-                          <label class="eval-audit-section-label" style="font-size: 0.75rem; font-weight: bold; color: var(--neutral-muted); text-transform: uppercase;">Historial de Intentos</label>
+                          <label class="eval-audit-section-label" style="font-size: 0.75rem; font-weight: bold; color: var(--neutral-muted); text-transform: uppercase;">Attempts History</label>
                           <div id="evaluations-attempts-list" class="eval-attempts-list" style="margin-top: 10px; display: flex; flex-direction: column; gap: 10px; max-height: 500px; overflow-y: auto;">
                             <!-- Injected dynamically -->
                           </div>
@@ -1710,9 +1680,9 @@
 
                         <!-- Columna 2: Detalle de Respuestas -->
                         <div class="eval-audit-col-viewer">
-                          <label class="eval-audit-section-label" style="font-size: 0.75rem; font-weight: bold; color: var(--neutral-muted); text-transform: uppercase;">Detalle de Respuestas</label>
+                          <label class="eval-audit-section-label" style="font-size: 0.75rem; font-weight: bold; color: var(--neutral-muted); text-transform: uppercase;">Response Details</label>
                           <div id="evaluation-detail-viewer" class="eval-detail-viewer-empty" style="margin-top: 10px; background: var(--neutral-light); border: 1px solid var(--neutral-border); padding: 15px; border-radius: 8px; font-size: 0.8rem; color: var(--neutral-muted); min-height: 200px;">
-                            Selecciona un intento del panel izquierdo para auditar las respuestas...
+                            Select an attempt from the left panel to audit the responses...
                           </div>
                         </div>
                       </div>
@@ -1722,21 +1692,21 @@
                     <div id="inspect-panel-hours" class="inspector-tab-panel" style="display: none; padding: 15px 0;">
                       <div style="margin-bottom: 20px;">
                         <h4 style="font-size: 1.1rem; font-weight: bold; color: var(--neutral-dark); margin: 0 0 6px 0; font-family: var(--font-display);">
-                          Horas Consumidas por Experto
+                          Hours Consumed by Expert
                         </h4>
                         <p style="font-size: 0.8rem; color: var(--neutral-muted); margin: 0;">
-                          Monitorea la cantidad de horas reales consumidas por el consultor junior en sus mentorías, masterclasses y soporte, clasificadas por experto.
+                          Monitor the actual hours consumed by the junior consultant in their mentoring, masterclasses, and support, classified by expert.
                         </p>
                       </div>
 
                       <!-- KPI Cards -->
                       <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 20px;">
                         <div style="background: var(--neutral-light); border: 1px solid var(--neutral-border); padding: 15px; border-radius: 8px; text-align: center;">
-                          <p style="font-size: 0.7rem; font-weight: bold; color: var(--neutral-muted); text-transform: uppercase; margin: 0 0 4px 0;">Total Horas Reales</p>
+                          <p style="font-size: 0.7rem; font-weight: bold; color: var(--neutral-muted); text-transform: uppercase; margin: 0 0 4px 0;">Total Actual Hours</p>
                           <h3 id="inspect-hours-total-kpi" style="font-size: 1.6rem; font-weight: bold; color: var(--primary); margin: 0;">0.0 hrs</h3>
                         </div>
                         <div style="background: var(--neutral-light); border: 1px solid var(--neutral-border); padding: 15px; border-radius: 8px; text-align: center;">
-                          <p style="font-size: 0.7rem; font-weight: bold; color: var(--neutral-muted); text-transform: uppercase; margin: 0 0 4px 0;">Sesiones Completadas</p>
+                          <p style="font-size: 0.7rem; font-weight: bold; color: var(--neutral-muted); text-transform: uppercase; margin: 0 0 4px 0;">Completed Sessions</p>
                           <h3 id="inspect-hours-sessions-kpi" style="font-size: 1.6rem; font-weight: bold; color: var(--success-text); margin: 0;">0</h3>
                         </div>
                       </div>
@@ -1744,7 +1714,7 @@
                       <div class="eval-audit-grid" style="display: grid; grid-template-columns: 1.2fr 2fr; gap: 20px; margin-bottom: 20px;">
                         <!-- Columna 1: Horas por Tipo de Sesión -->
                         <div style="background: #ffffff; border: 1px solid var(--neutral-border); padding: 15px; border-radius: 8px; display: flex; flex-direction: column; gap: 12px;">
-                          <label class="eval-audit-section-label" style="font-size: 0.75rem; font-weight: bold; color: var(--neutral-muted); text-transform: uppercase; margin: 0;">Horas por Tipo de Sesión</label>
+                          <label class="eval-audit-section-label" style="font-size: 0.75rem; font-weight: bold; color: var(--neutral-muted); text-transform: uppercase; margin: 0;">Hours by Session Type</label>
                           <div id="inspect-hours-type-list" style="display: flex; flex-direction: column; gap: 12px;">
                             <!-- Injected dynamically -->
                           </div>
@@ -1752,7 +1722,7 @@
 
                         <!-- Columna 2: Horas por Experto -->
                         <div style="background: #ffffff; border: 1px solid var(--neutral-border); padding: 15px; border-radius: 8px; display: flex; flex-direction: column; gap: 12px;">
-                          <label class="eval-audit-section-label" style="font-size: 0.75rem; font-weight: bold; color: var(--neutral-muted); text-transform: uppercase; margin: 0;">Horas por Experto / Consultor</label>
+                          <label class="eval-audit-section-label" style="font-size: 0.75rem; font-weight: bold; color: var(--neutral-muted); text-transform: uppercase; margin: 0;">Hours by Expert / Consultant</label>
                           <div id="inspect-hours-expert-list" class="custom-scrollbar" style="display: flex; flex-direction: column; gap: 12px; max-height: 250px; overflow-y: auto; padding-right: 4px;">
                             <!-- Injected dynamically -->
                           </div>
@@ -1762,13 +1732,13 @@
                       <!-- Gráficas CSS (sin Chart.js) -->
                       <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 20px; margin-top: 10px;">
                         <div style="background: #ffffff; border: 1px solid var(--neutral-border); padding: 15px; border-radius: 8px;">
-                          <label class="eval-audit-section-label" style="font-size: 0.75rem; font-weight: bold; color: var(--neutral-muted); text-transform: uppercase; margin: 0 0 12px 0; display: block;"><i class="ti ti-chart-bar"></i> Horas por Experto (Consumo)</label>
+                          <label class="eval-audit-section-label" style="font-size: 0.75rem; font-weight: bold; color: var(--neutral-muted); text-transform: uppercase; margin: 0 0 12px 0; display: block;"><i class="ti ti-chart-bar"></i> Hours by Expert (Consumption)</label>
                           <div id="inspect-chart-expert-bars" style="display: flex; flex-direction: column; gap: 10px;">
                             <!-- Injected dynamically -->
                           </div>
                         </div>
                         <div style="background: #ffffff; border: 1px solid var(--neutral-border); padding: 15px; border-radius: 8px;">
-                          <label class="eval-audit-section-label" style="font-size: 0.75rem; font-weight: bold; color: var(--neutral-muted); text-transform: uppercase; margin: 0 0 12px 0; display: block;"><i class="ti ti-chart-arrows-vertical"></i> Desviación (Planificado vs Real)</label>
+                          <label class="eval-audit-section-label" style="font-size: 0.75rem; font-weight: bold; color: var(--neutral-muted); text-transform: uppercase; margin: 0 0 12px 0; display: block;"><i class="ti ti-chart-arrows-vertical"></i> Deviation (Planned vs Actual)</label>
                           <div id="inspect-chart-deviation-bars" style="display: flex; flex-direction: column; gap: 10px;">
                             <!-- Injected dynamically -->
                           </div>
@@ -1783,10 +1753,10 @@
                       <!-- Detalle de Sesiones Realizadas -->
                       <div class="card glass-card" style="margin-top: 15px;">
                         <div class="card-header" style="padding: 10px 15px; display: flex; justify-content: space-between; align-items: center;">
-                          <h3 class="card-title" style="font-size: 0.8rem; margin: 0;"><i class="ti ti-report-analytics"></i> Detalle de Sesiones Realizadas</h3>
+                          <h3 class="card-title" style="font-size: 0.8rem; margin: 0;"><i class="ti ti-report-analytics"></i> Completed Sessions Detail</h3>
                           <div>
                             <select id="inspect-sessions-expert-filter" class="form-select" onchange="app.filterInspectedSessionsByExpert()" style="font-size: 0.72rem; padding: 2px 24px 2px 8px !important; border-radius: 4px; border: 1px solid var(--neutral-border); background: rgba(255, 255, 255, 0.9); max-width: 160px; color: var(--neutral-dark); height: 26px; line-height: 20px;">
-                              <option value="all">Todos los expertos</option>
+                              <option value="all">All experts</option>
                             </select>
                           </div>
                         </div>
@@ -1794,10 +1764,10 @@
                           <table class="mentor-log-table" style="width: 100%;">
                             <thead>
                               <tr>
-                                <th>Fecha</th>
-                                <th>Tema / Sesión</th>
-                                <th>Experto</th>
-                                <th>Duración</th>
+                                <th>Date</th>
+                                <th>Topic / Session</th>
+                                <th>Expert</th>
+                                <th>Duration</th>
                               </tr>
                             </thead>
                             <tbody id="inspect-hours-sessions-tbody">
@@ -1812,10 +1782,10 @@
                     <div id="inspect-panel-onboarding" class="inspector-tab-panel" style="display: none; padding: 15px 0;">
                       <div style="margin-bottom: 15px;">
                         <h4 style="font-size: 1.1rem; font-weight: bold; color: var(--neutral-dark); margin: 0 0 6px 0; font-family: var(--font-display);">
-                          Módulos de Onboarding MXLearn
+                          MXLearn Onboarding Modules
                         </h4>
                         <p style="font-size: 0.8rem; color: var(--neutral-muted); margin: 0;">
-                          Audita el progreso de los módulos de onboarding teórico obligatorio de MXLearn del consultor junior.
+                          Audit the progress of the junior consultant's mandatory theoretical onboarding modules on MXLearn.
                         </p>
                       </div>
 
@@ -1836,9 +1806,9 @@
                       <div class="card glass-card" style="margin-bottom: 15px; padding: 15px; display: flex; align-items: center; justify-content: space-between; gap: 20px; background: linear-gradient(135deg, rgba(219, 39, 119, 0.03) 0%, rgba(37, 99, 235, 0.03) 100%); border: 1px solid rgba(219, 39, 119, 0.12);">
                         <div>
                           <h4 style="margin: 0 0 5px 0; font-size: 0.85rem; color: var(--neutral-dark); font-weight: 700;">
-                            <i class="ti ti-chart-bar" style="color: var(--primary); margin-right: 4px;"></i> Progreso General de Onboarding
+                            <i class="ti ti-chart-bar" style="color: var(--primary); margin-right: 4px;"></i> General Onboarding Progress
                           </h4>
-                          <p id="inspect-onboarding-general-text" style="margin: 0; font-size: 0.75rem; color: var(--neutral-muted);">0 de 37 videos completados</p>
+                          <p id="inspect-onboarding-general-text" style="margin: 0; font-size: 0.75rem; color: var(--neutral-muted);">0 of 37 videos completed</p>
                         </div>
                         <div style="flex-grow: 1; max-width: 250px; background: var(--neutral-light); height: 10px; border-radius: 5px; overflow: hidden;">
                           <div id="inspect-onboarding-general-bar" style="background: linear-gradient(90deg, var(--primary) 0%, #db2777 100%); width: 0%; height: 100%; transition: width 0.3s ease;"></div>
@@ -1849,8 +1819,8 @@
                       <!-- Progress overview card -->
                       <div class="card glass-card" style="margin-bottom: 15px; padding: 15px; display: flex; align-items: center; justify-content: space-between; gap: 20px;">
                         <div>
-                          <h4 style="margin: 0 0 5px 0; font-size: 0.85rem; color: var(--neutral-dark);">Progreso del Módulo Seleccionado</h4>
-                          <p id="inspect-onboarding-progress-text" style="margin: 0; font-size: 0.75rem; color: var(--neutral-muted);">0 de 21 completados</p>
+                          <h4 style="margin: 0 0 5px 0; font-size: 0.85rem; color: var(--neutral-dark);">Selected Module Progress</h4>
+                          <p id="inspect-onboarding-progress-text" style="margin: 0; font-size: 0.75rem; color: var(--neutral-muted);">0 of 21 completed</p>
                         </div>
                         <div style="flex-grow: 1; max-width: 250px; background: var(--neutral-light); height: 10px; border-radius: 5px; overflow: hidden;">
                           <div id="inspect-onboarding-progress-bar" style="background: var(--primary); width: 0%; height: 100%; transition: width 0.3s ease;"></div>
@@ -1863,9 +1833,9 @@
                         <table class="mentor-log-table" style="width: 100%;">
                           <thead>
                             <tr>
-                              <th style="width: 60px; text-align: center;">Estado</th>
-                              <th>Módulo / Video</th>
-                              <th style="text-align: right; padding-right: 15px;">Estatus</th>
+                              <th style="width: 60px; text-align: center;">Status</th>
+                              <th>Module / Video</th>
+                              <th style="text-align: right; padding-right: 15px;">Status</th>
                             </tr>
                           </thead>
                           <tbody id="inspect-onboarding-tbody">
@@ -1881,8 +1851,8 @@
               <!-- Group Average Score Chart -->
               <div class="card glass-card mt-20" style="width: 100%;">
                 <div class="card-header">
-                  <h3 class="card-title"><i class="ti ti-chart-line"></i> Curva de Rendimiento de la Cohorte</h3>
-                  <p>Promedio de calificaciones del grupo de consultores por cada semana del onboarding</p>
+                  <h3 class="card-title"><i class="ti ti-chart-line"></i> Cohort Performance Curve</h3>
+                  <p>Average scores of the group of consultants for each week of onboarding</p>
                 </div>
                 <div class="chart-container-large">
                   <canvas id="admin-group-chart"></canvas>
@@ -1898,22 +1868,22 @@
             <div class="session-tabs-container animate-fade-in">
               <button class="session-tab-btn active" id="admin-session-tab-calendar"
                 onclick="app.switchAdminSessionTab('calendar')">
-                <i class="ti ti-calendar"></i> Vista Calendario
+                <i class="ti ti-calendar"></i> Calendar View
               </button>
               <button class="session-tab-btn" id="admin-session-tab-schedule"
                 onclick="app.switchAdminSessionTab('schedule')">
-                <i class="ti ti-calendar-plus"></i> Agendar Nueva Sesión
+                <i class="ti ti-calendar-plus"></i> Schedule New Session
               </button>
               <button class="session-tab-btn" id="admin-session-tab-pending"
                 onclick="app.switchAdminSessionTab('pending')">
-                <i class="ti ti-clock"></i> Solicitudes Pendientes
+                <i class="ti ti-clock"></i> Pending Requests
               </button>
               <button class="session-tab-btn" id="admin-session-tab-certification"
                 onclick="app.switchAdminSessionTab('certification')">
-                <i class="ti ti-award"></i> Checklist de Certificación
+                <i class="ti ti-award"></i> Certification Checklist
               </button>
               <button class="session-tab-btn" id="admin-session-tab-team" onclick="app.switchAdminSessionTab('team')">
-                <i class="ti ti-users-group"></i> Gestión de Equipo
+                <i class="ti ti-users-group"></i> Team Management
               </button>
             </div>
 
@@ -1927,21 +1897,21 @@
                     <div class="section-header"
                       style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px;">
                       <div>
-                        <h2><i class="ti ti-calendar-stats"></i> Calendario Consolidado</h2>
-                        <p>Horario mensual consolidado de capacitación y tutorías.</p>
+                        <h2><i class="ti ti-calendar-stats"></i> Consolidated Calendar</h2>
+                        <p>Consolidated monthly schedule of training and tutoring.</p>
                       </div>
                       <div style="display: flex; gap: 12px; align-items: center; margin-left: auto;">
                         <label for="manager-calendar-junior-select"
-                          style="font-weight: 600; font-size: 0.85rem;">Consultor:</label>
+                          style="font-weight: 600; font-size: 0.85rem;">Consultant:</label>
                         <select id="manager-calendar-junior-select"
                           onchange="app.changeManagerCalendarJunior(this.value)"
                           style="padding: 6px 10px; border-radius: 4px; border: 1px solid var(--neutral-border); outline: none; font-size: 0.85rem; background-color: white;"></select>
                       </div>
                       <div style="display: flex; gap: 8px; align-items: center; margin-left: 10px;">
                         <button class="btn btn-outline btn-xs" onclick="app.prevMonth()"><i
-                            class="ti ti-chevron-left"></i> Mes Ant.</button>
+                            class="ti ti-chevron-left"></i> Prev Month</button>
                         <span id="manager-month-display" style="font-weight: 600; font-size: 0.9rem;">Mayo 2026</span>
-                        <button class="btn btn-outline btn-xs" onclick="app.nextMonth()">Mes Sig. <i
+                        <button class="btn btn-outline btn-xs" onclick="app.nextMonth()">Next Month <i
                             class="ti ti-chevron-right"></i></button>
                       </div>
                     </div>
@@ -1956,22 +1926,22 @@
                       style="display: flex; gap: 15px; flex-wrap: wrap; font-size: 0.8rem; border-top: 1px solid var(--neutral-border); padding-top: 15px;">
                       <div style="display: flex; align-items: center; gap: 5px;"><span
                           style="display: inline-block; width: 12px; height: 12px; border-radius: 3px; background-color: rgba(37, 99, 235, 0.15); border: 1px solid #2563eb;"></span>
-                        Tutoría Semanal (Benjamín)</div>
+                        Weekly Tutoring (Benjamín)</div>
                       <div style="display: flex; align-items: center; gap: 5px;"><span
                           style="display: inline-block; width: 12px; height: 12px; border-radius: 3px; background-color: rgba(147, 51, 234, 0.15); border: 1px solid #9333ea;"></span>
                         Masterclass (Seniors)</div>
                       <div style="display: flex; align-items: center; gap: 5px;"><span
                           style="display: inline-block; width: 12px; height: 12px; border-radius: 3px; background-color: rgba(234, 179, 8, 0.15); border: 1px solid #eab308;"></span>
-                        Soporte Extra Solicitado</div>
+                        Requested Extra Support</div>
                       <div style="display: flex; align-items: center; gap: 5px;"><span
                           style="display: inline-block; width: 12px; height: 12px; border-radius: 3px; background-color: rgba(22, 163, 74, 0.15); border: 1px solid #16a34a;"></span>
-                        Soporte Extra Aprobado</div>
+                        Approved Extra Support</div>
                       <div style="display: flex; align-items: center; gap: 5px;"><span
                           style="display: inline-block; width: 12px; height: 12px; border-radius: 3px; background-color: rgba(249, 115, 22, 0.15); border: 1px solid #f97316;"></span>
-                        Sesión Manager (Luana)</div>
+                        Manager Session (Luana)</div>
                       <div style="display: flex; align-items: center; gap: 5px;"><span
                           style="display: inline-block; width: 12px; height: 12px; border-radius: 3px; background-color: rgba(100, 116, 139, 0.1); border: 1px solid #64748b;"></span>
-                        Sesión Ejecutada</div>
+                        Executed Session</div>
                     </div>
                   </div>
                 </div>
@@ -1985,14 +1955,14 @@
                     <div class="section-header"
                       style="display: flex; justify-content: space-between; align-items: center;">
                       <div>
-                        <h2><i class="ti ti-calendar-user"></i> Mi Calendario Operacional</h2>
-                        <p>Visualización de tus tutorías, clases asignadas y soporte extra programados.</p>
+                        <h2><i class="ti ti-calendar-user"></i> My Operational Calendar</h2>
+                        <p>Visualization of your scheduled tutoring sessions, assigned classes, and extra support.</p>
                       </div>
                       <div style="display: flex; gap: 8px; align-items: center;">
                         <button class="btn btn-outline btn-xs" onclick="app.prevMonth()"><i
-                            class="ti ti-chevron-left"></i> Mes Ant.</button>
+                            class="ti ti-chevron-left"></i> Prev Month</button>
                         <span id="expert-month-display" style="font-weight: 600; font-size: 0.9rem;">Mayo 2026</span>
-                        <button class="btn btn-outline btn-xs" onclick="app.nextMonth()">Mes Sig. <i
+                        <button class="btn btn-outline btn-xs" onclick="app.nextMonth()">Next Month <i
                             class="ti ti-chevron-right"></i></button>
                       </div>
                     </div>
@@ -2007,31 +1977,29 @@
                 <div class="dashboard-side-col">
                   <div class="card glass-card">
                     <div class="card-header">
-                      <h3 class="card-title"><i class="ti ti-checkbox"></i> Cierre de Sesiones</h3>
+                      <h3 class="card-title"><i class="ti ti-checkbox"></i> Session Closure</h3>
                     </div>
-                    <p class="override-desc mt-5" style="font-size: 0.8rem; color: var(--neutral-muted);">Registra los
-                      minutos de ejecución real tras terminar tus sesiones para auditar las horas.</p>
+                    <p class="override-desc mt-5" style="font-size: 0.8rem; color: var(--neutral-muted);">Register the
+                      actual execution minutes after finishing your sessions to audit hours.</p>
 
                     <div id="expert-close-session-form-container" style="margin-top: 15px;">
                       <div class="card-empty-state" id="expert-close-empty-state">
                         <i class="ti ti-hand-finger animate-bounce"></i>
-                        <h3>Selecciona una sesión</h3>
-                        <p>Haz clic en una sesión <strong>"Aprobada"</strong> en tu calendario de la izquierda para
-                          ingresar el tiempo real ejecutado.</p>
+                        <h3>Select a session</h3>
+                        <p>Click on an <strong>"Approved"</strong> session in your calendar on the left to
+                          enter the actual executed time.</p>
                       </div>
 
                       <div id="expert-close-active-content" class="hidden"
                         style="background: var(--neutral-light); padding: 15px; border-radius: var(--radius-sm); border: 1px solid var(--neutral-border);">
-                        <h4 id="close-session-title" style="font-size: 0.95rem; font-weight: 600;">Tutoría Semanal
-                          Obligatoria</h4>
+                        <h4 id="close-session-title" style="font-size: 0.95rem; font-weight: 600;">Mandatory Weekly Tutoring</h4>
                         <p id="close-session-details"
                           style="font-size: 0.8rem; color: var(--neutral-muted); margin-bottom: 12px;">Junior: Francisca
-                          Le Dantec<br>Planificado: 60 min (10:00 - 11:00)</p>
+                          Le Dantec<br>Planned: 60 min (10:00 - 11:00)</p>
 
                         <div class="form-group">
                           <label for="close-session-real-minutes"
-                            style="font-size: 0.85rem; font-weight: 500; display: block; margin-bottom: 4px;">Tiempo
-                            Real Ejecutado (Minutos)</label>
+                            style="font-size: 0.85rem; font-weight: 500; display: block; margin-bottom: 4px;">Actual Time Executed (Minutes)</label>
                           <div class="input-wrapper">
                             <i class="ti ti-clock"></i>
                             <input type="number" id="close-session-real-minutes" min="5" max="300"
@@ -2041,7 +2009,7 @@
 
                         <button class="btn btn-success btn-block" onclick="app.submitCloseSession()"
                           style="margin-top: 15px;">
-                          Finalizar y Auditar Sesión <i class="ti ti-check"></i>
+                          Finalize and Audit Session <i class="ti ti-check"></i>
                         </button>
                       </div>
                     </div>
@@ -2061,58 +2029,51 @@
                   <div class="dashboard-main-col">
                     <div class="card glass-card">
                       <div class="card-header">
-                        <h3 class="card-title"><i class="ti ti-presentation" style="color: #9333ea;"></i> Programar
-                          Masterclass Semanal (12 Semanas)</h3>
+                        <h3 class="card-title"><i class="ti ti-presentation" style="color: #9333ea;"></i> Schedule Weekly Masterclass (12 Weeks)</h3>
                       </div>
-                      <p class="override-desc mt-5" style="font-size: 0.8rem; color: var(--neutral-muted);">Asigna qué
-                        consultor dictará la Clase Magistral obligatoria de la semana.</p>
+                      <p class="override-desc mt-5" style="font-size: 0.8rem; color: var(--neutral-muted);">Assign which
+                        consultant will deliver the mandatory Masterclass of the week.</p>
 
                       <!-- Selected Experts Pills Wrapper -->
                       <div id="selected-pills-wrapper" style="margin-top: 15px; display: none;">
                         <label
-                          style="font-size: 0.75rem; font-weight: 600; color: var(--neutral-muted); text-transform: uppercase; letter-spacing: 0.03em; display: block; margin-bottom: 6px;">Relatores
-                          Asignados</label>
+                          style="font-size: 0.75rem; font-weight: 600; color: var(--neutral-muted); text-transform: uppercase; letter-spacing: 0.03em; display: block; margin-bottom: 6px;">Assigned Speakers</label>
                         <div id="selected-pills-zone" class="pills-container-gray"></div>
                       </div>
 
                       <div
                         style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; margin-top: 15px; background: var(--neutral-light); padding: 15px; border-radius: var(--radius-sm); border: 1px solid var(--neutral-border);">
                         <div class="form-group" style="margin-bottom: 0;">
-                          <label for="masterclass-type-select" style="font-size: 0.8rem; font-weight: 500;">Tipo de
-                            Sesión</label>
+                          <label for="masterclass-type-select" style="font-size: 0.8rem; font-weight: 500;">Session Type</label>
                           <select id="masterclass-type-select" class="form-select"
                             style="width: 100%; padding: 8px; border-radius: 4px; border: 1px solid var(--neutral-border); background-color: white; outline: none; font-size: 0.85rem;"
                             onchange="app.handleSessionTypeChange(this.value)">
-                            <option value="MASTERCLASS">Clase Magistral Malla</option>
-                            <option value="FEEDBACK_ALINEAMIENTO">Sesión de Feedback / Alineamiento</option>
-                            <option value="MUREX_LEARNING">Reunión Interna Murex (Global)</option>
+                            <option value="MASTERCLASS">Curriculum Masterclass</option>
+                            <option value="FEEDBACK_ALINEAMIENTO">Feedback / Alignment Session</option>
+                            <option value="MUREX_LEARNING">Murex Internal Meeting (Global)</option>
                           </select>
                         </div>
                         <div class="form-group" style="margin-bottom: 0;">
-                          <label for="masterclass-week-select" style="font-size: 0.8rem; font-weight: 500;">Semana de la
-                            Malla</label>
+                          <label for="masterclass-week-select" style="font-size: 0.8rem; font-weight: 500;">Curriculum Week</label>
                           <select id="masterclass-week-select" class="form-select"
                             style="width: 100%; padding: 8px; border-radius: 4px; border: 1px solid var(--neutral-border); background-color: white; outline: none; font-size: 0.85rem;"></select>
                         </div>
                         <div class="form-group" style="margin-bottom: 0;">
-                          <label for="masterclass-topic" style="font-size: 0.8rem; font-weight: 500;">Temática
-                            Específica</label>
-                          <input type="text" id="masterclass-topic" placeholder="ej. Análisis de Descalces Contables"
+                          <label for="masterclass-topic" style="font-size: 0.8rem; font-weight: 500;">Specific Topic</label>
+                          <input type="text" id="masterclass-topic" placeholder="e.g., Analysis of Accounting Mismatches"
                             style="width: 100%; padding: 8px; border-radius: 4px; border: 1px solid var(--neutral-border); outline: none; font-size: 0.85rem;">
                         </div>
                         <div class="form-group" style="margin-bottom: 0;">
-                          <label for="masterclass-junior-select" style="font-size: 0.8rem; font-weight: 500;">Junior
-                            Receptor</label>
+                          <label for="masterclass-junior-select" style="font-size: 0.8rem; font-weight: 500;">Recipient Junior</label>
                           <select id="masterclass-junior-select" class="form-select" onchange="app.updateMasterclassWeekSelect()"
                             style="width: 100%; padding: 8px; border-radius: 4px; border: 1px solid var(--neutral-border); background-color: white; outline: none; font-size: 0.85rem;"></select>
                         </div>
                         <div id="expert-selection-container" class="form-group"
                           style="margin-bottom: 0; min-width: 200px; position: relative;">
                           <label
-                            style="font-size: 0.8rem; font-weight: 500; display: block; margin-bottom: 4px;">Consultores
-                            Expertos Asistentes</label>
+                            style="font-size: 0.8rem; font-weight: 500; display: block; margin-bottom: 4px;">Attending Expert Consultants</label>
                           <div style="position: relative; width: 100%;">
-                            <input type="text" id="expert-search-input" placeholder="Escribe el nombre del relator..."
+                            <input type="text" id="expert-search-input" placeholder="Type the name of the speaker..."
                               style="width: 100%; padding: 8px 36px 8px 12px; border-radius: 4px; border: 1px solid var(--neutral-border); background-color: white; outline: none; font-size: 0.85rem; box-sizing: border-box;"
                               autocomplete="off" oninput="app.handleExpertSearch(this.value)"
                               onkeydown="app.handleSearchKeyDown(event)">
@@ -2128,13 +2089,12 @@
                           </div>
                         </div>
                         <div class="form-group" style="margin-bottom: 0;">
-                          <label for="masterclass-date" style="font-size: 0.8rem; font-weight: 500;">Fecha</label>
+                          <label for="masterclass-date" style="font-size: 0.8rem; font-weight: 500;">Date</label>
                           <input type="date" id="masterclass-date" onchange="app.updateMasterclassWeekSelect()"
                             style="width: 100%; padding: 8px; border-radius: 4px; border: 1px solid var(--neutral-border); outline: none; font-size: 0.85rem;">
                         </div>
                         <div class="form-group" style="margin-bottom: 0;">
-                          <label for="masterclass-time-block" style="font-size: 0.8rem; font-weight: 500;">Bloque
-                            Horario</label>
+                          <label for="masterclass-time-block" style="font-size: 0.8rem; font-weight: 500;">Time Block</label>
                           <select id="masterclass-time-block" class="form-select"
                             style="width: 100%; padding: 8px; border-radius: 4px; border: 1px solid var(--neutral-border); background-color: white; outline: none; font-size: 0.85rem;">
                             <option value="09:00-10:00">09:00 - 10:00</option>
@@ -2151,19 +2111,18 @@
                       </div>
                       <div style="display: flex; justify-content: flex-end; margin-top: 15px;">
                         <button class="btn btn-primary" onclick="app.scheduleMasterclass()"
-                          style="padding: 10px 20px; font-size: 0.85rem;"><i class="ti ti-calendar-plus"></i> Programar
-                          Masterclass</button>
+                          style="padding: 10px 20px; font-size: 0.85rem;"><i class="ti ti-calendar-plus"></i> Schedule Masterclass</button>
                       </div>
 
                       <div style="overflow-x: auto; margin-top: 15px;">
                         <table class="mentor-log-table" style="font-size: 0.85rem;">
                           <thead>
                             <tr>
-                              <th>Semana</th>
-                              <th>Tema de Masterclass</th>
-                              <th>Relator Asignado</th>
-                              <th>Horario Programado</th>
-                              <th>Estado</th>
+                              <th>Week</th>
+                              <th>Masterclass Topic</th>
+                              <th>Assigned Speaker</th>
+                              <th>Scheduled Time</th>
+                              <th>Status</th>
                             </tr>
                           </thead>
                           <tbody id="manager-masterclasses-tbody">
@@ -2178,36 +2137,35 @@
                   <div class="dashboard-side-col">
                     <div class="card glass-card">
                       <div class="card-header">
-                        <h3 class="card-title"><i class="ti ti-users-group" style="color: #f97316;"></i> Sesiones de
-                          Coaching / Logística</h3>
+                        <h3 class="card-title"><i class="ti ti-users-group" style="color: #f97316;"></i> Coaching / Logistics Sessions</h3>
                       </div>
-                      <p class="override-desc mt-5" style="font-size: 0.8rem; color: var(--neutral-muted);">Agenda
-                        sesiones 1-on-1 directas con los Juniors para feedback y desarrollo.</p>
+                      <p class="override-desc mt-5" style="font-size: 0.8rem; color: var(--neutral-muted);">Schedule
+                        direct 1-on-1 sessions with Juniors for feedback and development.</p>
 
                       <div
                         style="margin-top: 15px; background: var(--neutral-light); padding: 15px; border-radius: var(--radius-sm); border: 1px solid var(--neutral-border);">
                         <div class="form-group">
-                          <label for="coaching-junior-select" style="font-size: 0.8rem;">Colaborador</label>
+                          <label for="coaching-junior-select" style="font-size: 0.8rem;">Contributor</label>
                           <select id="coaching-junior-select" class="form-select"
                             style="width: 100%; padding: 8px; border-radius: 4px; border: 1px solid var(--neutral-border); background-color: white; outline: none;"></select>
                         </div>
                         <div class="form-group">
-                          <label for="coaching-topic" style="font-size: 0.8rem;">Tema de Sesión</label>
-                          <input type="text" id="coaching-topic" placeholder="ej. Feedback Semanal y Habilidades"
+                          <label for="coaching-topic" style="font-size: 0.8rem;">Session Topic</label>
+                          <input type="text" id="coaching-topic" placeholder="e.g., Weekly Feedback and Skills"
                             style="width: 100%; padding: 8px; border-radius: 4px; border: 1px solid var(--neutral-border); outline: none;">
                         </div>
                         <div class="form-group">
-                          <label for="coaching-date" style="font-size: 0.8rem;">Fecha</label>
+                          <label for="coaching-date" style="font-size: 0.8rem;">Date</label>
                           <input type="date" id="coaching-date"
                             style="width: 100%; padding: 8px; border-radius: 4px; border: 1px solid var(--neutral-border); outline: none;">
                         </div>
                         <div class="form-group">
-                          <label for="coaching-time" style="font-size: 0.8rem;">Hora</label>
+                          <label for="coaching-time" style="font-size: 0.8rem;">Time</label>
                           <input type="time" id="coaching-time"
                             style="width: 100%; padding: 8px; border-radius: 4px; border: 1px solid var(--neutral-border); outline: none;">
                         </div>
                         <button class="btn btn-primary btn-block" onclick="app.scheduleCoachingSession()"
-                          style="margin-top: 15px;"><i class="ti ti-calendar-plus"></i> Agendar Sesión</button>
+                          style="margin-top: 15px;"><i class="ti ti-calendar-plus"></i> Schedule Session</button>
                       </div>
                     </div>
                   </div>
@@ -2218,15 +2176,15 @@
               <div id="expert-scheduling-dashboard" style="display: none; max-width: 600px; margin: 0 auto;">
                 <div class="card glass-card">
                   <div class="card-header">
-                    <h3 class="card-title"><i class="ti ti-calendar-plus"></i> Agendar Tutoría Ordinaria</h3>
+                    <h3 class="card-title"><i class="ti ti-calendar-plus"></i> Schedule Regular Tutoring</h3>
                   </div>
-                  <p class="override-desc mt-5" style="font-size: 0.8rem; color: var(--neutral-muted);">Programa bloques
-                    de tutoría para los consultores en onboarding.</p>
+                  <p class="override-desc mt-5" style="font-size: 0.8rem; color: var(--neutral-muted);">Schedule tutoring blocks
+                    for consultants in onboarding.</p>
 
                   <form id="expert-tutor-schedule-form" onsubmit="app.handleExpertScheduleSession(event)"
                     style="margin-top: 15px;">
                     <div class="form-group">
-                      <label for="expert-tutor-junior">Junior en Onboarding</label>
+                      <label for="expert-tutor-junior">Junior in Onboarding</label>
                       <div class="input-wrapper">
                         <i class="ti ti-user" style="z-index: 10;"></i>
                         <select id="expert-tutor-junior" required
@@ -2236,15 +2194,15 @@
                       </div>
                     </div>
                     <div class="form-group">
-                      <label for="expert-tutor-topic">Tema / Semana</label>
+                      <label for="expert-tutor-topic">Topic / Week</label>
                       <div class="input-wrapper">
                         <i class="ti ti-tag"></i>
-                        <input type="text" id="expert-tutor-topic" required placeholder="ej. Tutoría de Avance Semanal"
+                        <input type="text" id="expert-tutor-topic" required placeholder="e.g., Weekly Progress Tutoring"
                           style="width: 100%; padding: 12px 14px 12px 42px; font-size: 0.9rem; background-color: var(--neutral-light); border: 1px solid var(--neutral-border); border-radius: var(--radius-sm); outline: none;">
                       </div>
                     </div>
                     <div class="form-group">
-                      <label for="expert-tutor-date">Fecha</label>
+                      <label for="expert-tutor-date">Date</label>
                       <div class="input-wrapper">
                         <i class="ti ti-calendar"></i>
                         <input type="date" id="expert-tutor-date" required
@@ -2253,7 +2211,7 @@
                     </div>
                     <div class="form-row" style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
                       <div class="form-group">
-                        <label for="expert-tutor-time">Hora</label>
+                        <label for="expert-tutor-time">Time</label>
                         <div class="input-wrapper">
                           <i class="ti ti-clock"></i>
                           <input type="time" id="expert-tutor-time" required
@@ -2261,21 +2219,20 @@
                         </div>
                       </div>
                       <div class="form-group">
-                        <label for="expert-tutor-duration">Duración</label>
+                        <label for="expert-tutor-duration">Duration</label>
                         <div class="input-wrapper">
                           <i class="ti ti-hourglass" style="z-index: 10;"></i>
                           <select id="expert-tutor-duration" required
                             style="width: 100%; padding: 12px 10px 12px 42px; font-size: 0.9rem; background-color: var(--neutral-light); border: 1px solid var(--neutral-border); border-radius: var(--radius-sm); outline: none;">
                             <option value="30">30 min</option>
-                            <option value="60" selected>1 hora</option>
-                            <option value="90">1.5 horas</option>
-                            <option value="120">2 horas</option>
+                            <option value="60" selected>1 hour</option>
+                            <option value="90">1.5 hours</option>
+                            <option value="120">2 hours</option>
                           </select>
                         </div>
                       </div>
                     </div>
-                    <button type="submit" class="btn btn-primary btn-block" style="margin-top: 15px;">Agendar
-                      Sesión</button>
+                    <button type="submit" class="btn btn-primary btn-block" style="margin-top: 15px;">Schedule Session</button>
                   </form>
                 </div>
               </div>
@@ -2294,21 +2251,20 @@
                   <div class="card glass-card" id="manager-pending-approvals-card"
                     style="display: none; margin-bottom: 20px;">
                     <div class="card-header">
-                      <h3 class="card-title"><i class="ti ti-clock-play" style="color: var(--primary);"></i> Solicitudes
-                        Pendientes de Aprobación</h3>
+                      <h3 class="card-title"><i class="ti ti-clock-play" style="color: var(--primary);"></i> Pending Approval Requests</h3>
                     </div>
-                    <p class="override-desc mt-5" style="font-size: 0.8rem; color: var(--neutral-muted);">Revisa y
-                      aprueba o rechaza las solicitudes de soporte técnico extraordinario realizadas por los Juniors.
+                    <p class="override-desc mt-5" style="font-size: 0.8rem; color: var(--neutral-muted);">Review and
+                      approve or reject extraordinary technical support requests made by Juniors.
                     </p>
                     <div style="overflow-x: auto; margin-top: 15px;">
                       <table class="mentor-log-table" style="min-width: 600px;">
                         <thead>
                           <tr>
                             <th>Junior</th>
-                            <th>Tema / Bloqueo</th>
-                            <th>Experto Asignado</th>
-                            <th>Fecha y Horario</th>
-                            <th>Acción</th>
+                            <th>Topic / Blocker</th>
+                            <th>Assigned Expert</th>
+                            <th>Date & Schedule</th>
+                            <th>Action</th>
                           </tr>
                         </thead>
                         <tbody id="manager-pending-approvals-tbody">
@@ -2322,11 +2278,9 @@
                   <div class="card glass-card">
                     <div class="card-header">
                       <h3 class="card-title"><i class="ti ti-report-analytics" style="color: var(--primary);"></i>
-                        Auditoría de Capacidad Operativa (IDS)</h3>
+                        Operational Capacity Audit (IDS)</h3>
                     </div>
-                    <p class="override-desc mt-5" style="font-size: 0.8rem; color: var(--neutral-muted);">Desglose
-                      acumulado de horas de soporte y transferencia de conocimiento entre el equipo y los consultores en
-                      entrenamiento.</p>
+                    <p class="override-desc mt-5" style="font-size: 0.8rem; color: var(--neutral-muted);">Accumulated breakdown of support hours and knowledge transfer between the team and the consultants in training.</p>
                     <div id="manager-audit-accordion-container" class="audit-panel mt-15">
                       <!-- Collapsible Junior panels injected dynamically -->
                     </div>
@@ -2339,15 +2293,15 @@
                   <div class="card glass-card"
                     style="background: linear-gradient(135deg, var(--primary) 0%, #7f1d1d 100%); color: white; padding: 20px;">
                     <h3 style="color: white; font-size: 1.1rem; opacity: 0.9; margin-bottom: 10px;"><i
-                        class="ti ti-clock-play"></i> Horas & Auditoría</h3>
+                        class="ti ti-clock-play"></i> Hours & Audit</h3>
                     <div class="divider" style="background: rgba(255, 255, 255, 0.2); margin: 10px 0;"></div>
 
                     <div style="display: flex; justify-content: space-between; margin-bottom: 10px; font-size: 0.9rem;">
-                      <span>Horas Ejecutadas Totales:</span>
+                      <span>Total Executed Hours:</span>
                       <strong id="audit-total-hours" style="font-size: 1rem;">0 hrs</strong>
                     </div>
                     <div style="display: flex; justify-content: space-between; font-size: 0.9rem;">
-                      <span>IDS (Índice Dep. Soporte):</span>
+                      <span>IDS (Support Dependency Index):</span>
                       <strong id="audit-ids-index" style="font-size: 1.15rem; color: #fef08a;">0%</strong>
                     </div>
                   </div>
@@ -2355,7 +2309,7 @@
                   <!-- Charts -->
                   <div class="card glass-card mt-20">
                     <div class="card-header">
-                      <h3 class="card-title"><i class="ti ti-chart-bar"></i> Horas por Experto (Consumo)</h3>
+                      <h3 class="card-title"><i class="ti ti-chart-bar"></i> Hours by Expert (Consumption)</h3>
                     </div>
                     <div class="chart-container" style="height: 180px; position: relative;">
                       <canvas id="manager-chart-resource-hours"></canvas>
@@ -2364,8 +2318,7 @@
 
                   <div class="card glass-card mt-20">
                     <div class="card-header">
-                      <h3 class="card-title"><i class="ti ti-chart-arrows-vertical"></i> Desviación (Planificado vs
-                        Real)</h3>
+                      <h3 class="card-title"><i class="ti ti-chart-arrows-vertical"></i> Deviation (Planned vs Actual)</h3>
                     </div>
                     <div class="chart-container" style="height: 180px; position: relative;">
                       <canvas id="manager-chart-deviation"></canvas>
@@ -2375,7 +2328,7 @@
                   <div class="card glass-card mt-20">
                     <div class="card-header"
                       style="display: flex; justify-content: space-between; align-items: center;">
-                      <h3 class="card-title"><i class="ti ti-report-analytics"></i> Bitácora de Auditoría</h3>
+                      <h3 class="card-title"><i class="ti ti-report-analytics"></i> Audit Trail</h3>
                       <button class="btn btn-outline btn-xs" onclick="app.resetCalendarEvents()"
                         style="color: var(--primary); padding: 2px 6px; font-size: 0.75rem;"><i
                           class="ti ti-refresh"></i> Reset</button>
@@ -2384,9 +2337,9 @@
                       <table class="mentor-log-table" style="width: 100%;">
                         <thead>
                           <tr>
-                            <th>Fecha</th>
-                            <th>Sesión</th>
-                            <th>T. Real</th>
+                            <th>Date</th>
+                            <th>Session</th>
+                            <th>Actual Time</th>
                           </tr>
                         </thead>
                         <tbody id="manager-audit-trail-tbody">
@@ -2402,21 +2355,20 @@
               <div id="expert-pending-dashboard" style="display: none;">
                 <div class="card glass-card">
                   <div class="card-header">
-                    <h3 class="card-title"><i class="ti ti-mailbox" style="color: var(--primary);"></i> Bandeja de
-                      Solicitudes Pendientes (Consulta Extra)</h3>
+                    <h3 class="card-title"><i class="ti ti-mailbox" style="color: var(--primary);"></i> Pending Requests Inbox (Extra Support)</h3>
                   </div>
-                  <p class="override-desc mt-5" style="font-size: 0.8rem; color: var(--neutral-muted);">Solicitudes
-                    enviadas directamente a ti por Juniors en onboarding. Tienes la exclusividad de Aceptar o Rechazar
-                    tras validar colisiones.</p>
+                  <p class="override-desc mt-5" style="font-size: 0.8rem; color: var(--neutral-muted);">Requests
+                    sent directly to you by Juniors in onboarding. You have the exclusive right to Accept or Reject
+                    after validating collisions.</p>
 
                   <div style="overflow-x: auto; margin-top: 15px;">
                     <table class="mentor-log-table">
                       <thead>
                         <tr>
                           <th>Junior</th>
-                          <th>Tema / Bloqueo</th>
-                          <th>Fecha y Hora</th>
-                          <th>Acciones</th>
+                          <th>Topic / Blocker</th>
+                          <th>Date and Time</th>
+                          <th>Actions</th>
                         </tr>
                       </thead>
                       <tbody id="expert-pending-requests-tbody">
@@ -2433,16 +2385,16 @@
             <div class="session-tab-pane" id="admin-session-pane-certification">
               <div class="card glass-card" style="max-width: 700px; margin: 0 auto;">
                 <div class="card-header">
-                  <h3 class="card-title"><i class="ti ti-award"></i> Hitos de Certificación de Habilitación</h3>
+                  <h3 class="card-title"><i class="ti ti-award"></i> Qualification Certification Milestones</h3>
                 </div>
-                <p class="override-desc mt-5" style="font-size: 0.85rem; color: var(--neutral-muted);">Valida la matriz
-                  de hitos de competencias técnicas para autorizar el paso del Junior a clientes reales.</p>
+                <p class="override-desc mt-5" style="font-size: 0.85rem; color: var(--neutral-muted);">Validate the matrix
+                  of technical competency milestones to authorize the Junior's transition to real clients.</p>
                 <div class="divider" style="margin: 15px 0;"></div>
 
                 <div
                   style="display: flex; gap: 12px; align-items: center; margin-bottom: 20px; background: var(--neutral-light); padding: 12px; border-radius: 6px; border: 1px solid var(--neutral-border);">
-                  <label for="admin-cert-junior-select" style="font-weight: 600; font-size: 0.9rem;">Seleccionar
-                    Consultor en Onboarding:</label>
+                  <label for="admin-cert-junior-select" style="font-weight: 600; font-size: 0.9rem;">Select
+                    Consultant in Onboarding:</label>
                   <select id="admin-cert-junior-select" onchange="app.renderAdminCertChecklist()"
                     style="padding: 8px 12px; border-radius: 4px; border: 1px solid var(--neutral-border); outline: none; font-size: 0.9rem; flex-grow: 1; max-width: 300px;"></select>
                 </div>
@@ -2464,12 +2416,12 @@
                 <div class="section-header"
                   style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 15px; margin-bottom: 20px;">
                   <div>
-                    <h2><i class="ti ti-users-group" style="color: #db2777;"></i> Orquestación de Equipo y Permisos</h2>
-                    <p>Administra los roles del área de Finance & PL y gestiona accesos.</p>
+                    <h2><i class="ti ti-users-group" style="color: #db2777;"></i> Team Orchestration & Permissions</h2>
+                    <p>Manage roles in the Finance & PL area and handle accesses.</p>
                   </div>
                   <button onclick="app.openAddMemberModal()" class="btn btn-primary"
                     style="display: inline-flex; align-items: center; gap: 8px;">
-                    <i class="ti ti-user-plus"></i> Dar de Alta Miembro
+                    <i class="ti ti-user-plus"></i> Register Member
                   </button>
                 </div>
 
@@ -2477,12 +2429,12 @@
                   <table class="mentor-log-table" style="font-size: 0.85rem; width: 100%;">
                     <thead>
                       <tr>
-                        <th>Nombre</th>
-                        <th>Correo Electrónico</th>
-                        <th>Rol / Permisos</th>
-                        <th>Tutor Asignado</th>
-                        <th>Estado / Malla</th>
-                        <th style="text-align: right;">Acciones</th>
+                        <th>Name</th>
+                        <th>Email Address</th>
+                        <th>Role / Permissions</th>
+                        <th>Assigned Tutor</th>
+                        <th>Status / Curriculum</th>
+                        <th style="text-align: right;">Actions</th>
                       </tr>
                     </thead>
                     <tbody id="team-table-body">
@@ -2507,14 +2459,14 @@
               <i class="ti ti-lock-square-rounded"></i>
             </div>
             <h2 style="color: #ef4444; margin-bottom: 12px; font-weight: 700; font-size: 1.8rem;">403 Forbidden</h2>
-            <h3 style="color: var(--neutral-dark); margin-bottom: 15px; font-size: 1.1rem;">Acceso Denegado</h3>
+            <h3 style="color: var(--neutral-dark); margin-bottom: 15px; font-size: 1.1rem;">Access Denied</h3>
             <p style="color: var(--neutral-muted); font-size: 0.9rem; line-height: 1.6; margin-bottom: 30px;">
-              No tienes permisos suficientes para acceder a esta sección. Si crees que esto es un error, por favor
-              contacta al administrador del sistema.
+              You do not have sufficient permissions to access this section. If you believe this is an error, please
+              contact the system administrator.
             </p>
             <button class="btn btn-outline" onclick="app.goHome()"
               style="margin: 0 auto; display: inline-flex; align-items: center; gap: 8px;">
-              <i class="ti ti-arrow-left"></i> Volver al Inicio
+              <i class="ti ti-arrow-left"></i> Go to Home
             </button>
           </div>
         </div>
@@ -2527,16 +2479,15 @@
       <div class="card glass-card animate-scale-up"
         style="max-width: 450px; background: white; padding: 25px; border-radius: var(--radius-sm); position: relative; box-shadow: var(--shadow-lg);">
         <button class="modal-close-btn" onclick="app.closeModifyModal()"><i class="ti ti-x"></i></button>
-        <h3 style="margin-bottom: 5px;"><i class="ti ti-edit" style="color: var(--primary);"></i> Reprogramar Sesión
-        </h3>
-        <p style="font-size: 0.8rem; color: var(--neutral-muted); margin-bottom: 20px;">Ajusta el día y horario de la
-          sesión solicitada.</p>
+        <h3 style="margin-bottom: 5px;"><i class="ti ti-edit" style="color: var(--primary);"></i> Reschedule Session</h3>
+        <p style="font-size: 0.8rem; color: var(--neutral-muted); margin-bottom: 20px;">Adjust the day and time of the
+          requested session.</p>
 
         <input type="hidden" id="modify-event-id">
 
         <div class="form-group" style="margin-bottom: 15px;">
           <label for="modify-event-date"
-            style="font-size: 0.85rem; font-weight: 500; display: block; margin-bottom: 6px;">Fecha Propuesta</label>
+            style="font-size: 0.85rem; font-weight: 500; display: block; margin-bottom: 6px;">Proposed Date</label>
           <div class="input-wrapper">
             <i class="ti ti-calendar"></i>
             <input type="date" id="modify-event-date"
@@ -2546,7 +2497,7 @@
 
         <div class="form-group" style="margin-bottom: 15px;">
           <label for="modify-event-start"
-            style="font-size: 0.85rem; font-weight: 500; display: block; margin-bottom: 6px;">Hora de Inicio</label>
+            style="font-size: 0.85rem; font-weight: 500; display: block; margin-bottom: 6px;">Start Time</label>
           <div class="input-wrapper">
             <i class="ti ti-clock"></i>
             <input type="time" id="modify-event-start"
@@ -2556,7 +2507,7 @@
 
         <div class="form-group" style="margin-bottom: 20px;">
           <label for="modify-event-end"
-            style="font-size: 0.85rem; font-weight: 500; display: block; margin-bottom: 6px;">Hora de Fin</label>
+            style="font-size: 0.85rem; font-weight: 500; display: block; margin-bottom: 6px;">End Time</label>
           <div class="input-wrapper">
             <i class="ti ti-clock"></i>
             <input type="time" id="modify-event-end"
@@ -2564,7 +2515,7 @@
           </div>
         </div>
 
-        <button class="btn btn-primary btn-block" onclick="app.submitModifyEvent()">Guardar Cambios <i
+        <button class="btn btn-primary btn-block" onclick="app.submitModifyEvent()">Save Changes <i
             class="ti ti-check"></i></button>
       </div>
     </div>
@@ -2578,15 +2529,15 @@
           <div class="certificate-inner">
             <div class="cert-logo"><span class="logo-accent">MX</span>Board</div>
 
-            <div class="cert-title">Certificado de Habilitación Técnica</div>
+            <div class="cert-title">Technical Qualification Certificate</div>
             <div class="cert-subtitle">Finance & PL — Plataforma MX.3</div>
 
             <div class="cert-body">
-              <p>Por cuanto el consultor(a)</p>
+              <p>Whereas the consultant</p>
               <div class="cert-candidate-name" id="cert-consultant-name">María Contreras</div>
-              <p>ha completado con distinción las 12 semanas del riguroso programa de onboarding técnico establecido en
-                el área Finance & PL de Murex Chile, demostrando autonomía operativa y aprobando todas las evaluaciones
-                teóricas y entregas de casos prácticos correspondientes.</p>
+              <p>has completed with distinction the 12 weeks of the rigorous technical onboarding program established in
+                the Finance & PL area of Murex Chile, demonstrating operational autonomy and passing all corresponding
+                theoretical evaluations and practical case submissions.</p>
             </div>
 
             <div class="cert-meta-row">
@@ -2595,9 +2546,9 @@
                 <div class="cert-sign-title">Manager Finance & PL<br>Murex Chile</div>
               </div>
               <div class="cert-details-box">
-                <p><strong>Código de Certificación:</strong> <span id="cert-uuid">MX3-FPL-992A8C</span></p>
-                <p><strong>Fecha de Emisión:</strong> <span id="cert-date">23-05-2026</span></p>
-                <p><strong>Validez:</strong> 24 meses</p>
+                <p><strong>Certification Code:</strong> <span id="cert-uuid">MX3-FPL-992A8C</span></p>
+                <p><strong>Issue Date:</strong> <span id="cert-date">23-05-2026</span></p>
+                <p><strong>Validity:</strong> 24 months</p>
               </div>
             </div>
           </div>
@@ -2605,9 +2556,9 @@
 
         <div class="cert-actions">
           <button class="btn btn-primary" onclick="window.print()">
-            <i class="ti ti-printer"></i> Imprimir Certificado
+            <i class="ti ti-printer"></i> Print Certificate
           </button>
-          <button class="btn btn-outline" onclick="app.closeCertificateModal()">Cerrar</button>
+          <button class="btn btn-outline" onclick="app.closeCertificateModal()">Close</button>
         </div>
       </div>
     </div>
@@ -2616,14 +2567,14 @@
     <div id="toast-notification" class="toast-container">
       <div class="toast-card">
         <i class="ti ti-info-circle toast-icon"></i>
-        <span class="toast-message" id="toast-message-text">Acción realizada con éxito</span>
+        <span class="toast-message" id="toast-message-text">Action completed successfully</span>
       </div>
     </div>
 
     <footer class="app-footer">
       <div class="container footer-content">
-        <p>&copy; 2026 Murex Chile. Área Finance & PL Onboarding.</p>
-        <p class="footer-meta">Desarrollado en base al proyecto de pasantía académica.</p>
+        <p>&copy; 2026 Murex Chile. Finance & PL Onboarding Area.</p>
+        <p class="footer-meta">Developed based on the academic internship project.</p>
       </div>
     </footer>
 
@@ -2634,43 +2585,42 @@
     <div class="card glass-card animate-scale-up"
       style="max-width: 450px; background: white; padding: 25px; border-radius: var(--radius-sm); position: relative; box-shadow: var(--shadow-lg);">
       <button class="modal-close-btn" onclick="app.closeAddMemberModal()"><i class="ti ti-x"></i></button>
-      <h3 style="margin-bottom: 5px;"><i class="ti ti-user-plus" style="color: var(--primary);"></i> Dar de Alta
-        Colaborador</h3>
-      <p style="font-size: 0.8rem; color: var(--neutral-muted); margin-bottom: 20px;">Registra un nuevo miembro en el
-        equipo de Finance & PL.</p>
+      <h3 style="margin-bottom: 5px;"><i class="ti ti-user-plus" style="color: var(--primary);"></i> Register Contributor</h3>
+      <p style="font-size: 0.8rem; color: var(--neutral-muted); margin-bottom: 20px;">Register a new member in the
+        Finance & PL team.</p>
 
       <form id="add-member-form" onsubmit="app.handleCreateMember(event)">
         <div class="form-group" style="margin-bottom: 15px;">
           <label for="new-member-name"
-            style="font-size: 0.85rem; font-weight: 500; display: block; margin-bottom: 6px;">Nombre Completo</label>
+            style="font-size: 0.85rem; font-weight: 500; display: block; margin-bottom: 6px;">Full Name</label>
           <div class="input-wrapper">
             <i class="ti ti-user"></i>
-            <input type="text" id="new-member-name" placeholder="Ej: Juan Francisco Orrego" required
+            <input type="text" id="new-member-name" placeholder="e.g. Juan Francisco Orrego" required
               style="width: 100%; padding: 10px 10px 10px 42px; font-size: 0.9rem; background-color: var(--neutral-light); border: 1px solid var(--neutral-border); border-radius: var(--radius-sm); outline: none;">
           </div>
         </div>
         <div class="form-group" style="margin-bottom: 15px;">
           <label for="new-member-email"
-            style="font-size: 0.85rem; font-weight: 500; display: block; margin-bottom: 6px;">Correo Murex</label>
+            style="font-size: 0.85rem; font-weight: 500; display: block; margin-bottom: 6px;">Murex Email</label>
           <div class="input-wrapper">
             <i class="ti ti-mail"></i>
-            <input type="email" id="new-member-email" placeholder="ejemplo@murex.cl" required
+            <input type="email" id="new-member-email" placeholder="example@murex.cl" required
               style="width: 100%; padding: 10px 10px 10px 42px; font-size: 0.9rem; background-color: var(--neutral-light); border: 1px solid var(--neutral-border); border-radius: var(--radius-sm); outline: none;">
           </div>
         </div>
         <div class="form-group" style="margin-bottom: 15px;">
           <label for="new-member-role"
-            style="font-size: 0.85rem; font-weight: 500; display: block; margin-bottom: 6px;">Rol Inicial</label>
+            style="font-size: 0.85rem; font-weight: 500; display: block; margin-bottom: 6px;">Initial Role</label>
           <select id="new-member-role" class="form-select" onchange="app.handleNewMemberRoleChange(this.value)"
             style="width: 100%; padding: 10px; font-size: 0.9rem; background-color: var(--neutral-light); border: 1px solid var(--neutral-border); border-radius: var(--radius-sm); outline: none;">
-            <option value="JUNIOR">Junior (Inicializa en Semana 1)</option>
-            <option value="TUTOR">Tutor (Junior Habilitado)</option>
+            <option value="JUNIOR">Junior (Starts at Week 1)</option>
+            <option value="TUTOR">Tutor (Qualified Junior)</option>
             <option value="SENIOR">Senior Consultant</option>
           </select>
         </div>
         <div class="form-group" id="new-member-tutor-group" style="margin-bottom: 20px;">
           <label for="new-member-tutor"
-            style="font-size: 0.85rem; font-weight: 500; display: block; margin-bottom: 6px;">Tutor Asignado</label>
+            style="font-size: 0.85rem; font-weight: 500; display: block; margin-bottom: 6px;">Assigned Tutor</label>
           <div class="input-wrapper">
             <i class="ti ti-user-star" style="z-index: 10;"></i>
             <select id="new-member-tutor" class="form-select"
@@ -2681,7 +2631,7 @@
         </div>
         <div class="form-group" id="new-member-entry-date-group" style="margin-bottom: 20px;">
           <label for="new-member-entry-date"
-            style="font-size: 0.85rem; font-weight: 500; display: block; margin-bottom: 6px;">Fecha de Ingreso</label>
+            style="font-size: 0.85rem; font-weight: 500; display: block; margin-bottom: 6px;">Start Date</label>
           <div class="input-wrapper">
             <i class="ti ti-calendar" style="z-index: 10;"></i>
             <input type="date" id="new-member-entry-date" required
@@ -2689,8 +2639,8 @@
           </div>
         </div>
         <div style="display: flex; gap: 10px; justify-content: flex-end;">
-          <button type="button" class="btn btn-outline" onclick="app.closeAddMemberModal()">Cancelar</button>
-          <button type="submit" class="btn btn-primary">Confirmar</button>
+          <button type="button" class="btn btn-outline" onclick="app.closeAddMemberModal()">Cancel</button>
+          <button type="submit" class="btn btn-primary">Confirm</button>
         </div>
       </form>
     </div>
@@ -2701,13 +2651,13 @@
     <div class="card glass-card animate-scale-up"
       style="max-width: 450px; background: white; padding: 25px; border-radius: var(--radius-sm); position: relative; box-shadow: var(--shadow-lg);">
       <button class="modal-close-btn" onclick="app.closeChangePasswordModal()"><i class="ti ti-x"></i></button>
-      <h3 style="margin-bottom: 5px;"><i class="ti ti-key" style="color: var(--primary);"></i> Cambiar Contraseña</h3>
-      <p style="font-size: 0.8rem; color: var(--neutral-muted); margin-bottom: 20px;">Actualiza la contraseña de tu cuenta ingresando tu correo y contraseña actual.</p>
+      <h3 style="margin-bottom: 5px;"><i class="ti ti-key" style="color: var(--primary);"></i> Change Password</h3>
+      <p style="font-size: 0.8rem; color: var(--neutral-muted); margin-bottom: 20px;">Update your account password by entering your email and current password.</p>
 
       <form id="change-password-form" onsubmit="app.handleChangePassword(event)">
         <div class="form-group" style="margin-bottom: 15px;">
           <label for="change-pass-email"
-            style="font-size: 0.85rem; font-weight: 500; display: block; margin-bottom: 6px;">Correo Electrónico</label>
+            style="font-size: 0.85rem; font-weight: 500; display: block; margin-bottom: 6px;">Email Address</label>
           <div class="input-wrapper">
             <i class="ti ti-mail"></i>
             <input type="email" id="change-pass-email" required
@@ -2716,7 +2666,7 @@
         </div>
         <div class="form-group" style="margin-bottom: 15px;">
           <label for="change-pass-current"
-            style="font-size: 0.85rem; font-weight: 500; display: block; margin-bottom: 6px;">Contraseña Actual</label>
+            style="font-size: 0.85rem; font-weight: 500; display: block; margin-bottom: 6px;">Current Password</label>
           <div class="input-wrapper">
             <i class="ti ti-lock"></i>
             <input type="password" id="change-pass-current" required
@@ -2725,7 +2675,7 @@
         </div>
         <div class="form-group" style="margin-bottom: 15px;">
           <label for="change-pass-new"
-            style="font-size: 0.85rem; font-weight: 500; display: block; margin-bottom: 6px;">Nueva Contraseña</label>
+            style="font-size: 0.85rem; font-weight: 500; display: block; margin-bottom: 6px;">New Password</label>
           <div class="input-wrapper">
             <i class="ti ti-lock"></i>
             <input type="password" id="change-pass-new" required
@@ -2734,7 +2684,7 @@
         </div>
         <div class="form-group" style="margin-bottom: 20px;">
           <label for="change-pass-confirm"
-            style="font-size: 0.85rem; font-weight: 500; display: block; margin-bottom: 6px;">Confirmar Nueva Contraseña</label>
+            style="font-size: 0.85rem; font-weight: 500; display: block; margin-bottom: 6px;">Confirm New Password</label>
           <div class="input-wrapper">
             <i class="ti ti-lock"></i>
             <input type="password" id="change-pass-confirm" required
@@ -2742,8 +2692,8 @@
           </div>
         </div>
         <div style="display: flex; gap: 10px; justify-content: flex-end;">
-          <button type="button" class="btn btn-outline" onclick="app.closeChangePasswordModal()">Cancelar</button>
-          <button type="submit" class="btn btn-primary">Guardar</button>
+          <button type="button" class="btn btn-outline" onclick="app.closeChangePasswordModal()">Cancel</button>
+          <button type="submit" class="btn btn-primary">Save</button>
         </div>
       </form>
     </div>
