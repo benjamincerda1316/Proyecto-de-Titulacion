@@ -1219,7 +1219,7 @@ const app = {
   // Simulator game state
   currentGameState: null,
   semanaActualDelJunior: 1,
-  currentFriwedWeek: 1,
+  currentViewedWeek: 1,
   limiteLockedMalla: 3,
   quizEngine: {
     semana: 1,
@@ -1246,7 +1246,7 @@ const app = {
     activeUser: null,      // Logged in user object
     loginRolee: 'consultant', // Current selected tab in login
     selectedWeekNum: null, // Selected week for consultant detail panel
-    inspectedUser: null,   // Currently inspected consultant in Admin Friw
+    inspectedUser: null,   // Currently inspected consultant in Admin View
     inspectedWeekNum: null, // Selected week in Admin Inspector
     activePanelTab: 'checklist', // Active tab in consultant panel (checklist, evaluation, deliverable)
     currentYear: new Date().getFullYear(),
@@ -2973,7 +2973,7 @@ const app = {
     if (this.state.activeUser) {
       // Re-load user session pointer to updated db values
       this.state.activeUser = this.state.db.users.find(u => u.id === this.state.activeUser.id);
-      this.renderCurrentFriw();
+      this.renderCurrentView();
     }
   },
 
@@ -2986,14 +2986,14 @@ const app = {
         // Sync with actual db values
         this.state.activeUser = this.state.db.users.find(u => u.id === userSession.id);
         if (this.state.activeUser) {
-          this.showFriw((this.state.activeUser.role === 'admin' || this.state.activeUser.role === 'tutor' || this.state.activeUser.role === 'senior') ? 'view-admin' : 'view-consultant');
+          this.showView((this.state.activeUser.role === 'admin' || this.state.activeUser.role === 'tutor' || this.state.activeUser.role === 'senior') ? 'view-admin' : 'view-consultant');
           this.setupHeaderBadge();
-          this.renderCurrentFriw();
+          this.renderCurrentView();
           return;
         }
       } catch (e) {}
     }
-    this.showFriw('view-login');
+    this.showView('view-login');
   },
 
   quickFill(email, password) {
@@ -3020,8 +3020,8 @@ const app = {
       this.setupHeaderBadge();
       
       this.showToast(`Welcome, ${user.name}`);
-      this.showFriw((user.role === 'admin' || user.role === 'tutor' || user.role === 'senior') ? 'view-admin' : 'view-consultant');
-      this.renderCurrentFriw();
+      this.showView((user.role === 'admin' || user.role === 'tutor' || user.role === 'senior') ? 'view-admin' : 'view-consultant');
+      this.renderCurrentView();
     } else {
       errorMsg.style.display = 'flex';
       document.getElementById('login-error-text').innerText = "Incorrect credentials. Please try again.";
@@ -3037,7 +3037,7 @@ const app = {
     // Reset test state just in case
     this.resetTestState();
     
-    this.showFriw('view-login');
+    this.showView('view-login');
     this.showToast("Logged out successfully.");
   },
 
@@ -3064,7 +3064,7 @@ const app = {
     }
   },
 
-  showFriw(viewId) {
+  showView(viewId) {
     if (viewId === 'view-admin') {
       const user = this.state.activeUser;
       if (!user || (user.role !== 'admin' && user.role !== 'tutor' && user.role !== 'senior')) {
@@ -3081,22 +3081,22 @@ const app = {
   },
 
   showForbiddenError(msg) {
-    this.showFriw('view-forbidden');
+    this.showView('view-forbidden');
     this.showToast(msg, "danger");
   },
 
   goHome() {
     if (this.state.activeUser) {
       const r = this.state.activeUser.role;
-      this.showFriw((r === 'admin' || r === 'tutor' || r === 'senior') ? 'view-admin' : 'view-consultant');
-      this.renderCurrentFriw();
+      this.showView((r === 'admin' || r === 'tutor' || r === 'senior') ? 'view-admin' : 'view-consultant');
+      this.renderCurrentView();
     } else {
-      this.showFriw('view-login');
+      this.showView('view-login');
     }
   },
 
-  // Friw Router Dispatcher
-  renderCurrentFriw() {
+  // View Router Dispatcher
+  renderCurrentView() {
     if (!this.state.activeUser) return;
     
     // Render SMTP outbox contents
@@ -3104,9 +3104,9 @@ const app = {
     
     const r = this.state.activeUser.role;
     if (r === 'admin' || r === 'tutor' || r === 'senior') {
-      this.renderAdminFriw();
+      this.renderAdminView();
     } else {
-      this.renderConsultantFriw();
+      this.renderConsultantView();
     }
   },
 
@@ -3115,7 +3115,7 @@ const app = {
   // ==========================================================================
   // CONSULTANT DASHBOARD RENDERING & LOGIC
   // ==========================================================================
-  renderConsultantFriw() {
+  renderConsultantView() {
     const userId = this.state.activeUser.id;
     const progress = this.state.db.consultant_progress[userId];
     
@@ -3257,7 +3257,7 @@ const app = {
   },
 
   loadWeekDetail(weekNum) {
-    this.currentFriwedWeek = parseInt(weekNum);
+    this.currentViewedWeek = parseInt(weekNum);
     const userId = this.state.activeUser.id;
     const progress = this.state.db.consultant_progress[userId];
     const template = this.state.db.week_templates.find(wt => wt.week_number === weekNum);
@@ -3310,7 +3310,7 @@ const app = {
     // Update help text to reflect read-only status for onboarding juniors
     const paneHelp = document.querySelector('#pane-checklist .pane-help');
     if (paneHelp) {
-      paneHelp.innerHTML = `Friw your practical tasks for the week. Only your assigned tutor <strong>(${tutorName})</strong> can update and mark them as completed.`;
+      paneHelp.innerHTML = `View your practical tasks for the week. Only your assigned tutor <strong>(${tutorName})</strong> can update and mark them as completed.`;
     }
 
     template.checklist_items.forEach((item, idx) => {
@@ -3595,7 +3595,7 @@ const app = {
     const progress = this.state.db && this.state.db.consultant_progress ? this.state.db.consultant_progress[activeUserId] : null;
     const completedCount = progress ? (progress.completed_weeks ? progress.completed_weeks.length : 0) : 0;
     const currentWeekNum = Math.min(completedCount + 1, 12);
-    const esSemanaBloqueada = (this.currentFriwedWeek > currentWeekNum);
+    const esSemanaBloqueada = (this.currentViewedWeek > currentWeekNum);
     const inputDisabled = esSemanaBloqueada ? 'disabled' : '';
     
     let subfolderHtml = '';
@@ -3692,7 +3692,7 @@ const app = {
   },
 
   navigateWorkspaceWeek(direccion) {
-    const nuevaSemana = this.currentFriwedWeek + direccion;
+    const nuevaSemana = this.currentViewedWeek + direccion;
     
     const userId = this.state.activeUser ? this.state.activeUser.id : 'default';
     const progress = this.state.db && this.state.db.consultant_progress ? this.state.db.consultant_progress[userId] : null;
@@ -3703,7 +3703,7 @@ const app = {
       return; // Bloqueo de seguridad
     }
     
-    this.currentFriwedWeek = nuevaSemana;
+    this.currentViewedWeek = nuevaSemana;
     this.renderWorkspace(nuevaSemana);
   },
 
@@ -3718,10 +3718,10 @@ const app = {
     const currentWeekNum = Math.min(completedCount + 1, 12);
     
     // Flecha Izquierda: Gris solo si estoy en la primera página
-    btnPrev.disabled = (this.currentFriwedWeek === 1);
+    btnPrev.disabled = (this.currentViewedWeek === 1);
     
     // Flecha Derecha: Se apaga y se pone en gris de forma estricta al llegar a la semana actual en curso
-    if (this.currentFriwedWeek >= currentWeekNum) {
+    if (this.currentViewedWeek >= currentWeekNum) {
       btnNext.disabled = true;
       btnNext.setAttribute('title', `Locked content: Week ${currentWeekNum + 1} locked`);
     } else {
@@ -3743,7 +3743,7 @@ const app = {
 
   classGameInit() {
     const userId = this.state.activeUser ? this.state.activeUser.id : 'default';
-    const weekNum = this.currentFriwedWeek || 1;
+    const weekNum = this.currentViewedWeek || 1;
     const storageKey = `class_game_progress_${userId}_w${weekNum}`;
     const saved = localStorage.getItem(storageKey);
     const count = (weekNum === 2) ? 25 : 15;
@@ -3805,7 +3805,7 @@ const app = {
     this.classGameState.score = 0;
     this.classGameState.classified = [];
     const cloned = JSON.parse(JSON.stringify(classGameAccounts));
-    const weekNum = this.currentFriwedWeek || 1;
+    const weekNum = this.currentViewedWeek || 1;
     const count = (weekNum === 2) ? 25 : 15;
     const shuffled = this.classGameShuffle(cloned);
     this.classGameState.shuffledAccounts = shuffled.slice(0, count);
@@ -3815,7 +3815,7 @@ const app = {
 
   classGameSaveState() {
     const userId = this.state.activeUser ? this.state.activeUser.id : 'default';
-    const weekNum = this.currentFriwedWeek || 1;
+    const weekNum = this.currentViewedWeek || 1;
     const storageKey = `class_game_progress_${userId}_w${weekNum}`;
     localStorage.setItem(storageKey, JSON.stringify(this.classGameState));
   },
@@ -3829,7 +3829,7 @@ const app = {
     const startEl = document.getElementById('class-game-start');
     const totalCount = this.classGameState.shuffledAccounts.length || classGameAccounts.length;
     
-    const weekNum = this.currentFriwedWeek || 1;
+    const weekNum = this.currentViewedWeek || 1;
 
     // Verificar si es la semana 2 y la evaluación ya se completó o guardó
     const userId = this.state.activeUser ? this.state.activeUser.id : 'default';
@@ -4019,7 +4019,7 @@ const app = {
       
       if (this.classGameState.currentIndex >= totalCount) {
         const userId = this.state.activeUser ? this.state.activeUser.id : 'default';
-        const weekNum = this.currentFriwedWeek || 1;
+        const weekNum = this.currentViewedWeek || 1;
         if (this.state.db && this.state.db.consultant_progress[userId]) {
           const progress = this.state.db.consultant_progress[userId];
           if (!progress.game_scores) progress.game_scores = {};
@@ -4054,7 +4054,7 @@ const app = {
         
         if (this.classGameState.currentIndex >= totalCount) {
           const userId = this.state.activeUser ? this.state.activeUser.id : 'default';
-          const weekNum = this.currentFriwedWeek || 1;
+          const weekNum = this.currentViewedWeek || 1;
           if (this.state.db && this.state.db.consultant_progress[userId]) {
             const progress = this.state.db.consultant_progress[userId];
             if (!progress.game_scores) progress.game_scores = {};
@@ -4099,7 +4099,7 @@ const app = {
   },
 
   classGameReset() {
-    const weekNum = this.currentFriwedWeek || 1;
+    const weekNum = this.currentViewedWeek || 1;
     if (weekNum === 2) {
       this.showToast("Only one attempt is allowed for the Week 2 classification evaluation.", "warning");
       return;
@@ -4199,15 +4199,15 @@ const app = {
     this.simulatorState.answers.clear();
     
     // Hide game board, show home view
-    const homeFriw = document.getElementById('sim-home-view');
-    const gameFriw = document.getElementById('sim-game-view');
+    const homeView = document.getElementById('sim-home-view');
+    const gameView = document.getElementById('sim-game-view');
     const btnBack = document.getElementById('sim-btn-back');
     const btnVal = document.getElementById('sim-btn-validate');
     const btnReset = document.getElementById('sim-btn-reset');
     const prodBadge = document.getElementById('sim-current-product-badge');
     
-    if (homeFriw) homeFriw.classList.remove('hidden');
-    if (gameFriw) gameFriw.classList.add('hidden');
+    if (homeView) homeView.classList.remove('hidden');
+    if (gameView) gameView.classList.add('hidden');
     if (btnBack) btnBack.classList.add('hidden');
     if (btnVal) btnVal.classList.add('hidden');
     if (btnReset) btnReset.classList.add('hidden');
@@ -4236,15 +4236,15 @@ const app = {
     }
     
     // Show game board, hide home view
-    const homeFriw = document.getElementById('sim-home-view');
-    const gameFriw = document.getElementById('sim-game-view');
+    const homeView = document.getElementById('sim-home-view');
+    const gameView = document.getElementById('sim-game-view');
     const btnBack = document.getElementById('sim-btn-back');
     const btnVal = document.getElementById('sim-btn-validate');
     const btnReset = document.getElementById('sim-btn-reset');
     const prodBadge = document.getElementById('sim-current-product-badge');
     
-    if (homeFriw) homeFriw.classList.add('hidden');
-    if (gameFriw) gameFriw.classList.remove('hidden');
+    if (homeView) homeView.classList.add('hidden');
+    if (gameView) gameView.classList.remove('hidden');
     if (btnBack) btnBack.classList.remove('hidden');
     
     if (this.simIsReadOnly()) {
@@ -5381,7 +5381,7 @@ const app = {
     this.checkWeekCompletion(userId, this.quizEngine.semana);
 
     this.saveDatabase();
-    this.renderConsultantFriw();
+    this.renderConsultantView();
   },
 
   // Mock upload handlers
@@ -5443,7 +5443,7 @@ const app = {
     };
     
     this.saveDatabase();
-    this.renderConsultantFriw();
+    this.renderConsultantView();
     this.showToast("File uploaded locally. Click Submit.");
   },
 
@@ -5454,7 +5454,7 @@ const app = {
     
     delete progress.deliverables[weekNum];
     this.saveDatabase();
-    this.renderConsultantFriw();
+    this.renderConsultantView();
     this.showToast("File removed.");
   },
 
@@ -5468,7 +5468,7 @@ const app = {
       progress.deliverables[weekNum].status = 'pending_review';
       progress.deliverables[weekNum].submittedAt = new Date().toISOString();
       this.saveDatabase();
-      this.renderConsultantFriw();
+      this.renderConsultantView();
       this.showToast("Deliverable successfully submitted to the tutor.");
       
       // SMTP Alert simulation to Tutor
@@ -5556,7 +5556,7 @@ const app = {
     this.renderQuizQuestion();
     
     // Update Layout Tabs State
-    this.renderConsultantFriw();
+    this.renderConsultantView();
   },
 
   updateTestTimer() {
@@ -5719,7 +5719,7 @@ const app = {
     this.saveDatabase();
     
     // Render and show results
-    this.renderConsultantFriw();
+    this.renderConsultantView();
     this.showToast(alertMsg, alertType);
   },
 
@@ -5860,7 +5860,7 @@ const app = {
   // ==========================================================================
   // ADMIN DASHBOARD RENDERING & LOGIC
   // ==========================================================================
-  renderAdminFriw() {
+  renderAdminView() {
     const isTutor = this.state.activeUser.role === 'tutor' || this.state.activeUser.role === 'senior';
     const isSenior = this.state.activeUser.role === 'senior';
     const isAdmin = this.state.activeUser.role === 'admin';
@@ -6025,7 +6025,7 @@ const app = {
     // 3. Render Team Curve Cohort Chart
     this.renderCohortChart();
 
-    // 4. Update/Render Active Inspector Friw
+    // 4. Update/Render Active Inspector View
     if (this.state.inspectedUser) {
       // Validate that the inspected trainee is still in the list (crucial for Tutors who only see a subset)
       const stillVisible = trainees.some(t => t.id === this.state.inspectedUser.id);
@@ -6450,7 +6450,7 @@ const app = {
       }
       
       // Re-render the admin view so the status indicators in the trainee list update immediately!
-      this.renderAdminFriw();
+      this.renderAdminView();
     } catch (err) {
       console.error("Error unlocking test attempt:", err);
       this.showToast(`Error unlocking attempt: ${err.message}`, "danger");
@@ -6802,7 +6802,7 @@ const app = {
         `Hello ${trainee.name},\n\nYour tutor has graded your practical deliverable for Week ${weekNum} as: ${approve ? 'APPROVED' : 'REJECTED'}.\n\nTutor Feedback: "${progress.comments[weekNum] || 'No additional comments.'}"`
       );
       
-      this.renderAdminFriw();
+      this.renderAdminView();
     }
   },
 
@@ -6815,7 +6815,7 @@ const app = {
     progress.comments[weekNum] = text;
     this.saveDatabase();
     this.showToast("Comment saved. Visible to the consultant.");
-    this.renderAdminFriw();
+    this.renderAdminView();
   },
 
   checkWeekCompletion(userId, weekNum) {
@@ -6890,7 +6890,7 @@ const app = {
       }
       
       this.saveDatabase();
-      this.renderAdminFriw();
+      this.renderAdminView();
       this.showToast(`Force approval successful for Week ${weekNum}.`, "warning");
     }
   },
@@ -7021,7 +7021,7 @@ const app = {
       this.state.db.tutor_junior_mapping[traineeId] = null;
       this.saveDatabase();
       this.showToast(`Tutor unassigned.`);
-      this.renderAdminFriw();
+      this.renderAdminView();
       return;
     }
     
@@ -7038,7 +7038,7 @@ const app = {
       `Dear ${tutor.name},\n\nThe Area Manager has assigned you as Tutor in charge of the active ramp-up process of Junior Consultant ${trainee.name}.\n\nYou can now access your control panel to view their progress, receive notifications, and grade their weekly deliverables.`
     );
     
-    this.renderAdminFriw();
+    this.renderAdminView();
   },
 
 
@@ -7069,13 +7069,13 @@ const app = {
     this.switchJuniorTimelineTab('workspace');
   },
 
-  switchJuniorFriwTab(tabName) {
+  switchJuniorViewTab(tabName) {
     // Tab buttons active state toggle
     document.querySelectorAll('.junior-tab-btn').forEach(btn => {
       btn.classList.toggle('active', btn.id === `junior-tab-${tabName}`);
     });
     
-    // Friw panes toggle
+    // View panes toggle
     document.querySelectorAll('.junior-view-pane').forEach(pane => {
       pane.classList.toggle('active', pane.id === `junior-pane-${tabName}`);
     });
@@ -7508,7 +7508,7 @@ const app = {
     return { collision: false };
   },
 
-  switchAdminFriwTab(tabName) {
+  switchAdminViewTab(tabName) {
     if (this.state.activeUser && this.state.activeUser.role === 'senior' && tabName === 'academic') {
       tabName = 'calendar';
     }
@@ -8186,7 +8186,7 @@ const app = {
     const activeEl = document.querySelector(`.id-suggestion-${this.activeSuggestionIndex}`);
     if (activeEl) {
       activeEl.classList.add('selected');
-      activeEl.scrollIntoFriw({ block: 'nearest' });
+      activeEl.scrollIntoView({ block: 'nearest' });
     }
   },
 
@@ -10107,7 +10107,7 @@ const app = {
     this.showToast(`Contributor ${name} successfully registered.`);
     this.closeAddMemberModal();
     this.renderTeamTable();
-    this.renderAdminFriw();
+    this.renderAdminView();
  
     if (selectedRole === 'JUNIOR' && tutorId) {
       const tutor = this.state.db.users.find(u => u.id === tutorId);
@@ -10281,7 +10281,7 @@ const app = {
       this.saveDatabase();
       this.showToast(`Data for ${user.nombre || user.name} updated successfully.`);
       this.renderTeamTable();
-      this.renderAdminFriw();
+      this.renderAdminView();
     }
   },
 
