@@ -4460,6 +4460,7 @@ button {
 
 .inspector-tabs-container {
   display: flex;
+  flex-wrap: wrap;
   gap: 8px;
   margin-top: 10px;
   margin-bottom: 20px;
