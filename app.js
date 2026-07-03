@@ -1305,15 +1305,15 @@ const app = {
     week_templates: [
       {
         week_number: 1,
-        title: "Onboarding Murex General y Flujo de Negocios Corporativo",
-        phase: "Inducción",
-        description: "Módulos Murex: MX.3 General / Introducción de Interfaces. Objetivos: Completar la inducción inicial y comprender el ecosistema global de la plataforma. Entender el rol de Finance & PL.",
+        title: "General Murex Onboarding and Corporate Business Flow",
+        phase: "Induction",
+        description: "Murex Modules: MX.3 General / Interfaces Introduction. Objectives: Complete the initial induction and understand the global ecosystem of the platform. Understand the role of Finance & PL.",
         checklist_items: [
-          "Completar la visualización y estudio del módulo Videos de Onboarding: Murex y Finance Internos (Bloque Introductorio)",
-          "Identificar los accesos básicos de la interfaz e iniciar sesión en el ambiente Sandbox MX.3",
-          "Esquematizar el flujo punta a punta (Front-to-Back) de una transaccionalidad genérica en la plataforma",
-          "Mapear la ubicación organizacional y responsabilidades del área de Finance & PL dentro de un banco tipo",
-          "Reconocer el organigrama interno del equipo local y canales de escalamiento técnico"
+          "Complete the viewing and study of the Onboarding Videos module: Murex and Internal Finance (Introductory Block)",
+          "Identify the basic interface accesses and log in to the MX.3 Sandbox environment",
+          "Map the end-to-end (Front-to-Back) flow of a generic transaction in the platform",
+          "Map the organizational location and responsibilities of the Finance & PL area within a typical bank",
+          "Recognize the internal organizational chart of the local team and technical escalation channels"
         ],
         knowledge_test: { num_questions: 50, min_passing_score: 70 },
         deliverable: null,
@@ -1321,192 +1321,192 @@ const app = {
       },
       {
         week_number: 2,
-        title: "Ciclo de Vida de Trades (FX Swap) y Fundamentos de Registro Contable",
-        phase: "Inducción",
-        description: "Módulos Murex: E-tradepad, Trade Query. Objetivos: Primer acercamiento a MX.3, navegación por grupos. Identificar funciones de FO, MO, BO, Config, Housekeeper. Suninar débitos/créditos contables para FX Swap.",
+        title: "Trade Lifecycle (FX Swap) and Accounting Record Fundamentals",
+        phase: "Induction",
+        description: "Murex Modules: E-tradepad, Trade Query. Objectives: First approach to MX.3, navigation by groups. Identify roles of FO, MO, BO, Config, Housekeeper. Learn accounting debits/credits for FX Swap.",
         checklist_items: [
-          "Completar la visualización y estudio del módulo Videos de Onboarding: Murex y Finance Internos (Bloque FX Swaps Teórico)",
-          "Ejecutar búsquedas avanzadas y filtrado de transacciones mediante el uso de Trade Query",
-          "Simular el ingreso e inyección manual de contratos usando la herramienta E-tradepad",
-          "Identificar las diferencias operacionales entre los grupos FO, MO, BO, Config y Housekeeper",
-          "Desarrollar y registrar el PPT explicativo con los asientos contables teóricos para un FX Swap",
-          "Cuadrar matemáticamente los libros diarios del ejercicio práctico asegurando la paridad Débito/Crédito",
-          "Completar y aprobar el test automatizado de conocimientos generales de la plataforma",
-          "Resolver y aprobar el Thugo de Clasificación de Cuentas (mínimo 80% de precisión con 25 cuentas)"
+          "Complete the viewing and study of the Onboarding Videos module: Murex and Internal Finance (Theoretical FX Swaps Block)",
+          "Execute advanced searches and transaction filtering using Trade Query",
+          "Simulate the entry and manual injection of contracts using the E-tradepad tool",
+          "Identify the operational differences between FO, MO, BO, Config, and Housekeeper groups",
+          "Develop and submit the explanatory PPT with theoretical accounting entries for an FX Swap",
+          "Balance the journal ledgers of the practical exercise mathematically, ensuring Debit/Credit parity",
+          "Complete and pass the automated general knowledge test of the platform",
+          "Resolve and pass the Account Classification Challenge (minimum 80% accuracy with 25 accounts)"
         ],
         knowledge_test: { num_questions: 50, min_passing_score: 70 },
-        deliverable: { type: "ppt", description: "Presentación (PPT) detallada de asientos contables para un FX Swap (fecha, trade, términos, débitos y créditos)", required: true },
+        deliverable: { type: "ppt", description: "Detailed presentation (PPT) of accounting entries for an FX Swap (date, trade, terms, debits, and credits)", required: true },
         unlock_condition: "week_1_passed"
       },
       {
         week_number: 3,
-        title: "Parametrización de Cuentas Dinámicas, Fórmulas y Logística Operativa del Área",
-        phase: "Inducción",
-        description: "Módulos Murex: Accounting Rules / Cuentas Simples y Dinámicas. Objetivos: Traducir el flujo contable a parametrización en MX.3. Diseñar lógica de cuentas dinámicas y fórmula por divisa. Comprender gobernanza, timesheets y reuniones recurrentes. Introducción a Opciones.",
+        title: "Dynamic Accounts Parameterization, Formulas, and Area Operational Logistics",
+        phase: "Induction",
+        description: "Murex Modules: Accounting Rules / Simple and Dynamic Accounts. Objectives: Translate accounting flow into MX.3 parameterization. Design dynamic accounts logic and formulas by currency. Understand governance, timesheets, and recurring meetings. Introduction to Options.",
         checklist_items: [
-          "Completar la visualización y estudio del módulo Videos de Onboarding: Murex y Finance Internos (Bloque Cuentas y Fórmulas)",
-          "Configurar y dar de alta Cuentas Contables Simples directamente en el entorno Sandbox",
-          "Diseñar estructuras de Cuentas Dinámicas basadas en variables lógicas de divisa (currency)",
-          "Implementar Cuentas Fórmula aplicando condicionales lógicos para el direccionamiento automatizado de montos",
-          "Completar correctamente la Timesheet de la semana siguiendo las reglas de imputación del área",
-          "Identificar el propósito de los comités recurrentes (Chile-Brasil, OPS/Finance, Americas, Townhalls)",
-          "Resolver de manera interactiva el \"Thugo de las Cuentas\" integrado en el Workspace de la plataforma",
-          "Completar y registrar la visualización de los 21 videos mandatorios del módulo Financial Tuekets for Newcomers en la sección MXLearn"
+          "Complete the viewing and study of the Onboarding Videos module: Murex and Internal Finance (Accounts and Formulas Block)",
+          "Configure and register Simple Accounting Accounts directly in the Sandbox environment",
+          "Design Dynamic Accounts structures based on logical currency variables",
+          "Implement Formula Accounts applying logical conditions for automated routing of amounts",
+          "Correctly complete the weekly Timesheet following the area's imputation rules",
+          "Identify the purpose of recurring committees (Chile-Brazil, OPS/Finance, Americas, Townhalls)",
+          "Interactively resolve the 'Accounts Game' integrated into the platform's Workspace",
+          "Complete and log the viewing of the 21 mandatory videos of the 'Financial Markets for Newcomers' module on MXLearn"
         ],
         knowledge_test: { num_questions: 26, min_passing_score: 70 },
-        deliverable: { type: "zip", description: "Cuentas dinámicas parametrizadas y funcionales en el entorno de pruebas", required: true },
+        deliverable: { type: "zip", description: "Parameterized and functional dynamic accounts in the testing environment", required: true },
         unlock_condition: "week_2_passed"
       },
       {
         week_number: 4,
-        title: "Configuración de Reglas Contables por Instrumento Financiero",
-        phase: "Inducción",
-        description: "Módulos Murex: Accounting Rules Interface / Contratos de FX Swap y Opciones. Objetivos: Vincular las cuentas parametrizadas con el motor de reglas de FX Swap. Crear cuentas para Opciones y diseñar sus Accounting Rules.",
+        title: "Accounting Rules Configuration per Financial Instrument",
+        phase: "Induction",
+        description: "Murex Modules: Accounting Rules Interface / FX Swap and Options Contracts. Objectives: Link the parameterized accounts with the FX Swap rules engine. Create accounts for Options and design their Accounting Rules.",
         checklist_items: [
-          "Completar la visualización y estudio del módulo Videos de Onboarding: Murex y Finance Internos (Bloque Accounting Rules y Opciones)",
-          "Vincular de forma exitosa las cuentas parametrizadas con el motor de reglas de FX Swap",
-          "Crear las cuentas contables maestras específicas para el procesamiento de Opciones Financieras",
-          "Diseñar y activar las reglas contables de asignación (Accounting Rules) para contratos de Opciones",
-          "Validar que el material complementario e instructivos de derivados hayan sido revisados mediante la inyección de ejemplos"
+          "Complete the viewing and study of the Onboarding Videos module: Murex and Internal Finance (Accounting Rules and Options Block)",
+          "Successfully link the parameterized accounts with the FX Swap rules engine",
+          "Create specific master accounting accounts for processing Financial Options",
+          "Design and activate assignment accounting rules (Accounting Rules) for Options contracts",
+          "Validate that supplementary material and derivatives guides have been reviewed by injecting examples"
         ],
         knowledge_test: { num_questions: 2, min_passing_score: 70 },
-        deliverable: { type: "zip", description: "Configuración e inyección en el ambiente de prueba de las reglas contables operativas para FX Swap y Opciones", required: true },
+        deliverable: { type: "zip", description: "Configuration and injection in the test environment of operational accounting rules for FX Swap and Options", required: true },
         unlock_condition: "week_3_passed"
       },
       {
         week_number: 5,
-        title: "Parametrización y Control de Reglas de Flujo (Flow Rules)",
-        phase: "Aprendizaje Estructurado",
-        description: "Módulos Murex: Accounting Flow Rules. Objetivos: Comprender, diseñar e implementar reglas de flujo dentro del motor contable de MX.3 para optimizar el procesamiento.",
+        title: "Parameterization and Control of Flow Rules",
+        phase: "Structured Learning",
+        description: "Murex Modules: Accounting Flow Rules. Objectives: Understand, design, and implement flow rules within the MX.3 accounting engine to optimize processing.",
         checklist_items: [
-          "Completar la visualización y estudio del módulo Videos de Onboarding: Murex y Finance Internos (Bloque Flow Rules Avanzado)",
-          "Explicar la diferencia técnica entre una regla contable tradicional y una regla de flujo (Flow Rule)",
-          "Diseñar el mapa lógico de procesamiento de flujos de caja contables para transacciones complejas",
-          "Parametrizar y activar un set completo de Accounting Flow Rules en el ambiente de prueba",
-          "Correr la batería de pruebas de seguimiento y monitoreo manual de flujos inyectados",
-          "Documentar y deconstruir discrepancias menores en el ruteo de flujos sin intervención senior"
+          "Complete the viewing and study of the Onboarding Videos module: Murex and Internal Finance (Advanced Flow Rules Block)",
+          "Explain the technical difference between a traditional accounting rule and a flow rule (Flow Rule)",
+          "Design the logical processing map of accounting cash flows for complex transactions",
+          "Parameterize and activate a complete set of Accounting Flow Rules in the test environment",
+          "Run the battery of validation tests and manual monitoring of injected flows",
+          "Document and deconstruct minor flow routing discrepancies without senior intervention"
         ],
         knowledge_test: { num_questions: 2, min_passing_score: 70 },
-        deliverable: { type: "zip", description: "Prototipo de matriz de reglas de flujo configuradas en el Sandbox", required: true },
+        deliverable: { type: "zip", description: "Prototype of flow rules matrix configured in the Sandbox", required: true },
         unlock_condition: "week_4_passed"
       },
       {
         week_number: 6,
-        title: "Cierre de Ciclo Diario, Valoración a Mercado (MTM) y Procesamiento Fin de Día (EOD)",
-        phase: "Aprendizaje Estructurado",
-        description: "Módulos Murex: End of Day (EOD) Processing / Tuek-to-Tueket (MTM) Engine. Objetivos: Validar contabilidad bookeando trades. Postear reglas oficiales. Inyectar valoraciones MTM y ejecutar scripts de EOD.",
+        title: "Daily Cycle Closure, Mark-to-Market Valuation (MTM), and End of Day (EOD) Processing",
+        phase: "Structured Learning",
+        description: "Murex Modules: End of Day (EOD) Processing / Mark-to-Market (MTM) Engine. Objectives: Validate accounting by booking trades. Post official rules. Inject MTM valuations and execute EOD scripts.",
         checklist_items: [
-          "Completar la visualización y estudio del módulo Videos de Onboarding: Murex y Finance Internos (Bloque EOD y Motores MTM)",
-          "Publicar (postear) de manera oficial las reglas contables de FX Swap y Opciones en producción simulada",
-          "Ejecutar transacciones reales (bookear trades) y auditar que la contabilidad impacte de forma limpia",
-          "Configurar e inyectar valores de mercado a la plataforma utilizando el motor de Tuek-to-Tueket (MTM)",
-          "Programar, lanzar y monitorear la ejecución de los scripts de cierre automatizado de fin de día (EOD)",
-          "Generar, extraer y cuadrar el reporte de diario contable consolidado posterior al procesamiento EOD"
+          "Complete the viewing and study of the Onboarding Videos module: Murex and Internal Finance (EOD and MTM Engines Block)",
+          "Officially publish (post) accounting rules for FX Swap and Options in simulated production",
+          "Execute real transactions (book trades) and audit that the accounting impacts cleanly",
+          "Configure and inject market values to the platform using the Mark-to-Market (MTM) engine",
+          "Schedule, launch, and monitor the execution of automated End of Day (EOD) closing scripts",
+          "Generate, extract, and reconcile the consolidated accounting journal report post EOD processing"
         ],
         knowledge_test: { num_questions: 2, min_passing_score: 70 },
-        deliverable: { type: "pdf", description: "Reporte de diario contable cuadrado posterior a la simulación completa de un cierre de fin de día (EOD) para FX Swaps y Opciones", required: true },
+        deliverable: { type: "pdf", description: "Balanced accounting journal report post full simulation of an End of Day (EOD) close for FX Swaps and Options", required: true },
         unlock_condition: "week_5_passed"
       },
       {
         week_number: 7,
-        title: "Eventos Contables Avanzados, Correcciones al Pasado (Fixing) e Introducción a Futuros",
-        phase: "Aprendizaje Estructurado",
-        description: "Módulos Murex: Tueket Data / Fixing Engine / Futuros Financieros. Objetivos: Gestión de eventos complejos, inserción con fecha valor en el pasado e introducción a Futuros.",
+        title: "Advanced Accounting Events, Past Corrections (Fixing), and Introduction to Futures",
+        phase: "Structured Learning",
+        description: "Murex Modules: Market Data / Fixing Engine / Financial Futures. Objectives: Management of complex events, value date insertion in the past, and introduction to Futures.",
         checklist_items: [
-          "Completar la visualización y estudio del módulo Videos de Onboarding: Murex y Finance Internos (Bloque Eventos Pasados y Futuros)",
-          "Insertar manualmente transacciones complejas con fecha valor parametrizada en el pasado (Backdated trades)",
-          "Ejecutar procesos de corrección de precios e índices mediante el uso del Fixing Engine",
-          "Resolver quiebres de consistencia contable generados por desfases en eventos de mercado",
-          "Identificar las especificaciones del nuevo instrumento financiero introducido: Futuros",
-          "Crear la estructura contable base para el procesamiento operacional del módulo de Futuros"
+          "Complete the viewing and study of the Onboarding Videos module: Murex and Internal Finance (Past Events and Futures Block)",
+          "Manually insert complex transactions with value date parameterized in the past (Backdated trades)",
+          "Execute price and index correction processes using the Fixing Engine",
+          "Resolve accounting consistency breaks generated by lags in market events",
+          "Identify specifications of the newly introduced financial instrument: Futures",
+          "Create the base accounting structure for operational processing of the Futures module"
         ],
         knowledge_test: { num_questions: 2, min_passing_score: 70 },
-        deliverable: { type: "pdf", description: "Registro contable corregido en el pasado y parametrización base del módulo de Futuros", required: true },
+        deliverable: { type: "pdf", description: "Accounting record corrected in the past and base parameterization of the Futures module", required: true },
         unlock_condition: "week_6_passed"
       },
       {
         week_number: 8,
-        title: "Ensayo General (Dress Rehearsal) de Autonomía Técnica",
-        phase: "Aprendizaje Estructurado",
-        description: "Módulos Murex: Todos los módulos integrados previamente (Murex Full Stack Finance). Objetivos: Demostrar control de FX Swap, Opciones, Futuros y sustentar lógica ante tutor.",
+        title: "Dress Rehearsal for Technical Autonomy",
+        phase: "Structured Learning",
+        description: "Murex Modules: All previously integrated modules (Murex Full Stack Finance). Objectives: Demonstrate control of FX Swap, Options, Futures, and defend logic before tutor.",
         checklist_items: [
-          "Completar la visualización y estudio del módulo Videos de Onboarding: Murex y Finance Internos (Bloque de Consolidación e Ishikawa)",
-          "Ejecutar un flujo transaccional punta a punta (bookeo, contabilidad, MTM y EOD) sin asistencia experta directa",
-          "Sustentar verbalmente ante el Tutor la lógica matemática e ingenieril detrás de cada cuenta y regla creada",
-          "Demostrar dominio en la resolución de problemas típicos de la plataforma (Sandbox Troubleshooting)",
-          "Presentar la bitácora del entorno de pruebas completamente cuadrado y libre de errores de consistencia",
-          "Obtener el visado de aprobación del Tutor en el Checklist unificado para autorizar el paso a productivo"
+          "Complete the viewing and study of the Onboarding Videos module: Murex and Internal Finance (Consolidation and Ishikawa Block)",
+          "Execute an end-to-end transactional flow (booking, accounting, MTM, and EOD) without direct assistance expert",
+          "Verbally defend before the Tutor the mathematical and engineering logic behind each account and rule created",
+          "Demonstrate proficiency in resolving typical platform issues (Sandbox Troubleshooting)",
+          "Present the test environment log completely balanced and free of consistency errors",
+          "Obtain approval sign-off from the Tutor on the unified Checklist to authorize the promotion to production"
         ],
         knowledge_test: { num_questions: 2, min_passing_score: 70 },
-        deliverable: { type: "zip", description: "Presentación final del entorno de pruebas completamente parametrizado, ejecutando transacciones de punta a punta frente al mentor", required: true },
+        deliverable: { type: "zip", description: "Final presentation of the fully parameterized test environment, executing end-to-end transactions in front of the mentor", required: true },
         unlock_condition: "week_7_passed"
       },
       {
         week_number: 9,
-        title: "Paso a Producción Operativa (Go Live) con el Equipo de Finance",
+        title: "Go Live with the Finance Team",
         phase: "Go Live",
-        description: "Módulos Murex: Entorno de Producción Integrado (Finance & PL). Objetivos: Desplegar capacidades en tareas reales de FX Swap, FX Forward, Opciones y Futuros.",
+        description: "Murex Modules: Integrated Production Environment (Finance & PL). Objectives: Deploy capabilities on real tasks for FX Swap, FX Forward, Options, and Futures.",
         checklist_items: [
-          "Completar la visualización y estudio del módulo Videos de Onboarding: Murex y Finance Internos (Bloque de Protocolos de Seguridad en Producción)",
-          "Configurar el acceso seguro y autenticado al entorno de Producción oficial del área de Finance & PL",
-          "Procesar las primeras transacciones reales asignadas de los instrumentos FX Swap y FX Forward",
-          "Monitorear de forma directa la contabilidad productiva para transacciones de Opciones y Futuros",
-          "Extraer reportes operativos diarios en el ambiente productivo para su validación con el equipo técnico",
-          "Disminuir el Índice de Dependencia de Support (IDS) reactivo, operando bajo supervisión pasiva"
+          "Complete the viewing and study of the Onboarding Videos module: Murex and Internal Finance (Production Safety Protocols Block)",
+          "Configure secure and authenticated access to the official Production environment of the Finance & PL area",
+          "Process the first assigned real transactions of FX Swap and FX Forward instruments",
+          "Directly monitor productive accounting for Options and Futures transactions",
+          "Extract daily operational reports in the production environment for validation with the technical team",
+          "Decrease the reactive Support Dependency Index (SDI), operating under passive supervision"
         ],
         knowledge_test: { num_questions: 2, min_passing_score: 70 },
-        deliverable: { type: "pdf", description: "Primeras transacciones productivas visadas de forma directa", required: true },
+        deliverable: { type: "pdf", description: "First productive transactions directly signed off", required: true },
         unlock_condition: "week_8_passed"
       },
       {
         week_number: 10,
-        title: "Mantenimiento de Datos Maestros (Housekeeper) y Creación de CTT",
+        title: "Master Data Maintenance (Housekeeper) and CTT Creation",
         phase: "Go Live",
-        description: "Módulos Murex: Housekeeper / Configuración de CTT. Objetivos: Uso avanzado de Housekeeper para auditoría y limpieza. Crear plantillas de parametrización comercial CTT.",
+        description: "Murex Modules: Housekeeper / CTT Configuration. Objectives: Advanced use of Housekeeper for auditing and cleaning. Create CTT commercial parameterization templates.",
         checklist_items: [
-          "Completar la visualización y estudio del módulo Videos de Onboarding: Murex y Finance Internos (Bloque Housekeeper y Mantenimiento de Tablas)",
-          "Acceder y navegar de manera segura en el módulo maestro de mantenimiento del sistema Housekeeper",
-          "Ejecutar diagnósticos y auditorías básicas sobre la salud y consistencia de las tablas internas de MX.3",
-          "Diseñar y dar de alta una plantilla de parametrización comercial (CTT - Configuration Template)",
-          "Asistir y tomar apuntes de la Clase Magistral técnica dictada por el consultor Senior asignado",
-          "Validar con la Manager la temática de la clase magistral complementaria de la semana"
+          "Complete the viewing and study of the Onboarding Videos module: Murex and Internal Finance (Housekeeper and Table Maintenance Block)",
+          "Access and securely navigate the Housekeeper master system maintenance module",
+          "Run basic diagnostics and audits on the health and consistency of system internal tables",
+          "Design and register a commercial configuration template (CTT - Configuration Template)",
+          "Attend and take notes of the technical Masterclass delivered by the assigned Senior consultant",
+          "Validate with the Manager the topic of the supplementary masterclass of the week"
         ],
         knowledge_test: null,
-        deliverable: { type: "zip", description: "Estructura de CTT configurada y validada sin errores de consistencia", required: true },
+        deliverable: { type: "zip", description: "CTT structure configured and validated without consistency errors", required: true },
         unlock_condition: "week_9_passed"
       },
       {
         week_number: 11,
-        title: "Gestión de Calendarios, Feriados Mundiales y Procesos de Devengo (Accruals)",
+        title: "Calendars Management, World Holidays, and Accruals Processing",
         phase: "Go Live",
-        description: "Módulos Murex: Configuration Templates / Tueket Calendars / Accrual Engine. Objetivos: Configurar calendarios geográficos, feriados mundiales y devengos/amortizaciones.",
+        description: "Murex Modules: Configuration Templates / Market Calendars / Accrual Engine. Objectives: Configure geographical calendars, world holidays, and accruals/amortizations.",
         checklist_items: [
-          "Completar la visualización y estudio del módulo Videos de Onboarding: Murex y Finance Internos (Bloque Accruals y Curvas de Interés)",
-          "Configurar tablas geográficas de feriados bancarios internacionales en las plantillas globales del sistema",
-          "Vincular calendarios de mercados financieros con los flujos de caja proyectados en portafolios de prueba",
-          "Parametrizar y calibrar el motor de amortizaciones contables y devengos (Accrual Engine)",
-          "Asistir a la Clase Magistral dictada por Juan Francisco Orrego sobre Configuration Templates",
-          "Evaluar mediante simulación el impacto financiero de un feriado imprevisto sobre el devengo de un portafolio"
+          "Complete the viewing and study of the Onboarding Videos module: Murex and Interest Curves Block",
+          "Configure geographical tables of international banking holidays in global system templates",
+          "Link financial market calendars with projected cash flows in test portfolios",
+          "Parameterize and calibrate the accounting amortization and accruals engine (Accrual Engine)",
+          "Attend the Masterclass delivered by Juan Francisco Orrego on Configuration Templates",
+          "Evaluate through simulation the financial impact of an unforeseen holiday on portfolio accruals"
         ],
         knowledge_test: { num_questions: 2, min_passing_score: 70 },
-        deliverable: { type: "zip", description: "Calendario financiero parametrizado con lógica de devengo aplicada a un portafolio de pruebas", required: true },
+        deliverable: { type: "zip", description: "Financial calendar parameterized with accrual logic applied to a test portfolio", required: true },
         unlock_condition: "week_10_passed"
       },
       {
         week_number: 12,
-        title: "Procesos de Liquidación Contable (Liquidation)",
-        phase: "Cierre",
-        description: "Módulos Murex: Liquidation / Settlement Processing. Objetivos: Flujos de liquidación de trades e impacto en cuentas de balance de Finance & PL.",
+        title: "Accounting Liquidation Processes (Liquidation)",
+        phase: "Closing",
+        description: "Murex Modules: Liquidation / Settlement Processing. Objectives: Trade liquidation flows and impact on balance sheet accounts of Finance & PL.",
         checklist_items: [
-          "Completar la visualización y estudio del módulo Videos de Onboarding: Murex y Finance Internos (Bloque Liquidation y Settlement)",
-          "Identificar el ciclo de vida del flujo de extinción de obligaciones financieras (Settlement/Liquidation)",
-          "Parametrizar las reglas contables de cierre definitivo de operaciones por concepto de liquidación",
-          "Asistir a la Clase Magistral técnica especializada en el módulo de Liquidation",
-          "Ejecutar el procesamiento de liquidaciones en la plataforma y cuadrar el impacto en las cuentas de balance",
-          "Resolver de forma autónoma un caso de quiebre o desfase contable en una liquidación simulada"
+          "Complete the viewing and study of the Onboarding Videos module: Murex and Liquidation Block",
+          "Identify the lifecycle of the cash flow extinction of financial obligations (Settlement/Liquidation)",
+          "Parameterize accounting rules for final closing of operations due to liquidation",
+          "Attend the specialized technical Masterclass on the Liquidation module",
+          "Execute liquidation processing in the platform and balance the impact on balance sheet accounts",
+          "Independently resolve a case of accounting break or mismatch in a simulated liquidation"
         ],
         knowledge_test: { num_questions: 2, min_passing_score: 80 },
-        deliverable: { type: "pdf", description: "Parametrización de un flujo de liquidación de trade en sandbox", required: true },
+        deliverable: { type: "pdf", description: "Parameterization of a trade liquidation flow in the sandbox environment", required: true },
         unlock_condition: "week_11_passed"
       }
     ],
@@ -2069,8 +2069,15 @@ const app = {
         });
 
         // Sync structures and templates
-        this.state.db.week_templates = JSON.parse(JSON.stringify(this.defaultTemplates.week_templates));
-        this.state.db.questions = JSON.parse(JSON.stringify(this.defaultTemplates.questions));
+        const oldTemplatesStr = JSON.stringify(this.state.db.week_templates || []);
+        const newTemplatesStr = JSON.stringify(this.defaultTemplates.week_templates);
+        const oldQuestionsStr = JSON.stringify(this.state.db.questions || {});
+        const newQuestionsStr = JSON.stringify(this.defaultTemplates.questions);
+        
+        const needsDBSave = (oldTemplatesStr !== newTemplatesStr) || (oldQuestionsStr !== newQuestionsStr);
+
+        this.state.db.week_templates = JSON.parse(newTemplatesStr);
+        this.state.db.questions = JSON.parse(newQuestionsStr);
         
         if (this.state.db.consultant_progress) {
           for (const userId in this.state.db.consultant_progress) {
@@ -2101,6 +2108,10 @@ const app = {
         });
         this.autoMigrateFrancisca();
         this.updateDBStatusUI();
+        if (needsDBSave) {
+          console.log("Database template schema changes detected. Syncing with server...");
+          this.saveDatabase();
+        }
         return;
       }
     } catch (e) {
@@ -3514,8 +3525,7 @@ const app = {
         });
 
         // CORRECCIÓN DE LA CABECERA: Remueve la etiqueta confusa de 'Modo Lectura' si está en semanas habilitadas
-        const badgeEncabezado = esSemanaBloqueada 
-            ? '<span class="induction-badge readonly"><i class="ti ti-lock" style="margin-right: 3px;"></i> Vista Protegida</span>' 
+            ? '<span class="induction-badge readonly"><i class="ti ti-lock" style="margin-right: 3px;"></i> Protected View</span>' 
             : '<span class="induction-badge ok"><i class="ti ti-edit" style="margin-right: 3px;"></i> Active Self-Management</span>';
 
         tableWrapper.innerHTML = `
