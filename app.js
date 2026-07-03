@@ -3525,6 +3525,7 @@ const app = {
         });
 
         // CORRECCIÓN DE LA CABECERA: Remueve la etiqueta confusa de 'Modo Lectura' si está en semanas habilitadas
+        const badgeEncabezado = esSemanaBloqueada 
             ? '<span class="induction-badge readonly"><i class="ti ti-lock" style="margin-right: 3px;"></i> Protected View</span>' 
             : '<span class="induction-badge ok"><i class="ti ti-edit" style="margin-right: 3px;"></i> Active Self-Management</span>';
 
