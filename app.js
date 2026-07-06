@@ -101,7 +101,7 @@ const bancoPreguntasSemana1 = [
     "q": "Which department typically records the accounting derived from a transaction?",
     "opts": [
       "A) Front Office",
-      "B) Tueketing",
+      "B) Marketing",
       "C) Finance/Accounting",
       "D) Commercial"
     ],
@@ -162,7 +162,7 @@ const bancoPreguntasSemana1 = [
     "opts": [
       "A) Hiring staff",
       "B) Managing liquidity and funding",
-      "C) Tueketing",
+      "C) Marketing",
       "D) Auditing"
     ],
     "ans": 1
@@ -341,7 +341,7 @@ const bancoPreguntasSemana1 = [
     "q": "Which area typically measures VaR?",
     "opts": [
       "A) Middle Office / Risk Management",
-      "B) Tueketing",
+      "B) Marketing",
       "C) HR",
       "D) Sales"
     ],
@@ -421,7 +421,7 @@ const bancoPreguntasSemana1 = [
     "q": "Who verifies that the trade makes financial sense and respects limits?",
     "opts": [
       "A) Middle Office",
-      "B) Tueketing",
+      "B) Marketing",
       "C) HR",
       "D) Commercial"
     ],
@@ -441,7 +441,7 @@ const bancoPreguntasSemana1 = [
     "q": "Which department needs information to prepare financial statements?",
     "opts": [
       "A) Accounting",
-      "B) Tueketing",
+      "B) Marketing",
       "C) Sales",
       "D) HR"
     ],
@@ -559,7 +559,7 @@ const tablasOnboardingGlobal = [
 
 const mxlearnOnboardingModules = {
   financial_markets: {
-    title: "Financial Tuekets for Newcomers",
+    title: "Financial Markets for Newcomers",
     items: [
       "Module: Introduction to Banks",
       "Module: Bank Capital Management",
@@ -573,13 +573,13 @@ const mxlearnOnboardingModules = {
       "Module: Repo and Sell/Buy Back",
       "Module: Securities Lending",
       "Module: Repo/Security Lending and Financial Products",
-      "Module: Introduction to FX Tueket",
+      "Module: Introduction to FX Market",
       "Module: FX Management",
-      "Module: FX Spot Tueket",
-      "Module: FX Forward Tueket",
+      "Module: FX Spot Market",
+      "Module: FX Forward Market",
       "Module: FX Options - Basic Strategies and Risk Parameters",
       "Module: Risk-Free Rates (RFR)",
-      "Module: Money Tueket I - Single Period Swaps (SPS)",
+      "Module: Money Market I - Single Period Swaps (SPS)",
       "Module: Swaps I - Applications",
       "Module: Swaps IV - Cross Currency Swaps"
     ]
@@ -629,6 +629,29 @@ const mxlearnOnboardingModules = {
 };
 
 const onboardingItemUrls = {
+  // Financial Markets for Newcomers
+  "Module: Introduction to Banks": "https://mxlearn.360learning.com/course/play/5e8b26f0e424ab028b6e6bf5?pathSessionId=6797cd5832d5d3b1f1817766&preferredLang=en",
+  "Module: Bank Capital Management": "https://mxlearn.360learning.com/course/play/5e8b26f0e424ab028b6e6bf7?pathSessionId=6797cd5832d5d3b1f1817766&preferredLang=en",
+  "Module: Financial Statement Analysis of Banks": "https://mxlearn.360learning.com/course/play/5e8b26f0e424ab028b6e6bf9?pathSessionId=6797cd5832d5d3b1f1817766&preferredLang=en",
+  "Module: Time Value of Money": "https://mxlearn.360learning.com/course/play/5e8b26f0e424ab028b6e6bfd?pathSessionId=6797cd5832d5d3b1f1817766&preferredLang=en",
+  "Module: Internal Rate of Return": "https://mxlearn.360learning.com/course/play/5e8b26f0e424ab028b6e6bfe?pathSessionId=6797cd5832d5d3b1f1817766&preferredLang=en",
+  "Module: Valuation of Fixed Income Bonds": "https://mxlearn.360learning.com/course/play/5e8b26f0e424ab028b6e6c00?pathSessionId=6797cd5832d5d3b1f1817766&preferredLang=en",
+  "Module: Introduction to Financial Futures": "https://mxlearn.360learning.com/course/play/5e8b26f0e424ab028b6e6c05?pathSessionId=6797cd5832d5d3b1f1817766&preferredLang=en",
+  "Module: Introduction to Options": "https://mxlearn.360learning.com/course/play/6686c04a8e547a3a0338080e?pathSessionId=6797cd5832d5d3b1f1817766&preferredLang=en",
+  "Module: Cash Instruments": "https://mxlearn.360learning.com/course/play/5e8b26f0e424ab028b6e6c09?pathSessionId=6797cd5832d5d3b1f1817766&preferredLang=en",
+  "Module: Repo and Sell/Buy Back": "https://mxlearn.360learning.com/course/play/5e8b26f0e424ab028b6e6c0a?pathSessionId=6797cd5832d5d3b1f1817766&preferredLang=en",
+  "Module: Securities Lending": "https://mxlearn.360learning.com/course/play/5e8b26f0e424ab028b6e6c0c?pathSessionId=6797cd5832d5d3b1f1817766&preferredLang=en",
+  "Module: Repo/Security Lending and Financial Products": "https://mxlearn.360learning.com/course/play/5e8b26f0e424ab028b6e6c0d?pathSessionId=6797cd5832d5d3b1f1817766&preferredLang=en",
+  "Module: Introduction to FX Market": "https://mxlearn.360learning.com/course/play/5e8b26f0e424ab028b6e6c10?pathSessionId=6797cd5832d5d3b1f1817766&preferredLang=en",
+  "Module: FX Management": "https://mxlearn.360learning.com/course/play/5e8b26f0e424ab028b6e6c11?pathSessionId=6797cd5832d5d3b1f1817766&preferredLang=en",
+  "Module: FX Spot Market": "https://mxlearn.360learning.com/course/play/5e8b26f0e424ab028b6e6c12?pathSessionId=6797cd5832d5d3b1f1817766&preferredLang=en",
+  "Module: FX Forward Market": "https://mxlearn.360learning.com/course/play/5e8b26f0e424ab028b6e6c13?pathSessionId=6797cd5832d5d3b1f1817766&preferredLang=en",
+  "Module: FX Options - Basic Strategies and Risk Parameters": "https://mxlearn.360learning.com/course/play/5e8b26f0e424ab028b6e6c14?pathSessionId=6797cd5832d5d3b1f1817766&preferredLang=en",
+  "Module: Risk-Free Rates (RFR)": "https://mxlearn.360learning.com/course/play/5e8b26f0e424ab028b6e6c49?pathSessionId=6797cd5832d5d3b1f1817766&preferredLang=en",
+  "Module: Money Market I - Single Period Swaps (SPS)": "https://mxlearn.360learning.com/course/play/61f0e37db6878729b7b83d9c?pathSessionId=6797cd5832d5d3b1f1817766&preferredLang=en",
+  "Module: Swaps I - Applications": "https://mxlearn.360learning.com/course/play/5e8b26f0e424ab028b6e6c4c?pathSessionId=6797cd5832d5d3b1f1817766&preferredLang=en",
+  "Module: Swaps IV - Cross Currency Swaps": "https://mxlearn.360learning.com/course/play/5e8b26f0e424ab028b6e6c4f?pathSessionId=6797cd5832d5d3b1f1817766&preferredLang=en",
+
   // Liquidation Module
   "Read the attached documents": "https://mxlearn.360learning.com/course/play/6758b7f7a03295ae3449b8e4/attempts/6a233b0a0c8feff1cddaa2c3?preferredLang=en",
   
@@ -746,7 +769,7 @@ const bancoPreguntasSemana2 = [
     "correct": 1
   },
   {
-    "question": "To which financial statement does an MTM (Tuek-to-Tueket) go in accounting?",
+    "question": "To which financial statement does an MTM (Mark-to-Market) go in accounting?",
     "options": [
       "Balance Sheet",
       "Off-Balance Sheet",
@@ -1822,7 +1845,7 @@ const app = {
       ],
       "6": [
         {
-          question: "What is Tuek-to-Tueket (MTM) in MX.3?",
+          question: "What is Mark-to-Market (MTM) in MX.3?",
           options: [
             "The accounting valuation of a financial instrument at current market prices.",
             "The physical printing of accounting journals.",
@@ -2551,7 +2574,7 @@ const app = {
 
     const troubleshootingDB = [
       { code: "err-acc-015", title: "ERR-ACC-015: Accrual Account Missing", description: "Occurs when the MX.3 accounting engine attempts to value accrued coupons but cannot find an accounting account assigned in the Chart of Accounts to record the accumulated interest.", steps: ["Enter the accounting parameterization module in the Sandbox MX.3.", "Seleccionar el tipo de instrumento 'Bond' o 'Fixed Income'.", "Add an accounting rule for the 'Accrual' event (accrued interest).", "Asignar la cuenta contable de activo correspondiente al libro mayor.", "Save changes, clear accounting cache, and re-process the journal entries in the Sandbox."] },
-      { code: "err-val-032", title: "ERR-VAL-032: Fair Value Discrepancy", description: "Occurs when the derivative's Tuek-to-Tueket (IRS/Forward) calculated by the valuation engine differs significantly from the value reported by the counterparty or solution key. It is commonly due to rate curve discrepancies.", steps: ["Ir al visor de curvas de tasas (Yield Curves) en MX.3.", "Validate that the active discount curve (e.g., Camera Curve) is the one configured in the portfolio valuation parameters.", "Align the day count convention of the instrument (e.g., 30/360 vs Act/360) according to the fictional client's factsheet.", "Reload the daily curves and re-run batch valuation."] },
+      { code: "err-val-032", title: "ERR-VAL-032: Fair Value Discrepancy", description: "Occurs when the derivative's Mark-to-Market (IRS/Forward) calculated by the valuation engine differs significantly from the value reported by the counterparty or solution key. It is commonly due to rate curve discrepancies.", steps: ["Ir al visor de curvas de tasas (Yield Curves) en MX.3.", "Validate that the active discount curve (e.g., Camera Curve) is the one configured in the portfolio valuation parameters.", "Align the day count convention of the instrument (e.g., 30/360 vs Act/360) according to the fictional client's factsheet.", "Reload the daily curves and re-run batch valuation."] },
       { code: "err-ifrs-9-004", title: "ERR-IFRS-9-004: Hedge Effectiveness Failure", description: "Occurs when the Hedge Relationship between the derivative and the underlying asset falls outside the accepted effectiveness range (80%-125%) under the IFRS 9 standard.", steps: ["Review the hedge designation registry in the Sandbox.", "Validar que los montos nominales y fechas de vencimiento coincidan exactamente entre el derivado y la partida cubierta.", "Execute the prospective effectiveness test using the linear regression method.", "If the result is outside the range, adjust the regression parameters or re-balance the nominal of the hedging derivative."] },
       { code: "err-sys-999", title: "ERR-SYS-999: Sandbox Database Connection Lost", description: "System error indicating connection loss to the central testing database of the Sandbox MX.3 Chile.", steps: ["Verify the status of the VPN connection or internal network.", "Restart the MX.3 terminal on your local machine.", "Si persiste, revisar el canal Slack #sandbox-mx3 para constatar si hay ventanas de mantenimiento activas.", "As a last resort, notify the tutor to request a database server restart in the sandbox."] }
     ];
@@ -6330,7 +6353,7 @@ const app = {
       let generalTotal = 37;
       let generalCompleted = 0;
 
-      // 1. Financial Tuekets (21 items)
+      // 1. Financial Markets (21 items)
       mxlearnOnboardingModules.financial_markets.items.forEach(item => {
         if (this.getOnboardingCheckState(userId, item)) {
           generalCompleted++;
