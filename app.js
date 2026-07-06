@@ -11073,8 +11073,8 @@ const app = {
             <tr>
               <th>Expert Consultant</th>
               <th>Interaction Type</th>
-              <th style="text-align: center;">Sesiones</th>
-              <th style="text-align: right;">Tiempo Real</th>
+              <th style="text-align: center;">Sessions</th>
+              <th style="text-align: right;">Real Time</th>
             </tr>
           </thead>
           <tbody>
