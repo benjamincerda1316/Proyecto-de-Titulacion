@@ -3677,7 +3677,7 @@ const app = {
             <a href="${itemUrl}" target="_blank" class="onboarding-link-btn">
               <span>${item}</span>
               <span class="onboarding-link-badge" style="font-size: 0.7rem; color: var(--primary); background: var(--primary-light); padding: 3px 8px; border-radius: 4px; display: inline-flex; align-items: center; gap: 4px; font-weight: 600; opacity: 0.85;">
-                <i class="ti ti-external-link"></i> Ir al Curso
+                <i class="ti ti-external-link"></i> Go to Course
               </span>
             </a>
           </td>
@@ -6290,7 +6290,7 @@ const app = {
               <a href="${itemUrl}" target="_blank" class="onboarding-link-btn" style="padding: 10px 5px;">
                 <span>${item}</span>
                 <span class="onboarding-link-badge" style="font-size: 0.7rem; color: var(--primary); background: var(--primary-light); padding: 3px 8px; border-radius: 4px; display: inline-flex; align-items: center; gap: 4px; font-weight: 600; opacity: 0.85;">
-                  <i class="ti ti-external-link"></i> Ir al Curso
+                  <i class="ti ti-external-link"></i> Go to Course
                 </span>
               </a>
             </td>
