@@ -10217,6 +10217,13 @@ const app = {
         tutorCell = `<span class="text-xs text-gray-400">N/A</span>`;
       }
 
+      const isSelf = user.id === this.state.activeUser.id;
+      const deleteBtnHtml = isSelf ? '' : `
+        <button onclick="app.handleDeleteMember('${user.id}')" class="btn btn-xs" style="background-color: rgba(225, 29, 72, 0.08); color: #E11D48; border: 1px solid rgba(225, 29, 72, 0.18); font-weight: 600; display: inline-flex; align-items: center; gap: 4px; transition: all 0.2s ease; margin-left: 6px;" onmouseover="this.style.backgroundColor='rgba(225, 29, 72, 0.15)'" onmouseout="this.style.backgroundColor='rgba(225, 29, 72, 0.08)'">
+          <i class="ti ti-trash" style="font-size: 0.85rem;"></i> Eliminar
+        </button>
+      `;
+
       row.innerHTML = `
         <td class="p-4 font-medium text-gray-800">${user.nombre || user.name}</td>
         <td class="p-4 text-gray-600">${user.email}</td>
@@ -10230,10 +10237,11 @@ const app = {
         </td>
         <td class="p-4">${tutorCell}</td>
         <td class="p-4">${estadoMalla}</td>
-        <td class="p-4 text-right">
+        <td class="p-4 text-right" style="white-space: nowrap;">
           <button onclick="app.handleUpdateMemberRolee('${user.id}')" class="btn btn-xs" style="background-color: rgba(219, 39, 119, 0.08); color: #db2777; border: 1px solid rgba(219, 39, 119, 0.18); font-weight: 600; display: inline-flex; align-items: center; gap: 4px; transition: all 0.2s ease;" onmouseover="this.style.backgroundColor='rgba(219, 39, 119, 0.15)'" onmouseout="this.style.backgroundColor='rgba(219, 39, 119, 0.08)'">
             <i class="ti ti-refresh" style="font-size: 0.85rem;"></i> Actualizar
           </button>
+          ${deleteBtnHtml}
         </td>
       `;
       container.appendChild(row);
@@ -10317,6 +10325,67 @@ const app = {
       this.renderTeamTable();
       this.renderAdminView();
     }
+  },
+
+  handleDeleteMember(userId) {
+    if (!this.state.activeUser || this.state.activeUser.role !== 'admin') {
+      this.showForbiddenError("Error 403: No tienes permisos para eliminar miembros del equipo.");
+      return;
+    }
+
+    if (userId === this.state.activeUser.id) {
+      this.showToast("No puedes eliminarte a ti mismo del equipo.", "danger");
+      return;
+    }
+
+    const user = this.state.db.users.find(u => u.id === userId);
+    if (!user) return;
+
+    const roleName = user.rol || (user.role === 'admin' ? 'MANAGER' : user.role === 'tutor' ? 'TUTOR' : user.role === 'senior' ? 'SENIOR' : 'JUNIOR');
+    const confirmMessage = `¿Estás seguro de que deseas eliminar permanentemente a ${user.nombre || user.name} (${roleName})?\n\nEsta acción borrará todo su historial, progreso y asignaciones de manera irreversible.`;
+    
+    if (!confirm(confirmMessage)) {
+      return;
+    }
+
+    // 1. Remove user record
+    this.state.db.users = this.state.db.users.filter(u => u.id !== userId);
+
+    // 2. Cascade delete from consultant progress mappings
+    if (this.state.db.consultant_progress) {
+      delete this.state.db.consultant_progress[userId];
+    }
+
+    // 3. Cascade delete from tutor mapping
+    if (this.state.db.tutor_junior_mapping) {
+      delete this.state.db.tutor_junior_mapping[userId];
+      // Also remove any mappings where this user was a tutor
+      for (const jId in this.state.db.tutor_junior_mapping) {
+        if (this.state.db.tutor_junior_mapping[jId] === userId) {
+          delete this.state.db.tutor_junior_mapping[jId];
+        }
+      }
+    }
+
+    // 4. Cascade delete from cert checklists
+    if (this.state.db.cert_checklists) {
+      delete this.state.db.cert_checklists[userId];
+    }
+
+    // 5. Cascade delete from evaluations history
+    if (this.state.db.historial_evaluaciones) {
+      this.state.db.historial_evaluaciones = this.state.db.historial_evaluaciones.filter(
+        h => h.usuario_id !== userId
+      );
+    }
+
+    // 6. Persist to storage and server
+    this.saveDatabase();
+
+    // 7. Feedback & UI Update
+    this.showToast(`El miembro ${user.nombre || user.name} ha sido eliminado correctamente.`);
+    this.renderTeamTable();
+    this.renderAdminView();
   },
 
   renderTestCorrectionMode(semanaNumero) {
