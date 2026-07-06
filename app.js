@@ -10220,7 +10220,7 @@ const app = {
       const isSelf = user.id === this.state.activeUser.id;
       const deleteBtnHtml = isSelf ? '' : `
         <button onclick="app.handleDeleteMember('${user.id}')" class="btn btn-xs" style="background-color: rgba(225, 29, 72, 0.08); color: #E11D48; border: 1px solid rgba(225, 29, 72, 0.18); font-weight: 600; display: inline-flex; align-items: center; gap: 4px; transition: all 0.2s ease; margin-left: 6px;" onmouseover="this.style.backgroundColor='rgba(225, 29, 72, 0.15)'" onmouseout="this.style.backgroundColor='rgba(225, 29, 72, 0.08)'">
-          <i class="ti ti-trash" style="font-size: 0.85rem;"></i> Eliminar
+          <i class="ti ti-trash" style="font-size: 0.85rem;"></i> Delete
         </button>
       `;
 
@@ -10239,7 +10239,7 @@ const app = {
         <td class="p-4">${estadoMalla}</td>
         <td class="p-4 text-right" style="white-space: nowrap;">
           <button onclick="app.handleUpdateMemberRolee('${user.id}')" class="btn btn-xs" style="background-color: rgba(219, 39, 119, 0.08); color: #db2777; border: 1px solid rgba(219, 39, 119, 0.18); font-weight: 600; display: inline-flex; align-items: center; gap: 4px; transition: all 0.2s ease;" onmouseover="this.style.backgroundColor='rgba(219, 39, 119, 0.15)'" onmouseout="this.style.backgroundColor='rgba(219, 39, 119, 0.08)'">
-            <i class="ti ti-refresh" style="font-size: 0.85rem;"></i> Actualizar
+            <i class="ti ti-refresh" style="font-size: 0.85rem;"></i> Update
           </button>
           ${deleteBtnHtml}
         </td>
@@ -10329,12 +10329,12 @@ const app = {
 
   handleDeleteMember(userId) {
     if (!this.state.activeUser || this.state.activeUser.role !== 'admin') {
-      this.showForbiddenError("Error 403: No tienes permisos para eliminar miembros del equipo.");
+      this.showForbiddenError("Error 403: You do not have permissions to delete team members.");
       return;
     }
 
     if (userId === this.state.activeUser.id) {
-      this.showToast("No puedes eliminarte a ti mismo del equipo.", "danger");
+      this.showToast("You cannot delete yourself from the team.", "danger");
       return;
     }
 
@@ -10342,7 +10342,7 @@ const app = {
     if (!user) return;
 
     const roleName = user.rol || (user.role === 'admin' ? 'MANAGER' : user.role === 'tutor' ? 'TUTOR' : user.role === 'senior' ? 'SENIOR' : 'JUNIOR');
-    const confirmMessage = `¿Estás seguro de que deseas eliminar permanentemente a ${user.nombre || user.name} (${roleName})?\n\nEsta acción borrará todo su historial, progreso y asignaciones de manera irreversible.`;
+    const confirmMessage = `Are you sure you want to permanently delete ${user.nombre || user.name} (${roleName})?\n\nThis action will erase all their history, progress, and assignments irreversibly.`;
     
     if (!confirm(confirmMessage)) {
       return;
@@ -10383,7 +10383,7 @@ const app = {
     this.saveDatabase();
 
     // 7. Feedback & UI Update
-    this.showToast(`El miembro ${user.nombre || user.name} ha sido eliminado correctamente.`);
+    this.showToast(`Member ${user.nombre || user.name} has been deleted successfully.`);
     this.renderTeamTable();
     this.renderAdminView();
   },
