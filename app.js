@@ -2387,7 +2387,9 @@ const app = {
           }
           const avgScore = scores.length > 0 ? Math.round(scores.reduce((a, b) => a + b, 0) / scores.length) : 0;
           u.avg_score = avgScore;
-          const completedCount = progress.completed_weeks.length;
+          const completedCount = progress.completed_weeks ? progress.completed_weeks.length : 0;
+          u.current_week = Math.min(completedCount + 1, 12);
+          u.semana_actual = Math.min(completedCount + 1, 12);
           u.status = (avgScore < 70 && completedCount > 3) ? 'at_risk' : 'on_track';
         }
       }
