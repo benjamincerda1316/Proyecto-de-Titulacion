@@ -3400,17 +3400,17 @@ const app = {
         classGameZone.classList.remove('hidden');
         this.classGameInit();
       }
-    } else if (activeWeek === 3 || activeWeek === 4) {
-      if (gamePlaceholder) gamePlaceholder.style.display = 'none';
-      if (simulatorZone) {
-        simulatorZone.classList.remove('hidden');
-        this.simInit(activeWeek);
-      }
-    } else if (activeWeek === 5) {
+    } else if (activeWeek === 3) {
       if (gamePlaceholder) gamePlaceholder.style.display = 'none';
       if (lifecycleZone) {
         lifecycleZone.classList.remove('hidden');
         this.lifecycleInit();
+      }
+    } else if (activeWeek === 5 || activeWeek === 6) {
+      if (gamePlaceholder) gamePlaceholder.style.display = 'none';
+      if (simulatorZone) {
+        simulatorZone.classList.remove('hidden');
+        this.simInit(activeWeek);
       }
     }
 
@@ -4229,8 +4229,8 @@ const app = {
     
     this.simulatorState.byProduct = byProduct;
     
-    // Filter products if Week 4
-    if (this.simulatorState.activeWeek === 4) {
+    // Filter products if Week 6
+    if (this.simulatorState.activeWeek === 6) {
       const week4ProductsList = [
         "FX Option - Trading derivative - Buy call",
         "FX Spot and FX Forward - Trading - Loss",
@@ -4256,8 +4256,8 @@ const app = {
     if (!product) return false;
     const userId = this.state.activeUser ? this.state.activeUser.id : null;
     const progress = userId ? this.state.db.consultant_progress[userId] : null;
-    const isWeek4 = (this.simulatorState.activeWeek === 4);
-    if (!isWeek4) return false;
+    const isWeek6 = (this.simulatorState.activeWeek === 6);
+    if (!isWeek6) return false;
     const score = (progress && progress.sim_scores) ? progress.sim_scores[product] : null;
     return (score !== null && score !== undefined);
   },
@@ -4292,11 +4292,11 @@ const app = {
     // Check if attempted in Week 4
     const userId = this.state.activeUser ? this.state.activeUser.id : null;
     const progress = userId ? this.state.db.consultant_progress[userId] : null;
-    const isWeek4 = (this.simulatorState.activeWeek === 4);
+    const isWeek6 = (this.simulatorState.activeWeek === 6);
     const score = (progress && progress.sim_scores) ? progress.sim_scores[product] : null;
     const isAttempted = (score !== null && score !== undefined);
     
-    if (isWeek4 && isAttempted && progress.sim_answers && progress.sim_answers[product]) {
+    if (isWeek6 && isAttempted && progress.sim_answers && progress.sim_answers[product]) {
       const savedAnswers = progress.sim_answers[product];
       for (const key in savedAnswers) {
         this.simulatorState.answers.set(key, savedAnswers[key]);
@@ -4365,11 +4365,11 @@ const app = {
     
     const userId = this.state.activeUser ? this.state.activeUser.id : null;
     const progress = userId ? this.state.db.consultant_progress[userId] : null;
-    const isWeek4 = (this.simulatorState.activeWeek === 4);
+    const isWeek6 = (this.simulatorState.activeWeek === 6);
     
-    // Build stats summary if Week 4
+    // Build stats summary if Week 6
     const summaryBox = document.getElementById('sim-evaluation-summary');
-    if (isWeek4) {
+    if (isWeek6) {
       if (summaryBox) {
         summaryBox.classList.remove('hidden');
         summaryBox.style.display = 'flex';
@@ -4422,7 +4422,7 @@ const app = {
       let statusHtml = '';
       let btnLabel = 'Open';
       
-      if (isWeek4) {
+      if (isWeek6) {
         if (isAttempted) {
           statusHtml = `<span style="font-size: 0.75rem; font-weight: bold; color: var(--success); margin-right: 1rem;">Score: ${score}%</span>`;
           btnLabel = 'Review';
@@ -4761,11 +4761,11 @@ const app = {
     const product = this.simulatorState.currentProduct;
     if (!product) return;
     
-    const isWeek4 = (this.simulatorState.activeWeek === 4);
+    const isWeek6 = (this.simulatorState.activeWeek === 6);
     const userId = this.state.activeUser ? this.state.activeUser.id : null;
     const progress = userId ? this.state.db.consultant_progress[userId] : null;
 
-    if (isWeek4 && progress) {
+    if (isWeek6 && progress) {
       const score = (progress.sim_scores) ? progress.sim_scores[product] : null;
       if (score !== null && score !== undefined) {
         // Already attempted, just open the modal
@@ -4805,8 +4805,8 @@ const app = {
     
     const scorePct = Math.round((correct / total) * 100);
     
-    // Save to database if Week 4
-    if (isWeek4 && progress) {
+    // Save to database if Week 6
+    if (isWeek6 && progress) {
       if (!progress.sim_scores) progress.sim_scores = {};
       if (!progress.sim_answers) progress.sim_answers = {};
       
