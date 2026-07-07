@@ -4318,13 +4318,13 @@ const app = {
     if (this.simIsReadOnly()) {
       if (btnReset) btnReset.classList.add('hidden');
       if (btnVal) {
-        btnVal.innerHTML = '<i class="ti ti-chart-bar"></i> Ver Resultados';
+        btnVal.innerHTML = '<i class="ti ti-chart-bar"></i> View Results';
         btnVal.classList.remove('hidden');
       }
     } else {
       if (btnReset) btnReset.classList.add('hidden');
       if (btnVal) {
-        btnVal.innerHTML = '<i class="ti ti-check"></i> Validar Asientos';
+        btnVal.innerHTML = '<i class="ti ti-check"></i> Validate Entries';
         btnVal.classList.add('hidden');
       }
     }
@@ -4823,7 +4823,7 @@ const app = {
       const btnVal = document.getElementById('sim-btn-validate');
       const btnReset = document.getElementById('sim-btn-reset');
       if (btnReset) btnReset.classList.add('hidden');
-      if (btnVal) btnVal.innerHTML = '<i class="ti ti-chart-bar"></i> Ver Resultados';
+      if (btnVal) btnVal.innerHTML = '<i class="ti ti-chart-bar"></i> View Results';
       
       // Re-build bricks to disable drag
       this.simBuildBricksUI(rows);
