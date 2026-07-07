@@ -3303,7 +3303,7 @@ const app = {
     this.currentViewedWeek = parseInt(weekNum);
     const userId = this.state.activeUser.id;
     const progress = this.state.db.consultant_progress[userId];
-    const template = this.state.db.week_templates.find(wt => wt.week_number === weekNum);
+    const template = this.state.db.week_templates.find(wt => wt.week_number === parseInt(weekNum));
     
     if (!template) return;
 
@@ -5513,7 +5513,7 @@ const app = {
     const weekNum = this.state.selectedWeekNum;
     const userId = this.state.activeUser.id;
     const progress = this.state.db.consultant_progress[userId];
-    const template = this.state.db.week_templates.find(wt => wt.week_number === weekNum);
+    const template = this.state.db.week_templates.find(wt => wt.week_number === parseInt(weekNum));
     
     if (progress.deliverables[weekNum]) {
       progress.deliverables[weekNum].status = 'pending_review';
@@ -5713,7 +5713,7 @@ const app = {
     });
     
     const scorePercentage = Math.round((correctCount / questions.length) * 100);
-    const template = this.state.db.week_templates.find(wt => wt.week_number === weekNum);
+    const template = this.state.db.week_templates.find(wt => wt.week_number === parseInt(weekNum));
     const minScore = template.knowledge_test?.min_passing_score || 70;
     
     const userId = this.state.activeUser.id;
@@ -6510,7 +6510,7 @@ const app = {
 
   loadInspectedWeekDetail(userId, weekNum) {
     const progress = this.state.db.consultant_progress[userId];
-    const template = this.state.db.week_templates.find(wt => wt.week_number === weekNum);
+    const template = this.state.db.week_templates.find(wt => wt.week_number === parseInt(weekNum));
     
     const isCompleted = progress.completed_weeks.includes(weekNum);
     const maxUnlockedWeek = Math.min(progress.completed_weeks.length + 1, 12);
