@@ -1380,7 +1380,7 @@ const app = {
           "Implement Formula Accounts applying logical conditions for automated routing of amounts",
           "Correctly complete the weekly Timesheet following the area's imputation rules",
           "Identify the purpose of recurring committees (Chile-Brazil, OPS/Finance, Americas, Townhalls)",
-          "Interactively resolve the 'Accounts Game' integrated into the platform's Workspace",
+          "Explore the interactive FX Lifecycle Simulator in the Workspace to analyze posting flows",
           "Complete and log the viewing of the 21 mandatory videos of the 'Financial Markets for Newcomers' module on MXLearn"
         ],
         knowledge_test: { num_questions: 26, min_passing_score: 70 },
@@ -1397,7 +1397,8 @@ const app = {
           "Successfully link the parameterized accounts with the FX Swap rules engine",
           "Create specific master accounting accounts for processing Financial Options",
           "Design and activate assignment accounting rules (Accounting Rules) for Options contracts",
-          "Validate that supplementary material and derivatives guides have been reviewed by injecting examples"
+          "Validate that supplementary material and derivatives guides have been reviewed by injecting examples",
+          "Complete and pass the FX Lifecycle Challenge game (minimum 70% score)"
         ],
         knowledge_test: { num_questions: 2, min_passing_score: 70 },
         deliverable: { type: "zip", description: "Configuration and injection in the test environment of operational accounting rules for FX Swap and Options", required: true },
@@ -1414,7 +1415,8 @@ const app = {
           "Design the logical processing map of accounting cash flows for complex transactions",
           "Parameterize and activate a complete set of Accounting Flow Rules in the test environment",
           "Run the battery of validation tests and manual monitoring of injected flows",
-          "Document and deconstruct minor flow routing discrepancies without senior intervention"
+          "Document and deconstruct minor flow routing discrepancies without senior intervention",
+          "Interactively resolve the MXPress Accounting Schema Game (Part 1 - Free Practice)"
         ],
         knowledge_test: { num_questions: 2, min_passing_score: 70 },
         deliverable: { type: "zip", description: "Prototype of flow rules matrix configured in the Sandbox", required: true },
@@ -1431,7 +1433,8 @@ const app = {
           "Execute real transactions (book trades) and audit that the accounting impacts cleanly",
           "Configure and inject market values to the platform using the Mark-to-Market (MTM) engine",
           "Schedule, launch, and monitor the execution of automated End of Day (EOD) closing scripts",
-          "Generate, extract, and reconcile the consolidated accounting journal report post EOD processing"
+          "Generate, extract, and reconcile the consolidated accounting journal report post EOD processing",
+          "Solve and pass the MXPress Accounting Schema Evaluation (Part 2 - Challenge Mode)"
         ],
         knowledge_test: { num_questions: 2, min_passing_score: 70 },
         deliverable: { type: "pdf", description: "Balanced accounting journal report post full simulation of an End of Day (EOD) close for FX Swaps and Options", required: true },
@@ -3382,15 +3385,17 @@ const app = {
       commentArea.style.display = 'none';
     }
 
-    // ORQUESTRACIÓN EN CALIENTE: ¿Es la semana 1, 2, 3, 4 o 5?
+    // ORQUESTRACIÓN EN CALIENTE: ¿Es la semana 1, 2, 3, 4, 5 o 6?
     const simulatorZone = document.getElementById('workspace-simulator-zone');
     const classGameZone = document.getElementById('workspace-classification-game-zone');
     const lifecycleZone = document.getElementById('workspace-lifecycle-zone');
+    const lifecycleGameZone = document.getElementById('workspace-lifecycle-game-zone');
     const gamePlaceholder = document.getElementById('game-placeholder');
     
     if (simulatorZone) simulatorZone.classList.add('hidden');
     if (classGameZone) classGameZone.classList.add('hidden');
     if (lifecycleZone) lifecycleZone.classList.add('hidden');
+    if (lifecycleGameZone) lifecycleGameZone.classList.add('hidden');
     if (gamePlaceholder) gamePlaceholder.style.display = 'flex';
     
     const activeWeek = parseInt(weekNum);
@@ -3405,6 +3410,12 @@ const app = {
       if (lifecycleZone) {
         lifecycleZone.classList.remove('hidden');
         this.lifecycleInit();
+      }
+    } else if (activeWeek === 4) {
+      if (gamePlaceholder) gamePlaceholder.style.display = 'none';
+      if (lifecycleGameZone) {
+        lifecycleGameZone.classList.remove('hidden');
+        this.lifecycleGameInit();
       }
     } else if (activeWeek === 5 || activeWeek === 6) {
       if (gamePlaceholder) gamePlaceholder.style.display = 'none';
@@ -11657,6 +11668,390 @@ const app = {
     });
     
     container.innerHTML = html;
+  },
+
+  // ==========================================================================
+  // WEEK 4: FX LIFECYCLE GAME (GAMIFICATION) METHODS
+  // ==========================================================================
+  lifecycleGameState: {
+    stepIndex: 0, // 0 to 3
+    score: 0,
+    attempts: 0,
+    selectedSlotId: null,
+    userInputs: [],
+    cumulativeCorrect: [],
+    hasValidatedStep: false
+  },
+
+  lifecycleGameInit() {
+    this.lifecycleGameState.stepIndex = 0;
+    this.lifecycleGameState.score = 0;
+    this.lifecycleGameState.attempts = 0;
+    this.lifecycleGameState.selectedSlotId = null;
+    this.lifecycleGameState.cumulativeCorrect = [];
+    this.lifecycleGameState.hasValidatedStep = false;
+
+    const setupView = document.getElementById('lfg-setup-view');
+    const playView = document.getElementById('lfg-play-view');
+    const resultsView = document.getElementById('lfg-results-view');
+    if (setupView) setupView.classList.remove('hidden');
+    if (playView) playView.classList.add('hidden');
+    if (resultsView) resultsView.classList.add('hidden');
+  },
+
+  lifecycleGameStart() {
+    const setupView = document.getElementById('lfg-setup-view');
+    const playView = document.getElementById('lfg-play-view');
+    if (setupView) setupView.classList.add('hidden');
+    if (playView) playView.classList.remove('hidden');
+
+    this.lifecycleGameState.stepIndex = 0;
+    this.lifecycleGameState.score = 0;
+    this.lifecycleGameState.cumulativeCorrect = [];
+    this.lifecycleGameLoadStep();
+  },
+
+  lifecycleGameStepsData: [
+    {
+      title: "Event 1/4: Trade Date - OBS Booking",
+      desc: "Record the Off-Balance Sheet (OBS) commitments for the purchased asset and sold liability.",
+      postings: [
+        { label: "Post 1: OBS Asset Booking (Buy USD 1,000,000)", key: 0, correctDr: "obsRecv", correctCr: "obsContraBuy", correctReversal: false },
+        { label: "Post 2: OBS Liability Booking (Sell EUR 920,000)", key: 1, correctDr: "obsContraSell", correctCr: "obsPay", correctReversal: false }
+      ]
+    },
+    {
+      title: "Event 2/4: Revaluation 1 (MTM Profit)",
+      desc: "Recognize Mark-to-Market profit of +12,500 USD since the rate went up in favor of our purchased currency.",
+      postings: [
+        { label: "Post 1: MtM Profit Recognition (+12,500 USD)", key: 0, correctDr: "unrealAsset", correctCr: "mtmGain", correctReversal: false }
+      ]
+    },
+    {
+      title: "Event 3/4: Revaluation 2 (MTM Loss)",
+      desc: "The market rate fell resulting in a cumulative MtM loss of -6,000 USD. Reverse the previous profit of +12,500 and book the new loss of -6,000.",
+      postings: [
+        { label: "Post 1: Reversal of prior profit (+12,500 USD)", key: 0, correctDr: "mtmGain", correctCr: "unrealAsset", correctReversal: true },
+        { label: "Post 2: Booking of new loss (-6,000 USD)", key: 1, correctDr: "mtmLoss", correctCr: "unrealLiab", correctReversal: false }
+      ]
+    },
+    {
+      title: "Event 4/4: Value Date - Settlement",
+      desc: "Maturity reached. Reverse the OBS commitments, reverse the outstanding MtM position (-6,000 USD), and post the final Nostro cash settlements.",
+      postings: [
+        { label: "Post 1: Reversal of OBS Asset Commitment", key: 0, correctDr: "obsContraBuy", correctCr: "obsRecv", correctReversal: true },
+        { label: "Post 2: Reversal of OBS Liability Commitment", key: 1, correctDr: "obsPay", correctCr: "obsContraSell", correctReversal: true },
+        { label: "Post 3: Reversal of last MtM Loss position (-6,000 USD)", key: 2, correctDr: "unrealLiab", correctCr: "mtmLoss", correctReversal: true },
+        { label: "Post 4: Cash Nostro Settlement Receive (Buy USD 1,000,000)", key: 3, correctDr: "cashNostroBuy", correctCr: "realizedGain", correctReversal: false },
+        { label: "Post 5: Cash Nostro Settlement Pay (Sell EUR 920,000)", key: 4, correctDr: "realizedLoss", correctCr: "cashNostroSell", correctReversal: false }
+      ]
+    }
+  ],
+
+  lifecycleGameBricks: [
+    { key: "obsRecv", name: "OBS Asset - Notional Receivable" },
+    { key: "obsContraBuy", name: "OBS Contra - Buy" },
+    { key: "obsContraSell", name: "OBS Contra - Sell" },
+    { key: "obsPay", name: "OBS Liability - Notional Payable" },
+    { key: "unrealAsset", name: "Unrealized MtM Asset" },
+    { key: "unrealLiab", name: "Unrealized MtM Liability" },
+    { key: "mtmGain", name: "MtM Gain (P&L)" },
+    { key: "mtmLoss", name: "MtM Loss (P&L)" },
+    { key: "cashNostroBuy", name: "Cash Nostro - Buy" },
+    { key: "cashNostroSell", name: "Cash Nostro - Sell" },
+    { key: "realizedGain", name: "Realized Gain (P&L)" },
+    { key: "realizedLoss", name: "Realized Loss (P&L)" }
+  ],
+
+  lifecycleGameLoadStep() {
+    const state = this.lifecycleGameState;
+    const step = this.lifecycleGameStepsData[state.stepIndex];
+    state.hasValidatedStep = false;
+    state.selectedSlotId = null;
+
+    state.userInputs = step.postings.map(p => ({
+      dr: null,
+      cr: null,
+      reversal: false
+    }));
+
+    const titleEl = document.getElementById('lfg-event-title');
+    const descEl = document.getElementById('lfg-event-desc');
+    if (titleEl) titleEl.innerText = step.title;
+    if (descEl) descEl.innerText = step.desc;
+
+    const pillTrade = document.getElementById('lfg-pillTrade');
+    const pillValue = document.getElementById('lfg-pillValue');
+    const progress = document.getElementById('lfg-trackProgress');
+    
+    if (pillTrade) pillTrade.classList.toggle('done', state.stepIndex >= 0);
+    if (pillValue) pillValue.classList.toggle('done', state.stepIndex === 3);
+    if (progress) progress.style.width = (state.stepIndex / 3) * 100 + '%';
+
+    const track = document.getElementById('lfg-timelineTrack');
+    if (track) {
+      track.querySelectorAll('.track-dot').forEach(d => d.remove());
+      this.lifecycleGameStepsData.forEach((s, idx) => {
+        const pct = (idx / 3) * 100;
+        const dot = document.createElement('div');
+        dot.className = `track-dot ${idx <= state.stepIndex ? 'done' : ''} ${idx === state.stepIndex ? 'active' : ''}`;
+        dot.style.left = `${pct}%`;
+        track.appendChild(dot);
+      });
+    }
+
+    this.lifecycleGameRenderPostings();
+    this.lifecycleGameRenderBricks();
+
+    const validateBtn = document.getElementById('lfg-validateBtn');
+    const nextBtn = document.getElementById('lfg-nextBtn');
+    if (validateBtn) validateBtn.classList.remove('hidden');
+    if (nextBtn) nextBtn.classList.add('hidden');
+
+    this.lifecycleGameRenderCumulativeJournal();
+  },
+
+  lifecycleGameRenderPostings() {
+    const list = document.getElementById('lfg-postings-list');
+    if (!list) return;
+    list.innerHTML = '';
+
+    const state = this.lifecycleGameState;
+    const step = this.lifecycleGameStepsData[state.stepIndex];
+
+    step.postings.forEach((p, idx) => {
+      const uInput = state.userInputs[idx];
+      const drText = uInput.dr ? this.lifecycleGameBricks.find(b => b.key === uInput.dr).name : "Click to select Debit Account...";
+      const crText = uInput.cr ? this.lifecycleGameBricks.find(b => b.key === uInput.cr).name : "Click to select Credit Account...";
+      const drFilledClass = uInput.dr ? 'filled' : '';
+      const crFilledClass = uInput.cr ? 'filled' : '';
+      const drActive = state.selectedSlotId === `lfg-dr-${idx}` ? 'active' : '';
+      const crActive = state.selectedSlotId === `lfg-cr-${idx}` ? 'active' : '';
+
+      const postRow = document.createElement('div');
+      postRow.style.padding = '12px';
+      postRow.style.border = '1px solid var(--neutral-border)';
+      postRow.style.borderRadius = 'var(--radius-sm)';
+      postRow.style.display = 'flex';
+      postRow.style.flexDirection = 'column';
+      postRow.style.gap = '10px';
+
+      postRow.innerHTML = `
+        <div style="font-size: 0.8rem; font-weight: 700; color: var(--neutral-dark);">${p.label}</div>
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 10px;">
+          <div>
+            <span style="font-size: 0.7rem; font-weight: 700; color: var(--success); text-transform: uppercase; display: block; margin-bottom: 4px;">Debit (Dr)</span>
+            <div class="lfg-slot ${drFilledClass} ${drActive}" id="lfg-dr-${idx}" onclick="app.lifecycleGameSelectSlot('lfg-dr-${idx}')">
+              <span>${drText}</span>
+              <i class="ti ti-chevron-down" style="font-size: 0.8rem;"></i>
+            </div>
+          </div>
+          <div>
+            <span style="font-size: 0.7rem; font-weight: 700; color: var(--danger); text-transform: uppercase; display: block; margin-bottom: 4px;">Credit (Cr)</span>
+            <div class="lfg-slot ${crFilledClass} ${crActive}" id="lfg-cr-${idx}" onclick="app.lifecycleGameSelectSlot('lfg-cr-${idx}')">
+              <span>${crText}</span>
+              <i class="ti ti-chevron-down" style="font-size: 0.8rem;"></i>
+            </div>
+          </div>
+        </div>
+        <div style="display: flex; align-items: center; gap: 8px; margin-top: 2px;">
+          <input type="checkbox" id="lfg-rev-${idx}" ${uInput.reversal ? 'checked' : ''} onchange="app.lifecycleGameToggleReversal(${idx}, this.checked)" style="cursor: pointer; width: 14px; height: 14px;">
+          <label for="lfg-rev-${idx}" style="font-size: 0.75rem; color: var(--neutral-dark); cursor: pointer; user-select: none;">Is Reversal?</label>
+        </div>
+      `;
+
+      list.appendChild(postRow);
+    });
+  },
+
+  lifecycleGameSelectSlot(slotId) {
+    if (this.lifecycleGameState.hasValidatedStep) return;
+    this.lifecycleGameState.selectedSlotId = slotId;
+    this.lifecycleGameRenderPostings();
+  },
+
+  lifecycleGameToggleReversal(postIdx, isChecked) {
+    if (this.lifecycleGameState.hasValidatedStep) return;
+    this.lifecycleGameState.userInputs[postIdx].reversal = isChecked;
+  },
+
+  lifecycleGameRenderBricks() {
+    const container = document.getElementById('lfg-bricks-container');
+    if (!container) return;
+    container.innerHTML = '';
+
+    this.lifecycleGameBricks.forEach(b => {
+      const brick = document.createElement('div');
+      brick.className = 'lfg-brick';
+      brick.innerText = b.name;
+      brick.onclick = () => this.lifecycleGamePlaceBrick(b.key);
+      container.appendChild(brick);
+    });
+  },
+
+  lifecycleGamePlaceBrick(brickKey) {
+    const state = this.lifecycleGameState;
+    if (state.hasValidatedStep || !state.selectedSlotId) return;
+
+    const parts = state.selectedSlotId.split('-');
+    const type = parts[1];
+    const idx = parseInt(parts[2]);
+
+    if (type === 'dr') {
+      state.userInputs[idx].dr = brickKey;
+    } else {
+      state.userInputs[idx].cr = brickKey;
+    }
+
+    if (type === 'dr' && !state.userInputs[idx].cr) {
+      state.selectedSlotId = `lfg-cr-${idx}`;
+    } else {
+      state.selectedSlotId = null;
+    }
+
+    this.lifecycleGameRenderPostings();
+  },
+
+  lifecycleGameValidate() {
+    const state = this.lifecycleGameState;
+    const step = this.lifecycleGameStepsData[state.stepIndex];
+
+    let allCorrect = true;
+    state.attempts++;
+
+    step.postings.forEach((p, idx) => {
+      const uInput = state.userInputs[idx];
+      const drSlot = document.getElementById(`lfg-dr-${idx}`);
+      const crSlot = document.getElementById(`lfg-cr-${idx}`);
+
+      const drCorrect = uInput.dr === p.correctDr;
+      const crCorrect = uInput.cr === p.correctCr;
+      const revCorrect = uInput.reversal === p.correctReversal;
+
+      if (drSlot) {
+        drSlot.classList.remove('correct', 'incorrect');
+        drSlot.classList.add(drCorrect ? 'correct' : 'incorrect');
+      }
+      if (crSlot) {
+        crSlot.classList.remove('correct', 'incorrect');
+        crSlot.classList.add(crCorrect ? 'correct' : 'incorrect');
+      }
+
+      if (!drCorrect || !crCorrect || !revCorrect) {
+        allCorrect = false;
+      }
+    });
+
+    if (allCorrect) {
+      this.showToast("Correct postings! Move on to the next event.", "success");
+      state.hasValidatedStep = true;
+      
+      const points = state.attempts === 1 ? 25 : (state.attempts === 2 ? 15 : 10);
+      state.score += points;
+      state.attempts = 0;
+
+      step.postings.forEach((p, idx) => {
+        const uInput = state.userInputs[idx];
+        const drName = this.lifecycleGameBricks.find(b => b.key === uInput.dr).name;
+        const crName = this.lifecycleGameBricks.find(b => b.key === uInput.cr).name;
+        state.cumulativeCorrect.push({
+          label: p.label,
+          debit: drName,
+          credit: crName,
+          reversal: uInput.reversal
+        });
+      });
+
+      const validateBtn = document.getElementById('lfg-validateBtn');
+      const nextBtn = document.getElementById('lfg-nextBtn');
+      if (validateBtn) validateBtn.classList.add('hidden');
+      if (nextBtn) nextBtn.classList.remove('hidden');
+
+      this.lifecycleGameRenderCumulativeJournal();
+    } else {
+      this.showToast("Some postings or reversal tags are incorrect. Try again!", "danger");
+    }
+  },
+
+  lifecycleGameNext() {
+    const state = this.lifecycleGameState;
+    if (state.stepIndex < 3) {
+      state.stepIndex++;
+      this.lifecycleGameLoadStep();
+    } else {
+      this.lifecycleGameFinish();
+    }
+  },
+
+  lifecycleGameRenderCumulativeJournal() {
+    const container = document.getElementById('lfg-cumulative-journal');
+    if (!container) return;
+    
+    if (this.lifecycleGameState.cumulativeCorrect.length === 0) {
+      container.innerHTML = '<div class="empty-state" style="text-align: center; padding: 20px; color: var(--neutral-muted);">No entries validated yet.</div>';
+      return;
+    }
+
+    let rowsHtml = '';
+    this.lifecycleGameState.cumulativeCorrect.forEach((c, idx) => {
+      rowsHtml += `
+        <tr style="border-bottom: 1px solid var(--neutral-border);">
+          <td style="padding: 6px; font-weight: 500; color: var(--neutral-dark);">${c.label}</td>
+          <td style="padding: 6px; color: var(--success); font-weight: bold;">${c.debit}</td>
+          <td style="padding: 6px; color: var(--danger); font-weight: bold;">${c.credit}</td>
+          <td style="padding: 6px; text-align: center;">${c.reversal ? '<span class="badge badge-warning" style="font-size:10px;">REVERSAL</span>' : '<span style="color:var(--neutral-muted); font-size:11px;">-</span>'}</td>
+        </tr>
+      `;
+    });
+
+    container.innerHTML = `
+      <table style="width: 100%; border-collapse: collapse; text-align: left;">
+        <thead>
+          <tr style="border-bottom: 2px solid var(--neutral-border); text-transform: uppercase; font-size: 10px; color: var(--neutral-muted); font-weight: 700;">
+            <th style="padding: 6px;">Posting Rule</th>
+            <th style="padding: 6px;">Debit (Dr)</th>
+            <th style="padding: 6px;">Credit (Cr)</th>
+            <th style="padding: 6px; text-align: center;">Type</th>
+          </tr>
+        </thead>
+        <tbody>
+          ${rowsHtml}
+        </tbody>
+      </table>
+    `;
+  },
+
+  lifecycleGameFinish() {
+    const playView = document.getElementById('lfg-play-view');
+    const resultsView = document.getElementById('lfg-results-view');
+    if (playView) playView.classList.add('hidden');
+    if (resultsView) resultsView.classList.remove('hidden');
+
+    const state = this.lifecycleGameState;
+    const finalScore = state.score;
+    
+    document.getElementById('lfg-score-display').innerText = `${finalScore}/100`;
+
+    const userId = this.state.activeUser ? this.state.activeUser.id : null;
+    if (userId && this.state.db && this.state.db.consultant_progress) {
+      const progress = this.state.db.consultant_progress[userId];
+      if (progress) {
+        if (!progress.game_scores) progress.game_scores = {};
+        
+        progress.game_scores[4] = {
+          score: finalScore,
+          total: 100,
+          completedAt: new Date().toISOString()
+        };
+
+        this.saveDatabase();
+        this.renderAdminView();
+      }
+    }
+  },
+
+  lifecycleGameReset() {
+    this.lifecycleGameInit();
   }
 };
 

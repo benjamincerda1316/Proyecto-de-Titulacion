@@ -821,6 +821,137 @@
 
                       </div>
                     </div>
+
+                    <!-- Week 4 FX Lifecycle Game Zone -->
+                    <div id="workspace-lifecycle-game-zone" class="hidden" style="display: flex; flex-direction: column; gap: 20px;">
+                      <!-- Game Header -->
+                      <div class="sim-home-header" style="text-align: center; margin-bottom: 10px;">
+                        <h3 style="font-family: 'Outfit', sans-serif; font-weight: 700; color: var(--neutral-dark);">FX Lifecycle Challenge (Gamification)</h3>
+                        <p style="color: var(--neutral-muted); font-size: 0.9rem;">Demonstrate your mastery of the FX lifecycle accounting entries by posting the correct journal entries at each stage.</p>
+                      </div>
+
+                      <!-- 1. SETUP / START VIEW -->
+                      <div id="lfg-setup-view" class="card glass-card" style="padding: 25px; display: flex; flex-direction: column; gap: 20px;">
+                        <div style="background: rgba(225, 29, 72, 0.03); border: 1.5px solid var(--primary-light); border-radius: 12px; padding: 20px;">
+                          <h4 style="font-family: 'Outfit', sans-serif; font-weight: 700; color: var(--primary); margin-bottom: 12px;">Contract Context & Market Parameters</h4>
+                          <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; font-size: 0.85rem;">
+                            <div>
+                              <strong style="color: var(--neutral-dark);">Transaction:</strong> Buy 1,000,000 USD / Sell 920,000 EUR
+                            </div>
+                            <div>
+                              <strong style="color: var(--neutral-dark);">Reporting Currency:</strong> USD
+                            </div>
+                            <div>
+                              <strong style="color: var(--neutral-dark);">Trade Date Rate:</strong> 1.0870 EUR/USD
+                            </div>
+                            <div>
+                              <strong style="color: var(--neutral-dark);">Revaluations:</strong>
+                              <ul style="margin: 4px 0 0 15px; padding: 0;">
+                                <li>Reval 1: +12,500 USD (Profit)</li>
+                                <li>Reval 2: -6,000 USD (Loss)</li>
+                              </ul>
+                            </div>
+                          </div>
+                        </div>
+
+                        <div style="font-size: 0.85rem; color: var(--neutral-dark); line-height: 1.5;">
+                          <h5 style="font-weight: 700; margin-bottom: 8px;">How to Play:</h5>
+                          <ol style="margin-left: 20px; padding: 0; display: flex; flex-direction: column; gap: 6px;">
+                            <li>Select a target slot (Debit or Credit) in the journal entry rows.</li>
+                            <li>Click on any of the account bricks at the bottom to assign it to that slot.</li>
+                            <li>Toggle the <strong>"Reversal"</strong> checkbox if the entry reverses a previous posting.</li>
+                            <li>Validate your entries at each stage. Correct answers on the first attempt earn maximum points!</li>
+                          </ol>
+                        </div>
+
+                        <button class="btn btn-primary" style="width: 100%; justify-content: center; font-weight: 600; padding: 12px;" onclick="app.lifecycleGameStart()">Start Challenge</button>
+                      </div>
+
+                      <!-- 2. GAMEPLAY VIEW -->
+                      <div id="lfg-play-view" class="hidden" style="display: flex; flex-direction: column; gap: 20px;">
+                        
+                        <!-- Timeline navigation header -->
+                        <div class="timeline-header" style="display: flex; align-items: center; gap: 15px; margin-bottom: 10px;">
+                          <div class="date-pill" id="lfg-pillTrade">
+                            <span class="pill-label">Trade date</span>
+                          </div>
+                          
+                          <div class="timeline-track" id="lfg-timelineTrack">
+                            <div class="track-line"></div>
+                            <div class="track-progress" id="lfg-trackProgress"></div>
+                          </div>
+                          
+                          <div class="date-pill" id="lfg-pillValue">
+                            <span class="pill-label">Value date</span>
+                          </div>
+                        </div>
+
+                        <!-- Active Event Banner -->
+                        <div class="card" style="padding: 15px; border-left: 4px solid var(--primary); background: var(--neutral-light); border-radius: var(--radius-sm); margin-bottom: 0;">
+                          <h4 id="lfg-event-title" style="font-size: 0.95rem; font-weight: 700; margin-bottom: 5px; color: var(--neutral-dark);">Event 1/4: Trade Date</h4>
+                          <p id="lfg-event-desc" style="font-size: 0.8rem; color: var(--neutral-muted); margin-bottom: 0;">Record OBS commitment for buy and sell currencies.</p>
+                        </div>
+
+                        <!-- Postings Assignment Board -->
+                        <div class="card glass-card" style="padding: 20px; margin-bottom: 0;">
+                          <h4 style="font-size: 0.85rem; font-weight: 700; margin-bottom: 15px; color: var(--neutral-dark); display: flex; align-items: center; gap: 6px;">
+                            <i class="ti ti-edit" style="color: var(--primary);"></i> Journal Entries Required
+                          </h4>
+                          <div id="lfg-postings-list" style="display: flex; flex-direction: column; gap: 15px; margin-bottom: 20px;">
+                            <!-- Inyectado dinámicamente -->
+                          </div>
+
+                          <!-- Available Account Bricks -->
+                          <div style="border-top: 1px solid var(--neutral-border); padding-top: 15px;">
+                            <h5 style="font-size: 0.75rem; font-weight: 700; color: var(--neutral-muted); text-transform: uppercase; margin-bottom: 10px;">Available Account Bricks:</h5>
+                            <div id="lfg-bricks-container" style="display: flex; flex-wrap: wrap; gap: 8px;">
+                              <!-- Inyectado dinámicamente -->
+                            </div>
+                          </div>
+                        </div>
+
+                        <!-- Buttons -->
+                        <div style="display: flex; justify-content: space-between; align-items: center;">
+                          <button class="btn btn-outline" onclick="app.lifecycleGameReset()" style="font-weight: 600;">Restart Game</button>
+                          <div style="display: flex; gap: 10px;">
+                            <button class="btn btn-success" id="lfg-validateBtn" onclick="app.lifecycleGameValidate()" style="font-weight: 600;">Validate Entries</button>
+                            <button class="btn btn-primary hidden" id="lfg-nextBtn" onclick="app.lifecycleGameNext()" style="font-weight: 600;">Next Event ▸</button>
+                          </div>
+                        </div>
+
+                        <!-- Cumulative Journal (Posted Correctly) -->
+                        <div class="card" style="padding: 15px; border: 1px solid var(--neutral-border); border-radius: var(--radius-sm); background: var(--bg-card); margin-bottom: 0;">
+                          <h4 style="font-size: 0.85rem; font-weight: 700; margin-bottom: 10px; color: var(--neutral-dark); display: flex; align-items: center; gap: 6px;">
+                            <i class="ti ti-list-details" style="color: var(--success);"></i> Correctly Posted Cumulative Journal
+                          </h4>
+                          <div id="lfg-cumulative-journal" style="overflow-x: auto; font-size: 0.75rem;">
+                            <div class="empty-state" style="text-align: center; padding: 20px; color: var(--neutral-muted);">No entries validated yet.</div>
+                          </div>
+                        </div>
+                      </div>
+
+                      <!-- 3. RESULTS VIEW -->
+                      <div id="lfg-results-view" class="hidden card glass-card" style="padding: 30px; text-align: center; display: flex; flex-direction: column; align-items: center; gap: 20px; margin-bottom: 0;">
+                        <div style="position: relative; width: 140px; height: 140px; display: flex; align-items: center; justify-content: center; background: radial-gradient(circle, var(--success-light) 0%, transparent 70%); border-radius: 50%;">
+                          <i class="ti ti-award" style="font-size: 4.5rem; color: var(--success);"></i>
+                        </div>
+                        
+                        <div>
+                          <h3 style="font-family: 'Outfit', sans-serif; font-weight: 700; color: var(--neutral-dark); margin-bottom: 5px;">Challenge Completed!</h3>
+                          <p style="color: var(--neutral-muted); font-size: 0.85rem;">You have correctly mapped the accounting lifecycle entries of the FX Cash transaction.</p>
+                        </div>
+
+                        <div style="background: var(--neutral-light); border: 1px solid var(--neutral-border); border-radius: 12px; padding: 15px 30px; display: flex; flex-direction: column; gap: 5px;">
+                          <span style="font-size: 0.8rem; color: var(--neutral-muted); text-transform: uppercase; font-weight: 700; letter-spacing: 0.05em;">Final Score</span>
+                          <strong id="lfg-score-display" style="font-size: 2.25rem; color: var(--neutral-dark);">100/100</strong>
+                        </div>
+
+                        <div style="display: flex; gap: 10px; width: 100%; max-width: 400px; margin-top: 10px;">
+                          <button class="btn btn-outline" style="flex: 1; justify-content: center;" onclick="app.lifecycleGameReset()">Try Again</button>
+                          <button class="btn btn-primary" style="flex: 1; justify-content: center;" onclick="app.switchPanelTab('checklist')">Checklist</button>
+                        </div>
+                      </div>
+                    </div>
                   </div>
 
                 </div>

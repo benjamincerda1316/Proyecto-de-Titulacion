@@ -5366,6 +5366,83 @@ button {
   color: var(--danger);
 }
 
+/* FX Lifecycle Game Styles */
+#workspace-lifecycle-game-zone .lfg-slot {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px 12px;
+  background: var(--neutral-light);
+  border: 1.5px dashed var(--neutral-border);
+  border-radius: var(--radius-sm);
+  font-family: 'Outfit', sans-serif;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--neutral-muted);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  min-height: 40px;
+}
+
+#workspace-lifecycle-game-zone .lfg-slot:hover {
+  border-color: var(--primary);
+  background: rgba(225, 29, 72, 0.01);
+}
+
+#workspace-lifecycle-game-zone .lfg-slot.active {
+  border-color: var(--primary);
+  background: rgba(225, 29, 72, 0.03);
+  color: var(--primary);
+  box-shadow: 0 0 0 3px var(--primary-light);
+}
+
+#workspace-lifecycle-game-zone .lfg-slot.filled {
+  border-style: solid;
+  border-color: var(--neutral-border);
+  background: var(--bg-card);
+  color: var(--neutral-dark);
+}
+
+#workspace-lifecycle-game-zone .lfg-slot.correct {
+  border-color: var(--success);
+  background: var(--success-light);
+  color: var(--success);
+}
+
+#workspace-lifecycle-game-zone .lfg-slot.incorrect {
+  border-color: var(--danger);
+  background: var(--danger-light);
+  color: var(--danger);
+}
+
+#workspace-lifecycle-game-zone .lfg-brick {
+  padding: 6px 12px;
+  border: 1px solid var(--neutral-border);
+  background: var(--bg-card);
+  border-radius: 20px;
+  font-family: 'Outfit', sans-serif;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--neutral-dark);
+  cursor: pointer;
+  box-shadow: var(--shadow-sm);
+  transition: all 0.2s ease;
+  user-select: none;
+}
+
+#workspace-lifecycle-game-zone .lfg-brick:hover {
+  border-color: var(--primary);
+  color: var(--primary);
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-md);
+}
+
+#workspace-lifecycle-game-zone .lfg-brick.selected {
+  border-color: var(--primary);
+  background: var(--primary-light);
+  color: var(--primary);
+}
+
 #workspace-lifecycle-zone .val.zero {
   color: var(--neutral-border);
 }
