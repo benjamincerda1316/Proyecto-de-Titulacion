@@ -4946,13 +4946,20 @@ button {
   color: var(--neutral-dark);
 }
 
+#workspace-lifecycle-zone .timeline-track {
+  flex: 1;
+  position: relative;
+  height: 4px;
+}
+
 #workspace-lifecycle-zone .track-line {
   position: absolute;
   top: 50%;
   left: 0;
   right: 0;
-  height: 2px;
+  height: 4px;
   background: var(--neutral-border);
+  border-radius: 2px;
   transform: translateY(-50%);
 }
 
@@ -4960,8 +4967,9 @@ button {
   position: absolute;
   top: 50%;
   left: 0;
-  height: 2px;
+  height: 4px;
   background: var(--primary);
+  border-radius: 2px;
   transform: translateY(-50%);
   transition: width 0.4s ease;
 }
@@ -4969,12 +4977,14 @@ button {
 #workspace-lifecycle-zone .track-dot {
   position: absolute;
   top: 50%;
-  width: 8px;
-  height: 8px;
+  width: 12px;
+  height: 12px;
   border-radius: 50%;
   background: var(--neutral-border);
+  border: 2px solid white;
   transform: translate(-50%, -50%);
   transition: all 0.3s ease;
+  cursor: pointer;
 }
 
 #workspace-lifecycle-zone .track-dot.done {
@@ -4983,8 +4993,8 @@ button {
 
 #workspace-lifecycle-zone .track-dot.active {
   background: var(--primary);
-  width: 12px;
-  height: 12px;
+  width: 16px;
+  height: 16px;
   box-shadow: 0 0 0 5px var(--primary-light), 0 0 12px rgba(166, 25, 46, .5);
 }
 
