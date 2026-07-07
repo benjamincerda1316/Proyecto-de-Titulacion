@@ -6572,15 +6572,22 @@ const app = {
     const scoreDetails = document.getElementById('inspect-test-details-display');
     const actionArea = document.getElementById('inspect-test-action-area');
 
-    if (testScore !== undefined) {
-      scoreVal.innerText = `${testScore}%`;
+    const isSpent = this.getQuizSpentState(userId, weekNum);
+    if (testScore !== undefined || isSpent) {
+      scoreVal.innerText = testScore !== undefined ? `${testScore}%` : 'Locked 🔒';
       scoreVal.style.display = 'flex';
       
-      let detailsText = `Threshold: ${template.knowledge_test?.min_passing_score || 70}%\nTotal attempts: ${attempts}`;
+      let detailsText = `Threshold: ${template.knowledge_test?.min_passing_score || 70}%\nTotal attempts: ${attempts || (isSpent ? 1 : 0)}`;
       if (testTime) {
         detailsText += `\nTime spent: ${testTime}`;
+      } else if (isSpent && testScore === undefined) {
+        detailsText += `\nStatus: Attempt locked (exited/closed without submitting)`;
       }
-      detailsText += `\nResult: ${testScore >= (template.knowledge_test?.min_passing_score || 70) ? 'Passed' : 'Failed'}`;
+      if (testScore !== undefined) {
+        detailsText += `\nResult: ${testScore >= (template.knowledge_test?.min_passing_score || 70) ? 'Passed' : 'Failed'}`;
+      } else {
+        detailsText += `\nResult: Abandoned / Failed`;
+      }
       
       scoreDetails.innerText = detailsText;
       if (actionArea) actionArea.style.display = 'block';
