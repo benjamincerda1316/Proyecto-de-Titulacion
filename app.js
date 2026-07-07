@@ -519,7 +519,7 @@ const juegoCuentasCSVData = [
 
 const tablasOnboardingGlobal = [
     {
-        titulo: "Tabla 1: Sessions & Orientation (Onsite/Virtual)",
+        titulo: "Table 1: Sessions & Orientation (Onsite/Virtual)",
         items: [
             { nombre: "Introduction to Murex/OM Orientation", modalidad: "Onsite", duracion: "1 Hour", plazo: "Day 1" },
             { nombre: "Kit to Start IT on track", modalidad: "Onsite", duracion: "1 Hour", plazo: "Day 1" },
@@ -532,7 +532,7 @@ const tablasOnboardingGlobal = [
         ]
     },
     {
-        titulo: "Tabla 2: Plataformas y Frameworks Murex (e-Learning)",
+        titulo: "Table 2: Murex Platforms and Frameworks (e-Learning)",
         items: [
             { nombre: "Workday for All", modalidad: "e-Learning", duracion: "30 Minutes", plazo: "Week 1" },
             { nombre: "Getting Started with the Murex Collaboration Framework", modalidad: "e-Learning", duracion: "15 Minutes", plazo: "Week 1" },
@@ -546,7 +546,7 @@ const tablasOnboardingGlobal = [
         ]
     },
     {
-        titulo: "Tabla 3: Compliance y Habilidades Core",
+        titulo: "Table 3: Compliance and Core Skills",
         items: [
             { nombre: "Welcome to Fundamentals of Communication", modalidad: "Blended", duracion: "5 Hours", plazo: "Week 1" },
             { nombre: "Sustainability - ESG Awareness Program (ENG)", modalidad: "e-Learning", duracion: "20 Minutes", plazo: "Week 1" },
@@ -3210,7 +3210,7 @@ const app = {
     
     // Update Phase Badge
     const currentTemplate = this.state.db.week_templates.find(wt => wt.week_number === currentWeekNum);
-    document.getElementById('consultant-phase-badge').innerText = `Fase: ${currentTemplate ? currentTemplate.phase : 'Finalizado'}`;
+    document.getElementById('consultant-phase-badge').innerText = `Phase: ${currentTemplate ? currentTemplate.phase : 'Finished'}`;
 
     // Render 12-Weeks Timeline Grid
     this.renderTimelineGrid(progress, currentWeekNum);
