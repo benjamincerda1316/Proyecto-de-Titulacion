@@ -3449,6 +3449,13 @@ const app = {
   },
 
   getQuizSpentState(userId, weekNum) {
+    // 1. Try DB first for cross-machine synchronization
+    const progress = this.state.db && this.state.db.consultant_progress ? this.state.db.consultant_progress[userId] : null;
+    if (progress && progress.quiz_spent && progress.quiz_spent[weekNum] !== undefined) {
+      return progress.quiz_spent[weekNum] === true;
+    }
+
+    // 2. Fallback to localStorage
     const userKey = `spent_quiz_w${weekNum}_${userId}`;
     const globalKey = `spent_quiz_w${weekNum}`;
     const userVal = localStorage.getItem(userKey);
@@ -3465,12 +3472,22 @@ const app = {
   },
 
   setQuizSpentState(userId, weekNum, spent) {
+    // 1. Save to DB
+    const progress = this.state.db && this.state.db.consultant_progress ? this.state.db.consultant_progress[userId] : null;
+    if (progress) {
+      if (!progress.quiz_spent) {
+        progress.quiz_spent = {};
+      }
+      progress.quiz_spent[weekNum] = spent;
+      this.saveDatabase();
+    }
+
+    // 2. Also save to localStorage for local fast path
     const userKey = `spent_quiz_w${weekNum}_${userId}`;
     if (spent) {
       localStorage.setItem(userKey, 'true');
     } else {
       localStorage.removeItem(userKey);
-      // Also clear legacy global key for safety
       localStorage.removeItem(`spent_quiz_w${weekNum}`);
     }
   },

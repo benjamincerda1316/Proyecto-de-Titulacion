@@ -171,9 +171,16 @@ async function initDatabase() {
       test_times_json TEXT,
       deliverables_json TEXT,
       comments_json TEXT,
-      game_scores_json TEXT
+      game_scores_json TEXT,
+      quiz_spent_json TEXT
     )
   `);
+
+  try {
+    await db.exec(`ALTER TABLE consultant_progress ADD COLUMN IF NOT EXISTS quiz_spent_json TEXT`);
+  } catch (err) {
+    console.log('ALTER TABLE consultant_progress quiz_spent_json notice:', err.message);
+  }
 
   // Create Mentoring Logs table
   await db.exec(`
@@ -366,8 +373,8 @@ async function initDatabase() {
     }
 
     await db.run(
-      `INSERT INTO consultant_progress (user_id, completed_weeks_json, checklist_states_json, test_scores_json, test_attempts_json, test_times_json, deliverables_json, comments_json, game_scores_json) 
-       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+      `INSERT INTO consultant_progress (user_id, completed_weeks_json, checklist_states_json, test_scores_json, test_attempts_json, test_times_json, deliverables_json, comments_json, game_scores_json, quiz_spent_json) 
+       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
       [
         'USR-FRANCISCA',
         JSON.stringify(initialProgress.completed_weeks),
@@ -377,7 +384,8 @@ async function initDatabase() {
         JSON.stringify(initialProgress.test_times),
         JSON.stringify(initialProgress.deliverables),
         JSON.stringify(initialProgress.comments),
-        JSON.stringify(initialProgress.game_scores)
+        JSON.stringify(initialProgress.game_scores),
+        JSON.stringify({})
       ]
     );
 
@@ -482,7 +490,8 @@ app.get('/api/db', async (req, res) => {
         test_times: JSON.parse(row.test_times_json || '{}'),
         deliverables: JSON.parse(row.deliverables_json || '{}'),
         comments: JSON.parse(row.comments_json || '{}'),
-        game_scores: JSON.parse(row.game_scores_json || '{}')
+        game_scores: JSON.parse(row.game_scores_json || '{}'),
+        quiz_spent: JSON.parse(row.quiz_spent_json || '{}')
       };
     });
 
@@ -644,8 +653,8 @@ app.post('/api/db/save', async (req, res) => {
       if (data.consultant_progress) {
         for (const [user_id, p] of Object.entries(data.consultant_progress)) {
           await txDb.run(
-            `INSERT INTO consultant_progress (user_id, completed_weeks_json, checklist_states_json, test_scores_json, test_attempts_json, test_times_json, deliverables_json, comments_json, game_scores_json) 
-             VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)`,
+            `INSERT INTO consultant_progress (user_id, completed_weeks_json, checklist_states_json, test_scores_json, test_attempts_json, test_times_json, deliverables_json, comments_json, game_scores_json, quiz_spent_json) 
+             VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10)`,
             [
               user_id,
               JSON.stringify(p.completed_weeks || []),
@@ -655,7 +664,8 @@ app.post('/api/db/save', async (req, res) => {
               JSON.stringify(p.test_times || {}),
               JSON.stringify(p.deliverables || {}),
               JSON.stringify(p.comments || {}),
-              JSON.stringify(p.game_scores || {})
+              JSON.stringify(p.game_scores || {}),
+              JSON.stringify(p.quiz_spent || {})
             ]
           );
         }
