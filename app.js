@@ -1261,6 +1261,13 @@ const app = {
     hasStarted: false
   },
 
+  lifecycleEngine: {
+    state: null,
+    steps: [],
+    cursor: -1
+  },
+
+
   // Application Data & State
   state: {
     db: null,              // Holds active database loaded from localStorage
@@ -3375,13 +3382,15 @@ const app = {
       commentArea.style.display = 'none';
     }
 
-    // ORQUESTRACIÓN EN CALIENTE: ¿Es la semana 1, 2, 3 o 4?
+    // ORQUESTRACIÓN EN CALIENTE: ¿Es la semana 1, 2, 3, 4 o 5?
     const simulatorZone = document.getElementById('workspace-simulator-zone');
     const classGameZone = document.getElementById('workspace-classification-game-zone');
+    const lifecycleZone = document.getElementById('workspace-lifecycle-zone');
     const gamePlaceholder = document.getElementById('game-placeholder');
     
     if (simulatorZone) simulatorZone.classList.add('hidden');
     if (classGameZone) classGameZone.classList.add('hidden');
+    if (lifecycleZone) lifecycleZone.classList.add('hidden');
     if (gamePlaceholder) gamePlaceholder.style.display = 'flex';
     
     const activeWeek = parseInt(weekNum);
@@ -3396,6 +3405,12 @@ const app = {
       if (simulatorZone) {
         simulatorZone.classList.remove('hidden');
         this.simInit(activeWeek);
+      }
+    } else if (activeWeek === 5) {
+      if (gamePlaceholder) gamePlaceholder.style.display = 'none';
+      if (lifecycleZone) {
+        lifecycleZone.classList.remove('hidden');
+        this.lifecycleInit();
       }
     }
 
@@ -11123,6 +11138,508 @@ const app = {
     // Calculate timesheet value (480 minutes = 1.0)
     const result = parseFloat((minutes / 480).toFixed(2));
     resultEl.innerText = result;
+  },
+
+  // ==========================================================================
+  // WEEK 5: FX LIFECYCLE SIMULATION METHODS
+  // ==========================================================================
+  lifecycleInit() {
+    const list = document.getElementById('lf-revalList');
+    if (list) {
+      list.innerHTML = '';
+      this.lifecycleAddRevalRow(12500);
+      this.lifecycleAddRevalRow(-6000);
+    }
+    
+    const setupView = document.getElementById('lf-setup-view');
+    const simView = document.getElementById('lf-sim-view');
+    if (setupView) setupView.classList.remove('hidden');
+    if (simView) simView.classList.add('hidden');
+    
+    this.lifecycleEngine.cursor = -1;
+    this.lifecycleEngine.state = null;
+    this.lifecycleEngine.steps = [];
+  },
+
+  lifecycleAddRevalRow(value) {
+    const list = document.getElementById('lf-revalList');
+    if (!list) return;
+    const idx = list.children.length + 1;
+    const row = document.createElement('div');
+    row.className = 'reval-row';
+    row.style.display = 'flex';
+    row.style.alignItems = 'center';
+    row.style.gap = '10px';
+    row.style.marginBottom = '8px';
+    
+    row.innerHTML = `
+      <span style="width: 110px; color: var(--neutral-muted); font-size: 12px; font-family: 'IBM Plex Mono', monospace;">Revaluation ${idx}</span>
+      <input type="number" class="lf-revalInput" value="${value !== null ? value : ''}" placeholder="e.g. 15000 or -8000" style="max-width: 150px; font-family: 'IBM Plex Mono', monospace; font-size: 13px; padding: 6px 10px; border: 1px solid var(--neutral-border); background: var(--neutral-light); border-radius: var(--radius-sm); outline: none;">
+      <button class="btn-icon-danger" title="Remove" style="background:none; border:none; color:var(--danger); cursor:pointer; font-size: 14px; padding: 0 6px;"><i class="ti ti-trash"></i></button>
+    `;
+    row.querySelector('button').onclick = () => {
+      row.remove();
+      this.lifecycleRenumberRevals();
+    };
+    list.appendChild(row);
+    this.lifecycleRenumberRevals();
+  },
+
+  lifecycleRenumberRevals() {
+    const list = document.getElementById('lf-revalList');
+    if (!list) return;
+    [...list.children].forEach((row, i) => {
+      const label = row.querySelector('span');
+      if (label) label.textContent = `Revaluation ${i + 1}`;
+    });
+  },
+
+  lifecycleStart() {
+    const buyCcyEl = document.getElementById('lf-buyCcy');
+    const buyAmtEl = document.getElementById('lf-buyAmt');
+    const sellCcyEl = document.getElementById('lf-sellCcy');
+    const sellAmtEl = document.getElementById('lf-sellAmt');
+    const reportCcyEl = document.getElementById('lf-reportCcy');
+    
+    if (!buyCcyEl || !buyAmtEl || !sellCcyEl || !sellAmtEl || !reportCcyEl) return;
+    
+    const buyCcy = buyCcyEl.value.trim().toUpperCase() || 'USD';
+    const sellCcy = sellCcyEl.value.trim().toUpperCase() || 'EUR';
+    const buyAmt = parseFloat(buyAmtEl.value) || 0;
+    const sellAmt = parseFloat(sellAmtEl.value) || 0;
+    const reportCcy = reportCcyEl.value.trim().toUpperCase() || 'USD';
+    
+    if (buyAmt <= 0 || sellAmt <= 0) {
+      this.showToast("⚠️ ERROR: Amounts must be greater than 0.", "danger");
+      return;
+    }
+    
+    this.lifecycleEngine.state = { buyCcy, buyAmt, sellCcy, sellAmt, reportCcy };
+    
+    const revalInputs = document.querySelectorAll('.lf-revalInput');
+    const revals = [...revalInputs].map(input => parseFloat(input.value) || 0);
+    
+    this.lifecycleEngine.steps = [
+      { type: 'trade', title: 'Trade Date', short: 'Trade', dateLabel: 'Trade Date' }
+    ];
+    
+    revals.forEach((v, i) => {
+      this.lifecycleEngine.steps.push({
+        type: 'reval',
+        idx: i,
+        value: v,
+        title: `Revaluation ${i + 1}`,
+        short: `MTM ${i + 1}`,
+        dateLabel: `Revaluation ${i + 1}`
+      });
+    });
+    
+    this.lifecycleEngine.steps.push({
+      type: 'value',
+      title: 'Value Date',
+      short: 'Value',
+      dateLabel: 'Maturity'
+    });
+    
+    this.lifecycleEngine.cursor = -1;
+    
+    const setupView = document.getElementById('lf-setup-view');
+    const simView = document.getElementById('lf-sim-view');
+    if (setupView) setupView.classList.add('hidden');
+    if (simView) simView.classList.remove('hidden');
+    
+    this.lifecycleWireHover(['lf-pillTrade', 'lf-dgPillTrade'], ['lf-boxObsTop', 'lf-boxObsBottom', 'lf-badge1Top', 'lf-badge1Bottom'], 'lf-guideTrade', 'lf-dgPillTrade');
+    this.lifecycleWireHover(['lf-pillValue', 'lf-dgPillValue'], ['lf-boxRevTop', 'lf-boxRevBottom', 'lf-badge2Top', 'lf-badge2Bottom'], 'lf-guideValue', 'lf-dgPillValue');
+    
+    this.lifecycleRender();
+  },
+
+  lifecycleWireHover(pillIds, targetIds, guideId, dgPillId) {
+    const highlight = (on) => {
+      const guide = document.getElementById(guideId);
+      if (guide) guide.classList.toggle('hover-highlight', on);
+      
+      const dgPill = document.getElementById(dgPillId);
+      if (dgPill) dgPill.classList.toggle('hovered', on);
+      
+      targetIds.forEach(id => {
+        const el = document.getElementById(id);
+        if (el) el.classList.toggle('current', on);
+      });
+    };
+    pillIds.forEach(pid => {
+      const el = document.getElementById(pid);
+      if (el) {
+        // Clone to remove previous listeners
+        const newEl = el.cloneNode(true);
+        el.parentNode.replaceChild(newEl, el);
+        newEl.addEventListener('mouseenter', () => highlight(true));
+        newEl.addEventListener('mouseleave', () => highlight(false));
+      }
+    });
+  },
+
+  lifecycleNext() {
+    if (this.lifecycleEngine.cursor < this.lifecycleEngine.steps.length - 1) {
+      this.lifecycleEngine.cursor++;
+      this.lifecycleRender();
+    }
+  },
+
+  lifecyclePrev() {
+    if (this.lifecycleEngine.cursor > -1) {
+      this.lifecycleEngine.cursor--;
+      this.lifecycleRender();
+    }
+  },
+
+  lifecycleReset() {
+    this.lifecycleInit();
+  },
+
+  lifecycleRender() {
+    this.lifecycleRenderTrack();
+    this.lifecycleUpdateDiagram();
+    this.lifecycleRenderSlip();
+    this.lifecycleRenderLedger();
+    
+    const prevBtn = document.getElementById('lf-prevBtn');
+    const nextBtn = document.getElementById('lf-nextBtn');
+    
+    if (prevBtn) prevBtn.disabled = this.lifecycleEngine.cursor < 0;
+    if (nextBtn) {
+      const isLast = this.lifecycleEngine.cursor >= this.lifecycleEngine.steps.length - 1;
+      nextBtn.disabled = isLast;
+      nextBtn.textContent = isLast ? 'Cycle Complete ✓' : 'Next Event ▸';
+    }
+  },
+
+  lifecycleRenderTrack() {
+    const track = document.getElementById('lf-timelineTrack');
+    if (!track) return;
+    
+    track.innerHTML = `
+      <div class="track-line"></div>
+      <div class="track-progress" id="lf-trackProgress"></div>
+    `;
+    
+    const steps = this.lifecycleEngine.steps;
+    const cursor = this.lifecycleEngine.cursor;
+    const revalSteps = steps.filter(s => s.type === 'reval');
+    const n = revalSteps.length;
+    
+    revalSteps.forEach((s, i) => {
+      const stepIndex = steps.indexOf(s);
+      const pct = ((i + 1) / (n + 1)) * 100;
+      const dot = document.createElement('div');
+      dot.className = 'track-dot' + (stepIndex < cursor ? ' done' : '') + (stepIndex === cursor ? ' active' : '');
+      dot.style.left = pct + '%';
+      dot.innerHTML = `<span class="dot-tip" style="position:absolute; bottom:calc(100% + 12px); left:50%; transform:translateX(-50%); background:var(--neutral-dark); color:#fff; font-size:10.5px; padding:6px 10px; border-radius:6px; white-space:nowrap; opacity:0; pointer-events:none; transition:opacity .2s ease; z-index:5;">${s.title} · ${s.value >= 0 ? '+' : ''}${Math.abs(s.value).toLocaleString('en-US')} ${this.lifecycleEngine.state.reportCcy}</span>`;
+      
+      dot.addEventListener('mouseenter', () => {
+        const tip = dot.querySelector('.dot-tip');
+        if (tip) tip.style.opacity = '1';
+      });
+      dot.addEventListener('mouseleave', () => {
+        const tip = dot.querySelector('.dot-tip');
+        if (tip) tip.style.opacity = '0';
+      });
+      
+      track.appendChild(dot);
+    });
+    
+    const progressPct = steps.length > 1 ? (Math.max(cursor, 0) / (steps.length - 1)) * 100 : 0;
+    const trackProgress = document.getElementById('lf-trackProgress');
+    if (trackProgress) trackProgress.style.width = progressPct + '%';
+    
+    const pillTrade = document.getElementById('lf-pillTrade');
+    const pillValue = document.getElementById('lf-pillValue');
+    if (pillTrade) pillTrade.classList.toggle('done', cursor >= 0);
+    if (pillValue) pillValue.classList.toggle('done', cursor >= steps.length - 1);
+  },
+
+  lifecycleUpdateDiagram() {
+    const steps = this.lifecycleEngine.steps;
+    const cursor = this.lifecycleEngine.cursor;
+    const state = this.lifecycleEngine.state;
+    if (!state) return;
+    
+    const valueIndex = steps.length - 1;
+    const tradeDone = cursor >= 0;
+    const valueDone = cursor >= valueIndex;
+    const revalDoneCount = steps.slice(0, cursor + 1).filter(s => s.type === 'reval').length;
+    const waveProgress = cursor < 0 ? 0 : Math.min(1, cursor / valueIndex);
+    
+    const setOn = (id, on) => {
+      const el = document.getElementById(`lf-${id}`);
+      if (el) el.classList.toggle('on', on);
+    };
+    
+    ['boxObsTop', 'boxObsBottom', 'badge1Top', 'badge1Bottom'].forEach(id => setOn(id, tradeDone));
+    ['boxMtm', 'badge3'].forEach(id => setOn(id, revalDoneCount > 0));
+    
+    const wave = document.getElementById('lf-waveLine');
+    if (wave) {
+      wave.classList.toggle('on', waveProgress > 0);
+      wave.style.strokeDasharray = '100';
+      wave.style.strokeDashoffset = String(100 - waveProgress * 100);
+    }
+    
+    const progressMarker = document.getElementById('lf-progressMarker');
+    if (progressMarker) {
+      progressMarker.classList.toggle('on', cursor >= 0);
+      const tradeX = 90, valueX = 860;
+      progressMarker.setAttribute('cx', tradeX + (valueX - tradeX) * waveProgress);
+    }
+    
+    ['boxRevTop', 'boxRevBottom', 'badge2Top', 'badge2Bottom'].forEach(id => setOn(id, valueDone));
+    ['arrowIncome', 'arrowExpense', 'boxIncome', 'boxExpense', 'badge4Income', 'badge4Expense'].forEach(id => setOn(id, valueDone));
+    
+    const fmt = (n) => Math.abs(n).toLocaleString('en-US', { maximumFractionDigits: 0 });
+    
+    const lblBuyAmt1 = document.getElementById('lf-lblBuyAmt1');
+    const lblSellAmt1 = document.getElementById('lf-lblSellAmt1');
+    const lblBuyAmt2 = document.getElementById('lf-lblBuyAmt2');
+    const lblSellAmt2 = document.getElementById('lf-lblSellAmt2');
+    
+    if (lblBuyAmt1) lblBuyAmt1.textContent = state.buyCcy + ' ' + fmt(state.buyAmt);
+    if (lblSellAmt1) lblSellAmt1.textContent = state.sellCcy + ' ' + fmt(state.sellAmt);
+    if (lblBuyAmt2) lblBuyAmt2.textContent = state.buyCcy + ' ' + fmt(state.buyAmt);
+    if (lblSellAmt2) lblSellAmt2.textContent = state.sellCcy + ' ' + fmt(state.sellAmt);
+    
+    const captionMap = {
+      trade: 'Trade Date: The contract opens and the notional commitment is booked in Off-Balance Sheet (OBS) accounts — no balance sheet impact.',
+      reval: `Revaluation: The contract is remeasured at Fair Value. Current Mark-to-Market is recognition of gain/loss via Unrealized Asset/Liability against P&L.`,
+      value: 'Value Date: The OBS commitment is reversed, the final unrealized position is closed, and cash settles. Realized profit/loss is posted against Cash Nostro.'
+    };
+    
+    const stepCaption = document.getElementById('lf-stepCaption');
+    if (stepCaption) {
+      stepCaption.textContent = cursor < 0
+        ? 'Press "Next Event" to start the contract lifecycle.'
+        : captionMap[steps[cursor].type];
+    }
+  },
+
+  lifecyclePostingsFor(step) {
+    const { buyCcy, sellCcy, buyAmt, sellAmt, reportCcy } = this.lifecycleEngine.state;
+    const steps = this.lifecycleEngine.steps;
+    const p = [];
+    
+    if (step.type === 'trade') {
+      p.push({ rule: 'FX Cash - Notional Receivable@TradeDate', debit: 'obsRecv', credit: 'obsContraBuy', amount: buyAmt, ccy: buyCcy, reversal: false });
+      p.push({ rule: 'FX Cash - Notional Payable@TradeDate', debit: 'obsContraSell', credit: 'obsPay', amount: sellAmt, ccy: sellCcy, reversal: false });
+    }
+    
+    if (step.type === 'reval') {
+      const prevVal = step.idx === 0 ? 0 : steps.find(s => s.type === 'reval' && s.idx === step.idx - 1).value;
+      if (prevVal > 0) {
+        p.push({ rule: 'FX Cash - Revaluation(MTM) – Profit Reversal', debit: 'mtmGain', credit: 'unrealAsset', amount: prevVal, ccy: reportCcy, reversal: true });
+      } else if (prevVal < 0) {
+        p.push({ rule: 'FX Cash - Revaluation(MTM) – Loss Reversal', debit: 'unrealLiab', credit: 'mtmLoss', amount: -prevVal, ccy: reportCcy, reversal: true });
+      }
+      
+      const v = step.value;
+      if (v > 0) {
+        p.push({ rule: 'FX Cash - Revaluation(MTM) – Profit', debit: 'unrealAsset', credit: 'mtmGain', amount: v, ccy: reportCcy, reversal: false });
+      } else if (v < 0) {
+        p.push({ rule: 'FX Cash - Revaluation(MTM) – Loss', debit: 'mtmLoss', credit: 'unrealLiab', amount: -v, ccy: reportCcy, reversal: false });
+      }
+    }
+    
+    if (step.type === 'value') {
+      p.push({ rule: 'FX Cash - Notional Receivable@TradeDate Reversal', debit: 'obsContraBuy', credit: 'obsRecv', amount: buyAmt, ccy: buyCcy, reversal: true });
+      p.push({ rule: 'FX Cash - Notional Payable@TradeDate Reversal', debit: 'obsPay', credit: 'obsContraSell', amount: sellAmt, ccy: sellCcy, reversal: true });
+      
+      const revalSteps = steps.filter(s => s.type === 'reval');
+      const lastVal = revalSteps.length ? revalSteps[revalSteps.length - 1].value : 0;
+      if (lastVal > 0) {
+        p.push({ rule: 'FX Cash - Revaluation(MTM) – Profit Reversal', debit: 'mtmGain', credit: 'unrealAsset', amount: lastVal, ccy: reportCcy, reversal: true });
+      } else if (lastVal < 0) {
+        p.push({ rule: 'FX Cash - Revaluation(MTM) – Loss Reversal', debit: 'unrealLiab', credit: 'mtmLoss', amount: -lastVal, ccy: reportCcy, reversal: true });
+      }
+      
+      p.push({ rule: 'FX Cash - Cash Settlement Receive@MaturityDate', debit: 'cashNostroBuy', credit: 'realizedGain', amount: buyAmt, ccy: buyCcy, reversal: false });
+      p.push({ rule: 'FX Cash - Cash Settlement Pay@MaturityDate', debit: 'realizedLoss', credit: 'cashNostroSell', amount: sellAmt, ccy: sellCcy, reversal: false });
+    }
+    return p;
+  },
+
+  lifecycleEntriesFor(step) {
+    const e = [];
+    this.lifecyclePostingsFor(step).forEach(po => {
+      e.push({ a: po.debit, dr: po.amount, cr: 0, ccy: po.ccy });
+      e.push({ a: po.credit, dr: 0, cr: po.amount, ccy: po.ccy });
+    });
+    return e;
+  },
+
+  lifecycleLedgerBalances(uptoIdx) {
+    const ACCOUNTS_KEYS = [
+      'obsRecv', 'obsPay', 'obsContraBuy', 'obsContraSell', 'unrealAsset', 'unrealLiab',
+      'cashNostroBuy', 'cashNostroSell', 'mtmGain', 'mtmLoss', 'realizedGain', 'realizedLoss'
+    ];
+    const bal = {};
+    ACCOUNTS_KEYS.forEach(k => bal[k] = 0);
+    const steps = this.lifecycleEngine.steps;
+    
+    for (let i = 0; i <= uptoIdx; i++) {
+      const es = this.lifecycleEntriesFor(steps[i]);
+      es.forEach(en => {
+        bal[en.a] += (en.dr - en.cr);
+      });
+    }
+    return { bal };
+  },
+
+  lifecycleRenderSlip() {
+    const container = document.getElementById('lf-slip-container');
+    if (!container) return;
+    
+    const cursor = this.lifecycleEngine.cursor;
+    if (cursor < 0) {
+      container.innerHTML = '<div class="empty-state" style="text-align: center; padding: 20px; color: var(--neutral-muted);">No postings recorded yet.</div>';
+      return;
+    }
+    
+    const steps = this.lifecycleEngine.steps;
+    const step = steps[cursor];
+    
+    const descMap = {
+      trade: 'The notional receivable and payable amounts are booked in Off-Balance Sheet (OBS) accounts, with no impact on the balance sheet or profit and loss.',
+      reval: 'The contract is remeasured at Fair Value (offset method): the prior mark is reversed and the new unrealized position is booked against P&L.',
+      value: 'The OBS commitment is reversed, the last unrealized mark is closed out, and cash is settled: the currency received generates realized income, the currency delivered generates realized expense.'
+    };
+    
+    const allRows = [];
+    for (let i = 0; i <= cursor; i++) {
+      this.lifecyclePostingsFor(steps[i]).forEach(po => {
+        allRows.push({ ...po, dateLabel: steps[i].dateLabel, isCurrentStep: i === cursor });
+      });
+    }
+    
+    const ACCOUNTS = {
+      obsRecv:      {name:'Contingent Recvable',  group:'obs', badge:'OBS'},
+      obsPay:       {name:'Contingent Payable',   group:'obs', badge:'OBS'},
+      obsContraBuy: {name:'Contingent Contra',    group:'obs', badge:'OBS'},
+      obsContraSell:{name:'Contingent Contra',    group:'obs', badge:'OBS'},
+      unrealAsset:  {name:'Unrealized Asset',     group:'bs',  badge:'BS'},
+      unrealLiab:   {name:'Unrealized Liability', group:'bs',  badge:'BS'},
+      cashNostroBuy:{name:'Cash Nostro',          group:'bs',  badge:'BS'},
+      cashNostroSell:{name:'Cash Nostro',         group:'bs',  badge:'BS'},
+      mtmGain:      {name:'MTM Gain',             group:'pl',  badge:'P&L'},
+      mtmLoss:      {name:'MTM Loss',             group:'pl',  badge:'P&L'},
+      realizedGain: {name:'Realized Gain',        group:'pl',  badge:'P&L'},
+      realizedLoss: {name:'Realized Loss',         group:'pl', badge:'P&L'}
+    };
+    
+    const badgeClass = (acctKey, val) => {
+      const g = ACCOUNTS[acctKey].group;
+      if (g === 'obs') return 'obs';
+      if (g === 'bs') return 'bs';
+      return val >= 0 ? 'pl-pos' : 'pl-neg';
+    };
+    
+    const fmt = (n) => Math.abs(n).toLocaleString('en-US', { maximumFractionDigits: 0 });
+    
+    const loopIcon = `<i class="ti ti-refresh" style="font-size: 11px;"></i>`;
+    
+    let rowsHtml = allRows.map(po => {
+      const dAcc = ACCOUNTS[po.debit], cAcc = ACCOUNTS[po.credit];
+      return `
+        <tr class="${po.isCurrentStep ? 'row-current' : ''}">
+          <td class="datecol" style="padding: 8px 6px; font-weight: 500; font-size: 11px;">${po.dateLabel}</td>
+          <td class="rule" style="padding: 8px 6px; font-weight:600; color:var(--primary); font-family:'IBM Plex Mono',monospace; font-size:10px;">${po.rule}</td>
+          <td class="acct" style="padding: 8px 6px; font-size: 11px;">${dAcc.name} <span class="badge ${badgeClass(po.debit, po.amount)}">${dAcc.badge}</span></td>
+          <td class="acct" style="padding: 8px 6px; font-size: 11px;">${cAcc.name} <span class="badge ${badgeClass(po.credit, -po.amount)}">${cAcc.badge}</span></td>
+          <td class="num" style="padding: 8px 6px; text-align:right; font-weight: 600;">${po.ccy} ${fmt(po.amount)}</td>
+          <td class="revcol" style="padding: 8px 6px; text-align:center;">${po.reversal ? `<span class="rev-icon reversal" style="display:inline-flex; align-items:center; justify-content:center; width:20px; height:20px; border-radius:50%; color:var(--warning); background:var(--warning-light);">${loopIcon}</span>` : '<span class="rev-icon"></span>'}</td>
+        </tr>
+      `;
+    }).join('');
+    
+    container.innerHTML = `
+      <div style="font-size: 0.8rem; margin-bottom: 8px; font-weight: 600; color: var(--primary);">Event ${cursor + 1} of ${steps.length} · ${step.title}</div>
+      <p style="font-size: 0.8rem; color: var(--neutral-muted); margin-bottom: 12px; line-height: 1.4;">${descMap[step.type]}</p>
+      <table class="entry-table" style="width:100%; border-collapse:collapse;">
+        <thead>
+          <tr style="border-bottom:1px solid var(--neutral-border); background: var(--neutral-light);">
+            <th style="padding:8px 6px; font-size:9px; text-transform:uppercase; color:var(--neutral-muted); text-align:left;">Date</th>
+            <th style="padding:8px 6px; font-size:9px; text-transform:uppercase; color:var(--neutral-muted); text-align:left;">Accounting Rule</th>
+            <th style="padding:8px 6px; font-size:9px; text-transform:uppercase; color:var(--neutral-muted); text-align:left;">Debit Account</th>
+            <th style="padding:8px 6px; font-size:9px; text-transform:uppercase; color:var(--neutral-muted); text-align:left;">Credit Account</th>
+            <th style="padding:8px 6px; font-size:9px; text-transform:uppercase; color:var(--neutral-muted); text-align:right;">Amount</th>
+            <th style="padding:8px 6px; font-size:9px; text-transform:uppercase; color:var(--neutral-muted); text-align:center;">Reversal</th>
+          </tr>
+        </thead>
+        <tbody>
+          ${rowsHtml}
+        </tbody>
+      </table>
+    `;
+  },
+
+  lifecycleRenderLedger() {
+    const container = document.getElementById('lf-ledger');
+    if (!container) return;
+    
+    const cursor = this.lifecycleEngine.cursor;
+    const state = this.lifecycleEngine.state;
+    if (!state) return;
+    
+    const { bal } = this.lifecycleLedgerBalances(cursor);
+    
+    const ACCOUNTS = {
+      obsRecv:      {name:'Contingent Recvable',  group:'obs'},
+      obsPay:       {name:'Contingent Payable',   group:'obs'},
+      obsContraBuy: {name:'Contingent Contra',    group:'obs'},
+      obsContraSell:{name:'Contingent Contra',    group:'obs'},
+      unrealAsset:  {name:'Unrealized Asset',     group:'bs'},
+      unrealLiab:   {name:'Unrealized Liability', group:'bs'},
+      cashNostroBuy:{name:'Cash Nostro',          group:'bs'},
+      cashNostroSell:{name:'Cash Nostro',         group:'bs'},
+      mtmGain:      {name:'MTM Gain',             group:'pl'},
+      mtmLoss:      {name:'MTM Loss',             group:'pl'},
+      realizedGain: {name:'Realized Gain',        group:'pl'},
+      realizedLoss: {name:'Realized Loss',         group:'pl'}
+    };
+    
+    const groups = [
+      { key: 'obs', title: 'Off-Balance Sheet (OBS) — memo accounts' },
+      { key: 'bs', title: 'Balance Sheet (BS)' },
+      { key: 'pl', title: 'Income Statement (P&L)' }
+    ];
+    
+    const fmt = (n) => Math.abs(n).toLocaleString('en-US', { maximumFractionDigits: 0 });
+    
+    let html = '';
+    groups.forEach(g => {
+      let groupHtml = '';
+      Object.entries(ACCOUNTS).filter(([k, v]) => v.group === g.key).forEach(([k, v]) => {
+        const ccy = (k === 'obsRecv' || k === 'obsContraBuy' || k === 'cashNostroBuy' || k === 'realizedGain') ? state.buyCcy
+                  : (k === 'obsPay' || k === 'obsContraSell' || k === 'cashNostroSell' || k === 'realizedLoss') ? state.sellCcy
+                  : state.reportCcy;
+        const b = bal[k];
+        const cls = b > 0 ? 'pos' : (b < 0 ? 'neg' : 'zero');
+        const valText = b === 0 ? '—' : (b > 0 ? '' : '−') + fmt(b);
+        
+        groupHtml += `
+          <div class="acct-line" style="display:flex; justify-content:space-between; align-items:baseline; padding:6px 0; border-bottom:1px solid var(--neutral-light);">
+            <div class="nm" style="font-weight:500;">${v.name} <small style="display:block; color:var(--neutral-muted); font-size:9px;">${ccy}</small></div>
+            <div class="val ${cls}" style="font-family:'IBM Plex Mono',monospace; font-weight:600;">${valText}</div>
+          </div>
+        `;
+      });
+      
+      html += `
+        <div class="ledger-group" style="margin-bottom:12px;">
+          <div class="gtitle" style="font-family:'Outfit',sans-serif; font-size:9px; letter-spacing:.08em; text-transform:uppercase; color:var(--primary); font-weight:700; border-bottom:1px solid var(--neutral-light); padding-bottom:4px; margin-bottom:4px;">${g.title}</div>
+          ${groupHtml}
+        </div>
+      `;
+    });
+    
+    container.innerHTML = html;
   }
 };
 

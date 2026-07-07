@@ -4910,6 +4910,456 @@ button {
   font-weight: 600;
 }
 
+/* ==========================================================================
+   6. WEEK 5: FX LIFECYCLE SIMULATOR STYLES
+   ========================================================================== */
+#workspace-lifecycle-zone .timeline-header {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+#workspace-lifecycle-zone .date-pill {
+  padding: 8px 16px;
+  border-radius: 999px;
+  border: 1.5px solid var(--neutral-border);
+  background: rgba(255, 255, 255, 0.75);
+  position: relative;
+  transition: all 0.2s ease;
+}
+
+#workspace-lifecycle-zone .date-pill.done {
+  border-color: var(--success);
+  background: var(--success-light);
+}
+
+#workspace-lifecycle-zone .date-pill.done .pill-label {
+  color: var(--success);
+}
+
+#workspace-lifecycle-zone .date-pill .pill-label {
+  font-family: 'Outfit', sans-serif;
+  font-weight: 700;
+  font-size: 11px;
+  letter-spacing: .06em;
+  text-transform: uppercase;
+  color: var(--neutral-dark);
+}
+
+#workspace-lifecycle-zone .track-line {
+  position: absolute;
+  top: 50%;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: var(--neutral-border);
+  transform: translateY(-50%);
+}
+
+#workspace-lifecycle-zone .track-progress {
+  position: absolute;
+  top: 50%;
+  left: 0;
+  height: 2px;
+  background: var(--primary);
+  transform: translateY(-50%);
+  transition: width 0.4s ease;
+}
+
+#workspace-lifecycle-zone .track-dot {
+  position: absolute;
+  top: 50%;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--neutral-border);
+  transform: translate(-50%, -50%);
+  transition: all 0.3s ease;
+}
+
+#workspace-lifecycle-zone .track-dot.done {
+  background: var(--primary);
+}
+
+#workspace-lifecycle-zone .track-dot.active {
+  background: var(--primary);
+  width: 12px;
+  height: 12px;
+  box-shadow: 0 0 0 5px var(--primary-light), 0 0 12px rgba(166, 25, 46, .5);
+}
+
+/* SVG Elements styles */
+#workspace-lifecycle-zone .dg-el {
+  opacity: .22;
+  filter: grayscale(1);
+  transition: opacity .5s ease, filter .5s ease;
+}
+
+#workspace-lifecycle-zone .dg-el.on {
+  opacity: 1;
+  filter: none;
+}
+
+#workspace-lifecycle-zone .dg-box rect {
+  fill: #ffffff;
+  stroke-width: 1.6;
+  rx: 9;
+  ry: 9;
+}
+
+#workspace-lifecycle-zone .dg-box.obs rect {
+  stroke: var(--warning);
+  stroke-dasharray: 5 4;
+}
+
+#workspace-lifecycle-zone .dg-box.mtm rect {
+  stroke: var(--primary);
+  stroke-dasharray: 5 4;
+}
+
+#workspace-lifecycle-zone .dg-box.income rect {
+  stroke: var(--success);
+  fill: var(--success-light);
+}
+
+#workspace-lifecycle-zone .dg-box.expense rect {
+  stroke: var(--danger);
+  fill: var(--danger-light);
+}
+
+#workspace-lifecycle-zone .dg-box text {
+  font-family: 'Inter', sans-serif;
+  font-size: 12.5px;
+  fill: var(--neutral-dark);
+  font-weight: 600;
+}
+
+#workspace-lifecycle-zone .dg-box text.small {
+  font-size: 10.5px;
+  font-weight: 500;
+  fill: var(--neutral-muted);
+}
+
+#workspace-lifecycle-zone .dg-badge circle {
+  fill: var(--primary);
+  stroke: #ffffff;
+  stroke-width: 2;
+}
+
+#workspace-lifecycle-zone .dg-badge text {
+  fill: #ffffff;
+  font-family: 'Outfit', sans-serif;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+#workspace-lifecycle-zone .dg-line {
+  stroke: var(--neutral-border);
+  stroke-width: 1.6;
+  stroke-dasharray: 6 5;
+  fill: none;
+}
+
+#workspace-lifecycle-zone .dg-guide {
+  stroke: #C7C4D6;
+  stroke-width: 1.4;
+  stroke-dasharray: 2 5;
+  transition: stroke .3s ease;
+}
+
+#workspace-lifecycle-zone .dg-guide.hover-highlight {
+  stroke: var(--primary);
+  stroke-width: 2.2;
+}
+
+#workspace-lifecycle-zone .dg-leader {
+  stroke: var(--warning);
+  stroke-width: 1.3;
+  stroke-dasharray: 3 3;
+  opacity: .7;
+}
+
+#workspace-lifecycle-zone .dg-wave {
+  stroke: var(--primary);
+  stroke-width: 2.6;
+  fill: none;
+  stroke-linecap: round;
+}
+
+#workspace-lifecycle-zone .dg-marker {
+  fill: var(--primary);
+  stroke: #ffffff;
+  stroke-width: 2;
+}
+
+#workspace-lifecycle-zone .dg-arrow {
+  stroke-width: 2;
+  fill: none;
+  stroke-linecap: round;
+}
+
+#workspace-lifecycle-zone .dg-arrow.income {
+  stroke: var(--success);
+}
+
+#workspace-lifecycle-zone .dg-arrow.expense {
+  stroke: var(--danger);
+}
+
+#workspace-lifecycle-zone .dg-rowlabel {
+  font-family: 'Outfit', sans-serif;
+  font-weight: 600;
+  font-size: 14.5px;
+  fill: var(--neutral-dark);
+}
+
+#workspace-lifecycle-zone .dg-datelabel rect {
+  fill: var(--primary-light);
+  stroke: none;
+  transition: fill .25s ease;
+}
+
+#workspace-lifecycle-zone .dg-datelabel text {
+  font-family: 'Outfit', sans-serif;
+  font-size: 11px;
+  font-weight: 700;
+  fill: var(--primary);
+  text-transform: uppercase;
+  letter-spacing: .05em;
+  transition: fill .25s ease;
+}
+
+#workspace-lifecycle-zone .dg-datelabel.hovered rect {
+  fill: var(--primary);
+}
+
+#workspace-lifecycle-zone .dg-datelabel.hovered text {
+  fill: #ffffff;
+}
+
+#workspace-lifecycle-zone .dg-datelabel {
+  cursor: pointer;
+}
+
+#workspace-lifecycle-zone .dg-el.current {
+  opacity: 1 !important;
+  filter: none !important;
+}
+
+#workspace-lifecycle-zone .dg-box.current rect {
+  stroke: var(--primary) !important;
+  filter: drop-shadow(0 0 5px rgba(166, 25, 46, .4));
+}
+
+#workspace-lifecycle-zone .dg-badge.current circle {
+  fill: var(--primary-hover);
+}
+
+/* Setup configuration styles */
+#workspace-lifecycle-zone input[type=text], 
+#workspace-lifecycle-zone input[type=number] {
+  width: 100%;
+  border: 1px solid var(--neutral-border);
+  background: var(--neutral-light);
+  color: var(--neutral-dark);
+  border-radius: var(--radius-sm);
+  padding: 8px 10px;
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 13px;
+  transition: all 0.2s ease;
+  outline: none;
+}
+
+#workspace-lifecycle-zone input[type=text]:focus, 
+#workspace-lifecycle-zone input[type=number]:focus {
+  border-color: var(--primary);
+  box-shadow: 0 0 0 3px var(--primary-light);
+}
+
+#workspace-lifecycle-zone .reval-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 12px;
+}
+
+#workspace-lifecycle-zone .reval-row span {
+  width: 110px;
+  color: var(--neutral-muted);
+}
+
+#workspace-lifecycle-zone .reval-row input {
+  max-width: 160px;
+}
+
+#workspace-lifecycle-zone .reval-row button {
+  background: none;
+  border: none;
+  color: var(--danger);
+  cursor: pointer;
+  font-size: 14px;
+  padding: 0 6px;
+}
+
+/* Cumulative Table styles */
+#workspace-lifecycle-zone .entry-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 11px;
+}
+
+#workspace-lifecycle-zone .entry-table th {
+  text-align: left;
+  font-size: 9px;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  color: var(--neutral-muted);
+  border-bottom: 1px solid var(--neutral-border);
+  padding: 8px 6px;
+  font-weight: 600;
+}
+
+#workspace-lifecycle-zone .entry-table td {
+  padding: 8px 6px;
+  border-bottom: 1px dashed var(--neutral-border);
+  color: var(--neutral-dark);
+}
+
+#workspace-lifecycle-zone .entry-table td.num {
+  text-align: right;
+  font-weight: 600;
+}
+
+#workspace-lifecycle-zone .entry-table tr.row-current {
+  background: var(--primary-light);
+}
+
+#workspace-lifecycle-zone .entry-table tr.row-current td.datecol {
+  color: var(--primary);
+  font-weight: 700;
+}
+
+#workspace-lifecycle-zone .revcol {
+  text-align: center;
+}
+
+#workspace-lifecycle-zone .rev-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  color: var(--neutral-border);
+}
+
+#workspace-lifecycle-zone .rev-icon.reversal {
+  color: var(--warning);
+  background: var(--warning-light);
+}
+
+#workspace-lifecycle-zone .badge {
+  display: inline-block;
+  font-size: 9px;
+  padding: 2px 6px;
+  border-radius: 4px;
+  margin-left: 6px;
+  font-weight: 700;
+  letter-spacing: .05em;
+}
+
+#workspace-lifecycle-zone .badge.obs {
+  background: var(--warning-light);
+  color: var(--warning-text);
+}
+
+#workspace-lifecycle-zone .badge.bs {
+  background: var(--success-light);
+  color: var(--success-text);
+}
+
+#workspace-lifecycle-zone .badge.pl-pos {
+  background: var(--success-light);
+  color: var(--success-text);
+}
+
+#workspace-lifecycle-zone .badge.pl-neg {
+  background: var(--danger-light);
+  color: var(--danger-text);
+}
+
+#workspace-lifecycle-zone .balance-check {
+  margin-top: 10px;
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 10px;
+  color: var(--success-text);
+  display: flex;
+  gap: 14px;
+  flex-wrap: wrap;
+}
+
+#workspace-lifecycle-zone .balance-check span::before {
+  content: '✓ ';
+  font-weight: bold;
+}
+
+/* Ledger styling */
+#workspace-lifecycle-zone .ledger-group {
+  margin-bottom: 12px;
+}
+
+#workspace-lifecycle-zone .ledger-group .gtitle {
+  font-family: 'Outfit', sans-serif;
+  font-size: 10px;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  color: var(--primary);
+  font-weight: 700;
+  margin-bottom: 6px;
+  border-bottom: 1px solid var(--neutral-light);
+  padding-bottom: 4px;
+}
+
+#workspace-lifecycle-zone .acct-line {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  padding: 6px 0;
+  font-size: 12px;
+  border-bottom: 1px solid var(--neutral-light);
+}
+
+#workspace-lifecycle-zone .acct-line .nm {
+  color: var(--neutral-dark);
+  font-weight: 500;
+}
+
+#workspace-lifecycle-zone .acct-line .nm small {
+  display: block;
+  color: var(--neutral-muted);
+  font-weight: 400;
+  font-size: 9.5px;
+}
+
+#workspace-lifecycle-zone .acct-line .val {
+  font-family: 'IBM Plex Mono', monospace;
+  font-weight: 600;
+}
+
+#workspace-lifecycle-zone .val.pos {
+  color: var(--success);
+}
+
+#workspace-lifecycle-zone .val.neg {
+  color: var(--danger);
+}
+
+#workspace-lifecycle-zone .val.zero {
+  color: var(--neutral-border);
+}
+
 
 
 
