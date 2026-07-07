@@ -3568,7 +3568,7 @@ const app = {
                             <th>Modality</th>
                             <th>Duration</th>
                             <th>Complete By</th>
-                            <th style="text-align: right;">Estado</th>
+                            <th style="text-align: right;">Status</th>
                         </tr>
                     </thead>
                     <tbody>${rowsHtml}</tbody>
