@@ -11691,6 +11691,19 @@ const app = {
     this.lifecycleGameState.cumulativeCorrect = [];
     this.lifecycleGameState.hasValidatedStep = false;
 
+    // Bind click listener outside to close dropdown
+    if (!this.lifecycleGameState.clickBound) {
+      document.addEventListener('click', (e) => {
+        if (!e.target.closest('.lfg-slot') && !e.target.closest('.lfg-dropdown-menu')) {
+          if (this.lifecycleGameState && this.lifecycleGameState.selectedSlotId) {
+            this.lifecycleGameState.selectedSlotId = null;
+            this.lifecycleGameRenderPostings();
+          }
+        }
+      });
+      this.lifecycleGameState.clickBound = true;
+    }
+
     const setupView = document.getElementById('lfg-setup-view');
     const playView = document.getElementById('lfg-play-view');
     const resultsView = document.getElementById('lfg-results-view');
@@ -11801,7 +11814,6 @@ const app = {
     }
 
     this.lifecycleGameRenderPostings();
-    this.lifecycleGameRenderBricks();
 
     const validateBtn = document.getElementById('lfg-validateBtn');
     const nextBtn = document.getElementById('lfg-nextBtn');
@@ -11839,19 +11851,21 @@ const app = {
       postRow.innerHTML = `
         <div style="font-size: 0.8rem; font-weight: 700; color: var(--neutral-dark);">${p.label}</div>
         <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 10px;">
-          <div>
+          <div style="position: relative;">
             <span style="font-size: 0.7rem; font-weight: 700; color: var(--success); text-transform: uppercase; display: block; margin-bottom: 4px;">Debit (Dr)</span>
-            <div class="lfg-slot ${drFilledClass} ${drActive}" id="lfg-dr-${idx}" onclick="app.lifecycleGameSelectSlot('lfg-dr-${idx}')">
+            <div class="lfg-slot ${drFilledClass} ${drActive}" id="lfg-dr-${idx}" onclick="app.lifecycleGameSelectSlot('lfg-dr-${idx}'); event.stopPropagation();">
               <span>${drText}</span>
               <i class="ti ti-chevron-down" style="font-size: 0.8rem;"></i>
             </div>
+            ${state.selectedSlotId === `lfg-dr-${idx}` ? this.lifecycleGameRenderDropdownHtml(`lfg-dr-${idx}`) : ''}
           </div>
-          <div>
+          <div style="position: relative;">
             <span style="font-size: 0.7rem; font-weight: 700; color: var(--danger); text-transform: uppercase; display: block; margin-bottom: 4px;">Credit (Cr)</span>
-            <div class="lfg-slot ${crFilledClass} ${crActive}" id="lfg-cr-${idx}" onclick="app.lifecycleGameSelectSlot('lfg-cr-${idx}')">
+            <div class="lfg-slot ${crFilledClass} ${crActive}" id="lfg-cr-${idx}" onclick="app.lifecycleGameSelectSlot('lfg-cr-${idx}'); event.stopPropagation();">
               <span>${crText}</span>
               <i class="ti ti-chevron-down" style="font-size: 0.8rem;"></i>
             </div>
+            ${state.selectedSlotId === `lfg-cr-${idx}` ? this.lifecycleGameRenderDropdownHtml(`lfg-cr-${idx}`) : ''}
           </div>
         </div>
         <div style="display: flex; align-items: center; gap: 8px; margin-top: 2px;">
@@ -11862,6 +11876,27 @@ const app = {
 
       list.appendChild(postRow);
     });
+  },
+
+  lifecycleGameRenderDropdownHtml(slotId) {
+    let optionsHtml = '';
+    this.lifecycleGameBricks.forEach(b => {
+      optionsHtml += `
+        <div class="lfg-dropdown-option" 
+             onclick="app.lifecycleGamePlaceBrick('${b.key}'); event.stopPropagation();" 
+             onmouseenter="this.style.background='rgba(225, 29, 72, 0.05)'; this.style.color='var(--primary)';" 
+             onmouseleave="this.style.background='transparent'; this.style.color='var(--neutral-dark)';"
+             style="padding: 8px 12px; cursor: pointer; transition: all 0.2s; font-size: 0.75rem; font-weight: 600; color: var(--neutral-dark); border-bottom: 1px solid var(--neutral-light); text-align: left;">
+          ${b.name}
+        </div>
+      `;
+    });
+
+    return `
+      <div class="lfg-dropdown-menu" style="position: absolute; top: 105%; left: 0; right: 0; background: var(--bg-card); border: 1.5px solid var(--primary); border-radius: var(--radius-sm); box-shadow: var(--shadow-lg); z-index: 20; max-height: 220px; overflow-y: auto;">
+        ${optionsHtml}
+      </div>
+    `;
   },
 
   lifecycleGameSelectSlot(slotId) {
@@ -11875,19 +11910,7 @@ const app = {
     this.lifecycleGameState.userInputs[postIdx].reversal = isChecked;
   },
 
-  lifecycleGameRenderBricks() {
-    const container = document.getElementById('lfg-bricks-container');
-    if (!container) return;
-    container.innerHTML = '';
 
-    this.lifecycleGameBricks.forEach(b => {
-      const brick = document.createElement('div');
-      brick.className = 'lfg-brick';
-      brick.innerText = b.name;
-      brick.onclick = () => this.lifecycleGamePlaceBrick(b.key);
-      container.appendChild(brick);
-    });
-  },
 
   lifecycleGamePlaceBrick(brickKey) {
     const state = this.lifecycleGameState;
