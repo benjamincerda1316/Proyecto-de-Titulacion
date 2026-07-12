@@ -360,6 +360,8 @@ function LoginScene() {
   );
 }
 
+const clampVal = (val, min, max) => Math.min(Math.max(val, min), max);
+
 function ScoreRing({ pct = 91 }) {
   const r = 46, c = 2 * Math.PI * r;
   return (
