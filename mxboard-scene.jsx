@@ -70,6 +70,7 @@ function BrowserFrame({ children, scale = 1, opacity = 1, ty = 0, activeTab, noN
           <span style={{ color: activeTab === 'admin' ? C.primary : C.neutralMuted, borderBottom: activeTab === 'admin' ? `2.5px solid ${C.primary}` : 'none', padding: '19px 0', cursor: 'pointer' }}>Administration</span>
           <span style={{ color: activeTab === 'evaluation' ? C.primary : C.neutralMuted, borderBottom: activeTab === 'evaluation' ? `2.5px solid ${C.primary}` : 'none', padding: '19px 0', cursor: 'pointer' }}>Live Evaluation</span>
           <span style={{ color: activeTab === 'deliverables' ? C.primary : C.neutralMuted, borderBottom: activeTab === 'deliverables' ? `2.5px solid ${C.primary}` : 'none', padding: '19px 0', cursor: 'pointer' }}>Deliverables</span>
+          <span style={{ color: activeTab === 'timesheet' ? C.primary : C.neutralMuted, borderBottom: activeTab === 'timesheet' ? `2.5px solid ${C.primary}` : 'none', padding: '19px 0', cursor: 'pointer' }}>Timesheet Hub</span>
         </div>
 
         {/* Right profile info */}
@@ -357,8 +358,6 @@ function LoginScene() {
     </div>
   );
 }
-
-const clamp = (val, min, max) => Math.min(Math.max(val, min), max);
 
 // ROADMAP BLOCK — White box, red border when complete, red bolder when active
 function WeekBlock({ n, state, title, opacity, translateY }) {
@@ -1039,7 +1038,7 @@ function ResourcesScene() {
   );
 }
 
-// SCENE: HOURS CONSUMED BY EXPERT `0:70–0:78`
+// SCENE: HOURS CONSUMED BY EXPERT `1:10–1:18`
 function HoursDashboardScene() {
   const { localTime, duration } = useSprite();
   
@@ -1279,7 +1278,208 @@ function HoursDashboardScene() {
   );
 }
 
-// SCENE 6 — CALENDAR HUB `1:10–1:18`
+// SCENE: TIMESHEET PORTAL & REGISTRATION `1:22–1:30`
+function TimesheetScene() {
+  const { localTime, duration } = useSprite();
+  
+  const entryT = clamp(localTime / 0.8, 0, 1);
+  const scale = interpolate([0, 1], [0.95, 1.0], Easing.easeOutBack)(entryT);
+  const opacity = entryT;
+
+  let currentOpacity = opacity;
+  const exitStart = duration - 0.5;
+  if (localTime > exitStart) {
+    const t = (localTime - exitStart) / 0.5;
+    currentOpacity = 1 - t;
+  }
+
+  // Animation values for input conversion
+  let hoursVal = 8;
+  let minutesVal = 480;
+  let resultVal = "1.0";
+  let scaleBadge = 1.0;
+  
+  if (localTime >= 1.5 && localTime < 3.2) {
+    const typingProgress = (localTime - 1.5) / 1.7; // 0 to 1
+    if (typingProgress < 0.5) {
+      hoursVal = "";
+      minutesVal = "";
+      resultVal = "-";
+    } else {
+      hoursVal = 1;
+      minutesVal = 60;
+      resultVal = "0.13";
+    }
+  } else if (localTime >= 3.2) {
+    hoursVal = 1;
+    minutesVal = 60;
+    resultVal = "0.13";
+    
+    // Result badge zoom pulse from 3.2s to 4.2s (zoom in and out)
+    if (localTime >= 3.2 && localTime < 4.2) {
+      const pulseT = (localTime - 3.2) / 1.0;
+      scaleBadge = 1.0 + Math.sin(pulseT * Math.PI) * 0.35;
+    }
+  }
+
+  const rows = [
+    { project: 'AMER-CS-FIN PL-TEAM', activity: 'GROWING OTHERS', applies: 'NO', risk: true },
+    { project: 'AMER-CS-FIN PL-TEAM', activity: 'INTERNAL SUPPORT', applies: 'YES', risk: false },
+    { project: 'AMER-CS-FIN PL-TEAM', activity: 'ORG-CAREER MANAGEMENT & HR', applies: 'NO', risk: true },
+    { project: 'AMER-CS-FIN PL-TEAM', activity: 'ORG-MEETING', applies: 'YES', risk: false },
+    { project: 'AMER-CS-FIN PL-NEWHIRE ONBD', activity: 'TRAINING-ATTENDANCE', applies: 'YES', risk: false },
+    { project: 'AMER-CS-FIN PL-NEWHIRE ONBD', activity: 'TRAINING-PREPARATION & PRESENT', applies: 'YES', risk: false }
+  ];
+
+  const getRowStyle = (rowIndex) => {
+    const startTime = 3.5 + rowIndex * 0.25;
+    const progress = clamp((localTime - startTime) / 0.3, 0, 1);
+    const opacityVal = progress;
+    const translateYVal = (1 - Easing.easeOutQuad(progress)) * 10;
+    return {
+      opacity: opacityVal,
+      transform: `translateY(${translateYVal}px)`,
+      display: 'grid',
+      gridTemplateColumns: '1.2fr 1.5fr 0.8fr',
+      padding: '12px 14px',
+      borderTop: `1px solid ${C.neutralBorder}`,
+      alignItems: 'center',
+      boxSizing: 'border-box',
+      willChange: 'opacity, transform'
+    };
+  };
+
+  return (
+    <div style={{ position: 'absolute', inset: 0, opacity: currentOpacity, transform: `scale(${scale})`, transformOrigin: 'center center' }}>
+      <BrowserFrame activeTab="timesheet">
+        <div style={{ padding: 24, fontFamily: FONT, width: '100%', height: '100%', boxSizing: 'border-box', display: 'flex', flexDirection: 'column', gap: 16, overflowY: 'auto' }}>
+          
+          {/* Header Card */}
+          <div style={{
+            background: '#FFFFFF', border: `1.5px solid ${C.neutralBorder}`, borderRadius: 12,
+            padding: '16px 24px', display: 'flex', justifyContent: 'space-between', alignItems: 'center',
+            boxSizing: 'border-box', flexShrink: 0
+          }}>
+            <div>
+              <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+                <span style={{ display: 'inline-flex', padding: 8, background: '#FDECEC', borderRadius: 8 }}><Icon name="calendar-time" size={20} color="#D4215B" /></span>
+                <div>
+                  <h3 style={{ fontFamily: FONT_D, fontSize: 18, fontWeight: 700, color: C.neutralDark, margin: 0 }}>Timesheet Portal &amp; Registration Guide</h3>
+                  <p style={{ fontSize: 12, color: C.neutralMuted, margin: '2px 0 0', fontWeight: 500 }}>Information, department codes, and hour conversion tool for newcomers.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Sub Card */}
+          <div style={{
+            background: '#FFFFFF', border: `1.5px solid ${C.neutralBorder}`, borderRadius: 12,
+            padding: '14px 20px', display: 'flex', justifyContent: 'space-between', alignItems: 'center',
+            boxSizing: 'border-box', flexShrink: 0
+          }}>
+            <div>
+              <h4 style={{ fontFamily: FONT_D, fontSize: 13.5, fontWeight: 700, color: C.neutralDark, margin: 0 }}>Timesheet Platform</h4>
+              <p style={{ fontSize: 11.5, color: C.neutralMuted, margin: '2px 0 0' }}>Enter your hours worked in the official portal using the codes assigned to your profile.</p>
+            </div>
+            <div style={{
+              background: '#8B183C', color: 'white', fontSize: 12, fontWeight: 700,
+              padding: '8px 14px', borderRadius: 6, display: 'flex', alignItems: 'center', gap: 6, cursor: 'pointer'
+            }}>
+              Go to Timesheet Portal <Icon name="external-link" size={12} color="white" />
+            </div>
+          </div>
+
+          {/* Two Columns Grid */}
+          <div style={{ display: 'grid', gridTemplateColumns: '1.1fr 1.3fr', gap: 16, flex: 1 }}>
+            
+            {/* Left: Conversion Calculator */}
+            <div style={{ background: '#FFFFFF', border: `1.5px solid ${C.neutralBorder}`, borderRadius: 12, padding: 18, boxSizing: 'border-box', display: 'flex', flexDirection: 'column', gap: 14 }}>
+              <div>
+                <h4 style={{ fontFamily: FONT_D, fontSize: 13, fontWeight: 700, color: C.neutralDark, margin: 0, textTransform: 'uppercase', letterSpacing: 0.5 }}>Conversion Calculator</h4>
+                <p style={{ fontSize: 11.5, color: C.neutralMuted, margin: '6px 0 0', lineHeight: 1.4 }}>
+                  The Timesheet system uses a decimal scale where a full 8-hour workday equals 1.0 (1 hour = 0.125 and half an hour = 0.0625).
+                </p>
+              </div>
+
+              <div style={{ height: 1, background: C.neutralLight }} />
+
+              <div>
+                <div style={{ fontSize: 12, fontWeight: 700, color: C.neutralMuted, marginBottom: 12 }}>Custom converter:</div>
+                <div style={{ display: 'flex', alignItems: 'center', gap: 16, marginBottom: 20 }}>
+                  <div style={{ display: 'flex', flexDirection: 'column', gap: 4 }}>
+                    <span style={{ fontSize: 10, fontWeight: 700, color: C.neutralMuted }}>HOURS</span>
+                    <div style={{
+                      padding: '8px 12px', border: `1.5px solid ${C.neutralBorder}`, borderRadius: 6,
+                      fontSize: 13, fontWeight: 700, color: C.neutralDark, background: '#FFFFFF',
+                      width: 80, boxSizing: 'border-box', display: 'flex', justifyContent: 'space-between', alignItems: 'center'
+                    }}>
+                      <span>{hoursVal}</span>
+                      <div style={{ display: 'flex', flexDirection: 'column', fontSize: 8, color: C.neutralMuted }}>▲▼</div>
+                    </div>
+                  </div>
+
+                  <span style={{ fontSize: 13, fontWeight: 700, color: C.neutralMuted, marginTop: 15 }}>or</span>
+
+                  <div style={{ display: 'flex', flexDirection: 'column', gap: 4 }}>
+                    <span style={{ fontSize: 10, fontWeight: 700, color: C.neutralMuted }}>MINUTES</span>
+                    <div style={{
+                      padding: '8px 12px', border: `1.5px solid ${C.neutralBorder}`, borderRadius: 6,
+                      fontSize: 13, fontWeight: 700, color: C.neutralDark, background: '#FFFFFF',
+                      width: 90, boxSizing: 'border-box', display: 'flex', justifyContent: 'space-between', alignItems: 'center'
+                    }}>
+                      <span>{minutesVal}</span>
+                      <div style={{ display: 'flex', flexDirection: 'column', fontSize: 8, color: C.neutralMuted }}>▲▼</div>
+                    </div>
+                  </div>
+                </div>
+
+                <div style={{
+                  padding: '14px 20px', background: C.primaryLight, border: `1.5px solid ${C.primary}30`,
+                  borderRadius: 10, display: 'flex', justifyContent: 'space-between', alignItems: 'center'
+                }}>
+                  <span style={{ fontSize: 12.5, fontWeight: 700, color: C.neutralDark }}>Result in Timesheet:</span>
+                  <span style={{
+                    fontFamily: FONT_D, fontSize: 24, fontWeight: 800, color: C.primary,
+                    transform: `scale(${scaleBadge})`, transition: 'transform 0.1s linear', display: 'inline-block'
+                  }}>{resultVal}</span>
+                </div>
+              </div>
+            </div>
+
+            {/* Right: Charging Codes Table */}
+            <div style={{ background: '#FFFFFF', border: `1.5px solid ${C.neutralBorder}`, borderRadius: 12, padding: 18, boxSizing: 'border-box', display: 'flex', flexDirection: 'column', gap: 12 }}>
+              <h4 style={{ fontFamily: FONT_D, fontSize: 13, fontWeight: 700, color: C.neutralDark, margin: 0, textTransform: 'uppercase', letterSpacing: 0.5 }}>Charging Codes (Newcomers)</h4>
+              
+              <div style={{ border: `1.5px solid ${C.neutralBorder}`, borderRadius: 10, overflow: 'hidden' }}>
+                <div style={{ display: 'grid', gridTemplateColumns: '1.2fr 1.5fr 0.8fr', padding: '10px 14px', background: '#F9F9FB', fontSize: 10.5, fontWeight: 700, color: C.neutralMuted, textTransform: 'uppercase', letterSpacing: 0.5, boxSizing: 'border-box' }}>
+                  <span>Project</span><span>Activity</span><span>Applies to Newcomer</span>
+                </div>
+                
+                {rows.map((r, i) => (
+                  <div key={i} style={getRowStyle(i)}>
+                    <span style={{ fontSize: 11.5, fontWeight: 700, color: C.neutralDark, fontFamily: 'monospace' }}>{r.project}</span>
+                    <span style={{ fontSize: 11.5, fontWeight: 600, color: C.neutralDark }}>{r.activity}</span>
+                    <span style={{
+                      fontSize: 10.5, fontWeight: 800, padding: '3px 12px', borderRadius: 20, width: 'fit-content', textAlign: 'center',
+                      background: r.risk ? C.dangerLight : C.successLight,
+                      color: r.risk ? '#E24B4A' : C.success
+                    }}>
+                      {r.applies}
+                    </span>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+          </div>
+
+        </div>
+      </BrowserFrame>
+    </div>
+  );
+}
+
+// SCENE 6 — CALENDAR HUB `1:34–1:42`
 function CalendarScene() {
   const { localTime, duration } = useSprite();
   
@@ -1391,7 +1591,7 @@ function CalendarScene() {
   );
 }
 
-// SCENE 8 — ADMINISTRATION DASHBOARD `1:22–1:30`
+// SCENE 8 — ADMINISTRATION DASHBOARD `1:46–1:54`
 function AdminMetricCard({ label, value, sub, color, icon }) {
   const strokeColor = color || C.primary;
   const isUp = color === C.success;
@@ -1505,7 +1705,7 @@ function AdminScene() {
   );
 }
 
-// SCENE 10 — LIVE EVALUATIONS `1:46–1:54`
+// SCENE 10 — LIVE EVALUATIONS `2:10–2:18` (shifted due to timesheet)
 function QuizScene() {
   const { localTime, duration } = useSprite();
   
@@ -1581,7 +1781,7 @@ function QuizScene() {
   );
 }
 
-// SCENE 12 — AUTONOMY BAR `1:58–2:04`
+// SCENE 12 — AUTONOMY BAR `2:10–2:18` (shifted due to timesheet)
 function AutonomyScene() {
   const { localTime, duration } = useSprite();
   
@@ -1623,7 +1823,7 @@ function AutonomyScene() {
   );
 }
 
-// SCENE 13 — CERTIFICATION CLOSE `2:04–2:12`
+// SCENE 13 — CERTIFICATION CLOSE `2:10–2:18` (shifted due to timesheet)
 function CertificateScene() {
   const { localTime, duration } = useSprite();
   
@@ -1690,7 +1890,7 @@ function CertificateScene() {
   );
 }
 
-// SCENE 14 — WELCOME OUTRO `2:12–2:16`
+// SCENE 14 — WELCOME OUTRO `2:10–2:18` (shifted due to timesheet)
 function OutroScene() {
   const { localTime } = useSprite();
   const op = Math.min(localTime / 0.8, 1);
@@ -1789,7 +1989,7 @@ function MXBoardDemoScene() {
         <TextTransition
           line1="Hours Control by Expert."
           line2="Monitor mentoring and support hours."
-          highlightWord="Hours"
+          highlightWord="mentoring"
         />
       </Sprite>
 
@@ -1798,8 +1998,22 @@ function MXBoardDemoScene() {
         <HoursDashboardScene />
       </Sprite>
 
-      {/* 1:18–1:22  →  Transition (Hours Control -> Calendar) */}
+      {/* 1:18–1:22  →  Transition (Hours Control -> Timesheet Portal) */}
       <Sprite start={78} end={82}>
+        <TextTransition
+          line1="Timesheet Hub."
+          line2="Decimal hour conversion and charging codes."
+          highlightWord="conversion"
+        />
+      </Sprite>
+
+      {/* 1:22–1:30  →  Timesheet Calculator and Management Mockup */}
+      <Sprite start={82} end={90}>
+        <TimesheetScene />
+      </Sprite>
+
+      {/* 1:30–1:34  →  Transition (Timesheet -> Calendar) */}
+      <Sprite start={90} end={94}>
         <TextTransition
           line1="Calendar Hub."
           line2="All your meetings, in one place."
@@ -1807,13 +2021,13 @@ function MXBoardDemoScene() {
         />
       </Sprite>
 
-      {/* 1:22–1:30  →  Calendar Hub */}
-      <Sprite start={82} end={90}>
+      {/* 1:34–1:42  →  Calendar Hub */}
+      <Sprite start={94} end={102}>
         <CalendarScene />
       </Sprite>
 
-      {/* 1:30–1:34  →  Transition (Calendar -> Admin) */}
-      <Sprite start={90} end={94}>
+      {/* 1:42–1:46  →  Transition (Calendar -> Admin) */}
+      <Sprite start={102} end={106}>
         <TextTransition
           line1="Administration Panel."
           line2="Real-time tracking of every newcomer."
@@ -1821,13 +2035,13 @@ function MXBoardDemoScene() {
         />
       </Sprite>
 
-      {/* 1:34–1:42  →  Admin Dashboard */}
-      <Sprite start={94} end={102}>
+      {/* 1:46–1:54  →  Admin Dashboard */}
+      <Sprite start={106} end={114}>
         <AdminScene />
       </Sprite>
 
-      {/* 1:42–1:46  →  Transition (Admin -> Quiz) */}
-      <Sprite start={102} end={106}>
+      {/* 1:54–1:58  →  Transition (Admin -> Quiz) */}
+      <Sprite start={114} end={118}>
         <TextTransition
           line1="Live Evaluations."
           line2="Technical knowledge, put to the test."
@@ -1835,13 +2049,13 @@ function MXBoardDemoScene() {
         />
       </Sprite>
 
-      {/* 1:46–1:54  →  Live Quiz */}
-      <Sprite start={106} end={114}>
+      {/* 1:58–2:06  →  Live Quiz */}
+      <Sprite start={118} end={126}>
         <QuizScene />
       </Sprite>
 
-      {/* 1:54–1:58  →  Transition (Quiz -> Autonomy) */}
-      <Sprite start={114} end={118}>
+      {/* 2:06–2:10  →  Transition (Quiz -> Autonomy) */}
+      <Sprite start={126} end={130}>
         <TextTransition
           line1="Autonomy Perception."
           line2="Rising from day one."
@@ -1849,18 +2063,18 @@ function MXBoardDemoScene() {
         />
       </Sprite>
 
-      {/* 1:58–2:04  →  Autonomy Bar */}
-      <Sprite start={118} end={124}>
+      {/* 2:10–2:16  →  Autonomy Bar */}
+      <Sprite start={130} end={136}>
         <AutonomyScene />
       </Sprite>
 
-      {/* 2:04–2:12  →  Certificate Close */}
-      <Sprite start={124} end={132}>
+      {/* 2:16–2:24  →  Certificate Close */}
+      <Sprite start={136} end={144}>
         <CertificateScene />
       </Sprite>
 
-      {/* 2:12–2:16  →  Welcome Outro */}
-      <Sprite start={132} end={136}>
+      {/* 2:24–2:28  →  Welcome Outro */}
+      <Sprite start={144} end={148}>
         <OutroScene />
       </Sprite>
     </>
