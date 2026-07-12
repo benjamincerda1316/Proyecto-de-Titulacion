@@ -358,6 +358,66 @@ function LoginScene() {
   );
 }
 
+const clamp = (val, min, max) => Math.min(Math.max(val, min), max);
+
+function WeekBlock({ n, state, title, opacity, translateY }) {
+  const isCompleted = state === 'completed';
+  const isCurrent = state === 'current';
+  
+  const bg = isCompleted ? '#D4215B' : '#FFFFFF';
+  const border = isCompleted ? 'none' : isCurrent ? '2px solid #D4215B' : '1.5px solid #F2F2F2';
+  const color = isCompleted ? '#FFFFFF' : '#0A0A0A';
+  const subColor = isCompleted ? 'rgba(255,255,255,0.7)' : '#888888';
+  
+  return (
+    <div style={{
+      background: bg, border, borderRadius: 10, padding: '12px 14px',
+      minHeight: 82, display: 'flex', flexDirection: 'column', justifyContent: 'space-between',
+      position: 'relative', opacity, transform: `translateY(${translateY}px)`, boxSizing: 'border-box',
+      boxShadow: isCompleted ? '0 4px 12px rgba(212,33,91,0.06)' : 'none',
+      willChange: 'transform, opacity'
+    }}>
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+        <span style={{ fontFamily: FONT_D, fontWeight: 800, fontSize: 15, color }}>Week {n}</span>
+        {isCompleted && <Icon name="circle-check" size={14} color="#FFFFFF" />}
+        {isCurrent && <Icon name="player-play" size={14} color="#D4215B" />}
+      </div>
+      <div style={{ fontSize: 11.5, fontWeight: 700, color, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+        {title}
+      </div>
+      <div style={{ fontSize: 10, color: subColor, fontWeight: 600 }}>
+        {isCompleted ? 'Completed ✓' : isCurrent ? 'Active now' : 'Locked'}
+      </div>
+    </div>
+  );
+}
+
+function ScoreRing({ pct = 91 }) {
+  const r = 46, c = 2 * Math.PI * r;
+  return (
+    <div style={{ position: 'relative', width: 108, height: 108, flexShrink: 0 }}>
+      <svg width="108" height="108" style={{ transform: 'rotate(-90deg)' }}>
+        <defs>
+          <linearGradient id="ringGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stopColor="#FFFFFF" />
+            <stop offset="100%" stopColor="rgba(255,255,255,0.4)" />
+          </linearGradient>
+        </defs>
+        <circle cx="54" cy="54" r={r} fill="none" stroke="rgba(255,255,255,0.15)" strokeWidth="8" />
+        <circle cx="54" cy="54" r={r} fill="none" stroke="url(#ringGrad)" strokeWidth="8" strokeLinecap="round"
+          strokeDasharray={c} strokeDashoffset={c * (1 - pct / 100)} />
+      </svg>
+      <div style={{
+        position: 'absolute', inset: 0, display: 'flex', flexDirection: 'column',
+        alignItems: 'center', justifyContent: 'center',
+      }}>
+        <div style={{ fontFamily: FONT_D, fontSize: 26, fontWeight: 800, color: 'white', letterSpacing: -0.5 }}>{pct}%</div>
+        <div style={{ fontFamily: FONT, fontSize: 9, color: 'rgba(255,255,255,0.7)', textTransform: 'uppercase', letterSpacing: 0.8, fontWeight: 700 }}>Avg. Score</div>
+      </div>
+    </div>
+  );
+}
+
 // SCENE 4 — DASHBOARD REVEAL `0:20–0:30`
 function DashboardScene() {
   const { localTime, duration } = useSprite();
