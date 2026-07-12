@@ -255,12 +255,13 @@ function TitleArrival() {
   );
 }
 
-// SCENE 3 — LOGIN `0:10–0:20`
+// SCENE 3 — LOGIN `0:10–0:20` (Centered container, no cutoff)
 function LoginScene() {
   const { localTime } = useSprite();
   
   const zoomT = Math.min(localTime / 3.0, 1);
-  const scale = interpolate([0, 1], [1, 3.2], Easing.easeOutQuart)(zoomT);
+  // Decreased zoom factor to avoid cutting off the container edges in smaller ratios
+  const scale = interpolate([0, 1], [1, 1.3], Easing.easeOutQuart)(zoomT);
   
   const username = "Newcomer";
   let typedUser = "";
@@ -303,23 +304,23 @@ function LoginScene() {
           </div>
         </div>
         
-        {/* Login Target */}
+        {/* Centered Login Container */}
         <div style={{
           position: 'absolute', inset: `${FRAME.topbar}px 0 0 0`, display: 'flex',
           alignItems: 'center', justifyContent: 'center', background: '#FFFFFF'
         }}>
           <div style={{
-            width: 320, padding: '24px 28px', border: `1.5px solid ${C.neutralBorder}`,
-            borderRadius: 12, background: 'white', display: 'flex', flexDirection: 'column',
-            gap: 16, boxShadow: '0 4px 16px rgba(0,0,0,0.02)', position: 'relative'
+            width: 360, padding: '32px 36px', border: `1.5px solid ${C.neutralBorder}`,
+            borderRadius: 16, background: 'white', display: 'flex', flexDirection: 'column',
+            gap: 20, boxShadow: '0 12px 36px rgba(0,0,0,0.03)', position: 'relative'
           }}>
-            <div style={{ fontFamily: FONT_D, fontSize: 22, fontWeight: 800, color: C.primary, textAlign: 'center', marginBottom: 4 }}>
+            <div style={{ fontFamily: FONT_D, fontSize: 24, fontWeight: 800, color: C.primary, textAlign: 'center', marginBottom: 4 }}>
               MX<span style={{ color: C.primary }}>Board</span>
             </div>
             
             <div style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
               <label style={{ fontSize: 11, fontWeight: 700, color: C.neutralMuted, textTransform: 'uppercase', letterSpacing: 0.5 }}>Username</label>
-              <div style={{ padding: '8px 12px', border: `1.5px solid ${C.neutralBorder}`, borderRadius: 6, fontSize: 13, fontWeight: 600, color: C.neutralDark, minHeight: 34, background: '#FFFFFF', display: 'flex', alignItems: 'center' }}>
+              <div style={{ padding: '10px 14px', border: `1.5px solid ${C.neutralBorder}`, borderRadius: 8, fontSize: 14, fontWeight: 600, color: C.neutralDark, minHeight: 38, background: '#FFFFFF', display: 'flex', alignItems: 'center', boxSizing: 'border-box' }}>
                 {typedUser}
                 {localTime >= 3.5 && localTime < 5.0 && <span style={{ borderLeft: '2px solid black', marginLeft: 2, height: 14 }} />}
               </div>
@@ -327,15 +328,15 @@ function LoginScene() {
             
             <div style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
               <label style={{ fontSize: 11, fontWeight: 700, color: C.neutralMuted, textTransform: 'uppercase', letterSpacing: 0.5 }}>Password</label>
-              <div style={{ padding: '8px 12px', border: `1.5px solid ${C.neutralBorder}`, borderRadius: 6, fontSize: 13, fontWeight: 600, color: C.neutralDark, minHeight: 34, background: '#FFFFFF', display: 'flex', alignItems: 'center' }}>
+              <div style={{ padding: '10px 14px', border: `1.5px solid ${C.neutralBorder}`, borderRadius: 8, fontSize: 14, fontWeight: 600, color: C.neutralDark, minHeight: 38, background: '#FFFFFF', display: 'flex', alignItems: 'center', boxSizing: 'border-box' }}>
                 {typedPass}
                 {localTime >= 5.5 && localTime < 7.0 && <span style={{ borderLeft: '2px solid black', marginLeft: 2, height: 14 }} />}
               </div>
             </div>
             
             <div style={{
-              padding: '10px', background: localTime >= 9.0 ? '#B01A47' : '#D4215B', color: 'white',
-              borderRadius: 8, fontSize: 13, fontWeight: 700, textAlign: 'center', marginTop: 8,
+              padding: '12px', background: localTime >= 9.0 ? '#B01A47' : '#D4215B', color: 'white',
+              borderRadius: 8, fontSize: 14, fontWeight: 700, textAlign: 'center', marginTop: 8,
               cursor: 'pointer'
             }}>
               Sign In
@@ -343,7 +344,7 @@ function LoginScene() {
 
             {showArrow && (
               <div style={{
-                position: 'absolute', left: 148, bottom: -20 - arrowDy,
+                position: 'absolute', left: 168, bottom: -24 - arrowDy,
                 color: C.primary, display: 'flex', flexDirection: 'column', alignItems: 'center'
               }}>
                 <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
@@ -359,68 +360,8 @@ function LoginScene() {
   );
 }
 
-// ROADMAP BLOCK — White box, red border when complete, red bolder when active
-function WeekBlock({ n, state, title, opacity, translateY }) {
-  const isCompleted = state === 'completed';
-  const isCurrent = state === 'current';
-  const bg = '#FFFFFF';
-  
-  const border = isCompleted 
-    ? '1.5px solid #D4215B' 
-    : isCurrent 
-      ? '2.5px solid #D4215B' 
-      : '1.5px solid #F2F2F2';
-      
-  const color = '#0A0A0A';
-  const subColor = isCompleted ? '#D4215B' : '#888888';
-  
-  return (
-    <div style={{
-      background: bg, border, borderRadius: 10, padding: '12px 14px',
-      minHeight: 82, display: 'flex', flexDirection: 'column', justifyContent: 'space-between',
-      position: 'relative', opacity, transform: `translateY(${translateY}px)`, boxSizing: 'border-box',
-      boxShadow: 'none', willChange: 'transform, opacity'
-    }}>
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-        <span style={{ fontFamily: FONT_D, fontWeight: 800, fontSize: 15, color }}>Week {n}</span>
-        {isCompleted && <Icon name="circle-check" size={14} color="#D4215B" />}
-        {isCurrent && <Icon name="player-play" size={14} color="#D4215B" />}
-      </div>
-      <div style={{ fontSize: 11.5, fontWeight: 700, color, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
-        {title}
-      </div>
-      <div style={{ fontSize: 10, color: subColor, fontWeight: 600 }}>
-        {isCompleted ? 'Completed ✓' : isCurrent ? 'Active now' : 'Locked'}
-      </div>
-    </div>
-  );
-}
-
-function ScoreRing({ pct = 91 }) {
-  const r = 46, c = 2 * Math.PI * r;
-  return (
-    <div style={{ position: 'relative', width: 108, height: 108, flexShrink: 0 }}>
-      <svg width="108" height="108" style={{ transform: 'rotate(-90deg)' }}>
-        <defs>
-          <linearGradient id="ringGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-            <stop offset="0%" stopColor="#FFFFFF" />
-            <stop offset="100%" stopColor="rgba(255,255,255,0.4)" />
-          </linearGradient>
-        </defs>
-        <circle cx="54" cy="54" r={r} fill="none" stroke="rgba(255,255,255,0.15)" strokeWidth="8" />
-        <circle cx="54" cy="54" r={r} fill="none" stroke="url(#ringGrad)" strokeWidth="8" strokeLinecap="round"
-          strokeDasharray={c} strokeDashoffset={c * (1 - pct / 100)} />
-      </svg>
-      <div style={{
-        position: 'absolute', inset: 0, display: 'flex', flexDirection: 'column',
-        alignItems: 'center', justifyContent: 'center',
-      }}>
-        <div style={{ fontFamily: FONT_D, fontSize: 26, fontWeight: 800, color: 'white', letterSpacing: -0.5 }}>{pct}%</div>
-        <div style={{ fontFamily: FONT, fontSize: 9, color: 'rgba(255,255,255,0.7)', textTransform: 'uppercase', letterSpacing: 0.8, fontWeight: 700 }}>Avg. Score</div>
-      </div>
-    </div>
-  );
-}
+// ROADMAP GRID HELPER
+const clampVal = (val, min, max) => Math.min(Math.max(val, min), max);
 
 // SCENE 4 — DASHBOARD REVEAL `0:20–0:30`
 function DashboardScene() {
@@ -504,7 +445,7 @@ function DashboardScene() {
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 10, flex: 1, overflowY: 'auto', paddingBottom: 10 }}>
               {weeks.map((w, i) => {
                 const blockStart = 1.8 + i * 0.08;
-                const t = clamp((localTime - blockStart) / 0.5, 0, 1);
+                const t = clampVal((localTime - blockStart) / 0.5, 0, 1);
                 const easeT = Easing.easeOutQuad(t);
                 const opacity = t;
                 const translateY = (1 - easeT) * 8;
@@ -532,7 +473,7 @@ function DashboardScene() {
 function AccountsGameScene() {
   const { localTime, duration } = useSprite();
   
-  const entryT = clamp(localTime / 0.8, 0, 1);
+  const entryT = clampVal(localTime / 0.8, 0, 1);
   const scale = interpolate([0, 1], [0.95, 1.0], Easing.easeOutBack)(entryT);
   const opacity = entryT;
 
@@ -555,7 +496,7 @@ function AccountsGameScene() {
   
   if (localTime >= 1.5 && localTime < 4.5) {
     isDragging = true;
-    const t = clamp((localTime - 1.5) / 3.0, 0, 1);
+    const t = clampVal((localTime - 1.5) / 3.0, 0, 1);
     const easeT = Easing.easeInOutQuad(t);
     brickX = interpolate([0, 1], [startX, endX], easeT);
     brickY = interpolate([0, 1], [startY, endY], easeT);
@@ -671,7 +612,7 @@ function AccountsGameScene() {
 function LifecycleScene() {
   const { localTime, duration } = useSprite();
   
-  const entryT = clamp(localTime / 0.8, 0, 1);
+  const entryT = clampVal(localTime / 0.8, 0, 1);
   const scale = interpolate([0, 1], [0.95, 1.0], Easing.easeOutBack)(entryT);
   const opacity = entryT;
 
@@ -938,7 +879,7 @@ function ResourceCard({ title, desc, link, icon, color, opacity, translateY }) {
 function ResourcesScene() {
   const { localTime, duration } = useSprite();
   
-  const entryT = clamp(localTime / 0.8, 0, 1);
+  const entryT = clampVal(localTime / 0.8, 0, 1);
   const scale = interpolate([0, 1], [0.95, 1.0], Easing.easeOutBack)(entryT);
   const opacity = entryT;
 
@@ -985,7 +926,7 @@ function ResourcesScene() {
             <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 14 }}>
               {items.slice(0, 4).map((c, i) => {
                 const cardStart = 1.0 + i * 0.4;
-                const t = clamp((localTime - cardStart) / 0.5, 0, 1);
+                const t = clampVal((localTime - cardStart) / 0.5, 0, 1);
                 const opacityVal = t;
                 const translateYVal = (1 - Easing.easeOutQuad(t)) * 10;
                 return (
@@ -1006,7 +947,7 @@ function ResourcesScene() {
             {/* Full width bottom card */}
             {(() => {
               const cardStart = 1.0 + 4 * 0.4;
-              const t = clamp((localTime - cardStart) / 0.5, 0, 1);
+              const t = clampVal((localTime - cardStart) / 0.5, 0, 1);
               const opacityVal = t;
               const translateYVal = (1 - Easing.easeOutQuad(t)) * 10;
               const c = items[4];
@@ -1042,7 +983,7 @@ function ResourcesScene() {
 function HoursDashboardScene() {
   const { localTime, duration } = useSprite();
   
-  const entryT = clamp(localTime / 0.8, 0, 1);
+  const entryT = clampVal(localTime / 0.8, 0, 1);
   const scale = interpolate([0, 1], [0.95, 1.0], Easing.easeOutBack)(entryT);
   const opacity = entryT;
 
@@ -1054,7 +995,7 @@ function HoursDashboardScene() {
   }
 
   // Dynamic progress value for the bar fill and number count (starts at 1.0s, lasts 2.5s)
-  const progress = clamp((localTime - 1.0) / 2.5, 0, 1);
+  const progress = clampVal((localTime - 1.0) / 2.5, 0, 1);
   const t = Easing.easeOutQuad(progress);
 
   const totalHours = (t * 35.2).toFixed(1);
@@ -1282,7 +1223,7 @@ function HoursDashboardScene() {
 function TimesheetScene() {
   const { localTime, duration } = useSprite();
   
-  const entryT = clamp(localTime / 0.8, 0, 1);
+  const entryT = clampVal(localTime / 0.8, 0, 1);
   const scale = interpolate([0, 1], [0.95, 1.0], Easing.easeOutBack)(entryT);
   const opacity = entryT;
 
@@ -1333,7 +1274,7 @@ function TimesheetScene() {
 
   const getRowStyle = (rowIndex) => {
     const startTime = 3.5 + rowIndex * 0.25;
-    const progress = clamp((localTime - startTime) / 0.3, 0, 1);
+    const progress = clampVal((localTime - startTime) / 0.3, 0, 1);
     const opacityVal = progress;
     const translateYVal = (1 - Easing.easeOutQuad(progress)) * 10;
     return {
@@ -1483,7 +1424,7 @@ function TimesheetScene() {
 function CalendarScene() {
   const { localTime, duration } = useSprite();
   
-  const entryT = clamp(localTime / 0.8, 0, 1);
+  const entryT = clampVal(localTime / 0.8, 0, 1);
   const scale = interpolate([0, 1], [0.95, 1.0], Easing.easeOutBack)(entryT);
   const opacity = entryT;
   
@@ -1625,7 +1566,7 @@ function AdminMetricCard({ label, value, sub, color, icon }) {
 function AdminScene() {
   const { localTime, duration } = useSprite();
   
-  const entryT = clamp(localTime / 0.8, 0, 1);
+  const entryT = clampVal(localTime / 0.8, 0, 1);
   const scale = interpolate([0, 1], [0.95, 1.0], Easing.easeOutBack)(entryT);
   const opacity = entryT;
   
@@ -1705,11 +1646,11 @@ function AdminScene() {
   );
 }
 
-// SCENE 10 — LIVE EVALUATIONS `2:10–2:18` (shifted due to timesheet)
+// SCENE 10 — LIVE EVALUATIONS `1:58–2:06`
 function QuizScene() {
   const { localTime, duration } = useSprite();
   
-  const entryT = clamp(localTime / 0.8, 0, 1);
+  const entryT = clampVal(localTime / 0.8, 0, 1);
   const scale = interpolate([0, 1], [0.95, 1.0], Easing.easeOutBack)(entryT);
   const opacity = entryT;
   
@@ -1781,14 +1722,46 @@ function QuizScene() {
   );
 }
 
-// SCENE 12 — AUTONOMY BAR `2:10–2:18` (shifted due to timesheet)
+// Helper component for dynamic circular progress ring
+function ProgressDonut({ pct, label, color, localTime }) {
+  const r = 46, c = 2 * Math.PI * r;
+  // Animate the donut fill based on localTime
+  const progress = clampVal((localTime - 1.0) / 2.5, 0, 1);
+  const t = Easing.easeOutQuad(progress);
+  const currentPct = Math.floor(t * pct);
+  const strokeOffset = c * (1 - currentPct / 100);
+
+  return (
+    <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 12 }}>
+      <div style={{ position: 'relative', width: 114, height: 114 }}>
+        <svg width="114" height="114" style={{ transform: 'rotate(-90deg)' }}>
+          <circle cx="57" cy="57" r={r} fill="none" stroke="#F2F2F2" strokeWidth="8" />
+          <circle cx="57" cy="57" r={r} fill="none" stroke={color} strokeWidth="8" strokeLinecap="round"
+            strokeDasharray={c} strokeDashoffset={strokeOffset} style={{ transition: 'stroke-dashoffset 0.05s linear' }} />
+        </svg>
+        <div style={{
+          position: 'absolute', inset: 0, display: 'flex', alignItems: 'center', justifyContent: 'center',
+        }}>
+          <span style={{ fontFamily: FONT_D, fontSize: 26, fontWeight: 800, color: C.neutralDark, letterSpacing: -0.5 }}>
+            {currentPct}%
+          </span>
+        </div>
+      </div>
+      <div style={{ fontFamily: FONT_D, fontSize: 14, fontWeight: 700, color: C.neutralDark, textAlign: 'center', maxWidth: 120, lineHeight: 1.2 }}>
+        {label}
+      </div>
+    </div>
+  );
+}
+
+// SCENE 12 — AUTONOMY PERCEPTION `2:10–2:16` (3 Dynamic Donuts: Comm Skills 77%, Hands On 100%, Independence 89%)
 function AutonomyScene() {
   const { localTime, duration } = useSprite();
   
-  const fillT = clamp((localTime - 1.0) / 2.5, 0, 1);
+  const fillT = clampVal((localTime - 1.0) / 2.5, 0, 1);
   const pct = Math.floor(Easing.easeOutQuad(fillT) * 85);
   
-  let opacity = clamp(localTime / 0.6, 0, 1);
+  let opacity = clampVal(localTime / 0.6, 0, 1);
   
   const exitStart = duration - 0.5;
   if (localTime > exitStart) {
@@ -1799,39 +1772,46 @@ function AutonomyScene() {
   return (
     <div style={{
       position: 'absolute', inset: 0, display: 'flex', flexDirection: 'column',
-      alignItems: 'center', justifyContent: 'center', background: '#FFFFFF', gap: 24,
+      alignItems: 'center', justifyContent: 'center', background: '#FFFFFF', gap: 36,
       opacity, willChange: 'opacity'
     }}>
-      <div style={{ fontFamily: FONT_D, fontSize: 26, fontWeight: 700, color: C.neutralDark, letterSpacing: -0.5 }}>
-        Autonomy Perception
-      </div>
-      
-      <div style={{
-        width: 500, height: 26, background: '#F2F2F2', borderRadius: 99,
-        overflow: 'hidden', border: '1.5px solid #F2F2F2', position: 'relative'
-      }}>
+      <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 14 }}>
+        <div style={{ fontFamily: FONT_D, fontSize: 32, fontWeight: 800, color: C.neutralDark, letterSpacing: -0.5 }}>
+          Alcanza la Autonomía
+        </div>
         <div style={{
-          height: '100%', width: `${pct}%`, background: '#D4215B',
-          borderRadius: 99, transition: 'width 0.05s linear'
-        }} />
+          width: 500, height: 16, background: '#F2F2F2', borderRadius: 99,
+          overflow: 'hidden', border: '1.5px solid #F2F2F2', position: 'relative'
+        }}>
+          <div style={{
+            height: '100%', width: `${pct}%`, background: '#D4215B',
+            borderRadius: 99, transition: 'width 0.05s linear'
+          }} />
+        </div>
+        <div style={{ fontFamily: FONT_D, fontSize: 32, fontWeight: 800, color: '#D4215B', letterSpacing: -1, marginTop: 4 }}>
+          {pct}% Promedio General
+        </div>
       </div>
-      
-      <div style={{ fontFamily: FONT_D, fontSize: 52, fontWeight: 800, color: '#D4215B', letterSpacing: -1 }}>
-        {pct}%
+
+      {/* 3 Donut Graphs */}
+      <div style={{ display: 'flex', gap: 60, justifyContent: 'center', marginTop: 10 }}>
+        <ProgressDonut pct={77} label="Habilidades Comunicacionales" color="#0284C7" localTime={localTime} />
+        <ProgressDonut pct={100} label="Hands On" color="#D4215B" localTime={localTime} />
+        <ProgressDonut pct={89} label="Independencia" color="#1D9E75" localTime={localTime} />
       </div>
     </div>
   );
 }
 
-// SCENE 13 — CERTIFICATION CLOSE `2:10–2:18` (shifted due to timesheet)
+// SCENE 13 — CERTIFICATION CLOSE `2:16–2:24`
 function CertificateScene() {
   const { localTime, duration } = useSprite();
   
-  const entryT = clamp(localTime / 0.7, 0, 1);
+  const entryT = clampVal(localTime / 0.7, 0, 1);
   const cardScale = Easing.easeOutBack(entryT);
   const cardOpacity = entryT;
   
-  const drawT = clamp((localTime - 0.7) / 0.8, 0, 1);
+  const drawT = clampVal((localTime - 0.7) / 0.8, 0, 1);
   const strokeOffset = 1800 * (1 - Easing.easeOutQuad(drawT));
   
   let currentCardOpacity = cardOpacity;
@@ -1890,7 +1870,7 @@ function CertificateScene() {
   );
 }
 
-// SCENE 14 — WELCOME OUTRO `2:10–2:18` (shifted due to timesheet)
+// SCENE 14 — WELCOME OUTRO `2:24–2:28`
 function OutroScene() {
   const { localTime } = useSprite();
   const op = Math.min(localTime / 0.8, 1);
@@ -2063,7 +2043,7 @@ function MXBoardDemoScene() {
         />
       </Sprite>
 
-      {/* 2:10–2:16  →  Autonomy Bar */}
+      {/* 2:10–2:16  →  Autonomy Bar & Donut RIngs */}
       <Sprite start={130} end={136}>
         <AutonomyScene />
       </Sprite>
