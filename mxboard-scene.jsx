@@ -360,26 +360,33 @@ function LoginScene() {
 
 const clamp = (val, min, max) => Math.min(Math.max(val, min), max);
 
+// ROADMAP BLOCK — White box, red border when complete, red bolder when active
 function WeekBlock({ n, state, title, opacity, translateY }) {
   const isCompleted = state === 'completed';
   const isCurrent = state === 'current';
   
-  const bg = isCompleted ? '#D4215B' : '#FFFFFF';
-  const border = isCompleted ? 'none' : isCurrent ? '2px solid #D4215B' : '1.5px solid #F2F2F2';
-  const color = isCompleted ? '#FFFFFF' : '#0A0A0A';
-  const subColor = isCompleted ? 'rgba(255,255,255,0.7)' : '#888888';
+  // Every block has a white background now
+  const bg = '#FFFFFF';
+  
+  const border = isCompleted 
+    ? '1.5px solid #D4215B' 
+    : isCurrent 
+      ? '2.5px solid #D4215B' 
+      : '1.5px solid #F2F2F2';
+      
+  const color = '#0A0A0A';
+  const subColor = isCompleted ? '#D4215B' : '#888888';
   
   return (
     <div style={{
       background: bg, border, borderRadius: 10, padding: '12px 14px',
       minHeight: 82, display: 'flex', flexDirection: 'column', justifyContent: 'space-between',
       position: 'relative', opacity, transform: `translateY(${translateY}px)`, boxSizing: 'border-box',
-      boxShadow: isCompleted ? '0 4px 12px rgba(212,33,91,0.06)' : 'none',
-      willChange: 'transform, opacity'
+      boxShadow: 'none', willChange: 'transform, opacity'
     }}>
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
         <span style={{ fontFamily: FONT_D, fontWeight: 800, fontSize: 15, color }}>Week {n}</span>
-        {isCompleted && <Icon name="circle-check" size={14} color="#FFFFFF" />}
+        {isCompleted && <Icon name="circle-check" size={14} color="#D4215B" />}
         {isCurrent && <Icon name="player-play" size={14} color="#D4215B" />}
       </div>
       <div style={{ fontSize: 11.5, fontWeight: 700, color, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
@@ -422,11 +429,9 @@ function ScoreRing({ pct = 91 }) {
 function DashboardScene() {
   const { localTime, duration } = useSprite();
   
-  // Zoom Out (0s to 1.8s): scale 3.2 -> 1.0
   const zoomOutT = Math.min(localTime / 1.8, 1);
   let zoomScale = interpolate([0, 1], [3.2, 1.0], Easing.easeOutQuad)(zoomOutT);
   
-  // Dissolving/fade out at the end of the scene (duration-0.4 .. duration)
   let dashOpacity = 1;
   const exitStart = duration - 0.4;
   if (localTime > exitStart) {
@@ -526,16 +531,286 @@ function DashboardScene() {
   );
 }
 
-// SCENE 6 — CALENDAR HUB `0:34–0:42`
+// SCENE: ACCOUNTS MATCHING GAME MOCK `0:34–0:42` (Drag PPE into Asset bucket)
+function AccountsGameScene() {
+  const { localTime, duration } = useSprite();
+  
+  const entryT = clamp(localTime / 0.8, 0, 1);
+  const scale = interpolate([0, 1], [0.95, 1.0], Easing.easeOutBack)(entryT);
+  const opacity = entryT;
+
+  let currentOpacity = opacity;
+  const exitStart = duration - 0.5;
+  if (localTime > exitStart) {
+    const t = (localTime - exitStart) / 0.5;
+    currentOpacity = 1 - t;
+  }
+
+  // Animation math of cursor dragging PPE brick
+  const startX = 280;
+  const startY = 320;
+  const endX = 760;
+  const endY = 280;
+  
+  let brickX = startX;
+  let brickY = startY;
+  let isDragging = false;
+  
+  if (localTime >= 1.5 && localTime < 4.5) {
+    isDragging = true;
+    const t = clamp((localTime - 1.5) / 3.0, 0, 1);
+    const easeT = Easing.easeInOutQuad(t);
+    brickX = interpolate([0, 1], [startX, endX], easeT);
+    brickY = interpolate([0, 1], [startY, endY], easeT);
+  } else if (localTime >= 4.5) {
+    brickX = endX;
+    brickY = endY;
+  }
+
+  const showCorrectToast = localTime >= 4.5;
+
+  return (
+    <div style={{ position: 'absolute', inset: 0, opacity: currentOpacity, transform: `scale(${scale})`, transformOrigin: 'center center' }}>
+      <BrowserFrame activeTab="dashboard">
+        <div style={{ padding: 34, fontFamily: FONT, width: '100%', height: '100%', boxSizing: 'border-box', display: 'flex', flexDirection: 'column', gap: 16, overflow: 'hidden' }}>
+          <div>
+            <div style={{ display: 'flex', alignItems: 'center', gap: 8, fontFamily: FONT_D, fontSize: 18, fontWeight: 700, color: C.neutralDark }}>
+              <Icon name="device-gamepad-2" size={20} color={C.primary} /> Week 1 — Account Classification Challenge
+            </div>
+            <div style={{ fontSize: 12.5, color: C.neutralMuted, marginTop: 2 }}>Drag and drop the account brick into the correct balance sheet bucket.</div>
+          </div>
+
+          <div style={{ flex: 1, display: 'flex', gap: 40, marginTop: 20, position: 'relative' }}>
+            {/* Left side: Bricks */}
+            <div style={{ width: 340, display: 'flex', flexDirection: 'column', gap: 14 }}>
+              <div style={{ fontSize: 12, fontWeight: 700, color: C.neutralMuted, textTransform: 'uppercase', letterSpacing: 0.5 }}>Available Accounts</div>
+              
+              {/* PPE Brick (Dragged) */}
+              <div style={{
+                position: 'absolute', left: brickX, top: brickY, width: 280, padding: '14px 18px',
+                borderRadius: 8, border: '1.5px solid #D4215B', background: '#FFFFFF',
+                color: C.primary, fontWeight: 700, fontSize: 14, cursor: 'pointer', zIndex: 10,
+                boxShadow: isDragging ? '0 8px 24px rgba(212,33,91,0.1)' : 'none',
+                opacity: localTime >= 4.5 ? 0 : 1, display: 'flex', justifyContent: 'space-between', alignItems: 'center'
+              }}>
+                <span>Property, Plant &amp; Equip. (PPE)</span>
+                <Icon name="grip-vertical" size={14} color="#D4215B" />
+              </div>
+
+              {/* Blank placeholder left in place of PPE */}
+              <div style={{ width: 280, height: 48, border: '1.5px dashed #F2F2F2', borderRadius: 8 }} />
+
+              <div style={{
+                width: 280, padding: '14px 18px', borderRadius: 8, border: '1.5px solid #F2F2F2',
+                background: '#FFFFFF', color: '#888888', fontWeight: 600, fontSize: 14, display: 'flex', justifyContent: 'space-between', alignItems: 'center'
+              }}>
+                <span>Equity Cash</span>
+                <Icon name="grip-vertical" size={14} color="#888888" />
+              </div>
+              <div style={{
+                width: 280, padding: '14px 18px', borderRadius: 8, border: '1.5px solid #F2F2F2',
+                background: '#FFFFFF', color: '#888888', fontWeight: 600, fontSize: 14, display: 'flex', justifyContent: 'space-between', alignItems: 'center'
+              }}>
+                <span>Customer Loans</span>
+                <Icon name="grip-vertical" size={14} color="#888888" />
+              </div>
+            </div>
+
+            {/* Right side: Drop Buckets */}
+            <div style={{ flex: 1, display: 'flex', flexDirection: 'column', gap: 20 }}>
+              <div style={{ fontSize: 12, fontWeight: 700, color: C.neutralMuted, textTransform: 'uppercase', letterSpacing: 0.5 }}>Drop Targets</div>
+              
+              {/* Asset Slot */}
+              <div style={{
+                width: 450, minHeight: 100, border: showCorrectToast ? '2px solid #D4215B' : '2px dashed #E6E5EC',
+                borderRadius: 12, padding: 18, background: showCorrectToast ? '#FFF0F3' : '#FFFFFF',
+                display: 'flex', flexDirection: 'column', gap: 10, boxSizing: 'border-box'
+              }}>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                  <span style={{ fontSize: 14, fontWeight: 700, color: C.neutralDark }}>Asset Accounts</span>
+                  {showCorrectToast && <Icon name="circle-check" size={16} color="#D4215B" />}
+                </div>
+                {showCorrectToast ? (
+                  <div style={{
+                    padding: '10px 14px', borderRadius: 6, border: '1.5px solid #D4215B',
+                    background: '#FFFFFF', color: '#D4215B', fontWeight: 700, fontSize: 13
+                  }}>
+                    Property, Plant &amp; Equip. (PPE)
+                  </div>
+                ) : (
+                  <div style={{ fontSize: 12, color: C.neutralMuted, fontStyle: 'italic' }}>Drop Asset accounts here...</div>
+                )}
+              </div>
+
+              {/* Equity Slot */}
+              <div style={{
+                width: 450, minHeight: 100, border: '2px dashed #E6E5EC',
+                borderRadius: 12, padding: 18, background: '#FFFFFF',
+                display: 'flex', flexDirection: 'column', gap: 10, boxSizing: 'border-box'
+              }}>
+                <span style={{ fontSize: 14, fontWeight: 700, color: C.neutralDark }}>Equity Accounts</span>
+                <div style={{ fontSize: 12, color: C.neutralMuted, fontStyle: 'italic' }}>Drop Equity accounts here...</div>
+              </div>
+            </div>
+
+            {/* Hand/Cursor Pointer Animation */}
+            {localTime >= 1.0 && localTime < 5.0 && (
+              <div style={{
+                position: 'absolute', left: brickX + 130, top: brickY + 25, zIndex: 100,
+                color: C.primary, transform: 'rotate(-25deg)', pointerEvents: 'none'
+              }}>
+                <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
+                  <path d="M6.5 13.5L12 8l5.5 5.5m-5.5-5.5V20" />
+                </svg>
+              </div>
+            )}
+
+            {/* Correct Toast Pop-up */}
+            {showCorrectToast && (
+              <div style={{
+                position: 'absolute', right: 40, top: 40, background: '#D4215B', color: 'white',
+                padding: '10px 20px', borderRadius: 8, fontSize: 13, fontWeight: 700,
+                boxShadow: '0 8px 24px rgba(212,33,91,0.2)', animation: 'bounce 0.5s'
+              }}>
+                ✓ Correct! +10 Points
+              </div>
+            )}
+          </div>
+        </div>
+      </BrowserFrame>
+    </div>
+  );
+}
+
+// SCENE: FX LIFECYCLE SIMULATOR `0:46–0:54`
+function LifecycleScene() {
+  const { localTime, duration } = useSprite();
+  
+  const entryT = clamp(localTime / 0.8, 0, 1);
+  const scale = interpolate([0, 1], [0.95, 1.0], Easing.easeOutBack)(entryT);
+  const opacity = entryT;
+
+  let currentOpacity = opacity;
+  const exitStart = duration - 0.5;
+  if (localTime > exitStart) {
+    const t = (localTime - exitStart) / 0.5;
+    currentOpacity = 1 - t;
+  }
+
+  // Horizontal marker x position on the timeline (Trade Date -> Value Date)
+  const lineStartX = 250;
+  const lineEndX = 850;
+  const markerX = interpolate([1.2, 5.5], [lineStartX, lineEndX], Easing.easeInOutQuad)(localTime);
+
+  // Active highlights
+  const isTradeDate = localTime >= 1.2 && localTime < 3.2;
+  const isValueDate = localTime >= 4.0;
+
+  return (
+    <div style={{ position: 'absolute', inset: 0, opacity: currentOpacity, transform: `scale(${scale})`, transformOrigin: 'center center' }}>
+      <BrowserFrame activeTab="dashboard">
+        <div style={{ padding: 34, fontFamily: FONT, width: '100%', height: '100%', boxSizing: 'border-box', display: 'flex', flexDirection: 'column', gap: 16, overflow: 'hidden' }}>
+          <div>
+            <div style={{ display: 'flex', alignItems: 'center', gap: 8, fontFamily: FONT_D, fontSize: 18, fontWeight: 700, color: C.neutralDark }}>
+              <Icon name="route" size={20} color={C.primary} /> Week 3 — FX Lifecycle Simulator
+            </div>
+            <div style={{ fontSize: 12.5, color: C.neutralMuted, marginTop: 2 }}>Track how accounting entries evolve across dates.</div>
+          </div>
+
+          <div style={{ flex: 1, display: 'flex', flexDirection: 'column', gap: 40, marginTop: 30, position: 'relative' }}>
+            {/* Horizontal Timeline Bar */}
+            <div style={{ position: 'relative', height: 40, width: '100%' }}>
+              <div style={{ position: 'absolute', left: lineStartX, right: 1500 - lineEndX, top: 20, height: 3, background: '#F2F2F2', borderRadius: 99 }} />
+              
+              {/* Active filled line */}
+              <div style={{ position: 'absolute', left: lineStartX, width: markerX - lineStartX, top: 20, height: 3, background: '#D4215B', borderRadius: 99 }} />
+
+              {/* Trade Date Dot */}
+              <div style={{
+                position: 'absolute', left: lineStartX, top: 12, width: 18, height: 18, borderRadius: '50%',
+                background: localTime >= 1.2 ? '#D4215B' : '#FFFFFF', border: '2px solid #D4215B', transform: 'translateX(-9px)'
+              }}>
+                <span style={{ position: 'absolute', top: 24, left: -25, fontSize: 11.5, fontWeight: 700, color: C.neutralDark, width: 80, textAlign: 'center' }}>Trade Date</span>
+              </div>
+
+              {/* Value Date Dot */}
+              <div style={{
+                position: 'absolute', left: lineEndX, top: 12, width: 18, height: 18, borderRadius: '50%',
+                background: localTime >= 5.5 ? '#D4215B' : '#FFFFFF', border: '2px solid #D4215B', transform: 'translateX(-9px)'
+              }}>
+                <span style={{ position: 'absolute', top: 24, left: -25, fontSize: 11.5, fontWeight: 700, color: C.neutralDark, width: 80, textAlign: 'center' }}>Value Date</span>
+              </div>
+
+              {/* Slider marker */}
+              <div style={{
+                position: 'absolute', left: markerX, top: 7, width: 28, height: 28, borderRadius: '50%',
+                background: '#FFFFFF', border: '3.5px solid #D4215B', transform: 'translateX(-14px)',
+                boxShadow: '0 4px 12px rgba(212,33,91,0.25)', transition: 'left 0.05s linear'
+              }} />
+            </div>
+
+            {/* Real-time Journal Entry Box popup */}
+            <div style={{ display: 'flex', gap: 30, marginTop: 20 }}>
+              {/* Card 1: OBS Commitment */}
+              <div style={{
+                width: 320, padding: 18, borderRadius: 12, border: isTradeDate ? '1.5px solid #D4215B' : '1.5px solid #F2F2F2',
+                background: '#FFFFFF', opacity: isTradeDate ? 1 : 0.4, transition: 'all 0.3s', boxSizing: 'border-box'
+              }}>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 10 }}>
+                  <strong style={{ fontSize: 13, color: isTradeDate ? '#D4215B' : '#0A0A0A' }}>OBS Commitment</strong>
+                  <span style={{ fontSize: 10, fontWeight: 700, color: isTradeDate ? '#D4215B' : '#888888', background: isTradeDate ? '#FFF0F3' : '#F2F2F2', padding: '2px 6px', borderRadius: 4 }}>Trade Date</span>
+                </div>
+                <div style={{ fontSize: 11.5, color: '#0A0A0A', fontFamily: 'monospace', display: 'flex', flexDirection: 'column', gap: 6 }}>
+                  <div>Dr. OBS Forward Asset (100K)</div>
+                  <div style={{ paddingLeft: 14, color: '#888888' }}>Cr. OBS Forward Liability (100K)</div>
+                </div>
+              </div>
+
+              {/* Card 2: OBS Reversal */}
+              <div style={{
+                width: 320, padding: 18, borderRadius: 12, border: isValueDate ? '1.5px solid #D4215B' : '1.5px solid #F2F2F2',
+                background: '#FFFFFF', opacity: isValueDate ? 1 : 0.4, transition: 'all 0.3s', boxSizing: 'border-box'
+              }}>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 10 }}>
+                  <strong style={{ fontSize: 13, color: isValueDate ? '#D4215B' : '#0A0A0A' }}>OBS Reversal</strong>
+                  <span style={{ fontSize: 10, fontWeight: 700, color: isValueDate ? '#D4215B' : '#888888', background: isValueDate ? '#FFF0F3' : '#F2F2F2', padding: '2px 6px', borderRadius: 4 }}>Value Date</span>
+                </div>
+                <div style={{ fontSize: 11.5, color: '#0A0A0A', fontFamily: 'monospace', display: 'flex', flexDirection: 'column', gap: 6 }}>
+                  <div>Dr. OBS Forward Liability (100K)</div>
+                  <div style={{ paddingLeft: 14, color: '#888888' }}>Cr. OBS Forward Asset (100K)</div>
+                </div>
+              </div>
+
+              {/* Card 3: Cash Settlement */}
+              <div style={{
+                width: 320, padding: 18, borderRadius: 12, border: isValueDate ? '1.5px solid #D4215B' : '1.5px solid #F2F2F2',
+                background: '#FFFFFF', opacity: isValueDate ? 1 : 0.4, transition: 'all 0.3s', boxSizing: 'border-box'
+              }}>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 10 }}>
+                  <strong style={{ fontSize: 13, color: isValueDate ? '#D4215B' : '#0A0A0A' }}>Settlement Postings</strong>
+                  <span style={{ fontSize: 10, fontWeight: 700, color: isValueDate ? '#D4215B' : '#888888', background: isValueDate ? '#FFF0F3' : '#F2F2F2', padding: '2px 6px', borderRadius: 4 }}>Value Date</span>
+                </div>
+                <div style={{ fontSize: 11.5, color: '#0A0A0A', fontFamily: 'monospace', display: 'flex', flexDirection: 'column', gap: 6 }}>
+                  <div>Dr. Cash Asset (100K)</div>
+                  <div style={{ paddingLeft: 14, color: '#888888' }}>Cr. Accounts Receivable (100K)</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </BrowserFrame>
+    </div>
+  );
+}
+
+// SCENE 6 — CALENDAR HUB `0:58–1:06`
 function CalendarScene() {
   const { localTime, duration } = useSprite();
   
-  // Custom spring zoom entry
   const entryT = clamp(localTime / 0.8, 0, 1);
   const scale = interpolate([0, 1], [0.95, 1.0], Easing.easeOutBack)(entryT);
   const opacity = entryT;
   
-  // Fade out at end
   let currentOpacity = opacity;
   const exitStart = duration - 0.5;
   if (localTime > exitStart) {
@@ -545,7 +820,6 @@ function CalendarScene() {
 
   const days = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri'];
   
-  // Restored authentic colored events and tutoring labels
   const events = {
     2: { label: 'Weekly Tutoring', sub: 'Benjamín · 10:00', color: '#0284C7', icon: 'user' }, // Blue
     4: { label: 'Manager Review', sub: 'Luana Ortega · 15:00', color: '#EA580C', icon: 'shield-check' }, // Orange
@@ -602,7 +876,6 @@ function CalendarScene() {
           
           {/* Calendar Sidebar */}
           <div style={{ width: 280, display: 'flex', flexDirection: 'column', gap: 14 }}>
-            {/* Next session card */}
             <div style={{ background: '#0A0A0A', borderRadius: 12, padding: 16, color: 'white', boxShadow: 'none' }}>
               <div style={{ fontSize: 10, fontWeight: 700, color: C.primary, textTransform: 'uppercase', letterSpacing: 1, marginBottom: 6 }}>Next Up</div>
               <h4 style={{ fontFamily: FONT_D, fontSize: 15, fontWeight: 700, color: 'white', margin: '0 0 4px' }}>Tutoring Session</h4>
@@ -618,7 +891,6 @@ function CalendarScene() {
               </div>
             </div>
             
-            {/* Legend categories */}
             <div style={{ background: 'white', border: `1.5px solid ${C.neutralBorder}`, borderRadius: 12, padding: 16, flex: 1, boxSizing: 'border-box' }}>
               <div style={{ fontFamily: FONT_D, fontSize: 13, fontWeight: 700, color: C.neutralDark, marginBottom: 10 }}>Categories</div>
               <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
@@ -643,7 +915,7 @@ function CalendarScene() {
   );
 }
 
-// SCENE 8 — ADMINISTRATION DASHBOARD `0:46–0:54`
+// SCENE 8 — ADMINISTRATION DASHBOARD `1:10–1:18`
 function AdminMetricCard({ label, value, sub, color, icon }) {
   const strokeColor = color || C.primary;
   const isUp = color === C.success;
@@ -757,7 +1029,7 @@ function AdminScene() {
   );
 }
 
-// SCENE 10 — LIVE EVALUATIONS `0:58–1:06`
+// SCENE 10 — LIVE EVALUATIONS `1:22–1:30`
 function QuizScene() {
   const { localTime, duration } = useSprite();
   
@@ -779,7 +1051,6 @@ function QuizScene() {
     { k: 'D', text: 'Monitor system security escalation channels and accounts.' }
   ];
 
-  // Answer selected logic: highlight Option B after 2.5 seconds
   const isSelected = localTime >= 2.5;
 
   return (
@@ -834,18 +1105,15 @@ function QuizScene() {
   );
 }
 
-// SCENE 12 — AUTONOMY BAR `1:10–1:16`
+// SCENE 12 — AUTONOMY BAR `1:34–1:40`
 function AutonomyScene() {
   const { localTime, duration } = useSprite();
   
-  // Progress bar fills from 0 to 85% over 2.5 seconds (from 1.0s to 3.5s)
   const fillT = clamp((localTime - 1.0) / 2.5, 0, 1);
   const pct = Math.floor(Easing.easeOutQuad(fillT) * 85);
   
-  // Entry fade in (0s to 0.6s)
   let opacity = clamp(localTime / 0.6, 0, 1);
   
-  // Exit fade out (duration-0.5 .. duration)
   const exitStart = duration - 0.5;
   if (localTime > exitStart) {
     const t = (localTime - exitStart) / 0.5;
@@ -862,7 +1130,6 @@ function AutonomyScene() {
         Autonomy Perception
       </div>
       
-      {/* Elegante barra de progreso al centro de la pantalla */}
       <div style={{
         width: 500, height: 26, background: '#F2F2F2', borderRadius: 99,
         overflow: 'hidden', border: '1.5px solid #F2F2F2', position: 'relative'
@@ -873,7 +1140,6 @@ function AutonomyScene() {
         }} />
       </div>
       
-      {/* Texto de porcentaje interactivo */}
       <div style={{ fontFamily: FONT_D, fontSize: 52, fontWeight: 800, color: '#D4215B', letterSpacing: -1 }}>
         {pct}%
       </div>
@@ -881,20 +1147,17 @@ function AutonomyScene() {
   );
 }
 
-// SCENE 13 — CERTIFICATION CLOSE `1:16–1:24`
+// SCENE 13 — CERTIFICATION CLOSE `1:40–1:48`
 function CertificateScene() {
   const { localTime, duration } = useSprite();
   
-  // Spring Card entry (0s to 0.7s)
   const entryT = clamp(localTime / 0.7, 0, 1);
   const cardScale = Easing.easeOutBack(entryT);
   const cardOpacity = entryT;
   
-  // Border draw outline (0.7s to 1.5s)
   const drawT = clamp((localTime - 0.7) / 0.8, 0, 1);
   const strokeOffset = 1800 * (1 - Easing.easeOutQuad(drawT));
   
-  // Dissolving/fade out of card at the end (duration-0.5s to duration)
   let currentCardOpacity = cardOpacity;
   const exitStart = duration - 0.5;
   if (localTime > exitStart) {
@@ -914,7 +1177,6 @@ function CertificateScene() {
           position: 'relative', opacity: currentCardOpacity, transform: `scale(${cardScale})`,
           boxSizing: 'border-box', willChange: 'transform, opacity'
         }}>
-          {/* Animated SVG Border overlay */}
           <svg width="520" height="380" style={{ position: 'absolute', inset: 0, pointerEvents: 'none' }}>
             <rect
               x="0.75" y="0.75" width="518.5" height="378.5" rx="20" ry="20"
@@ -923,7 +1185,6 @@ function CertificateScene() {
             />
           </svg>
           
-          {/* Certificate Content */}
           <div style={{ textAlign: 'center', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 6 }}>
             <div style={{ fontFamily: FONT_D, fontWeight: 800, fontSize: 24, color: C.neutralDark }}>
               MX<span style={{ color: C.primary }}>Board</span>
@@ -943,7 +1204,6 @@ function CertificateScene() {
             </div>
           </div>
           
-          {/* Signature and Verification footer */}
           <div style={{ display: 'flex', justifyContent: 'space-between', borderTop: `1px solid ${C.neutralLight}`, paddingTop: 18, fontSize: 12, fontWeight: 600, color: C.neutralMuted }}>
             <span>Certified</span>
             <span style={{ color: C.neutralDark }}>Luana Ortega</span>
@@ -954,7 +1214,7 @@ function CertificateScene() {
   );
 }
 
-// SCENE 14 — WELCOME OUTRO `1:24–1:28`
+// SCENE 14 — WELCOME OUTRO `1:48–1:52`
 function OutroScene() {
   const { localTime } = useSprite();
   const op = Math.min(localTime / 0.8, 1);
@@ -1006,8 +1266,36 @@ function MXBoardDemoScene() {
         <DashboardScene />
       </Sprite>
 
-      {/* 0:30–0:34  →  Transition (Dashboard -> Calendar) */}
+      {/* 0:30–0:34  →  Transition (Dashboard -> Simulation Games) */}
       <Sprite start={30} end={34}>
+        <TextTransition
+          line1="Simulation Games."
+          line2="Drag and drop to match account types."
+          highlightWord="match"
+        />
+      </Sprite>
+
+      {/* 0:34–0:42  →  Accounts Game Mockup */}
+      <Sprite start={34} end={42}>
+        <AccountsGameScene />
+      </Sprite>
+
+      {/* 0:42–0:46  →  Transition (Simulation -> FX Lifecycle) */}
+      <Sprite start={42} end={46}>
+        <TextTransition
+          line1="FX Lifecycle Simulator."
+          line2="Track trade events from Trade Date to Value Date."
+          highlightWord="events"
+        />
+      </Sprite>
+
+      {/* 0:46–0:54  →  FX Lifecycle Timeline Mockup */}
+      <Sprite start={46} end={54}>
+        <LifecycleScene />
+      </Sprite>
+
+      {/* 0:54–0:58  →  Transition (FX Lifecycle -> Calendar) */}
+      <Sprite start={54} end={58}>
         <TextTransition
           line1="Calendar Hub."
           line2="All your meetings, in one place."
@@ -1015,13 +1303,13 @@ function MXBoardDemoScene() {
         />
       </Sprite>
 
-      {/* 0:34–0:42  →  Calendar Hub */}
-      <Sprite start={34} end={42}>
+      {/* 0:58–1:06  →  Calendar Hub */}
+      <Sprite start={58} end={66}>
         <CalendarScene />
       </Sprite>
 
-      {/* 0:42–0:46  →  Transition (Calendar -> Admin) */}
-      <Sprite start={42} end={46}>
+      {/* 1:06–1:10  →  Transition (Calendar -> Admin) */}
+      <Sprite start={66} end={70}>
         <TextTransition
           line1="Administration Panel."
           line2="Real-time tracking of every newcomer."
@@ -1029,13 +1317,13 @@ function MXBoardDemoScene() {
         />
       </Sprite>
 
-      {/* 0:46–0:54  →  Admin Dashboard */}
-      <Sprite start={46} end={54}>
+      {/* 1:10–1:18  →  Admin Dashboard */}
+      <Sprite start={70} end={78}>
         <AdminScene />
       </Sprite>
 
-      {/* 0:54–0:58  →  Transition (Admin -> Quiz) */}
-      <Sprite start={54} end={58}>
+      {/* 1:18–1:22  →  Transition (Admin -> Quiz) */}
+      <Sprite start={78} end={82}>
         <TextTransition
           line1="Live Evaluations."
           line2="Technical knowledge, put to the test."
@@ -1043,13 +1331,13 @@ function MXBoardDemoScene() {
         />
       </Sprite>
 
-      {/* 0:58–0:66  →  Live Quiz */}
-      <Sprite start={58} end={66}>
+      {/* 1:22–1:30  →  Live Quiz */}
+      <Sprite start={82} end={90}>
         <QuizScene />
       </Sprite>
 
-      {/* 0:66–0:70  →  Transition (Quiz -> Autonomy) */}
-      <Sprite start={66} end={70}>
+      {/* 1:30–1:34  →  Transition (Quiz -> Autonomy) */}
+      <Sprite start={90} end={94}>
         <TextTransition
           line1="Autonomy Perception."
           line2="Rising from day one."
@@ -1057,18 +1345,18 @@ function MXBoardDemoScene() {
         />
       </Sprite>
 
-      {/* 0:70–0:76  →  Autonomy Bar */}
-      <Sprite start={70} end={76}>
+      {/* 1:34–1:40  →  Autonomy Bar */}
+      <Sprite start={94} end={100}>
         <AutonomyScene />
       </Sprite>
 
-      {/* 0:76–0:84  →  Certificate Close */}
-      <Sprite start={76} end={84}>
+      {/* 1:40–1:48  →  Certificate Close */}
+      <Sprite start={100} end={108}>
         <CertificateScene />
       </Sprite>
 
-      {/* 0:84–0:88  →  Welcome Outro */}
-      <Sprite start={84} end={88}>
+      {/* 1:48–1:52  →  Welcome Outro */}
+      <Sprite start={108} end={112}>
         <OutroScene />
       </Sprite>
     </>
