@@ -529,7 +529,7 @@ function DashboardScene() {
   );
 }
 
-// SCENE: ACCOUNTS MATCHING GAME MOCK `0:34–0:42` (Drag PPE into Asset bucket)
+// SCENE: ACCOUNTS MATCHING GAME MOCK `0:34–0:42` (Drag PPE into Asset bucket - Cursor/arrow removed)
 function AccountsGameScene() {
   const { localTime, duration } = useSprite();
   
@@ -650,18 +650,6 @@ function AccountsGameScene() {
                 <div style={{ fontSize: 12, color: C.neutralMuted, fontStyle: 'italic' }}>Drop Equity accounts here...</div>
               </div>
             </div>
-
-            {/* Hand/Cursor Pointer Animation */}
-            {localTime >= 1.0 && localTime < 5.0 && (
-              <div style={{
-                position: 'absolute', left: brickX + 130, top: brickY + 25, zIndex: 100,
-                color: C.primary, transform: 'rotate(-25deg)', pointerEvents: 'none'
-              }}>
-                <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
-                  <path d="M6.5 13.5L12 8l5.5 5.5m-5.5-5.5V20" />
-                </svg>
-              </div>
-            )}
 
             {/* Correct Toast Pop-up */}
             {showCorrectToast && (
@@ -925,7 +913,133 @@ function LifecycleScene() {
   );
 }
 
-// SCENE 6 — CALENDAR HUB `0:58–1:06`
+// SCENE: DOCUMENTATION CENTER `0:58–1:06`
+function ResourceCard({ title, desc, link, icon, color, opacity, translateY }) {
+  return (
+    <div style={{
+      background: '#FFFFFF', border: `1.5px solid ${C.neutralBorder}`, borderRadius: 12,
+      padding: '20px 24px', display: 'flex', flexDirection: 'column', justifyContent: 'space-between',
+      boxSizing: 'border-box', opacity, transform: `translateY(${translateY}px)`,
+      height: 155, willChange: 'transform, opacity', boxShadow: 'none'
+    }}>
+      <div>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 8 }}>
+          <Icon name={icon} size={18} color={color} />
+          <h4 style={{ fontFamily: FONT_D, fontSize: 16, fontWeight: 700, color: C.neutralDark, margin: 0 }}>{title}</h4>
+        </div>
+        <p style={{ fontSize: 12, color: C.neutralMuted, margin: 0, lineHeight: 1.4 }}>{desc}</p>
+      </div>
+      <div style={{ display: 'flex', alignItems: 'center', gap: 4, fontSize: 12, fontWeight: 700, color: C.primary, cursor: 'pointer' }}>
+        {link} <Icon name="arrow-right" size={12} color={C.primary} />
+      </div>
+    </div>
+  );
+}
+
+function ResourcesScene() {
+  const { localTime, duration } = useSprite();
+  
+  const entryT = clamp(localTime / 0.8, 0, 1);
+  const scale = interpolate([0, 1], [0.95, 1.0], Easing.easeOutBack)(entryT);
+  const opacity = entryT;
+
+  let currentOpacity = opacity;
+  const exitStart = duration - 0.5;
+  if (localTime > exitStart) {
+    const t = (localTime - exitStart) / 0.5;
+    currentOpacity = 1 - t;
+  }
+
+  const items = [
+    { title: 'OnBoarding Docs', desc: 'Access orientation guides, induction process documents, and introductory material for your onboarding.', link: 'View onboarding guides', icon: 'folder', color: '#64748B' },
+    { title: 'MXDoc', desc: 'Official documentation of MX.3 software; discover how to configure the system and its modules from scratch.', link: 'Open documentation', icon: 'file-text', color: '#475569' },
+    { title: 'MXWiki', desc: 'Navigate the official domains of the suite and discover meaningful information and key guides for your daily work.', link: 'Open official wiki', icon: 'world', color: '#0284C7' },
+    { title: 'MXLearn', desc: 'Official portal for institutional onboarding; contains videos, progress evaluations, and specific learning paths.', link: 'Start learning', icon: 'school', color: '#EA580C' },
+    { title: 'PegaCase', desc: 'Master ticket and case portal; search how to resolve incidents, configuration ideas, and issues detected in real clients to have direct references.', link: 'Consult cases', icon: 'tool', color: '#0F172A' },
+  ];
+
+  return (
+    <div style={{ position: 'absolute', inset: 0, opacity: currentOpacity, transform: `scale(${scale})`, transformOrigin: 'center center' }}>
+      <BrowserFrame activeTab="deliverables">
+        <div style={{ padding: '24px 34px', fontFamily: FONT, width: '100%', height: '100%', boxSizing: 'border-box', display: 'flex', flexDirection: 'column', gap: 16, overflowY: 'auto' }}>
+          
+          {/* Header Card */}
+          <div style={{
+            background: '#FFFFFF', border: `1.5px solid ${C.neutralBorder}`, borderRadius: 12,
+            padding: '16px 24px', display: 'flex', justifyContent: 'space-between', alignItems: 'center',
+            boxSizing: 'border-box', flexShrink: 0
+          }}>
+            <div>
+              <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+                <span style={{ fontSize: 20 }}>📚</span>
+                <h3 style={{ fontFamily: FONT_D, fontSize: 20, fontWeight: 700, color: C.neutralDark, margin: 0 }}>Documentation &amp; Search Center</h3>
+                <span style={{ background: '#F2F2F2', fontSize: 11, fontWeight: 700, padding: '3px 10px', borderRadius: 20, color: C.neutralMuted }}>5 Resources Available</span>
+              </div>
+              <p style={{ fontSize: 12.5, color: C.neutralMuted, margin: '6px 0 0', fontWeight: 500 }}>Access all official Murex documentation, training, and support.</p>
+            </div>
+            <Icon name="books" size={32} color="#D4215B" style={{ opacity: 0.15 }} />
+          </div>
+
+          {/* Cards Grid */}
+          <div style={{ flex: 1, display: 'flex', flexDirection: 'column', gap: 14 }}>
+            {/* Top row cards */}
+            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 14 }}>
+              {items.slice(0, 4).map((c, i) => {
+                const cardStart = 1.0 + i * 0.4;
+                const t = clamp((localTime - cardStart) / 0.5, 0, 1);
+                const opacityVal = t;
+                const translateYVal = (1 - Easing.easeOutQuad(t)) * 10;
+                return (
+                  <ResourceCard
+                    key={c.title}
+                    title={c.title}
+                    desc={c.desc}
+                    link={c.link}
+                    icon={c.icon}
+                    color={c.color}
+                    opacity={opacityVal}
+                    translateY={translateYVal}
+                  />
+                );
+              })}
+            </div>
+
+            {/* Full width bottom card */}
+            {(() => {
+              const cardStart = 1.0 + 4 * 0.4;
+              const t = clamp((localTime - cardStart) / 0.5, 0, 1);
+              const opacityVal = t;
+              const translateYVal = (1 - Easing.easeOutQuad(t)) * 10;
+              const c = items[4];
+              return (
+                <div style={{
+                  background: '#FFFFFF', border: `1.5px solid ${C.neutralBorder}`, borderRadius: 12,
+                  padding: '20px 24px', display: 'flex', flexDirection: 'column', justifyContent: 'space-between',
+                  boxSizing: 'border-box', opacity: opacityVal, transform: `translateY(${translateYVal}px)`,
+                  height: 140, willChange: 'transform, opacity'
+                }}>
+                  <div>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 8 }}>
+                      <Icon name={c.icon} size={18} color={c.color} />
+                      <h4 style={{ fontFamily: FONT_D, fontSize: 16, fontWeight: 700, color: C.neutralDark, margin: 0 }}>{c.title}</h4>
+                    </div>
+                    <p style={{ fontSize: 12, color: C.neutralMuted, margin: 0, lineHeight: 1.4 }}>{c.desc}</p>
+                  </div>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: 4, fontSize: 12, fontWeight: 700, color: C.primary, cursor: 'pointer' }}>
+                    {c.link} <Icon name="arrow-right" size={12} color={C.primary} />
+                  </div>
+                </div>
+              );
+            })()}
+          </div>
+
+        </div>
+      </BrowserFrame>
+    </div>
+  );
+}
+
+// SCENE 6 — CALENDAR HUB `1:10–1:18`
 function CalendarScene() {
   const { localTime, duration } = useSprite();
   
@@ -1037,7 +1151,7 @@ function CalendarScene() {
   );
 }
 
-// SCENE 8 — ADMINISTRATION DASHBOARD `1:10–1:18`
+// SCENE 8 — ADMINISTRATION DASHBOARD `1:22–1:30`
 function AdminMetricCard({ label, value, sub, color, icon }) {
   const strokeColor = color || C.primary;
   const isUp = color === C.success;
@@ -1151,7 +1265,7 @@ function AdminScene() {
   );
 }
 
-// SCENE 10 — LIVE EVALUATIONS `1:22–1:30`
+// SCENE 10 — LIVE EVALUATIONS `1:34–1:42`
 function QuizScene() {
   const { localTime, duration } = useSprite();
   
@@ -1227,7 +1341,7 @@ function QuizScene() {
   );
 }
 
-// SCENE 12 — AUTONOMY BAR `1:34–1:40`
+// SCENE 12 — AUTONOMY BAR `1:46–1:52`
 function AutonomyScene() {
   const { localTime, duration } = useSprite();
   
@@ -1269,7 +1383,7 @@ function AutonomyScene() {
   );
 }
 
-// SCENE 13 — CERTIFICATION CLOSE `1:40–1:48`
+// SCENE 13 — CERTIFICATION CLOSE `1:52–2:00`
 function CertificateScene() {
   const { localTime, duration } = useSprite();
   
@@ -1336,7 +1450,7 @@ function CertificateScene() {
   );
 }
 
-// SCENE 14 — WELCOME OUTRO `1:48–1:52`
+// SCENE 14 — WELCOME OUTRO `2:00–2:04`
 function OutroScene() {
   const { localTime } = useSprite();
   const op = Math.min(localTime / 0.8, 1);
@@ -1416,8 +1530,22 @@ function MXBoardDemoScene() {
         <LifecycleScene />
       </Sprite>
 
-      {/* 0:54–0:58  →  Transition (FX Lifecycle -> Calendar) */}
+      {/* 0:54–0:58  →  Transition (FX Lifecycle -> Documentation Center) */}
       <Sprite start={54} end={58}>
+        <TextTransition
+          line1="Documentation Center."
+          line2="All Murex resources in one website."
+          highlightWord="resources"
+        />
+      </Sprite>
+
+      {/* 0:58–1:06  →  Documentation Center Mockup */}
+      <Sprite start={58} end={66}>
+        <ResourcesScene />
+      </Sprite>
+
+      {/* 1:06–1:10  →  Transition (Documentation -> Calendar) */}
+      <Sprite start={66} end={70}>
         <TextTransition
           line1="Calendar Hub."
           line2="All your meetings, in one place."
@@ -1425,13 +1553,13 @@ function MXBoardDemoScene() {
         />
       </Sprite>
 
-      {/* 0:58–1:06  →  Calendar Hub */}
-      <Sprite start={58} end={66}>
+      {/* 1:10–1:18  →  Calendar Hub */}
+      <Sprite start={70} end={78}>
         <CalendarScene />
       </Sprite>
 
-      {/* 1:06–1:10  →  Transition (Calendar -> Admin) */}
-      <Sprite start={66} end={70}>
+      {/* 1:18–1:22  →  Transition (Calendar -> Admin) */}
+      <Sprite start={78} end={82}>
         <TextTransition
           line1="Administration Panel."
           line2="Real-time tracking of every newcomer."
@@ -1439,13 +1567,13 @@ function MXBoardDemoScene() {
         />
       </Sprite>
 
-      {/* 1:10–1:18  →  Admin Dashboard */}
-      <Sprite start={70} end={78}>
+      {/* 1:22–1:30  →  Admin Dashboard */}
+      <Sprite start={82} end={90}>
         <AdminScene />
       </Sprite>
 
-      {/* 1:18–1:22  →  Transition (Admin -> Quiz) */}
-      <Sprite start={78} end={82}>
+      {/* 1:30–1:34  →  Transition (Admin -> Quiz) */}
+      <Sprite start={90} end={94}>
         <TextTransition
           line1="Live Evaluations."
           line2="Technical knowledge, put to the test."
@@ -1453,13 +1581,13 @@ function MXBoardDemoScene() {
         />
       </Sprite>
 
-      {/* 1:22–1:30  →  Live Quiz */}
-      <Sprite start={82} end={90}>
+      {/* 1:34–1:42  →  Live Quiz */}
+      <Sprite start={94} end={102}>
         <QuizScene />
       </Sprite>
 
-      {/* 1:30–1:34  →  Transition (Quiz -> Autonomy) */}
-      <Sprite start={90} end={94}>
+      {/* 1:42–1:46  →  Transition (Quiz -> Autonomy) */}
+      <Sprite start={102} end={106}>
         <TextTransition
           line1="Autonomy Perception."
           line2="Rising from day one."
@@ -1467,18 +1595,18 @@ function MXBoardDemoScene() {
         />
       </Sprite>
 
-      {/* 1:34–1:40  →  Autonomy Bar */}
-      <Sprite start={94} end={100}>
+      {/* 1:46–1:52  →  Autonomy Bar */}
+      <Sprite start={106} end={112}>
         <AutonomyScene />
       </Sprite>
 
-      {/* 1:40–1:48  →  Certificate Close */}
-      <Sprite start={100} end={108}>
+      {/* 1:52–2:00  →  Certificate Close */}
+      <Sprite start={112} end={120}>
         <CertificateScene />
       </Sprite>
 
-      {/* 1:48–1:52  →  Welcome Outro */}
-      <Sprite start={108} end={112}>
+      {/* 2:00–2:04  →  Welcome Outro */}
+      <Sprite start={120} end={124}>
         <OutroScene />
       </Sprite>
     </>
