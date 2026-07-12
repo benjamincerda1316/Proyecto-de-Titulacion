@@ -364,8 +364,6 @@ const clamp = (val, min, max) => Math.min(Math.max(val, min), max);
 function WeekBlock({ n, state, title, opacity, translateY }) {
   const isCompleted = state === 'completed';
   const isCurrent = state === 'current';
-  
-  // Every block has a white background now
   const bg = '#FFFFFF';
   
   const border = isCompleted 
@@ -682,7 +680,7 @@ function AccountsGameScene() {
   );
 }
 
-// SCENE: FX LIFECYCLE SIMULATOR `0:46–0:54`
+// SCENE: FX LIFECYCLE SIMULATOR `0:46–0:54` (Complete SVG layout from index.html)
 function LifecycleScene() {
   const { localTime, duration } = useSprite();
   
@@ -697,105 +695,229 @@ function LifecycleScene() {
     currentOpacity = 1 - t;
   }
 
-  // Horizontal marker x position on the timeline (Trade Date -> Value Date)
-  const lineStartX = 250;
-  const lineEndX = 850;
-  const markerX = interpolate([1.2, 5.5], [lineStartX, lineEndX], Easing.easeInOutQuad)(localTime);
+  // Horizontal marker position calculation on the SVG line (x coordinate goes from 90 to 860)
+  const lineStartX = 90;
+  const lineEndX = 860;
+  const markerX = interpolate([1.2, 5.8], [lineStartX, lineEndX], Easing.easeInOutQuad)(localTime);
+  // Calculate wavy y value matching the MtM wavy path d property
+  const markerY = 215 + Math.sin((markerX - 90) / 770 * Math.PI * 6) * 16;
 
-  // Active highlights
-  const isTradeDate = localTime >= 1.2 && localTime < 3.2;
-  const isValueDate = localTime >= 4.0;
+  // Active state boundaries matching events 1, 2, 3, 4
+  const isEvent1Active = localTime >= 1.2;
+  const isEvent3Active = localTime >= 2.8;
+  const isEvent2Active = localTime >= 4.8;
+  const isEvent4Active = localTime >= 5.6;
+
+  // Styles generator helper for SVG groups based on active state and box type
+  const boxGroupStyle = (isActive, type) => {
+    return {
+      opacity: isActive ? 1 : 0.22,
+      filter: isActive ? 'none' : 'grayscale(1)',
+      transition: 'opacity 0.4s ease, filter 0.4s ease',
+      cursor: 'pointer',
+    };
+  };
+
+  const boxRectStyle = (isActive, type) => {
+    if (type === 'obs') {
+      return {
+        fill: '#FFFFFF',
+        stroke: '#EF9F27', // Orange dashed border
+        strokeWidth: 1.6,
+        strokeDasharray: '5 4',
+        rx: 9,
+        ry: 9
+      };
+    }
+    if (type === 'mtm') {
+      return {
+        fill: '#FFFFFF',
+        stroke: '#D4215B', // Red dashed border
+        strokeWidth: 1.6,
+        strokeDasharray: '5 4',
+        rx: 9,
+        ry: 9
+      };
+    }
+    if (type === 'income') {
+      return {
+        fill: isActive ? '#E1F5EE' : '#FFFFFF',
+        stroke: '#1D9E75', // Solid green border
+        strokeWidth: 1.6,
+        rx: 9,
+        ry: 9
+      };
+    }
+    if (type === 'expense') {
+      return {
+        fill: isActive ? '#FDECEC' : '#FFFFFF',
+        stroke: '#E24B4A', // Solid red border
+        strokeWidth: 1.6,
+        rx: 9,
+        ry: 9
+      };
+    }
+  };
+
+  const boxTextStyle = {
+    fontFamily: FONT,
+    fontSize: '12.5px',
+    fill: '#0A0A0A',
+    fontWeight: 600,
+  };
+
+  const smallTextStyle = {
+    fontFamily: FONT,
+    fontSize: '10.5px',
+    fill: '#888888',
+    fontWeight: 500,
+  };
 
   return (
     <div style={{ position: 'absolute', inset: 0, opacity: currentOpacity, transform: `scale(${scale})`, transformOrigin: 'center center' }}>
       <BrowserFrame activeTab="dashboard">
-        <div style={{ padding: 34, fontFamily: FONT, width: '100%', height: '100%', boxSizing: 'border-box', display: 'flex', flexDirection: 'column', gap: 16, overflow: 'hidden' }}>
+        <div style={{ padding: 24, fontFamily: FONT, width: '100%', height: '100%', boxSizing: 'border-box', display: 'flex', flexDirection: 'column', gap: 16, overflow: 'hidden' }}>
           <div>
             <div style={{ display: 'flex', alignItems: 'center', gap: 8, fontFamily: FONT_D, fontSize: 18, fontWeight: 700, color: C.neutralDark }}>
               <Icon name="route" size={20} color={C.primary} /> Week 3 — FX Lifecycle Simulator
             </div>
-            <div style={{ fontSize: 12.5, color: C.neutralMuted, marginTop: 2 }}>Track how accounting entries evolve across dates.</div>
+            <div style={{ fontSize: 12.5, color: C.neutralMuted, marginTop: 2 }}>Contract Lifecycle Event simulation visualised in real-time.</div>
           </div>
 
-          <div style={{ flex: 1, display: 'flex', flexDirection: 'column', gap: 40, marginTop: 30, position: 'relative' }}>
-            {/* Horizontal Timeline Bar */}
-            <div style={{ position: 'relative', height: 40, width: '100%' }}>
-              <div style={{ position: 'absolute', left: lineStartX, right: 1500 - lineEndX, top: 20, height: 3, background: '#F2F2F2', borderRadius: 99 }} />
+          <div style={{ flex: 1, display: 'flex', justifyContent: 'center', alignItems: 'center', background: '#FFFFFF', marginTop: 10 }}>
+            {/* The full beautiful SVF Diagram from index.html */}
+            <svg viewBox="0 0 960 430" style={{ width: '88%', height: 'auto', overflow: 'visible', display: 'block' }}>
               
-              {/* Active filled line */}
-              <div style={{ position: 'absolute', left: lineStartX, width: markerX - lineStartX, top: 20, height: 3, background: '#D4215B', borderRadius: 99 }} />
+              {/* Row labels */}
+              <text x="18" y="94" style={{ fontFamily: FONT_D, fontWeight: 600, fontSize: '14.5px', fill: '#0A0A0A' }}>Buy cur.</text>
+              <text x="18" y="344" style={{ fontFamily: FONT_D, fontWeight: 600, fontSize: '14.5px', fill: '#0A0A0A' }}>Sell cur.</text>
 
-              {/* Trade Date Dot */}
-              <div style={{
-                position: 'absolute', left: lineStartX, top: 12, width: 18, height: 18, borderRadius: '50%',
-                background: localTime >= 1.2 ? '#D4215B' : '#FFFFFF', border: '2px solid #D4215B', transform: 'translateX(-9px)'
-              }}>
-                <span style={{ position: 'absolute', top: 24, left: -25, fontSize: 11.5, fontWeight: 700, color: C.neutralDark, width: 80, textAlign: 'center' }}>Trade Date</span>
-              </div>
+              {/* Date column guides */}
+              <line x1="90" y1="46" x2="90" y2="392" style={{ stroke: '#C7C4D6', strokeWidth: 1.4, strokeDasharray: '2 5' }} />
+              <line x1="860" y1="46" x2="860" y2="392" style={{ stroke: '#C7C4D6', strokeWidth: 1.4, strokeDasharray: '2 5' }} />
 
-              {/* Value Date Dot */}
-              <div style={{
-                position: 'absolute', left: lineEndX, top: 12, width: 18, height: 18, borderRadius: '50%',
-                background: localTime >= 5.5 ? '#D4215B' : '#FFFFFF', border: '2px solid #D4215B', transform: 'translateX(-9px)'
-              }}>
-                <span style={{ position: 'absolute', top: 24, left: -25, fontSize: 11.5, fontWeight: 700, color: C.neutralDark, width: 80, textAlign: 'center' }}>Value Date</span>
-              </div>
+              {/* Date pills on canvas */}
+              <g style={{ cursor: 'pointer' }}>
+                <rect x="45" y="18" width="90" height="26" rx="13" style={{ fill: isEvent1Active ? '#D4215B' : '#FFF0F3' }} />
+                <text x="90" y="35" textAnchor="middle" style={{ fontFamily: FONT_D, fontSize: '11px', fontWeight: 700, fill: isEvent1Active ? '#FFFFFF' : '#D4215B', textTransform: 'uppercase', letterSpacing: '.05em' }}>Trade date</text>
+              </g>
+              <g style={{ cursor: 'pointer' }}>
+                <rect x="815" y="18" width="90" height="26" rx="13" style={{ fill: isEvent2Active ? '#D4215B' : '#FFF0F3' }} />
+                <text x="860" y="35" textAnchor="middle" style={{ fontFamily: FONT_D, fontSize: '11px', fontWeight: 700, fill: isEvent2Active ? '#FFFFFF' : '#D4215B', textTransform: 'uppercase', letterSpacing: '.05em' }}>Value date</text>
+              </g>
 
-              {/* Slider marker */}
-              <div style={{
-                position: 'absolute', left: markerX, top: 7, width: 28, height: 28, borderRadius: '50%',
-                background: '#FFFFFF', border: '3.5px solid #D4215B', transform: 'translateX(-14px)',
-                boxShadow: '0 4px 12px rgba(212,33,91,0.25)', transition: 'left 0.05s linear'
-              }} />
-            </div>
+              {/* Dashed baselines */}
+              <line x1="90" y1="90" x2="860" y2="90" style={{ stroke: '#F2F2F2', strokeWidth: 1.6, strokeDasharray: '6 5' }} />
+              <line x1="90" y1="340" x2="860" y2="340" style={{ stroke: '#F2F2F2', strokeWidth: 1.6, strokeDasharray: '6 5' }} />
 
-            {/* Real-time Journal Entry Box popup */}
-            <div style={{ display: 'flex', gap: 30, marginTop: 20 }}>
-              {/* Card 1: OBS Commitment */}
-              <div style={{
-                width: 320, padding: 18, borderRadius: 12, border: isTradeDate ? '1.5px solid #D4215B' : '1.5px solid #F2F2F2',
-                background: '#FFFFFF', opacity: isTradeDate ? 1 : 0.4, transition: 'all 0.3s', boxSizing: 'border-box'
-              }}>
-                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 10 }}>
-                  <strong style={{ fontSize: 13, color: isTradeDate ? '#D4215B' : '#0A0A0A' }}>OBS Commitment</strong>
-                  <span style={{ fontSize: 10, fontWeight: 700, color: isTradeDate ? '#D4215B' : '#888888', background: isTradeDate ? '#FFF0F3' : '#F2F2F2', padding: '2px 6px', borderRadius: 4 }}>Trade Date</span>
-                </div>
-                <div style={{ fontSize: 11.5, color: '#0A0A0A', fontFamily: 'monospace', display: 'flex', flexDirection: 'column', gap: 6 }}>
-                  <div>Dr. OBS Forward Asset (100K)</div>
-                  <div style={{ paddingLeft: 14, color: '#888888' }}>Cr. OBS Forward Liability (100K)</div>
-                </div>
-              </div>
+              {/* MTM wavy line */}
+              <path d="M90,215 C170,197 235,233 305,216 C375,199 440,233 510,216 C580,199 650,233 720,219 C765,216 800,215 860,215" 
+                style={{ stroke: '#D4215B', strokeWidth: 2.6, fill: 'none', strokeLinecap: 'round' }} />
+              
+              {/* Dynamic progress marker circle */}
+              <circle r="6" cx={markerX} cy={markerY} style={{ fill: '#D4215B', stroke: '#FFFFFF', strokeWidth: 2 }} />
 
-              {/* Card 2: OBS Reversal */}
-              <div style={{
-                width: 320, padding: 18, borderRadius: 12, border: isValueDate ? '1.5px solid #D4215B' : '1.5px solid #F2F2F2',
-                background: '#FFFFFF', opacity: isValueDate ? 1 : 0.4, transition: 'all 0.3s', boxSizing: 'border-box'
-              }}>
-                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 10 }}>
-                  <strong style={{ fontSize: 13, color: isValueDate ? '#D4215B' : '#0A0A0A' }}>OBS Reversal</strong>
-                  <span style={{ fontSize: 10, fontWeight: 700, color: isValueDate ? '#D4215B' : '#888888', background: isValueDate ? '#FFF0F3' : '#F2F2F2', padding: '2px 6px', borderRadius: 4 }}>Value Date</span>
-                </div>
-                <div style={{ fontSize: 11.5, color: '#0A0A0A', fontFamily: 'monospace', display: 'flex', flexDirection: 'column', gap: 6 }}>
-                  <div>Dr. OBS Forward Liability (100K)</div>
-                  <div style={{ paddingLeft: 14, color: '#888888' }}>Cr. OBS Forward Asset (100K)</div>
-                </div>
-              </div>
+              {/* OBS commitment (Trade Date) - Top */}
+              <g style={boxGroupStyle(isEvent1Active, 'obs')}>
+                <line x1="140" y1="65" x2="92" y2="88" style={{ stroke: '#EF9F27', strokeWidth: 1.3, strokeDasharray: '3 3', opacity: 0.7 }} />
+                <rect x="140" y="14" width="212" height="58" style={boxRectStyle(isEvent1Active, 'obs')} />
+                <text x="154" y="34" style={boxTextStyle}>OBS commitment</text>
+                <text x="154" y="50" style={boxTextStyle}>notional receivable</text>
+                <text x="154" y="66" style={smallTextStyle}>cur. 1 · USD 1,000,000</text>
+              </g>
+              <g style={{ opacity: isEvent1Active ? 1 : 0.22 }}>
+                <circle cx="350" cy="20" r="13" style={{ fill: '#D4215B', stroke: '#FFFFFF', strokeWidth: 2 }} />
+                <text x="350" y="24" textAnchor="middle" style={{ fill: '#FFFFFF', fontFamily: FONT_D, fontSize: 12, fontWeight: 700 }}>1</text>
+              </g>
 
-              {/* Card 3: Cash Settlement */}
-              <div style={{
-                width: 320, padding: 18, borderRadius: 12, border: isValueDate ? '1.5px solid #D4215B' : '1.5px solid #F2F2F2',
-                background: '#FFFFFF', opacity: isValueDate ? 1 : 0.4, transition: 'all 0.3s', boxSizing: 'border-box'
-              }}>
-                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 10 }}>
-                  <strong style={{ fontSize: 13, color: isValueDate ? '#D4215B' : '#0A0A0A' }}>Settlement Postings</strong>
-                  <span style={{ fontSize: 10, fontWeight: 700, color: isValueDate ? '#D4215B' : '#888888', background: isValueDate ? '#FFF0F3' : '#F2F2F2', padding: '2px 6px', borderRadius: 4 }}>Value Date</span>
-                </div>
-                <div style={{ fontSize: 11.5, color: '#0A0A0A', fontFamily: 'monospace', display: 'flex', flexDirection: 'column', gap: 6 }}>
-                  <div>Dr. Cash Asset (100K)</div>
-                  <div style={{ paddingLeft: 14, color: '#888888' }}>Cr. Accounts Receivable (100K)</div>
-                </div>
-              </div>
-            </div>
+              {/* OBS commitment (Trade Date) - Bottom */}
+              <g style={boxGroupStyle(isEvent1Active, 'obs')}>
+                <line x1="140" y1="365" x2="92" y2="342" style={{ stroke: '#EF9F27', strokeWidth: 1.3, strokeDasharray: '3 3', opacity: 0.7 }} />
+                <rect x="140" y="357" width="212" height="58" style={boxRectStyle(isEvent1Active, 'obs')} />
+                <text x="154" y="377" style={boxTextStyle}>OBS commitment</text>
+                <text x="154" y="393" style={boxTextStyle}>notional payable</text>
+                <text x="154" y="409" style={smallTextStyle}>cur. 2 · EUR 920,000</text>
+              </g>
+              <g style={{ opacity: isEvent1Active ? 1 : 0.22 }}>
+                <circle cx="350" cy="363" r="13" style={{ fill: '#D4215B', stroke: '#FFFFFF', strokeWidth: 2 }} />
+                <text x="350" y="367" textAnchor="middle" style={{ fill: '#FFFFFF', fontFamily: FONT_D, fontSize: 12, fontWeight: 700 }}>1</text>
+              </g>
+
+              {/* MTM value measurement */}
+              <g style={boxGroupStyle(isEvent3Active, 'mtm')}>
+                <line x1="470" y1="250" x2="470" y2="219" style={{ stroke: '#EF9F27', strokeWidth: 1.3, strokeDasharray: '3 3', opacity: 0.7 }} />
+                <rect x="375" y="250" width="192" height="50" style={boxRectStyle(isEvent3Active, 'mtm')} />
+                <text x="389" y="270" style={boxTextStyle}>MtM Value</text>
+                <text x="389" y="286" style={smallTextStyle}>measurement</text>
+              </g>
+              <g style={{ opacity: isEvent3Active ? 1 : 0.22 }}>
+                <circle cx="567" cy="256" r="13" style={{ fill: '#D4215B', stroke: '#FFFFFF', strokeWidth: 2 }} />
+                <text x="567" y="260" textAnchor="middle" style={{ fill: '#FFFFFF', fontFamily: FONT_D, fontSize: 12, fontWeight: 700 }}>3</text>
+              </g>
+
+              {/* Reverse OBS commitment (Value Date) - Top */}
+              <g style={boxGroupStyle(isEvent2Active, 'obs')}>
+                <line x1="820" y1="65" x2="858" y2="88" style={{ stroke: '#EF9F27', strokeWidth: 1.3, strokeDasharray: '3 3', opacity: 0.7 }} />
+                <rect x="608" y="14" width="212" height="58" style={boxRectStyle(isEvent2Active, 'obs')} />
+                <text x="622" y="38" style={boxTextStyle}>Reverse OBS</text>
+                <text x="622" y="54" style={boxTextStyle}>commitment</text>
+              </g>
+              <g style={{ opacity: isEvent2Active ? 1 : 0.22 }}>
+                <circle cx="820" cy="20" r="13" style={{ fill: '#D4215B', stroke: '#FFFFFF', strokeWidth: 2 }} />
+                <text x="820" y="24" textAnchor="middle" style={{ fill: '#FFFFFF', fontFamily: FONT_D, fontSize: 12, fontWeight: 700 }}>2</text>
+              </g>
+
+              {/* Reverse OBS commitment (Value Date) - Bottom */}
+              <g style={boxGroupStyle(isEvent2Active, 'obs')}>
+                <line x1="820" y1="365" x2="858" y2="342" style={{ stroke: '#EF9F27', strokeWidth: 1.3, strokeDasharray: '3 3', opacity: 0.7 }} />
+                <rect x="608" y="357" width="212" height="58" style={boxRectStyle(isEvent2Active, 'obs')} />
+                <text x="622" y="381" style={boxTextStyle}>Reverse OBS</text>
+                <text x="622" y="397" style={boxTextStyle}>commitment</text>
+              </g>
+              <g style={{ opacity: isEvent2Active ? 1 : 0.22 }}>
+                <circle cx="820" cy="363" r="13" style={{ fill: '#D4215B', stroke: '#FFFFFF', strokeWidth: 2 }} />
+                <text x="820" y="367" textAnchor="middle" style={{ fill: '#FFFFFF', fontFamily: FONT_D, fontSize: 12, fontWeight: 700 }}>2</text>
+              </g>
+
+              {/* Realized income / expense arrows */}
+              <path d="M860,215 L860,128" style={{ stroke: '#1D9E75', strokeWidth: 2, fill: 'none', strokeLinecap: 'round', opacity: isEvent4Active ? 1 : 0.22 }} />
+              <path d="M860,215 L860,302" style={{ stroke: '#E24B4A', strokeWidth: 2, fill: 'none', strokeLinecap: 'round', opacity: isEvent4Active ? 1 : 0.22 }} />
+
+              {/* Realized income box */}
+              <g style={boxGroupStyle(isEvent4Active, 'income')}>
+                <rect x="756" y="90" width="188" height="50" style={boxRectStyle(isEvent4Active, 'income')} />
+                <text x="770" y="110" style={boxTextStyle}>Realized income</text>
+                <text x="770" y="126" style={smallTextStyle}>cur.1 · USD 1,000,000</text>
+              </g>
+              <g style={{ opacity: isEvent4Active ? 1 : 0.22 }}>
+                <circle cx="944" cy="96" r="13" style={{ fill: '#D4215B', stroke: '#FFFFFF', strokeWidth: 2 }} />
+                <text x="944" y="100" textAnchor="middle" style={{ fill: '#FFFFFF', fontFamily: FONT_D, fontSize: 12, fontWeight: 700 }}>4</text>
+              </g>
+
+              {/* Realized expense box */}
+              <g style={boxGroupStyle(isEvent4Active, 'expense')}>
+                <rect x="756" y="290" width="188" height="50" style={boxRectStyle(isEvent4Active, 'expense')} />
+                <text x="770" y="310" style={boxTextStyle}>Realized expense</text>
+                <text x="770" y="326" style={smallTextStyle}>cur.2 · EUR 920,000</text>
+              </g>
+              <g style={{ opacity: isEvent4Active ? 1 : 0.22 }}>
+                <circle cx="944" cy="296" r="13" style={{ fill: '#D4215B', stroke: '#FFFFFF', strokeWidth: 2 }} />
+                <text x="944" y="300" textAnchor="middle" style={{ fill: '#FFFFFF', fontFamily: FONT_D, fontSize: 12, fontWeight: 700 }}>4</text>
+              </g>
+            </svg>
+          </div>
+          
+          {/* Simple matching descriptive caption */}
+          <div style={{
+            fontSize: '13px', color: '#888888', padding: '10px',
+            backgroundColor: '#F9F9FB', borderRadius: '8px', textAlign: 'center',
+            borderLeft: '3px solid #D4215B', fontWeight: 500, flexShrink: 0
+          }}>
+            {localTime < 1.2 && "Press Next Event to start the contract lifecycle."}
+            {localTime >= 1.2 && localTime < 2.8 && "OBS commitment notional receivable and payable amounts are booked in Off-Balance Sheet (OBS) accounts."}
+            {localTime >= 2.8 && localTime < 4.8 && "The MtM value measurement tracks market fluctuations of the FX contract value."}
+            {localTime >= 4.8 && localTime < 5.6 && "At Value Date, OBS commitments are fully reversed."}
+            {localTime >= 5.6 && "The realized income and expense are settled and recorded on the Balance Sheet."}
           </div>
         </div>
       </BrowserFrame>
