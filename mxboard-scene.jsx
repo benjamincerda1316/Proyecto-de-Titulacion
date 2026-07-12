@@ -360,8 +360,31 @@ function LoginScene() {
   );
 }
 
-// ROADMAP GRID HELPER
-const clampVal = (val, min, max) => Math.min(Math.max(val, min), max);
+function ScoreRing({ pct = 91 }) {
+  const r = 46, c = 2 * Math.PI * r;
+  return (
+    <div style={{ position: 'relative', width: 108, height: 108, flexShrink: 0 }}>
+      <svg width="108" height="108" style={{ transform: 'rotate(-90deg)' }}>
+        <defs>
+          <linearGradient id="ringGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stopColor="#FFFFFF" />
+            <stop offset="100%" stopColor="rgba(255,255,255,0.4)" />
+          </linearGradient>
+        </defs>
+        <circle cx="54" cy="54" r={r} fill="none" stroke="rgba(255,255,255,0.15)" strokeWidth="8" />
+        <circle cx="54" cy="54" r={r} fill="none" stroke="url(#ringGrad)" strokeWidth="8" strokeLinecap="round"
+          strokeDasharray={c} strokeDashoffset={c * (1 - pct / 100)} />
+      </svg>
+      <div style={{
+        position: 'absolute', inset: 0, display: 'flex', flexDirection: 'column',
+        alignItems: 'center', justifyContent: 'center',
+      }}>
+        <div style={{ fontFamily: FONT_D, fontSize: 26, fontWeight: 800, color: 'white', letterSpacing: -0.5 }}>{pct}%</div>
+        <div style={{ fontFamily: FONT, fontSize: 9, color: 'rgba(255,255,255,0.7)', textTransform: 'uppercase', letterSpacing: 0.8, fontWeight: 700 }}>Avg. Score</div>
+      </div>
+    </div>
+  );
+}
 
 // SCENE 4 — DASHBOARD REVEAL `0:20–0:30`
 function DashboardScene() {
@@ -448,6 +471,7 @@ function DashboardScene() {
                 const t = clampVal((localTime - blockStart) / 0.5, 0, 1);
                 const easeT = Easing.easeOutQuad(t);
                 const opacity = t;
+
                 const translateY = (1 - easeT) * 8;
                 
                 return (
@@ -1533,9 +1557,31 @@ function CalendarScene() {
 }
 
 // SCENE 8 — ADMINISTRATION DASHBOARD `1:46–1:54`
-function AdminMetricCard({ label, value, sub, color, icon }) {
+function AdminMetricCard({ label, value, sub, color, icon, localTime }) {
   const strokeColor = color || C.primary;
   const isUp = color === C.success;
+  
+  // Animate card count metrics
+  const progress = clampVal((localTime - 0.8) / 2.0, 0, 1);
+  const t = Easing.easeOutQuad(progress);
+  
+  let displayVal = "0";
+  if (label === "Active Consultants") {
+    displayVal = Math.floor(t * 6).toString();
+  } else if (label === "Average Week") {
+    displayVal = (t * 9.6).toFixed(1);
+  } else if (label === "Passing Rate") {
+    displayVal = Math.floor(t * 91) + "%";
+  } else if (label === "Pending Reviews") {
+    displayVal = Math.floor(t * 1).toString();
+  } else {
+    displayVal = value;
+  }
+
+  // Draw chart stroke offset dynamically
+  const pathLength = 80;
+  const strokeDashoffset = pathLength * (1 - t);
+
   return (
     <div style={{ background: 'white', border: `1.5px solid ${C.neutralBorder}`, borderRadius: 12, padding: 18, boxSizing: 'border-box', display: 'flex', justifyContent: 'space-between' }}>
       <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
@@ -1543,7 +1589,7 @@ function AdminMetricCard({ label, value, sub, color, icon }) {
           <Icon name={icon} size={15} color={C.neutralMuted} /> {label}
         </div>
         <div>
-          <div style={{ fontFamily: FONT_D, fontSize: 28, fontWeight: 800, color: C.neutralDark, margin: '8px 0 2px', letterSpacing: -0.5 }}>{value}</div>
+          <div style={{ fontFamily: FONT_D, fontSize: 28, fontWeight: 800, color: C.neutralDark, margin: '8px 0 2px', letterSpacing: -0.5 }}>{displayVal}</div>
           <div style={{ fontSize: 11.5, color: color || C.neutralMuted, fontWeight: 600 }}>{sub}</div>
         </div>
       </div>
@@ -1556,6 +1602,9 @@ function AdminMetricCard({ label, value, sub, color, icon }) {
             strokeWidth="2.5"
             strokeLinecap="round"
             strokeLinejoin="round"
+            strokeDasharray={pathLength}
+            strokeDashoffset={strokeDashoffset}
+            style={{ transition: 'stroke-dashoffset 0.05s linear' }}
           />
         </svg>
       </div>
@@ -1577,10 +1626,13 @@ function AdminScene() {
     currentOpacity = 1 - t;
   }
 
+  const progress = clampVal((localTime - 1.2) / 2.0, 0, 1);
+  const t = Easing.easeOutQuad(progress);
+
   const rows = [
-    { name: 'Francisca Le Dantec', role: 'Week 12', progress: 91, score: 95, risk: false, status: 'On track' },
-    { name: 'Javier Pérez', role: 'Week 12', progress: 91, score: 91, risk: false, status: 'On track' },
-    { name: 'Matías Gutiérrez', role: 'Week 5', progress: 40, score: 71, risk: true, status: 'At risk' },
+    { name: 'Francisca Le Dantec', role: 'Week 12', progress: Math.floor(t * 91), score: Math.floor(t * 95), risk: false, status: 'On track' },
+    { name: 'Javier Pérez', role: 'Week 12', progress: Math.floor(t * 91), score: Math.floor(t * 91), risk: false, status: 'On track' },
+    { name: 'Matías Gutiérrez', role: 'Week 5', progress: Math.floor(t * 40), score: Math.floor(t * 71), risk: true, status: 'At risk' },
   ];
 
   return (
@@ -1603,10 +1655,10 @@ function AdminScene() {
           </div>
           
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 12 }}>
-            <AdminMetricCard label="Active Consultants" value="6" sub="+2 this month" color={C.success} icon="users" />
-            <AdminMetricCard label="Average Week" value="9.6" sub="out of 12 weeks" icon="calendar-stats" />
-            <AdminMetricCard label="Passing Rate" value="91%" sub="↑ vs target of 70%" color={C.success} icon="discount-check" />
-            <AdminMetricCard label="Pending Reviews" value="1" sub="Require evaluation" color={C.warning} icon="clipboard-list" />
+            <AdminMetricCard label="Active Consultants" value="6" sub="+2 this month" color={C.success} icon="users" localTime={localTime} />
+            <AdminMetricCard label="Average Week" value="9.6" sub="out of 12 weeks" icon="calendar-stats" localTime={localTime} />
+            <AdminMetricCard label="Passing Rate" value="91%" sub="↑ vs target of 70%" color={C.success} icon="discount-check" localTime={localTime} />
+            <AdminMetricCard label="Pending Reviews" value="1" sub="Require evaluation" color={C.warning} icon="clipboard-list" localTime={localTime} />
           </div>
           
           <div style={{ background: 'white', border: `1.5px solid ${C.neutralBorder}`, borderRadius: 10, overflow: 'hidden' }}>
@@ -1777,7 +1829,7 @@ function AutonomyScene() {
     }}>
       <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 14 }}>
         <div style={{ fontFamily: FONT_D, fontSize: 32, fontWeight: 800, color: C.neutralDark, letterSpacing: -0.5 }}>
-          Alcanza la Autonomía
+          Achieve Autonomy
         </div>
         <div style={{
           width: 500, height: 16, background: '#F2F2F2', borderRadius: 99,
@@ -1789,15 +1841,15 @@ function AutonomyScene() {
           }} />
         </div>
         <div style={{ fontFamily: FONT_D, fontSize: 32, fontWeight: 800, color: '#D4215B', letterSpacing: -1, marginTop: 4 }}>
-          {pct}% Promedio General
+          {pct}% Overall Average
         </div>
       </div>
 
       {/* 3 Donut Graphs */}
       <div style={{ display: 'flex', gap: 60, justifyContent: 'center', marginTop: 10 }}>
-        <ProgressDonut pct={77} label="Habilidades Comunicacionales" color="#0284C7" localTime={localTime} />
+        <ProgressDonut pct={77} label="Communication Skills" color="#0284C7" localTime={localTime} />
         <ProgressDonut pct={100} label="Hands On" color="#D4215B" localTime={localTime} />
-        <ProgressDonut pct={89} label="Independencia" color="#1D9E75" localTime={localTime} />
+        <ProgressDonut pct={89} label="Independence" color="#1D9E75" localTime={localTime} />
       </div>
     </div>
   );
