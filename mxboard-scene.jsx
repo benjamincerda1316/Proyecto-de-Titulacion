@@ -1,6 +1,3 @@
-// MXBoard demo video scene — built on animations.jsx (Stage/Sprite/TextSprite/etc)
-// All copy below is lifted directly from the real MXBoard source (index.html / app.js)
-const React = window.React;
 const { Sprite, useSprite, Easing, interpolate } = window;
 
 // ---------- Design tokens (from MXBoard's own style.css) ----------
