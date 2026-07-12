@@ -7,12 +7,12 @@ const C = {
   primary: '#D4215B',
   primaryLight: '#FFF0F3',
   primaryText: '#D4215B',
-  success: '#D4215B', // Completed uses Murex Red as per Apple minimal spec
-  successLight: '#FFF0F3',
-  warning: '#888888',
-  warningLight: '#F2F2F2',
-  danger: '#D4215B',
-  dangerLight: '#FFF0F3',
+  success: '#1D9E75', // Success green for stats
+  successLight: '#E1F5EE',
+  warning: '#EF9F27',
+  warningLight: '#FFF4E5',
+  danger: '#E24B4A',
+  dangerLight: '#FDECEC',
   neutralDark: '#0A0A0A', // Pure rich black for text
   neutralMuted: '#888888', // Apple grey secondary text
   neutralLight: '#F2F2F2', // Minimal light grey
@@ -115,7 +115,7 @@ function BrowserFrame({ children, scale = 1, opacity = 1, ty = 0, activeTab, noN
         <div style={{
           margin: '0 auto', fontFamily: FONT, fontSize: 12.5, color: C.neutralMuted,
           background: '#FFFFFF', padding: '4px 24px', borderRadius: 20, letterSpacing: 0.2,
-          border: `1.5px solid ${C.neutralBorder}`, display: 'inline-flex', alignItems: 'center', gap: 6
+          border: `1px solid ${C.neutralBorder}`, display: 'inline-flex', alignItems: 'center', gap: 6
         }}>
           <Icon name="lock" size={11} color={C.primary} /> mxboard.vercel.app
         </div>
@@ -132,6 +132,76 @@ function BrowserFrame({ children, scale = 1, opacity = 1, ty = 0, activeTab, noN
   );
 }
 
+// ---------- Reusable Apple-style Transition Text Scene ----------
+function TextTransition({ line1, line2, highlightWord }) {
+  const { localTime, duration } = useSprite();
+  
+  const entryDur = 0.6;
+  const exitDur = 0.5;
+  const exitStart = duration - exitDur;
+  
+  let opacity1 = 0;
+  let dy1 = 12;
+  if (localTime >= 0.2 && localTime < 0.2 + entryDur) {
+    const t = (localTime - 0.2) / entryDur;
+    opacity1 = t;
+    dy1 = (1 - Easing.easeOutQuad(t)) * 12;
+  } else if (localTime >= 0.2 + entryDur) {
+    opacity1 = 1;
+    dy1 = 0;
+  }
+  
+  let opacity2 = 0;
+  let dy2 = 12;
+  if (localTime >= 0.7 && localTime < 0.7 + entryDur) {
+    const t = (localTime - 0.7) / entryDur;
+    opacity2 = t;
+    dy2 = (1 - Easing.easeOutQuad(t)) * 12;
+  } else if (localTime >= 0.7 + entryDur) {
+    opacity2 = 1;
+    dy2 = 0;
+  }
+  
+  if (localTime > exitStart) {
+    const t = (localTime - exitStart) / exitDur;
+    opacity1 = 1 - t;
+    opacity2 = 1 - t;
+  }
+
+  const renderLine2 = () => {
+    if (!highlightWord) return line2;
+    const parts = line2.split(highlightWord);
+    return (
+      <>
+        {parts[0]}
+        <span style={{ color: '#D4215B', fontWeight: 600 }}>{highlightWord}</span>
+        {parts[1]}
+      </>
+    );
+  };
+
+  return (
+    <div style={{
+      position: 'absolute', inset: 0, display: 'flex', flexDirection: 'column',
+      alignItems: 'center', justifyContent: 'center', background: '#FFFFFF', gap: 12
+    }}>
+      <div style={{
+        fontFamily: FONT_D, fontSize: 52, fontWeight: 300, color: C.neutralDark,
+        opacity: opacity1, transform: `translateY(${dy1}px)`, willChange: 'transform, opacity',
+        letterSpacing: '-0.5px'
+      }}>
+        {line1}
+      </div>
+      <div style={{
+        fontFamily: FONT_D, fontSize: 52, fontWeight: 300, color: C.neutralDark,
+        opacity: opacity2, transform: `translateY(${dy2}px)`, willChange: 'transform, opacity',
+        letterSpacing: '-0.5px'
+      }}>
+        {renderLine2()}
+      </div>
+    </div>
+  );
+}
 
 // ================= INDIVIDUAL SCENE COMPONENTS =================
 
@@ -155,7 +225,7 @@ function ColdOpen() {
         fontFamily: FONT, fontSize: 44, fontWeight: 300, color: C.neutralDark,
         opacity, transition: 'opacity 0.1s', letterSpacing: '-0.01em'
       }}>
-        10 months.
+        12 weeks.
       </div>
     </div>
   );
@@ -184,15 +254,13 @@ function TitleArrival() {
   );
 }
 
-// SCENE 3 — LOGIN `0:10–20`
+// SCENE 3 — LOGIN `0:10–0:20`
 function LoginScene() {
   const { localTime } = useSprite();
   
-  // Zoom in dolly scale: 1 -> 3.2 using cubic-bezier-like easeOutQuart (0s to 3s)
   const zoomT = Math.min(localTime / 3.0, 1);
   const scale = interpolate([0, 1], [1, 3.2], Easing.easeOutQuart)(zoomT);
   
-  // Character typing mock (3.5s to 5.0s)
   const username = "Newcomer";
   let typedUser = "";
   if (localTime >= 3.5) {
@@ -200,14 +268,12 @@ function LoginScene() {
     typedUser = username.slice(0, sliceLen);
   }
 
-  // Password typing mock (5.5s to 7.0s)
   let typedPass = "";
   if (localTime >= 5.5) {
     const dotsCount = Math.floor(Math.min((localTime - 5.5) / 1.2, 1) * 8);
     typedPass = "● ".repeat(dotsCount).trim();
   }
 
-  // Murex Red Bouncing Arrow (7.0s to 9.0s)
   const showArrow = localTime >= 7.0 && localTime < 9.0;
   let arrowDy = 0;
   if (showArrow) {
@@ -224,7 +290,7 @@ function LoginScene() {
         background: '#FFFFFF', borderRadius: 18, position: 'relative', overflow: 'hidden',
         transform: `scale(${scale})`, transformOrigin: 'center center'
       }}>
-        {/* Browser Top Header */}
+        {/* Browser Header */}
         <div style={{
           height: FRAME.topbar, display: 'flex', alignItems: 'center',
           padding: '0 18px', background: '#FFFFFF', borderBottom: `1.5px solid ${C.neutralBorder}`
@@ -236,12 +302,11 @@ function LoginScene() {
           </div>
         </div>
         
-        {/* Browser Content (Zoom Target) */}
+        {/* Login Target */}
         <div style={{
           position: 'absolute', inset: `${FRAME.topbar}px 0 0 0`, display: 'flex',
           alignItems: 'center', justifyContent: 'center', background: '#FFFFFF'
         }}>
-          {/* Login Window Card */}
           <div style={{
             width: 320, padding: '24px 28px', border: `1.5px solid ${C.neutralBorder}`,
             borderRadius: 12, background: 'white', display: 'flex', flexDirection: 'column',
@@ -275,7 +340,6 @@ function LoginScene() {
               Sign In
             </div>
 
-            {/* Murex Red Bouncing Arrow */}
             {showArrow && (
               <div style={{
                 position: 'absolute', left: 148, bottom: -20 - arrowDy,
@@ -294,71 +358,22 @@ function LoginScene() {
   );
 }
 
-// SCENE 4 — DASHBOARD REVEAL `0:20–0:32`
-function WeekBlock({ n, state, title, opacity, translateY }) {
-  const isCompleted = state === 'completed';
-  const isCurrent = state === 'current';
-  
-  const bg = isCompleted ? '#D4215B' : '#FFFFFF';
-  const border = isCompleted ? 'none' : isCurrent ? '2px solid #D4215B' : '1.5px solid #F2F2F2';
-  const color = isCompleted ? '#FFFFFF' : '#0A0A0A';
-  const subColor = isCompleted ? 'rgba(255,255,255,0.7)' : '#888888';
-  
-  return (
-    <div style={{
-      background: bg, border, borderRadius: 10, padding: '12px 14px',
-      minHeight: 82, display: 'flex', flexDirection: 'column', justifyContent: 'space-between',
-      position: 'relative', opacity, transform: `translateY(${translateY}px)`, boxSizing: 'border-box',
-      boxShadow: isCompleted ? '0 4px 12px rgba(212,33,91,0.06)' : 'none',
-      willChange: 'transform, opacity'
-    }}>
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-        <span style={{ fontFamily: FONT_D, fontWeight: 800, fontSize: 15, color }}>Week {n}</span>
-        {isCompleted && <Icon name="circle-check" size={14} color="#FFFFFF" />}
-        {isCurrent && <Icon name="player-play" size={14} color="#D4215B" />}
-      </div>
-      <div style={{ fontSize: 11.5, fontWeight: 700, color, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
-        {title}
-      </div>
-      <div style={{ fontSize: 10, color: subColor, fontWeight: 600 }}>
-        {isCompleted ? 'Completed ✓' : isCurrent ? 'Active now' : 'Locked'}
-      </div>
-    </div>
-  );
-}
-
-function ScoreRing({ pct = 91 }) {
-  const r = 46, c = 2 * Math.PI * r;
-  return (
-    <div style={{ position: 'relative', width: 108, height: 108, flexShrink: 0 }}>
-      <svg width="108" height="108" style={{ transform: 'rotate(-90deg)' }}>
-        <defs>
-          <linearGradient id="ringGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-            <stop offset="0%" stopColor="#FFFFFF" />
-            <stop offset="100%" stopColor="rgba(255,255,255,0.4)" />
-          </linearGradient>
-        </defs>
-        <circle cx="54" cy="54" r={r} fill="none" stroke="rgba(255,255,255,0.15)" strokeWidth="8" />
-        <circle cx="54" cy="54" r={r} fill="none" stroke="url(#ringGrad)" strokeWidth="8" strokeLinecap="round"
-          strokeDasharray={c} strokeDashoffset={c * (1 - pct / 100)} />
-      </svg>
-      <div style={{
-        position: 'absolute', inset: 0, display: 'flex', flexDirection: 'column',
-        alignItems: 'center', justifyContent: 'center',
-      }}>
-        <div style={{ fontFamily: FONT_D, fontSize: 26, fontWeight: 800, color: 'white', letterSpacing: -0.5 }}>{pct}%</div>
-        <div style={{ fontFamily: FONT, fontSize: 9, color: 'rgba(255,255,255,0.7)', textTransform: 'uppercase', letterSpacing: 0.8, fontWeight: 700 }}>Avg. Score</div>
-      </div>
-    </div>
-  );
-}
-
+// SCENE 4 — DASHBOARD REVEAL `0:20–0:30`
 function DashboardScene() {
-  const { localTime } = useSprite();
+  const { localTime, duration } = useSprite();
   
-  // 1. Zoom Out (0s to 1.8s): scale 3.2 -> 1.0
+  // Zoom Out (0s to 1.8s): scale 3.2 -> 1.0
   const zoomOutT = Math.min(localTime / 1.8, 1);
-  const zoomScale = interpolate([0, 1], [3.2, 1.0], Easing.easeOutQuad)(zoomOutT);
+  let zoomScale = interpolate([0, 1], [3.2, 1.0], Easing.easeOutQuad)(zoomOutT);
+  
+  // Dissolving/fade out at the end of the scene (duration-0.4 .. duration)
+  let dashOpacity = 1;
+  const exitStart = duration - 0.4;
+  if (localTime > exitStart) {
+    const t = (localTime - exitStart) / 0.4;
+    dashOpacity = 1 - t;
+    zoomScale = interpolate([0, 1], [1.0, 1.04], Easing.easeOutQuad)(t);
+  }
 
   const weeks = [
     { n: 1, state: 'completed', title: 'Induction & General Flow' },
@@ -376,237 +391,438 @@ function DashboardScene() {
   ];
 
   return (
-    <BrowserFrame scale={zoomScale} activeTab="dashboard">
-      <div style={{ padding: 24, fontFamily: FONT, width: '100%', height: '100%', boxSizing: 'border-box', display: 'flex', flexDirection: 'column', gap: 16, overflow: 'hidden' }}>
-        {/* Top Banner */}
-        <div style={{
-          background: `linear-gradient(135deg, ${C.primary} 0%, #B01A47 100%)`, borderRadius: 12,
-          padding: '16px 28px', display: 'flex', justifyContent: 'space-between', alignItems: 'center',
-          boxSizing: 'border-box', boxShadow: '0 8px 24px rgba(212,33,91,0.12)', flexShrink: 0
-        }}>
-          <div>
-            <span style={{
-              background: 'rgba(255,255,255,0.18)', color: 'white', fontSize: 10.5, fontWeight: 700,
-              padding: '4px 12px', borderRadius: 20, textTransform: 'uppercase', letterSpacing: 1,
-              backdropFilter: 'blur(4px)'
-            }}>Phase: Induction</span>
-            <div style={{ color: 'white', fontSize: 28, fontWeight: 700, fontFamily: FONT_D, margin: '8px 0 4px', letterSpacing: -0.5 }}>Hello, Javier Pérez</div>
-            <div style={{ color: 'rgba(255,255,255,0.85)', fontSize: 13, marginBottom: 12, maxWidth: 600, fontWeight: 500 }}>Your technical onboarding journey at Murex Chile. Complete weekly tasks and tests to advance.</div>
-            <div style={{ background: 'rgba(0,0,0,0.12)', borderRadius: 10, padding: '8px 14px', width: 380, boxSizing: 'border-box' }}>
-              <div style={{ display: 'flex', justifyContent: 'space-between', color: 'white', fontSize: 11.5, fontWeight: 700, marginBottom: 4 }}>
-                <span>Onboarding Progress</span><span>11 of 12 weeks completed (91%)</span>
-              </div>
-              <div style={{ height: 5, background: 'rgba(255,255,255,0.25)', borderRadius: 20 }}>
-                <div style={{ width: '91%', height: '100%', background: 'white', borderRadius: 20 }} />
+    <div style={{ position: 'absolute', inset: 0, opacity: dashOpacity, transform: `scale(${zoomScale})`, transformOrigin: 'center center' }}>
+      <BrowserFrame activeTab="dashboard">
+        <div style={{ padding: 24, fontFamily: FONT, width: '100%', height: '100%', boxSizing: 'border-box', display: 'flex', flexDirection: 'column', gap: 16, overflow: 'hidden' }}>
+          {/* Top Banner */}
+          <div style={{
+            background: `linear-gradient(135deg, ${C.primary} 0%, #B01A47 100%)`, borderRadius: 12,
+            padding: '16px 28px', display: 'flex', justifyContent: 'space-between', alignItems: 'center',
+            boxSizing: 'border-box', boxShadow: '0 8px 24px rgba(212,33,91,0.12)', flexShrink: 0
+          }}>
+            <div>
+              <span style={{
+                background: 'rgba(255,255,255,0.18)', color: 'white', fontSize: 10.5, fontWeight: 700,
+                padding: '4px 12px', borderRadius: 20, textTransform: 'uppercase', letterSpacing: 1,
+                backdropFilter: 'blur(4px)'
+              }}>Phase: Induction</span>
+              <div style={{ color: 'white', fontSize: 28, fontWeight: 700, fontFamily: FONT_D, margin: '8px 0 4px', letterSpacing: -0.5 }}>Hello, Javier Pérez</div>
+              <div style={{ color: 'rgba(255,255,255,0.85)', fontSize: 13, marginBottom: 12, maxWidth: 600, fontWeight: 500 }}>Your technical onboarding journey at Murex Chile. Complete weekly tasks and tests to advance.</div>
+              <div style={{ background: 'rgba(0,0,0,0.12)', borderRadius: 10, padding: '8px 14px', width: 380, boxSizing: 'border-box' }}>
+                <div style={{ display: 'flex', justifyContent: 'space-between', color: 'white', fontSize: 11.5, fontWeight: 700, marginBottom: 4 }}>
+                  <span>Onboarding Progress</span><span>11 of 12 weeks completed (91%)</span>
+                </div>
+                <div style={{ height: 5, background: 'rgba(255,255,255,0.25)', borderRadius: 20 }}>
+                  <div style={{ width: '91%', height: '100%', background: 'white', borderRadius: 20 }} />
+                </div>
               </div>
             </div>
+            <ScoreRing pct={91} />
           </div>
-          <ScoreRing pct={91} />
-        </div>
-        
-        {/* Weeks Grid */}
-        <div style={{ flex: 1, display: 'flex', flexDirection: 'column', minHeight: 0 }}>
-          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 10, flexShrink: 0 }}>
-            <div style={{ display: 'flex', alignItems: 'center', gap: 8, fontFamily: FONT_D, fontSize: 17, fontWeight: 700, color: C.neutralDark }}>
-              <Icon name="calendar-event" size={18} color={C.primary} /> Learning Roadmap (12 Weeks)
+          
+          {/* Weeks Grid */}
+          <div style={{ flex: 1, display: 'flex', flexDirection: 'column', minHeight: 0 }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 10, flexShrink: 0 }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: 8, fontFamily: FONT_D, fontSize: 17, fontWeight: 700, color: C.neutralDark }}>
+                <Icon name="calendar-event" size={18} color={C.primary} /> Learning Roadmap (12 Weeks)
+              </div>
+              
+              {/* Pulsing Active Badge */}
+              <div style={{
+                background: 'white', border: '1.5px solid #D4215B', color: '#D4215B', fontSize: 11, fontWeight: 700,
+                padding: '4px 12px', borderRadius: 20, display: 'flex', alignItems: 'center', gap: 6,
+                boxShadow: `0 0 0 ${4 + Math.sin(localTime * 4.5) * 3.5}px rgba(212,33,91,0.12)`,
+                willChange: 'box-shadow'
+              }}>
+                <span style={{ width: 6, height: 6, borderRadius: '50%', background: '#D4215B' }} />
+                WEEK 12 ACTIVE
+              </div>
             </div>
             
-            {/* Pulsing Active Badge */}
-            <div style={{
-              background: 'white', border: '1.5px solid #D4215B', color: '#D4215B', fontSize: 11, fontWeight: 700,
-              padding: '4px 12px', borderRadius: 20, display: 'flex', alignItems: 'center', gap: 6,
-              boxShadow: `0 0 0 ${4 + Math.sin(localTime * 4.5) * 3.5}px rgba(212,33,91,0.12)`,
-              willChange: 'box-shadow'
-            }}>
-              <span style={{ width: 6, height: 6, borderRadius: '50%', background: '#D4215B' }} />
-              WEEK 12 ACTIVE
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 10, flex: 1, overflowY: 'auto', paddingBottom: 10 }}>
+              {weeks.map((w, i) => {
+                const blockStart = 1.8 + i * 0.08;
+                const t = clamp((localTime - blockStart) / 0.5, 0, 1);
+                const easeT = Easing.easeOutQuad(t);
+                const opacity = t;
+                const translateY = (1 - easeT) * 8;
+                
+                return (
+                  <WeekBlock
+                    key={w.n}
+                    n={w.n}
+                    state={w.state}
+                    title={w.title}
+                    opacity={opacity}
+                    translateY={translateY}
+                  />
+                );
+              })}
+            </div>
+          </div>
+        </div>
+      </BrowserFrame>
+    </div>
+  );
+}
+
+// SCENE 6 — CALENDAR HUB `0:34–0:42`
+function CalendarScene() {
+  const { localTime, duration } = useSprite();
+  
+  // Custom spring zoom entry
+  const entryT = clamp(localTime / 0.8, 0, 1);
+  const scale = interpolate([0, 1], [0.95, 1.0], Easing.easeOutBack)(entryT);
+  const opacity = entryT;
+  
+  // Fade out at end
+  let currentOpacity = opacity;
+  const exitStart = duration - 0.5;
+  if (localTime > exitStart) {
+    const t = (localTime - exitStart) / 0.5;
+    currentOpacity = 1 - t;
+  }
+
+  const days = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri'];
+  
+  // Restored authentic colored events and tutoring labels
+  const events = {
+    2: { label: 'Weekly Tutoring', sub: 'Benjamín · 10:00', color: '#0284C7', icon: 'user' }, // Blue
+    4: { label: 'Manager Review', sub: 'Luana Ortega · 15:00', color: '#EA580C', icon: 'shield-check' }, // Orange
+  };
+
+  return (
+    <div style={{ position: 'absolute', inset: 0, opacity: currentOpacity, transform: `scale(${scale})`, transformOrigin: 'center center' }}>
+      <BrowserFrame activeTab="calendar">
+        <div style={{ padding: 24, fontFamily: FONT, width: '100%', height: '100%', boxSizing: 'border-box', display: 'flex', gap: 20, overflow: 'hidden' }}>
+          {/* Calendar Area */}
+          <div style={{ flex: 1, display: 'flex', flexDirection: 'column' }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 14 }}>
+              <div>
+                <div style={{ display: 'flex', alignItems: 'center', gap: 8, fontFamily: FONT_D, fontSize: 18, fontWeight: 700, color: C.neutralDark }}>
+                  <Icon name="calendar" size={18} color={C.primary} /> My Calendar Hub
+                </div>
+                <div style={{ fontSize: 12.5, color: C.neutralMuted, marginTop: 2, fontWeight: 500 }}>Schedule of tutoring sessions, reviews, and syncs.</div>
+              </div>
+              <div style={{ display: 'flex', alignItems: 'center', gap: 10, background: 'white', padding: '5px 12px', borderRadius: 8, border: `1px solid ${C.neutralBorder}` }}>
+                <Icon name="chevron-left" size={14} color={C.neutralMuted} />
+                <span style={{ fontWeight: 700, fontSize: 12.5, color: C.neutralDark, fontFamily: FONT_D }}>July 2026</span>
+                <Icon name="chevron-right" size={14} color={C.neutralMuted} />
+              </div>
+            </div>
+            
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(5, 1fr)', gap: 10, flex: 1 }}>
+              {days.map((d, i) => (
+                <div key={d} style={{ display: 'flex', flexDirection: 'column' }}>
+                  <div style={{ textAlign: 'center', fontSize: 11.5, fontWeight: 700, color: C.neutralMuted, marginBottom: 6, textTransform: 'uppercase', letterSpacing: 0.5 }}>{d}</div>
+                  <div style={{
+                    background: 'white', border: `1.5px solid ${C.neutralBorder}`, borderRadius: 10, flex: 1,
+                    padding: 10, display: 'flex', flexDirection: 'column', gap: 8, boxSizing: 'border-box',
+                    boxShadow: 'none',
+                  }}>
+                    <div style={{ fontSize: 12.5, color: C.neutralDark, fontWeight: 700 }}>{i + 14}</div>
+                    {events[i + 1] && (
+                      <div style={{
+                        background: `${events[i + 1].color}08`, border: `1.5px solid ${events[i + 1].color}30`, color: events[i + 1].color,
+                        fontSize: 11.5, fontWeight: 600, padding: '8px 10px', borderRadius: 6,
+                        borderLeft: `3px solid ${events[i + 1].color}`,
+                      }}>
+                        <div style={{ display: 'flex', alignItems: 'center', gap: 4, marginBottom: 2 }}>
+                          <Icon name={events[i + 1].icon} size={11} color={events[i + 1].color} />
+                          <strong>{events[i + 1].label}</strong>
+                        </div>
+                        <div style={{ fontWeight: 500, color: C.neutralMuted, fontSize: 10.5 }}>{events[i + 1].sub}</div>
+                      </div>
+                    )}
+                  </div>
+                </div>
+              ))}
             </div>
           </div>
           
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 10, flex: 1, overflowY: 'auto', paddingBottom: 10 }}>
-            {weeks.map((w, i) => {
-              const blockStart = 1.8 + i * 0.08;
-              const t = clamp((localTime - blockStart) / 0.5, 0, 1);
-              const easeT = Easing.easeOutQuad(t);
-              const opacity = t;
-              const translateY = (1 - easeT) * 8;
-              
-              return (
-                <WeekBlock
-                  key={w.n}
-                  n={w.n}
-                  state={w.state}
-                  title={w.title}
-                  opacity={opacity}
-                  translateY={translateY}
-                />
-              );
-            })}
+          {/* Calendar Sidebar */}
+          <div style={{ width: 280, display: 'flex', flexDirection: 'column', gap: 14 }}>
+            {/* Next session card */}
+            <div style={{ background: '#0A0A0A', borderRadius: 12, padding: 16, color: 'white', boxShadow: 'none' }}>
+              <div style={{ fontSize: 10, fontWeight: 700, color: C.primary, textTransform: 'uppercase', letterSpacing: 1, marginBottom: 6 }}>Next Up</div>
+              <h4 style={{ fontFamily: FONT_D, fontSize: 15, fontWeight: 700, color: 'white', margin: '0 0 4px' }}>Tutoring Session</h4>
+              <div style={{ fontSize: 11.5, color: 'rgba(255,255,255,0.7)', display: 'flex', alignItems: 'center', gap: 6, marginBottom: 12 }}>
+                <Icon name="clock" size={12} color="rgba(255,255,255,0.7)" /> Tomorrow, 10:00 AM
+              </div>
+              <div style={{ display: 'flex', alignItems: 'center', gap: 8, background: 'rgba(255,255,255,0.08)', padding: 8, borderRadius: 6 }}>
+                <div style={{ width: 26, height: 26, borderRadius: '50%', background: C.primary, color: 'white', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 700, fontSize: 10.5 }}>BC</div>
+                <div>
+                  <div style={{ fontSize: 11.5, fontWeight: 700 }}>Benjamín Cerda</div>
+                  <div style={{ fontSize: 10, color: 'rgba(255,255,255,0.5)' }}>Mentor &amp; Tutor</div>
+                </div>
+              </div>
+            </div>
+            
+            {/* Legend categories */}
+            <div style={{ background: 'white', border: `1.5px solid ${C.neutralBorder}`, borderRadius: 12, padding: 16, flex: 1, boxSizing: 'border-box' }}>
+              <div style={{ fontFamily: FONT_D, fontSize: 13, fontWeight: 700, color: C.neutralDark, marginBottom: 10 }}>Categories</div>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: 6, fontSize: 11.5, color: C.neutralMuted, fontWeight: 500 }}>
+                  <span style={{ width: 8, height: 8, borderRadius: 2, background: 'rgba(2,132,199,0.08)', border: '1.5px solid #0284C7' }} />
+                  Mandatory Tutoring
+                </div>
+                <div style={{ display: 'flex', alignItems: 'center', gap: 6, fontSize: 11.5, color: C.neutralMuted, fontWeight: 500 }}>
+                  <span style={{ width: 8, height: 8, borderRadius: 2, background: 'rgba(234,88,12,0.08)', border: '1.5px solid #EA580C' }} />
+                  Manager Session
+                </div>
+                <div style={{ display: 'flex', alignItems: 'center', gap: 6, fontSize: 11.5, color: C.neutralMuted, fontWeight: 500 }}>
+                  <span style={{ width: 8, height: 8, borderRadius: 2, background: 'rgba(147,51,234,0.08)', border: '1.5px solid #9333ea' }} />
+                  Team Masterclass
+                </div>
+              </div>
+            </div>
           </div>
         </div>
-      </div>
-    </BrowserFrame>
+      </BrowserFrame>
+    </div>
   );
 }
 
-// SCENE 5 — "WELCOME" MOMENT `0:32–0:42`
-function WelcomeScene() {
+// SCENE 8 — ADMINISTRATION DASHBOARD `0:46–0:54`
+function AdminMetricCard({ label, value, sub, color, icon }) {
+  const strokeColor = color || C.primary;
+  const isUp = color === C.success;
+  return (
+    <div style={{ background: 'white', border: `1.5px solid ${C.neutralBorder}`, borderRadius: 12, padding: 18, boxSizing: 'border-box', display: 'flex', justifyContent: 'space-between' }}>
+      <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 6, fontSize: 12.5, fontWeight: 600, color: C.neutralMuted }}>
+          <Icon name={icon} size={15} color={C.neutralMuted} /> {label}
+        </div>
+        <div>
+          <div style={{ fontFamily: FONT_D, fontSize: 28, fontWeight: 800, color: C.neutralDark, margin: '8px 0 2px', letterSpacing: -0.5 }}>{value}</div>
+          <div style={{ fontSize: 11.5, color: color || C.neutralMuted, fontWeight: 600 }}>{sub}</div>
+        </div>
+      </div>
+      <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'flex-end', height: '100%', minHeight: 40 }}>
+        <svg width="60" height="25" style={{ overflow: 'visible' }}>
+          <path
+            d={isUp ? "M0,20 L15,14 L30,16 L45,8 L60,4" : "M0,6 L15,14 L30,10 L45,18 L60,22"}
+            fill="none"
+            stroke={strokeColor}
+            strokeWidth="2.5"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          />
+        </svg>
+      </div>
+    </div>
+  );
+}
+
+function AdminScene() {
   const { localTime, duration } = useSprite();
   
-  // Dashboard fade out on entry (0s to 400ms)
-  let dashOpacity = 1;
-  let dashScale = 1;
-  if (localTime < 0.4) {
-    const t = localTime / 0.4;
-    dashOpacity = 1 - t;
-    dashScale = interpolate([0, 1], [1, 1.04], Easing.easeOutQuad)(t);
-  } else {
-    dashOpacity = 0;
-  }
+  const entryT = clamp(localTime / 0.8, 0, 1);
+  const scale = interpolate([0, 1], [0.95, 1.0], Easing.easeOutBack)(entryT);
+  const opacity = entryT;
   
-  // Welcome text entries
-  let opacity1 = 0;
-  let dy1 = 12;
-  if (localTime >= 0.8 && localTime < 1.3) {
-    const t = (localTime - 0.8) / 0.5;
-    opacity1 = t;
-    dy1 = (1 - Easing.easeOutQuad(t)) * 12;
-  } else if (localTime >= 1.3) {
-    opacity1 = 1;
-    dy1 = 0;
-  }
-  
-  let opacity2 = 0;
-  let dy2 = 12;
-  if (localTime >= 1.3 && localTime < 1.8) {
-    const t = (localTime - 1.3) / 0.5;
-    opacity2 = t;
-    dy2 = (1 - Easing.easeOutQuad(t)) * 12;
-  } else if (localTime >= 1.8) {
-    opacity2 = 1;
-    dy2 = 0;
-  }
-  
-  // Lento fade out de ambos al final (duration-0.6 .. duration)
-  const exitStart = duration - 0.6;
+  let currentOpacity = opacity;
+  const exitStart = duration - 0.5;
   if (localTime > exitStart) {
-    const t = (localTime - exitStart) / 0.6;
-    opacity1 = 1 - t;
-    opacity2 = 1 - t;
+    const t = (localTime - exitStart) / 0.5;
+    currentOpacity = 1 - t;
   }
 
-  return (
-    <div style={{ position: 'absolute', inset: 0, background: '#FFFFFF', overflow: 'hidden' }}>
-      {/* Dissolving dashboard in background */}
-      {dashOpacity > 0 && (
-        <div style={{ position: 'absolute', inset: 0, opacity: dashOpacity, transform: `scale(${dashScale})`, transformOrigin: 'center center' }}>
-          <DashboardScene />
-        </div>
-      )}
-      
-      {/* Centered minimal Apple titles */}
-      {localTime >= 0.8 && (
-        <div style={{
-          position: 'absolute', inset: 0, display: 'flex', flexDirection: 'column',
-          alignItems: 'center', justifyContent: 'center', gap: 12
-        }}>
-          <div style={{
-            fontFamily: FONT_D, fontSize: 56, fontWeight: 300, color: C.neutralDark,
-            opacity: opacity1, transform: `translateY(${dy1}px)`, willChange: 'transform, opacity',
-            letterSpacing: '-0.5px'
-          }}>
-            Welcome to
-          </div>
-          <div style={{
-            fontFamily: FONT_D, fontSize: 56, fontWeight: 300, color: C.neutralDark,
-            opacity: opacity2, transform: `translateY(${dy2}px)`, willChange: 'transform, opacity',
-            letterSpacing: '-0.5px'
-          }}>
-            the <span style={{ color: '#D4215B', fontWeight: 600 }}>redesign</span> of the process.
-          </div>
-        </div>
-      )}
-    </div>
-  );
-}
-
-// SCENE 6 — INTERACTIVE ACTIVITIES `0:42–0:52`
-function ActivityCard({ title, value, status, progressWidth, opacity, rotY, scale }) {
-  const isCompleted = status === 'Completed';
-  return (
-    <div style={{
-      width: 300, height: 190, border: '1.5px solid #D4215B', borderRadius: 16, background: '#FFFFFF',
-      padding: '24px 20px', display: 'flex', flexDirection: 'column', justifyContent: 'space-between',
-      position: 'relative', opacity,
-      transform: `perspective(800px) rotateY(${rotY}deg) scale(${scale})`,
-      boxSizing: 'border-box', willChange: 'transform, opacity'
-    }}>
-      <div>
-        <h4 style={{ fontFamily: FONT_D, fontSize: 18, fontWeight: 700, color: C.neutralDark, margin: '0 0 4px' }}>{title}</h4>
-        <div style={{ width: 40, height: 2, background: '#D4215B', margin: '8px 0 12px' }} />
-      </div>
-      
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 12 }}>
-        <span style={{ fontSize: 13, fontWeight: 600, color: isCompleted ? '#D4215B' : '#888888' }}>
-          {isCompleted ? '✓ Completed' : '● In Progress'}
-        </span>
-        <span style={{ fontSize: 14, fontWeight: 700, color: C.neutralDark }}>{value}</span>
-      </div>
-      
-      {/* Base progress bar */}
-      <div style={{ height: 3, background: '#F2F2F2', borderRadius: 99, overflow: 'hidden', width: '100%' }}>
-        <div style={{ height: '100%', width: `${progressWidth}%`, background: '#D4215B', borderRadius: 99 }} />
-      </div>
-    </div>
-  );
-}
-
-function ActivitiesScene() {
-  const { localTime } = useSprite();
-  
-  const cards = [
-    { title: 'Sandbox MX.3', value: 'Completed', status: 'Completed', target: 100 },
-    { title: 'Week 12 Session', value: 'In Progress', status: 'In Progress', target: 70 },
-    { title: 'Autonomy Check', value: '14 / 15', status: 'In Progress', target: 93 }
+  const rows = [
+    { name: 'Francisca Le Dantec', role: 'Week 12', progress: 91, score: 95, risk: false, status: 'On track' },
+    { name: 'Javier Pérez', role: 'Week 12', progress: 91, score: 91, risk: false, status: 'On track' },
+    { name: 'Matías Gutiérrez', role: 'Week 5', progress: 40, score: 71, risk: true, status: 'At risk' },
   ];
 
-  // Progress bar filling: width 0 -> target from 0.5s to 2.5s
-  const barT = clamp((localTime - 0.5) / 2.0, 0, 1);
-  const easeBarT = Easing.easeOutQuad(barT);
-
   return (
-    <div style={{
-      position: 'absolute', inset: 0, display: 'flex', alignItems: 'center', justifyContent: 'center',
-      background: '#FFFFFF', gap: 30
-    }}>
-      {cards.map((c, i) => {
-        const start = i * 0.15;
-        const t = clamp((localTime - start) / 0.5, 0, 1);
-        const easeT = Easing.easeOutQuad(t);
-        const rotY = 90 - easeT * 90;
-        const opacity = t;
-        const scale = 0.9 + easeT * 0.1;
-        const progressWidth = easeBarT * c.target;
-        
-        return (
-          <ActivityCard
-            key={c.title}
-            title={c.title}
-            value={c.value}
-            status={c.status}
-            progressWidth={progressWidth}
-            opacity={opacity}
-            rotY={rotY}
-            scale={scale}
-          />
-        );
-      })}
+    <div style={{ position: 'absolute', inset: 0, opacity: currentOpacity, transform: `scale(${scale})`, transformOrigin: 'center center' }}>
+      <BrowserFrame activeTab="admin">
+        <div style={{ padding: 24, fontFamily: FONT, width: '100%', height: '100%', boxSizing: 'border-box', display: 'flex', flexDirection: 'column', gap: 16, overflow: 'hidden' }}>
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+            <div>
+              <span style={{
+                background: C.neutralDark, color: 'white', fontSize: 10.5, fontWeight: 700, padding: '4px 12px',
+                borderRadius: 20, textTransform: 'uppercase', display: 'inline-flex', alignItems: 'center', gap: 5, marginBottom: 4,
+                fontFamily: FONT_D, letterSpacing: 0.5
+              }}><Icon name="shield-check" size={12} color="white" /> Administration Panel</span>
+              <div style={{ fontFamily: FONT_D, fontSize: 22, fontWeight: 700, color: C.neutralDark, letterSpacing: -0.5 }}>Overview of Team Progress</div>
+            </div>
+            <div style={{
+              display: 'flex', alignItems: 'center', gap: 8, background: C.primary, color: 'white', fontSize: 12.5,
+              fontWeight: 700, padding: '9px 16px', borderRadius: 8, cursor: 'pointer'
+            }}><Icon name="user-plus" size={15} color="white" /> Register Consultant</div>
+          </div>
+          
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 12 }}>
+            <AdminMetricCard label="Active Consultants" value="6" sub="+2 this month" color={C.success} icon="users" />
+            <AdminMetricCard label="Average Week" value="9.6" sub="out of 12 weeks" icon="calendar-stats" />
+            <AdminMetricCard label="Passing Rate" value="91%" sub="↑ vs target of 70%" color={C.success} icon="discount-check" />
+            <AdminMetricCard label="Pending Reviews" value="1" sub="Require evaluation" color={C.warning} icon="clipboard-list" />
+          </div>
+          
+          <div style={{ background: 'white', border: `1.5px solid ${C.neutralBorder}`, borderRadius: 10, overflow: 'hidden' }}>
+            <div style={{ display: 'grid', gridTemplateColumns: '2fr 1fr 1.2fr 1fr', padding: '12px 18px', background: '#F9F9FB', fontSize: 11, fontWeight: 700, color: C.neutralMuted, textTransform: 'uppercase', letterSpacing: 0.5, boxSizing: 'border-box' }}>
+              <span>Consultant</span><span>Current Week</span><span>Progress</span><span>Avg. Score</span>
+            </div>
+            {rows.map(r => (
+              <div key={r.name} style={{ display: 'grid', gridTemplateColumns: '2fr 1fr 1.2fr 1fr', padding: '12px 18px', borderTop: `1.5px solid ${C.neutralBorder}`, alignItems: 'center', boxSizing: 'border-box' }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+                  <div style={{
+                    width: 32, height: 32, borderRadius: '50%', background: r.risk ? C.dangerLight : C.successLight,
+                    color: r.risk ? C.danger : C.success, display: 'flex', alignItems: 'center', justifyContent: 'center',
+                    fontFamily: FONT_D, fontWeight: 800, fontSize: 12.5, flexShrink: 0,
+                  }}>{r.name.split(' ').map(w => w[0]).slice(0, 2).join('')}</div>
+                  <div>
+                    <div style={{ fontWeight: 700, fontSize: 13, color: C.neutralDark }}>{r.name}</div>
+                    <div style={{ fontSize: 10.5, color: r.risk ? C.danger : C.neutralMuted, fontWeight: 600 }}>{r.status}</div>
+                  </div>
+                </div>
+                <span style={{ fontSize: 12.5, fontWeight: 700, color: C.neutralDark }}>{r.role}</span>
+                <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+                  <div style={{ flex: 1, height: 5, background: C.neutralLight, borderRadius: 20 }}>
+                    <div style={{ width: `${r.progress}%`, height: '100%', borderRadius: 20, background: r.risk ? C.warning : C.success }} />
+                  </div>
+                  <span style={{ fontSize: 11.5, fontWeight: 700, color: C.neutralDark }}>{r.progress}%</span>
+                </div>
+                <span style={{
+                  fontWeight: 800, fontSize: 11.5, background: r.risk ? C.dangerLight : C.successLight,
+                  color: r.risk ? C.danger : C.success, padding: '3px 8px', borderRadius: 4, width: 'fit-content'
+                }}>{r.score}%</span>
+              </div>
+            ))}
+          </div>
+        </div>
+      </BrowserFrame>
     </div>
   );
 }
 
-// SCENE 7 — CERTIFICATION CLOSE `0:52–1:00`
-function CertificationScene() {
+// SCENE 10 — LIVE EVALUATIONS `0:58–1:06`
+function QuizScene() {
+  const { localTime, duration } = useSprite();
+  
+  const entryT = clamp(localTime / 0.8, 0, 1);
+  const scale = interpolate([0, 1], [0.95, 1.0], Easing.easeOutBack)(entryT);
+  const opacity = entryT;
+  
+  let currentOpacity = opacity;
+  const exitStart = duration - 0.5;
+  if (localTime > exitStart) {
+    const t = (localTime - exitStart) / 0.5;
+    currentOpacity = 1 - t;
+  }
+
+  const options = [
+    { k: 'A', text: 'Analyze and execute customer transactions on the trading platform.' },
+    { k: 'B', text: 'Define accounting rules and balance journal ledger positions.' },
+    { k: 'C', text: 'Set up end-of-day automation workflows and parameters.' },
+    { k: 'D', text: 'Monitor system security escalation channels and accounts.' }
+  ];
+
+  // Answer selected logic: highlight Option B after 2.5 seconds
+  const isSelected = localTime >= 2.5;
+
+  return (
+    <div style={{ position: 'absolute', inset: 0, opacity: currentOpacity, transform: `scale(${scale})`, transformOrigin: 'center center' }}>
+      <BrowserFrame activeTab="evaluation">
+        <div style={{ padding: 30, fontFamily: FONT, width: '100%', height: '100%', boxSizing: 'border-box', display: 'flex', justifyContent: 'center', alignItems: 'center', overflow: 'hidden' }}>
+          <div style={{ width: 720, background: 'white', border: `1.5px solid ${C.neutralBorder}`, borderRadius: 16, padding: '24px 30px', boxSizing: 'border-box' }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', fontSize: 11, fontWeight: 700, color: C.primary, letterSpacing: 0.8, marginBottom: 16, fontFamily: FONT_D }}>
+              <span>MX.3 PLATFORM CERTIFICATION</span>
+              <span style={{ display: 'flex', alignItems: 'center', gap: 5, background: C.primaryLight, color: C.primary, padding: '4px 12px', borderRadius: 8, fontWeight: 700 }}>
+                <Icon name="clock" size={13} color={C.primary} /> 14:38
+              </span>
+            </div>
+            <div style={{ height: 4, background: C.neutralLight, borderRadius: 20, marginBottom: 18 }}>
+              <div style={{ width: '42%', height: '100%', background: C.primary, borderRadius: 20 }} />
+            </div>
+            <div style={{ fontSize: 12.5, color: C.neutralMuted, fontWeight: 700, marginBottom: 6 }}>Question 5 of 12</div>
+            <div style={{ fontSize: 17, fontWeight: 700, color: C.neutralDark, marginBottom: 20, lineHeight: 1.4 }}>
+              What is the primary operational responsibility of the Front Office group?
+            </div>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
+              {options.map((o, i) => {
+                const isItemB = o.k === 'B';
+                const active = isSelected && isItemB;
+                return (
+                  <div key={o.k} style={{
+                    display: 'flex', alignItems: 'center', gap: 12, padding: '12px 16px', borderRadius: 10,
+                    fontSize: 13.5, border: `1.5px solid ${active ? C.primary : C.neutralBorder}`,
+                    background: active ? C.primaryLight : 'white', color: active ? C.primaryText : C.neutralDark,
+                    fontWeight: active ? 700 : 500, boxSizing: 'border-box', cursor: 'pointer',
+                    transition: 'all 0.2s'
+                  }}>
+                    <span style={{
+                      width: 20, height: 20, borderRadius: '50%',
+                      border: `2px solid ${active ? C.primary : C.neutralMuted}`,
+                      display: 'inline-flex', alignItems: 'center', justifyContent: 'center',
+                      fontSize: 11, fontWeight: 800, flexShrink: 0,
+                      background: active ? C.primary : 'transparent',
+                      color: active ? 'white' : C.neutralMuted
+                    }}>
+                      {o.k}
+                    </span>
+                    {o.text}
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+        </div>
+      </BrowserFrame>
+    </div>
+  );
+}
+
+// SCENE 12 — AUTONOMY BAR `1:10–1:16`
+function AutonomyScene() {
+  const { localTime, duration } = useSprite();
+  
+  // Progress bar fills from 0 to 85% over 2.5 seconds (from 1.0s to 3.5s)
+  const fillT = clamp((localTime - 1.0) / 2.5, 0, 1);
+  const pct = Math.floor(Easing.easeOutQuad(fillT) * 85);
+  
+  // Entry fade in (0s to 0.6s)
+  let opacity = clamp(localTime / 0.6, 0, 1);
+  
+  // Exit fade out (duration-0.5 .. duration)
+  const exitStart = duration - 0.5;
+  if (localTime > exitStart) {
+    const t = (localTime - exitStart) / 0.5;
+    opacity = 1 - t;
+  }
+
+  return (
+    <div style={{
+      position: 'absolute', inset: 0, display: 'flex', flexDirection: 'column',
+      alignItems: 'center', justifyContent: 'center', background: '#FFFFFF', gap: 24,
+      opacity, willChange: 'opacity'
+    }}>
+      <div style={{ fontFamily: FONT_D, fontSize: 26, fontWeight: 700, color: C.neutralDark, letterSpacing: -0.5 }}>
+        Autonomy Perception
+      </div>
+      
+      {/* Elegante barra de progreso al centro de la pantalla */}
+      <div style={{
+        width: 500, height: 26, background: '#F2F2F2', borderRadius: 99,
+        overflow: 'hidden', border: '1.5px solid #F2F2F2', position: 'relative'
+      }}>
+        <div style={{
+          height: '100%', width: `${pct}%`, background: '#D4215B',
+          borderRadius: 99, transition: 'width 0.05s linear'
+        }} />
+      </div>
+      
+      {/* Texto de porcentaje interactivo */}
+      <div style={{ fontFamily: FONT_D, fontSize: 52, fontWeight: 800, color: '#D4215B', letterSpacing: -1 }}>
+        {pct}%
+      </div>
+    </div>
+  );
+}
+
+// SCENE 13 — CERTIFICATION CLOSE `1:16–1:24`
+function CertificateScene() {
   const { localTime, duration } = useSprite();
   
   // Spring Card entry (0s to 0.7s)
@@ -618,18 +834,12 @@ function CertificationScene() {
   const drawT = clamp((localTime - 0.7) / 0.8, 0, 1);
   const strokeOffset = 1800 * (1 - Easing.easeOutQuad(drawT));
   
-  // Dissolving/fade out of card at the end (6.8s to 7.2s)
+  // Dissolving/fade out of card at the end (duration-0.5s to duration)
   let currentCardOpacity = cardOpacity;
-  if (localTime >= 6.8 && localTime < 7.2) {
-    currentCardOpacity = interpolate([6.8, 7.2], [1, 0], Easing.linear)(localTime);
-  } else if (localTime >= 7.2) {
-    currentCardOpacity = 0;
-  }
-  
-  // Final logo MXBoard (7.2s to 7.6s fade in, stays to 8.0s)
-  let logoOpacity = 0;
-  if (localTime >= 7.2) {
-    logoOpacity = clamp((localTime - 7.2) / 0.4, 0, 1);
+  const exitStart = duration - 0.5;
+  if (localTime > exitStart) {
+    const t = (localTime - exitStart) / 0.5;
+    currentCardOpacity = 1 - t;
   }
 
   return (
@@ -680,21 +890,30 @@ function CertificationScene() {
           </div>
         </div>
       )}
+    </div>
+  );
+}
+
+// SCENE 14 — WELCOME OUTRO `1:24–1:28`
+function OutroScene() {
+  const { localTime } = useSprite();
+  const op = Math.min(localTime / 0.8, 1);
+  const scale = interpolate([0, 4], [0.98, 1.02], Easing.easeOutQuad)(localTime);
+  return (
+    <div style={{
+      position: 'absolute', inset: 0, display: 'flex', flexDirection: 'column',
+      alignItems: 'center', justifyContent: 'center', opacity: op, transform: `scale(${scale})`,
+      background: '#FFFFFF',
+    }}>
+      <div style={{
+        position: 'absolute', width: 350, height: 350, borderRadius: '50%',
+        background: 'radial-gradient(circle, rgba(212,33,91,0.06) 0%, rgba(212,33,91,0) 70%)',
+        filter: 'blur(50px)',
+      }} />
       
-      {/* Final Outro Logo */}
-      {logoOpacity > 0 && (
-        <div style={{
-          position: 'absolute', inset: 0, display: 'flex', alignItems: 'center', justifyContent: 'center',
-          background: '#FFFFFF', opacity: logoOpacity
-        }}>
-          <div style={{
-            fontFamily: FONT_D, fontSize: 94, fontWeight: 600, color: C.primary,
-            letterSpacing: '-0.02em'
-          }}>
-            MXBoard
-          </div>
-        </div>
-      )}
+      <div style={{ fontFamily: FONT_D, fontWeight: 800, fontSize: 56, color: C.neutralDark, letterSpacing: -1, zIndex: 1 }}>
+        Welcome to MX<span style={{ color: C.primary }}>Board</span>.
+      </div>
     </div>
   );
 }
@@ -722,24 +941,75 @@ function MXBoardDemoScene() {
         <LoginScene />
       </Sprite>
 
-      {/* 0:20–0:32  →  Dashboard · 12 weeks reveal */}
-      <Sprite start={20} end={32}>
+      {/* 0:20–0:30  →  Dashboard · 12 weeks reveal */}
+      <Sprite start={20} end={30}>
         <DashboardScene />
       </Sprite>
 
-      {/* 0:32–0:42  →  "Welcome to the redesign" */}
-      <Sprite start={32} end={42}>
-        <WelcomeScene />
+      {/* 0:30–0:34  →  Transition (Dashboard -> Calendar) */}
+      <Sprite start={30} end={34}>
+        <TextTransition
+          line1="Calendar Hub."
+          line2="All your meetings, in one place."
+          highlightWord="meetings"
+        />
       </Sprite>
 
-      {/* 0:42–0:52  →  Interactive activities */}
-      <Sprite start={42} end={52}>
-        <ActivitiesScene />
+      {/* 0:34–0:42  →  Calendar Hub */}
+      <Sprite start={34} end={42}>
+        <CalendarScene />
       </Sprite>
 
-      {/* 0:52–1:00  →  Certification close */}
-      <Sprite start={52} end={60}>
-        <CertificationScene />
+      {/* 0:42–0:46  →  Transition (Calendar -> Admin) */}
+      <Sprite start={42} end={46}>
+        <TextTransition
+          line1="Administration Panel."
+          line2="Real-time tracking of every newcomer."
+          highlightWord="tracking"
+        />
+      </Sprite>
+
+      {/* 0:46–0:54  →  Admin Dashboard */}
+      <Sprite start={46} end={54}>
+        <AdminScene />
+      </Sprite>
+
+      {/* 0:54–0:58  →  Transition (Admin -> Quiz) */}
+      <Sprite start={54} end={58}>
+        <TextTransition
+          line1="Live Evaluations."
+          line2="Technical knowledge, put to the test."
+          highlightWord="test"
+        />
+      </Sprite>
+
+      {/* 0:58–0:66  →  Live Quiz */}
+      <Sprite start={58} end={66}>
+        <QuizScene />
+      </Sprite>
+
+      {/* 0:66–0:70  →  Transition (Quiz -> Autonomy) */}
+      <Sprite start={66} end={70}>
+        <TextTransition
+          line1="Autonomy Perception."
+          line2="Rising from day one."
+          highlightWord="Rising"
+        />
+      </Sprite>
+
+      {/* 0:70–0:76  →  Autonomy Bar */}
+      <Sprite start={70} end={76}>
+        <AutonomyScene />
+      </Sprite>
+
+      {/* 0:76–0:84  →  Certificate Close */}
+      <Sprite start={76} end={84}>
+        <CertificateScene />
+      </Sprite>
+
+      {/* 0:84–0:88  →  Welcome Outro */}
+      <Sprite start={84} end={88}>
+        <OutroScene />
       </Sprite>
     </>
   );
