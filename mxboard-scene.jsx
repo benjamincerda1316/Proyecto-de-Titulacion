@@ -1039,6 +1039,246 @@ function ResourcesScene() {
   );
 }
 
+// SCENE: HOURS CONSUMED BY EXPERT `0:70–0:78`
+function HoursDashboardScene() {
+  const { localTime, duration } = useSprite();
+  
+  const entryT = clamp(localTime / 0.8, 0, 1);
+  const scale = interpolate([0, 1], [0.95, 1.0], Easing.easeOutBack)(entryT);
+  const opacity = entryT;
+
+  let currentOpacity = opacity;
+  const exitStart = duration - 0.5;
+  if (localTime > exitStart) {
+    const t = (localTime - exitStart) / 0.5;
+    currentOpacity = 1 - t;
+  }
+
+  // Dynamic progress value for the bar fill and number count (starts at 1.0s, lasts 2.5s)
+  const progress = clamp((localTime - 1.0) / 2.5, 0, 1);
+  const t = Easing.easeOutQuad(progress);
+
+  const totalHours = (t * 35.2).toFixed(1);
+  const completedSessions = Math.floor(t * 30);
+
+  return (
+    <div style={{ position: 'absolute', inset: 0, opacity: currentOpacity, transform: `scale(${scale})`, transformOrigin: 'center center' }}>
+      <BrowserFrame activeTab="dashboard">
+        <div style={{ padding: 24, fontFamily: FONT, width: '100%', height: '100%', boxSizing: 'border-box', display: 'flex', flexDirection: 'column', gap: 16, overflowY: 'auto' }}>
+          
+          {/* Header */}
+          <div>
+            <div style={{ display: 'flex', alignItems: 'center', gap: 8, fontFamily: FONT_D, fontSize: 20, fontWeight: 700, color: C.neutralDark }}>
+              <Icon name="clock-play" size={20} color={C.primary} /> Hours Consumed by Expert
+            </div>
+            <p style={{ fontSize: 12.5, color: C.neutralMuted, margin: '4px 0 0', fontWeight: 500 }}>
+              Monitor the actual hours consumed by the junior consultant in their mentoring, masterclasses, and support, classified by expert.
+            </p>
+          </div>
+
+          {/* Top summaries cards */}
+          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 16 }}>
+            <div style={{ background: '#FFFFFF', border: `1.5px solid ${C.neutralBorder}`, borderRadius: 12, padding: 18, textAlign: 'center', boxSizing: 'border-box' }}>
+              <div style={{ fontSize: 11, fontWeight: 700, color: C.neutralMuted, textTransform: 'uppercase', letterSpacing: 0.8, marginBottom: 6 }}>Total Actual Hours</div>
+              <div style={{ fontFamily: FONT_D, fontSize: 32, fontWeight: 800, color: C.primary }}>{totalHours} hrs</div>
+            </div>
+            <div style={{ background: '#FFFFFF', border: `1.5px solid ${C.neutralBorder}`, borderRadius: 12, padding: 18, textAlign: 'center', boxSizing: 'border-box' }}>
+              <div style={{ fontSize: 11, fontWeight: 700, color: C.neutralMuted, textTransform: 'uppercase', letterSpacing: 0.8, marginBottom: 6 }}>Completed Sessions</div>
+              <div style={{ fontFamily: FONT_D, fontSize: 32, fontWeight: 800, color: C.success }}>{completedSessions}</div>
+            </div>
+          </div>
+
+          {/* Grid of details */}
+          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1.3fr', gap: 16 }}>
+            
+            {/* Card 1: Hours by Session Type */}
+            <div style={{ background: '#FFFFFF', border: `1.5px solid ${C.neutralBorder}`, borderRadius: 12, padding: 18, boxSizing: 'border-box', display: 'flex', flexDirection: 'column', gap: 12 }}>
+              <h4 style={{ fontFamily: FONT_D, fontSize: 13, fontWeight: 700, color: C.neutralDark, margin: 0, textTransform: 'uppercase', letterSpacing: 0.5 }}>Hours by Session Type</h4>
+              
+              <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
+                {/* Tutoring */}
+                <div>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: 12, fontWeight: 600, color: C.neutralDark, marginBottom: 4 }}>
+                    <span>Tutoring</span>
+                    <span>{(t * 27.2).toFixed(1)} hrs</span>
+                  </div>
+                  <div style={{ height: 6, background: C.neutralLight, borderRadius: 20, overflow: 'hidden' }}>
+                    <div style={{ width: `${t * 77}%`, height: '100%', background: C.success, borderRadius: 20 }} />
+                  </div>
+                </div>
+
+                {/* Masterclass */}
+                <div>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: 12, fontWeight: 600, color: C.neutralDark, marginBottom: 4 }}>
+                    <span>Masterclass</span>
+                    <span>0.0 hrs</span>
+                  </div>
+                  <div style={{ height: 6, background: C.neutralLight, borderRadius: 20, overflow: 'hidden' }}>
+                    <div style={{ width: '0%', height: '100%', background: C.primary, borderRadius: 20 }} />
+                  </div>
+                </div>
+
+                {/* Support */}
+                <div>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: 12, fontWeight: 600, color: C.neutralDark, marginBottom: 4 }}>
+                    <span>Support</span>
+                    <span>{(t * 7.5).toFixed(1)} hrs</span>
+                  </div>
+                  <div style={{ height: 6, background: C.neutralLight, borderRadius: 20, overflow: 'hidden' }}>
+                    <div style={{ width: `${t * 21}%`, height: '100%', background: C.warning, borderRadius: 20 }} />
+                  </div>
+                </div>
+
+                {/* Coaching */}
+                <div>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: 12, fontWeight: 600, color: C.neutralDark, marginBottom: 4 }}>
+                    <span>Coaching</span>
+                    <span>{(t * 0.5).toFixed(1)} hrs</span>
+                  </div>
+                  <div style={{ height: 6, background: C.neutralLight, borderRadius: 20, overflow: 'hidden' }}>
+                    <div style={{ width: `${t * 2}%`, height: '100%', background: '#9333EA', borderRadius: 20 }} />
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Card 2: Hours by Expert / Consultant */}
+            <div style={{ background: '#FFFFFF', border: `1.5px solid ${C.neutralBorder}`, borderRadius: 12, padding: 18, boxSizing: 'border-box', display: 'flex', flexDirection: 'column', gap: 12 }}>
+              <h4 style={{ fontFamily: FONT_D, fontSize: 13, fontWeight: 700, color: C.neutralDark, margin: 0, textTransform: 'uppercase', letterSpacing: 0.5 }}>Hours by Expert / Consultant</h4>
+              
+              <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
+                {/* Benjamin Cerda */}
+                <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+                  <div style={{ width: 28, height: 28, borderRadius: '50%', background: C.primaryLight, color: C.primary, display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 700, fontSize: 11, fontFamily: FONT_D }}>BC</div>
+                  <div style={{ flex: 1 }}>
+                    <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: 11.5, fontWeight: 600, color: C.neutralDark, marginBottom: 2 }}>
+                      <span>Benjamín Cerda <span style={{ color: C.success, fontSize: 9.5, fontWeight: 700, marginLeft: 6 }}>TUTOR</span></span>
+                      <span>{(t * 31.7).toFixed(1)} hrs</span>
+                    </div>
+                    <div style={{ height: 5, background: C.neutralLight, borderRadius: 20, overflow: 'hidden' }}>
+                      <div style={{ width: `${t * 90}%`, height: '100%', background: C.primary, borderRadius: 20 }} />
+                    </div>
+                  </div>
+                </div>
+
+                {/* Carolina Sepulveda */}
+                <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+                  <div style={{ width: 28, height: 28, borderRadius: '50%', background: C.primaryLight, color: C.primary, display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 700, fontSize: 11, fontFamily: FONT_D }}>CS</div>
+                  <div style={{ flex: 1 }}>
+                    <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: 11.5, fontWeight: 600, color: C.neutralDark, marginBottom: 2 }}>
+                      <span>Carolina Sepúlveda <span style={{ color: C.success, fontSize: 9.5, fontWeight: 700, marginLeft: 6 }}>TUTOR</span></span>
+                      <span>{(t * 3.0).toFixed(1)} hrs</span>
+                    </div>
+                    <div style={{ height: 5, background: C.neutralLight, borderRadius: 20, overflow: 'hidden' }}>
+                      <div style={{ width: `${t * 9}%`, height: '100%', background: C.primary, borderRadius: 20 }} />
+                    </div>
+                  </div>
+                </div>
+
+                {/* Luana Ortega */}
+                <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+                  <div style={{ width: 28, height: 28, borderRadius: '50%', background: C.primaryLight, color: C.primary, display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 700, fontSize: 11, fontFamily: FONT_D }}>LO</div>
+                  <div style={{ flex: 1 }}>
+                    <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: 11.5, fontWeight: 600, color: C.neutralDark, marginBottom: 2 }}>
+                      <span>Luana Ortega <span style={{ color: C.warning, fontSize: 9.5, fontWeight: 700, marginLeft: 6 }}>MANAGER</span></span>
+                      <span>{(t * 0.5).toFixed(1)} hrs</span>
+                    </div>
+                    <div style={{ height: 5, background: C.neutralLight, borderRadius: 20, overflow: 'hidden' }}>
+                      <div style={{ width: `${t * 1.5}%`, height: '100%', background: C.primary, borderRadius: 20 }} />
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+          </div>
+
+          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1.3fr', gap: 16 }}>
+            {/* Card 3: Hours by Expert (Consumption) */}
+            <div style={{ background: '#FFFFFF', border: `1.5px solid ${C.neutralBorder}`, borderRadius: 12, padding: 18, boxSizing: 'border-box', display: 'flex', flexDirection: 'column', gap: 12 }}>
+              <h4 style={{ fontFamily: FONT_D, fontSize: 13, fontWeight: 700, color: C.neutralDark, margin: 0, textTransform: 'uppercase', letterSpacing: 0.5 }}>Hours by Expert (Consumption)</h4>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
+                <div>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: 11.5, fontWeight: 600, color: C.neutralDark, marginBottom: 3 }}>
+                    <span>Benjamín Cerda</span>
+                    <span>{(t * 31.7).toFixed(1)} hrs</span>
+                  </div>
+                  <div style={{ height: 5, background: C.neutralLight, borderRadius: 20, overflow: 'hidden' }}>
+                    <div style={{ width: `${t * 90}%`, height: '100%', background: C.primary, borderRadius: 20 }} />
+                  </div>
+                </div>
+                <div>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: 11.5, fontWeight: 600, color: C.neutralDark, marginBottom: 3 }}>
+                    <span>Carolina Sepúlveda</span>
+                    <span>{(t * 3.0).toFixed(1)} hrs</span>
+                  </div>
+                  <div style={{ height: 5, background: C.neutralLight, borderRadius: 20, overflow: 'hidden' }}>
+                    <div style={{ width: `${t * 9}%`, height: '100%', background: C.primary, borderRadius: 20 }} />
+                  </div>
+                </div>
+                <div>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: 11.5, fontWeight: 600, color: C.neutralDark, marginBottom: 3 }}>
+                    <span>Luana Ortega</span>
+                    <span>{(t * 0.5).toFixed(1)} hrs</span>
+                  </div>
+                  <div style={{ height: 5, background: C.neutralLight, borderRadius: 20, overflow: 'hidden' }}>
+                    <div style={{ width: `${t * 1.5}%`, height: '100%', background: C.primary, borderRadius: 20 }} />
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Card 4: Deviation (Planned vs Actual) */}
+            <div style={{ background: '#FFFFFF', border: `1.5px solid ${C.neutralBorder}`, borderRadius: 12, padding: 18, boxSizing: 'border-box', display: 'flex', flexDirection: 'column', gap: 12 }}>
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                <h4 style={{ fontFamily: FONT_D, fontSize: 13, fontWeight: 700, color: C.neutralDark, margin: 0, textTransform: 'uppercase', letterSpacing: 0.5 }}>Deviation (Planned vs Actual)</h4>
+                <div style={{ display: 'flex', gap: 12, fontSize: 11, fontWeight: 600 }}>
+                  <span style={{ display: 'flex', alignItems: 'center', gap: 4 }}><span style={{ width: 8, height: 8, background: '#475569', borderRadius: 2 }} /> Planned</span>
+                  <span style={{ display: 'flex', alignItems: 'center', gap: 4 }}><span style={{ width: 8, height: 8, background: C.primary, borderRadius: 2 }} /> Real</span>
+                </div>
+              </div>
+              
+              <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
+                {/* Tutoring */}
+                <div>
+                  <div style={{ fontSize: 12, fontWeight: 700, color: C.neutralDark, marginBottom: 4 }}>Tutoring</div>
+                  <div style={{ display: 'flex', flexDirection: 'column', gap: 4 }}>
+                    <div style={{ height: 5, background: C.neutralLight, borderRadius: 20, overflow: 'hidden' }}>
+                      <div style={{ width: `${t * 68}%`, height: '100%', background: '#475569', borderRadius: 20 }} />
+                    </div>
+                    <div style={{ fontSize: 10, color: C.neutralMuted, fontWeight: 600 }}>23.9h plan</div>
+                    <div style={{ height: 5, background: C.neutralLight, borderRadius: 20, overflow: 'hidden', marginTop: 2 }}>
+                      <div style={{ width: `${t * 77}%`, height: '100%', background: C.primary, borderRadius: 20 }} />
+                    </div>
+                    <div style={{ fontSize: 10, color: C.primary, fontWeight: 700 }}>{(t * 27.2).toFixed(1)}h real</div>
+                  </div>
+                </div>
+
+                {/* Masterclass */}
+                <div>
+                  <div style={{ fontSize: 12, fontWeight: 700, color: C.neutralDark, marginBottom: 4 }}>Masterclass</div>
+                  <div style={{ display: 'flex', flexDirection: 'column', gap: 4 }}>
+                    <div style={{ height: 5, background: C.neutralLight, borderRadius: 20, overflow: 'hidden' }}>
+                      <div style={{ width: '0%', height: '100%', background: '#475569', borderRadius: 20 }} />
+                    </div>
+                    <div style={{ fontSize: 10, color: C.neutralMuted, fontWeight: 600 }}>0.0h plan</div>
+                    <div style={{ height: 5, background: C.neutralLight, borderRadius: 20, overflow: 'hidden', marginTop: 2 }}>
+                      <div style={{ width: '0%', height: '100%', background: C.primary, borderRadius: 20 }} />
+                    </div>
+                    <div style={{ fontSize: 10, color: C.primary, fontWeight: 700 }}>0.0h real</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+          </div>
+
+        </div>
+      </BrowserFrame>
+    </div>
+  );
+}
+
 // SCENE 6 — CALENDAR HUB `1:10–1:18`
 function CalendarScene() {
   const { localTime, duration } = useSprite();
@@ -1265,7 +1505,7 @@ function AdminScene() {
   );
 }
 
-// SCENE 10 — LIVE EVALUATIONS `1:34–1:42`
+// SCENE 10 — LIVE EVALUATIONS `1:46–1:54`
 function QuizScene() {
   const { localTime, duration } = useSprite();
   
@@ -1341,7 +1581,7 @@ function QuizScene() {
   );
 }
 
-// SCENE 12 — AUTONOMY BAR `1:46–1:52`
+// SCENE 12 — AUTONOMY BAR `1:58–2:04`
 function AutonomyScene() {
   const { localTime, duration } = useSprite();
   
@@ -1383,7 +1623,7 @@ function AutonomyScene() {
   );
 }
 
-// SCENE 13 — CERTIFICATION CLOSE `1:52–2:00`
+// SCENE 13 — CERTIFICATION CLOSE `2:04–2:12`
 function CertificateScene() {
   const { localTime, duration } = useSprite();
   
@@ -1450,7 +1690,7 @@ function CertificateScene() {
   );
 }
 
-// SCENE 14 — WELCOME OUTRO `2:00–2:04`
+// SCENE 14 — WELCOME OUTRO `2:12–2:16`
 function OutroScene() {
   const { localTime } = useSprite();
   const op = Math.min(localTime / 0.8, 1);
@@ -1544,8 +1784,22 @@ function MXBoardDemoScene() {
         <ResourcesScene />
       </Sprite>
 
-      {/* 1:06–1:10  →  Transition (Documentation -> Calendar) */}
+      {/* 1:06–1:10  →  Transition (Documentation -> Hours Control) */}
       <Sprite start={66} end={70}>
+        <TextTransition
+          line1="Hours Control by Expert."
+          line2="Monitor mentoring and support hours."
+          highlightWord="Hours"
+        />
+      </Sprite>
+
+      {/* 1:10–1:18  →  Hours Consumed Dashboard Mockup */}
+      <Sprite start={70} end={78}>
+        <HoursDashboardScene />
+      </Sprite>
+
+      {/* 1:18–1:22  →  Transition (Hours Control -> Calendar) */}
+      <Sprite start={78} end={82}>
         <TextTransition
           line1="Calendar Hub."
           line2="All your meetings, in one place."
@@ -1553,13 +1807,13 @@ function MXBoardDemoScene() {
         />
       </Sprite>
 
-      {/* 1:10–1:18  →  Calendar Hub */}
-      <Sprite start={70} end={78}>
+      {/* 1:22–1:30  →  Calendar Hub */}
+      <Sprite start={82} end={90}>
         <CalendarScene />
       </Sprite>
 
-      {/* 1:18–1:22  →  Transition (Calendar -> Admin) */}
-      <Sprite start={78} end={82}>
+      {/* 1:30–1:34  →  Transition (Calendar -> Admin) */}
+      <Sprite start={90} end={94}>
         <TextTransition
           line1="Administration Panel."
           line2="Real-time tracking of every newcomer."
@@ -1567,13 +1821,13 @@ function MXBoardDemoScene() {
         />
       </Sprite>
 
-      {/* 1:22–1:30  →  Admin Dashboard */}
-      <Sprite start={82} end={90}>
+      {/* 1:34–1:42  →  Admin Dashboard */}
+      <Sprite start={94} end={102}>
         <AdminScene />
       </Sprite>
 
-      {/* 1:30–1:34  →  Transition (Admin -> Quiz) */}
-      <Sprite start={90} end={94}>
+      {/* 1:42–1:46  →  Transition (Admin -> Quiz) */}
+      <Sprite start={102} end={106}>
         <TextTransition
           line1="Live Evaluations."
           line2="Technical knowledge, put to the test."
@@ -1581,13 +1835,13 @@ function MXBoardDemoScene() {
         />
       </Sprite>
 
-      {/* 1:34–1:42  →  Live Quiz */}
-      <Sprite start={94} end={102}>
+      {/* 1:46–1:54  →  Live Quiz */}
+      <Sprite start={106} end={114}>
         <QuizScene />
       </Sprite>
 
-      {/* 1:42–1:46  →  Transition (Quiz -> Autonomy) */}
-      <Sprite start={102} end={106}>
+      {/* 1:54–1:58  →  Transition (Quiz -> Autonomy) */}
+      <Sprite start={114} end={118}>
         <TextTransition
           line1="Autonomy Perception."
           line2="Rising from day one."
@@ -1595,18 +1849,18 @@ function MXBoardDemoScene() {
         />
       </Sprite>
 
-      {/* 1:46–1:52  →  Autonomy Bar */}
-      <Sprite start={106} end={112}>
+      {/* 1:58–2:04  →  Autonomy Bar */}
+      <Sprite start={118} end={124}>
         <AutonomyScene />
       </Sprite>
 
-      {/* 1:52–2:00  →  Certificate Close */}
-      <Sprite start={112} end={120}>
+      {/* 2:04–2:12  →  Certificate Close */}
+      <Sprite start={124} end={132}>
         <CertificateScene />
       </Sprite>
 
-      {/* 2:00–2:04  →  Welcome Outro */}
-      <Sprite start={120} end={124}>
+      {/* 2:12–2:16  →  Welcome Outro */}
+      <Sprite start={132} end={136}>
         <OutroScene />
       </Sprite>
     </>
