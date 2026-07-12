@@ -360,6 +360,42 @@ function LoginScene() {
   );
 }
 
+function WeekBlock({ n, state, title, opacity, translateY }) {
+  const isCompleted = state === 'completed';
+  const isCurrent = state === 'current';
+  const bg = '#FFFFFF';
+  
+  const border = isCompleted 
+    ? '1.5px solid #D4215B' 
+    : isCurrent 
+      ? '2.5px solid #D4215B' 
+      : '1.5px solid #F2F2F2';
+      
+  const color = '#0A0A0A';
+  const subColor = isCompleted ? '#D4215B' : '#888888';
+  
+  return (
+    <div style={{
+      background: bg, border, borderRadius: 10, padding: '12px 14px',
+      minHeight: 82, display: 'flex', flexDirection: 'column', justifyContent: 'space-between',
+      position: 'relative', opacity, transform: `translateY(${translateY}px)`, boxSizing: 'border-box',
+      boxShadow: 'none', willChange: 'transform, opacity'
+    }}>
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+        <span style={{ fontFamily: FONT_D, fontWeight: 800, fontSize: 15, color }}>Week {n}</span>
+        {isCompleted && <Icon name="circle-check" size={14} color="#D4215B" />}
+        {isCurrent && <Icon name="player-play" size={14} color="#D4215B" />}
+      </div>
+      <div style={{ fontSize: 11.5, fontWeight: 700, color, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+        {title}
+      </div>
+      <div style={{ fontSize: 10, color: subColor, fontWeight: 600 }}>
+        {isCompleted ? 'Completed ✓' : isCurrent ? 'Active now' : 'Locked'}
+      </div>
+    </div>
+  );
+}
+
 const clampVal = (val, min, max) => Math.min(Math.max(val, min), max);
 
 function ScoreRing({ pct = 91 }) {
