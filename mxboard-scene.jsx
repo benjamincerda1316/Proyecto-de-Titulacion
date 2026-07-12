@@ -11,8 +11,8 @@ const C = {
   warningLight: '#FFF4E5',
   danger: '#E24B4A',
   dangerLight: '#FDECEC',
-  neutralDark: '#1E1B2C',
-  neutralMuted: '#6B687E',
+  neutralDark: '#000000', // Crisp black for text
+  neutralMuted: '#555555', // Neutral dark grey for descriptions
   neutralLight: '#F5F5FA',
   neutralBorder: '#E6E5EC',
   bgApp: '#FAF9FC',
@@ -72,98 +72,62 @@ function AnimatedBackground() {
         transform: 'translate(-50%, -50%)',
       }} />
       
-      {/* Premium dotted grid pattern */}
+      {/* Dotted grid pattern (pure black dots with very low opacity) */}
       <div style={{
         position: 'absolute', inset: 0,
-        backgroundImage: 'radial-gradient(#1e1b2c 1px, transparent 1px)',
+        backgroundImage: 'radial-gradient(#000000 1px, transparent 1px)',
         backgroundSize: '28px 28px',
-        opacity: 0.035,
+        opacity: 0.025,
       }} />
     </div>
   );
 }
 
-// ---------- Sidebar Navigation Panel (SaaS Feel) ----------
-function Sidebar({ activeTab }) {
-  const items = [
-    { id: 'dashboard', icon: 'layout-dashboard', label: 'Consultant Board' },
-    { id: 'calendar', icon: 'calendar', label: 'Calendar Hub' },
-    { id: 'admin', icon: 'shield-check', label: 'Administration' },
-    { id: 'evaluation', icon: 'vocabulary', label: 'Live Evaluation' },
-    { id: 'deliverables', icon: 'file-check', label: 'Deliverables' },
-  ];
-  return (
-    <div style={{
-      width: 240, background: '#12101B', height: '100%', display: 'flex', flexDirection: 'column',
-      borderRight: `1px solid rgba(255,255,255,0.06)`, padding: '24px 16px', boxSizing: 'border-box',
-      flexShrink: 0,
-    }}>
-      {/* Brand logo */}
-      <div style={{
-        fontFamily: FONT_D, fontWeight: 800, fontSize: 23, color: 'white', display: 'flex',
-        alignItems: 'center', gap: 8, marginBottom: 36, paddingLeft: 8
-      }}>
-        MX<span style={{ color: C.primary }}>Board</span>
-      </div>
-      
-      {/* Navigation items */}
-      <div style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
-        {items.map(item => {
-          const isActive = item.id === activeTab;
-          return (
-            <div key={item.id} style={{
-              display: 'flex', alignItems: 'center', gap: 12, padding: '11px 14px', borderRadius: 8,
-              fontSize: 13.5, fontWeight: 600,
-              background: isActive ? C.primary : 'transparent',
-              color: isActive ? 'white' : 'rgba(255,255,255,0.6)',
-              cursor: 'pointer', transition: 'all 0.2s',
-            }}>
-              <Icon name={item.icon} size={17} color={isActive ? 'white' : 'rgba(255,255,255,0.5)'} />
-              {item.label}
-            </div>
-          );
-        })}
-      </div>
-    </div>
-  );
-}
-
-// ---------- Shared browser chrome frame with smooth entry/exit animations ----------
-function BrowserFrame({ children, scale = 1, opacity = 1, ty = 0, activeTab, noSidebar = false }) {
-  const content = noSidebar ? (
+// ---------- Shared browser chrome frame with top navigation bar only ----------
+function BrowserFrame({ children, scale = 1, opacity = 1, ty = 0, activeTab, noNavbar = false }) {
+  const content = noNavbar ? (
     <div style={{ position: 'absolute', left: 0, top: 0, width: '100%', height: '100%', overflow: 'hidden', background: 'white' }}>
       {children}
     </div>
   ) : (
-    <div style={{ display: 'flex', height: '100%', width: '100%' }}>
-      <Sidebar activeTab={activeTab} />
-      <div style={{ flex: 1, height: '100%', background: C.bgApp, display: 'flex', flexDirection: 'column' }}>
-        {/* Top Navbar */}
+    <div style={{ display: 'flex', flexDirection: 'column', height: '100%', width: '100%' }}>
+      {/* Top Navbar */}
+      <div style={{
+        height: 60, background: 'white', borderBottom: `1px solid ${C.neutralBorder}`,
+        display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '0 34px',
+        boxSizing: 'border-box', flexShrink: 0,
+      }}>
+        {/* Left Brand Logo */}
         <div style={{
-          height: 60, background: 'white', borderBottom: `1px solid ${C.neutralBorder}`,
-          display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '0 34px',
-          boxSizing: 'border-box', flexShrink: 0,
+          fontFamily: FONT_D, fontWeight: 800, fontSize: 22, color: '#000000', display: 'flex',
+          alignItems: 'center', gap: 8
         }}>
-          {/* Left search mock */}
-          <div style={{ display: 'flex', alignItems: 'center', gap: 10, background: C.neutralLight, padding: '6px 14px', borderRadius: 8, border: `1px solid ${C.neutralBorder}` }}>
-            <Icon name="search" size={14} color={C.neutralMuted} />
-            <span style={{ fontSize: 12.5, color: C.neutralMuted, fontWeight: 500 }}>Search onboarding resources...</span>
-          </div>
-          {/* Right profile info */}
-          <div style={{ display: 'flex', alignItems: 'center', gap: 15 }}>
-            <Icon name="bell" size={17} color={C.neutralMuted} />
-            <div style={{ width: 1, height: 20, background: C.neutralBorder }} />
-            <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
-              <div style={{ width: 32, height: 32, borderRadius: '50%', background: C.primary, color: 'white', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 700, fontSize: 13, fontFamily: FONT_D }}>JP</div>
-              <div style={{ fontSize: 13, fontWeight: 600, color: C.neutralDark }}>Javier Pérez</div>
-            </div>
-          </div>
+          MX<span style={{ color: C.primary }}>Board</span>
         </div>
         
-        {/* Content body */}
-        <div style={{ flex: 1, height: 'calc(100% - 60px)', overflow: 'hidden', position: 'relative' }}>
-          {children}
+        {/* Center navigation tabs mock */}
+        <div style={{ display: 'flex', gap: 28, fontSize: 13.5, fontWeight: 700, color: C.neutralMuted }}>
+          <span style={{ color: activeTab === 'dashboard' ? C.primary : C.neutralMuted, borderBottom: activeTab === 'dashboard' ? `2.5px solid ${C.primary}` : 'none', padding: '19px 0', cursor: 'pointer' }}>Consultant Board</span>
+          <span style={{ color: activeTab === 'calendar' ? C.primary : C.neutralMuted, borderBottom: activeTab === 'calendar' ? `2.5px solid ${C.primary}` : 'none', padding: '19px 0', cursor: 'pointer' }}>Calendar Hub</span>
+          <span style={{ color: activeTab === 'admin' ? C.primary : C.neutralMuted, borderBottom: activeTab === 'admin' ? `2.5px solid ${C.primary}` : 'none', padding: '19px 0', cursor: 'pointer' }}>Administration</span>
+          <span style={{ color: activeTab === 'evaluation' ? C.primary : C.neutralMuted, borderBottom: activeTab === 'evaluation' ? `2.5px solid ${C.primary}` : 'none', padding: '19px 0', cursor: 'pointer' }}>Live Evaluation</span>
+          <span style={{ color: activeTab === 'deliverables' ? C.primary : C.neutralMuted, borderBottom: activeTab === 'deliverables' ? `2.5px solid ${C.primary}` : 'none', padding: '19px 0', cursor: 'pointer' }}>Deliverables</span>
         </div>
+
+        {/* Right profile info */}
+        <div style={{ display: 'flex', alignItems: 'center', gap: 15 }}>
+          <Icon name="bell" size={17} color={C.neutralMuted} />
+          <div style={{ width: 1, height: 20, background: C.neutralBorder }} />
+          <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+            <div style={{ width: 32, height: 32, borderRadius: '50%', background: C.primary, color: 'white', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 700, fontSize: 13, fontFamily: FONT_D }}>JP</div>
+            <div style={{ fontSize: 13, fontWeight: 600, color: '#000000' }}>Javier Pérez</div>
+          </div>
+        </div>
+      </div>
+      
+      {/* Content body */}
+      <div style={{ flex: 1, height: 'calc(100% - 60px)', overflow: 'hidden', position: 'relative', background: C.bgApp }}>
+        {children}
       </div>
     </div>
   );
@@ -286,26 +250,27 @@ function WeekCard({ n, state, score, title }) {
   }[state];
   return (
     <div style={{
-      background: cfg.bg, border: `1px solid ${cfg.border}`, borderRadius: 12, padding: '16px 18px',
-      minHeight: 105, display: 'flex', flexDirection: 'column', justifyContent: 'space-between',
+      background: cfg.bg, border: `1px solid ${cfg.border}`, borderRadius: 10, padding: '10px 14px',
+      minHeight: 82, display: 'flex', flexDirection: 'column', justifyContent: 'space-between',
       position: 'relative', opacity: state === 'locked' ? 0.6 : 1, boxSizing: 'border-box',
-      boxShadow: '0 4px 10px rgba(30,27,44,0.02)', transition: 'transform 0.2s',
+      boxShadow: '0 2px 6px rgba(0,0,0,0.01)',
     }}>
-      <div style={{ position: 'absolute', left: 0, top: 0, bottom: 0, width: 4, background: cfg.bar, borderRadius: '12px 0 0 12px' }} />
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
-        <span style={{ fontFamily: FONT_D, fontWeight: 800, fontSize: 18, color: C.neutralDark }}>W{n}</span>
-        <Icon name={cfg.icon} size={16} color={cfg.iconColor} />
+      <div style={{ position: 'absolute', left: 0, top: 0, bottom: 0, width: 3, background: cfg.bar, borderRadius: '10px 0 0 10px' }} />
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+        <span style={{ fontFamily: FONT_D, fontWeight: 800, fontSize: 15, color: C.neutralDark }}>Week {n}</span>
+        <Icon name={cfg.icon} size={14} color={cfg.iconColor} />
       </div>
-      <div>
-        <div style={{ fontSize: 12, fontWeight: 700, color: C.neutralDark, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', marginBottom: 2 }}>{title}</div>
-        <div style={{ fontSize: 10.5, color: C.neutralMuted, fontWeight: 600 }}>{state === 'completed' ? 'Passed' : state === 'current' ? 'Active now' : state === 'review' ? 'Reviewing' : 'Locked'}</div>
+      <div style={{ fontSize: 11.5, fontWeight: 700, color: C.neutralDark, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+        {title}
       </div>
-      {score != null && (
-        <span style={{
-          position: 'absolute', right: 12, bottom: 12, fontSize: 10.5, fontWeight: 800,
-          color: C.success, background: C.successLight, padding: '2px 8px', borderRadius: 6
-        }}>{score}%</span>
-      )}
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', fontSize: 10, color: C.neutralMuted, fontWeight: 600 }}>
+        <span>{state === 'completed' ? 'Passed' : state === 'current' ? 'Active' : state === 'review' ? 'Reviewing' : 'Locked'}</span>
+        {score != null && (
+          <span style={{
+            fontSize: 10, fontWeight: 800, color: C.success, background: C.successLight, padding: '1px 6px', borderRadius: 4
+          }}>{score}%</span>
+        )}
+      </div>
     </div>
   );
 }
@@ -315,44 +280,49 @@ function DashboardMock() {
     { n: 1, state: 'completed', score: 92, title: 'Induction & General Flow' },
     { n: 2, state: 'completed', score: 88, title: 'Trade Lifecycle & Accounting' },
     { n: 3, state: 'completed', score: 95, title: 'Accounts & Operational Logistics' },
-    { n: 4, state: 'review', score: null, title: 'Accounting Rules' },
+    { n: 4, state: 'completed', score: 90, title: 'Accounting Rules' },
     { n: 5, state: 'current', score: null, title: 'Parameterization & Flow Rules' },
     { n: 6, state: 'locked', title: 'Mark-to-Market & EOD Close' },
     { n: 7, state: 'locked', title: 'Past Corrections (Fixing)' },
     { n: 8, state: 'locked', title: 'Technical Autonomy Rehearsal' },
+    { n: 9, state: 'locked', title: 'Go Live with the Finance Team' },
+    { n: 10, state: 'locked', title: 'Housekeeper & CTT Creation' },
+    { n: 11, state: 'locked', title: 'Calendars & Accruals Processing' },
+    { n: 12, state: 'locked', title: 'Accounting Liquidation' },
   ];
   return (
-    <div style={{ padding: 30, fontFamily: FONT, width: '100%', height: '100%', boxSizing: 'border-box', display: 'flex', flexDirection: 'column', gap: 24, overflow: 'hidden' }}>
+    <div style={{ padding: 24, fontFamily: FONT, width: '100%', height: '100%', boxSizing: 'border-box', display: 'flex', flexDirection: 'column', gap: 16, overflow: 'hidden' }}>
       <div style={{
-        background: `linear-gradient(135deg, ${C.primary} 0%, #7D1220 100%)`, borderRadius: 16,
-        padding: '24px 34px', display: 'flex', justifyContent: 'space-between', alignItems: 'center',
-        boxSizing: 'border-box', boxShadow: '0 12px 30px rgba(166,25,46,0.15)'
+        background: `linear-gradient(135deg, ${C.primary} 0%, #7D1220 100%)`, borderRadius: 12,
+        padding: '16px 28px', display: 'flex', justifyContent: 'space-between', alignItems: 'center',
+        boxSizing: 'border-box', boxShadow: '0 8px 24px rgba(166,25,46,0.12)', flexShrink: 0
       }}>
         <div>
           <span style={{
-            background: 'rgba(255,255,255,0.18)', color: 'white', fontSize: 11, fontWeight: 700,
-            padding: '5px 14px', borderRadius: 20, textTransform: 'uppercase', letterSpacing: 1,
+            background: 'rgba(255,255,255,0.18)', color: 'white', fontSize: 10.5, fontWeight: 700,
+            padding: '4px 12px', borderRadius: 20, textTransform: 'uppercase', letterSpacing: 1,
             backdropFilter: 'blur(4px)'
           }}>Phase: Induction</span>
-          <div style={{ color: 'white', fontSize: 34, fontWeight: 700, fontFamily: FONT_D, margin: '12px 0 6px', letterSpacing: -0.5 }}>Hello, Javier Pérez</div>
-          <div style={{ color: 'rgba(255,255,255,0.85)', fontSize: 14, marginBottom: 16, maxWidth: 520, fontWeight: 500 }}>Your technical onboarding journey at Murex Chile. Complete weekly tasks and tests to advance.</div>
-          <div style={{ background: 'rgba(0,0,0,0.15)', borderRadius: 12, padding: '10px 16px', width: 380, boxSizing: 'border-box' }}>
-            <div style={{ display: 'flex', justifyContent: 'space-between', color: 'white', fontSize: 12, fontWeight: 700, marginBottom: 6 }}>
-              <span>Onboarding Progress</span><span>6 of 12 weeks completed (50%)</span>
+          <div style={{ color: 'white', fontSize: 28, fontWeight: 700, fontFamily: FONT_D, margin: '8px 0 4px', letterSpacing: -0.5 }}>Hello, Javier Pérez</div>
+          <div style={{ color: 'rgba(255,255,255,0.85)', fontSize: 13, marginBottom: 12, maxWidth: 600, fontWeight: 500 }}>Your technical onboarding journey at Murex Chile. Complete weekly tasks and tests to advance.</div>
+          <div style={{ background: 'rgba(0,0,0,0.12)', borderRadius: 10, padding: '8px 14px', width: 380, boxSizing: 'border-box' }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', color: 'white', fontSize: 11.5, fontWeight: 700, marginBottom: 4 }}>
+              <span>Onboarding Progress</span><span>5 of 12 weeks completed (41%)</span>
             </div>
-            <div style={{ height: 6, background: 'rgba(255,255,255,0.25)', borderRadius: 20 }}>
-              <div style={{ width: '50%', height: '100%', background: 'white', borderRadius: 20 }} />
+            <div style={{ height: 5, background: 'rgba(255,255,255,0.25)', borderRadius: 20 }}>
+              <div style={{ width: '41%', height: '100%', background: 'white', borderRadius: 20 }} />
             </div>
           </div>
         </div>
         <ScoreRing pct={91} />
       </div>
       
-      <div>
-        <div style={{ display: 'flex', alignItems: 'center', gap: 8, fontFamily: FONT_D, fontSize: 18, fontWeight: 700, color: C.neutralDark, marginBottom: 14 }}>
-          <Icon name="calendar-event" size={19} color={C.primary} /> Learning Roadmap (Weeks 1 - 8)
+      {/* Weeks Grid */}
+      <div style={{ flex: 1, display: 'flex', flexDirection: 'column', minHeight: 0 }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 8, fontFamily: FONT_D, fontSize: 17, fontWeight: 700, color: C.neutralDark, marginBottom: 10, flexShrink: 0 }}>
+          <Icon name="calendar-event" size={18} color={C.primary} /> Learning Roadmap (12 Weeks)
         </div>
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 14 }}>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 10, flex: 1, overflowY: 'auto', paddingBottom: 10 }}>
           {weeks.map(w => <WeekCard key={w.n} {...w} />)}
         </div>
       </div>
@@ -368,44 +338,44 @@ function CalendarMock() {
   };
   
   return (
-    <div style={{ padding: 30, fontFamily: FONT, width: '100%', height: '100%', boxSizing: 'border-box', display: 'flex', gap: 24, overflow: 'hidden' }}>
+    <div style={{ padding: 24, fontFamily: FONT, width: '100%', height: '100%', boxSizing: 'border-box', display: 'flex', gap: 20, overflow: 'hidden' }}>
       {/* Calendar Area */}
       <div style={{ flex: 1, display: 'flex', flexDirection: 'column' }}>
-        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 18 }}>
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 14 }}>
           <div>
-            <div style={{ display: 'flex', alignItems: 'center', gap: 8, fontFamily: FONT_D, fontSize: 20, fontWeight: 700, color: C.neutralDark }}>
-              <Icon name="calendar" size={20} color={C.primary} /> My Calendar Hub
+            <div style={{ display: 'flex', alignItems: 'center', gap: 8, fontFamily: FONT_D, fontSize: 18, fontWeight: 700, color: C.neutralDark }}>
+              <Icon name="calendar" size={18} color={C.primary} /> My Calendar Hub
             </div>
-            <div style={{ fontSize: 13, color: C.neutralMuted, marginTop: 2, fontWeight: 500 }}>Monthly schedule of mandatory tutoring, reviews, and syncs.</div>
+            <div style={{ fontSize: 12.5, color: C.neutralMuted, marginTop: 2, fontWeight: 500 }}>Schedule of tutoring sessions, reviews, and syncs.</div>
           </div>
-          <div style={{ display: 'flex', alignItems: 'center', gap: 10, background: 'white', padding: '6px 14px', borderRadius: 8, border: `1px solid ${C.neutralBorder}` }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 10, background: 'white', padding: '5px 12px', borderRadius: 8, border: `1px solid ${C.neutralBorder}` }}>
             <Icon name="chevron-left" size={14} color={C.neutralMuted} />
-            <span style={{ fontWeight: 700, fontSize: 13, color: C.neutralDark, fontFamily: FONT_D }}>July 2026</span>
+            <span style={{ fontWeight: 700, fontSize: 12.5, color: C.neutralDark, fontFamily: FONT_D }}>July 2026</span>
             <Icon name="chevron-right" size={14} color={C.neutralMuted} />
           </div>
         </div>
         
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(5, 1fr)', gap: 12, flex: 1 }}>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(5, 1fr)', gap: 10, flex: 1 }}>
           {days.map((d, i) => (
             <div key={d} style={{ display: 'flex', flexDirection: 'column' }}>
-              <div style={{ textAlign: 'center', fontSize: 12, fontWeight: 700, color: C.neutralMuted, marginBottom: 8, textTransform: 'uppercase', letterSpacing: 0.5 }}>{d}</div>
+              <div style={{ textAlign: 'center', fontSize: 11.5, fontWeight: 700, color: C.neutralMuted, marginBottom: 6, textTransform: 'uppercase', letterSpacing: 0.5 }}>{d}</div>
               <div style={{
-                background: 'white', border: `1px solid ${C.neutralBorder}`, borderRadius: 12, flex: 1,
-                padding: 12, display: 'flex', flexDirection: 'column', gap: 10, boxSizing: 'border-box',
-                boxShadow: '0 4px 10px rgba(30,27,44,0.01)',
+                background: 'white', border: `1px solid ${C.neutralBorder}`, borderRadius: 10, flex: 1,
+                padding: 10, display: 'flex', flexDirection: 'column', gap: 8, boxSizing: 'border-box',
+                boxShadow: '0 2px 6px rgba(0,0,0,0.01)',
               }}>
-                <div style={{ fontSize: 13, color: C.neutralDark, fontWeight: 700 }}>{i + 14}</div>
+                <div style={{ fontSize: 12.5, color: C.neutralDark, fontWeight: 700 }}>{i + 14}</div>
                 {events[i + 1] && (
                   <div style={{
-                    background: `${events[i + 1].color}08`, border: `1px solid ${events[i + 1].color}40`, color: events[i + 1].color,
-                    fontSize: 12, fontWeight: 600, padding: '10px 12px', borderRadius: 8,
+                    background: `${events[i + 1].color}08`, border: `1px solid ${events[i + 1].color}30`, color: events[i + 1].color,
+                    fontSize: 11.5, fontWeight: 600, padding: '8px 10px', borderRadius: 6,
                     borderLeft: `3px solid ${events[i + 1].color}`,
                   }}>
-                    <div style={{ display: 'flex', alignItems: 'center', gap: 5, marginBottom: 3 }}>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: 4, marginBottom: 2 }}>
                       <Icon name={events[i + 1].icon} size={11} color={events[i + 1].color} />
                       <strong>{events[i + 1].label}</strong>
                     </div>
-                    <div style={{ fontWeight: 500, color: C.neutralMuted, fontSize: 11 }}>{events[i + 1].sub}</div>
+                    <div style={{ fontWeight: 500, color: C.neutralMuted, fontSize: 10.5 }}>{events[i + 1].sub}</div>
                   </div>
                 )}
               </div>
@@ -414,42 +384,42 @@ function CalendarMock() {
         </div>
       </div>
       
-      {/* Sidebar Panel */}
-      <div style={{ width: 300, display: 'flex', flexDirection: 'column', gap: 20 }}>
+      {/* Sidebar Details Panel */}
+      <div style={{ width: 280, display: 'flex', flexDirection: 'column', gap: 14 }}>
         {/* Next session card */}
-        <div style={{ background: `linear-gradient(135deg, #1E1B2C 0%, #110F1A 100%)`, borderRadius: 14, padding: 20, color: 'white', boxShadow: '0 8px 24px rgba(30,27,44,0.15)' }}>
-          <div style={{ fontSize: 11, fontWeight: 700, color: C.primary, textTransform: 'uppercase', letterSpacing: 1, marginBottom: 8 }}>Next Up</div>
-          <h4 style={{ fontFamily: FONT_D, fontSize: 16, fontWeight: 700, color: 'white', margin: '0 0 6px' }}>Tutoring Session</h4>
-          <div style={{ fontSize: 12, color: 'rgba(255,255,255,0.7)', display: 'flex', alignItems: 'center', gap: 6, marginBottom: 14 }}>
-            <Icon name="clock" size={13} color="rgba(255,255,255,0.7)" /> Tomorrow, 10:00 AM
+        <div style={{ background: '#000000', borderRadius: 12, padding: 16, color: 'white', boxShadow: '0 4px 12px rgba(0,0,0,0.1)' }}>
+          <div style={{ fontSize: 10, fontWeight: 700, color: C.primary, textTransform: 'uppercase', letterSpacing: 1, marginBottom: 6 }}>Next Up</div>
+          <h4 style={{ fontFamily: FONT_D, fontSize: 15, fontWeight: 700, color: 'white', margin: '0 0 4px' }}>Tutoring Session</h4>
+          <div style={{ fontSize: 11.5, color: 'rgba(255,255,255,0.7)', display: 'flex', alignItems: 'center', gap: 6, marginBottom: 12 }}>
+            <Icon name="clock" size={12} color="rgba(255,255,255,0.7)" /> Tomorrow, 10:00 AM
           </div>
-          <div style={{ display: 'flex', alignItems: 'center', gap: 10, background: 'rgba(255,255,255,0.06)', padding: 10, borderRadius: 8 }}>
-            <div style={{ width: 28, height: 28, borderRadius: '50%', background: C.primary, color: 'white', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 700, fontSize: 11 }}>BC</div>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 8, background: 'rgba(255,255,255,0.08)', padding: 8, borderRadius: 6 }}>
+            <div style={{ width: 26, height: 26, borderRadius: '50%', background: C.primary, color: 'white', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 700, fontSize: 10.5 }}>BC</div>
             <div>
-              <div style={{ fontSize: 12, fontWeight: 700 }}>Benjamín Cerda</div>
-              <div style={{ fontSize: 11, color: 'rgba(255,255,255,0.5)' }}>Mentor &amp; Tutor</div>
+              <div style={{ fontSize: 11.5, fontWeight: 700 }}>Benjamín Cerda</div>
+              <div style={{ fontSize: 10, color: 'rgba(255,255,255,0.5)' }}>Mentor &amp; Tutor</div>
             </div>
           </div>
         </div>
         
         {/* Legend */}
-        <div style={{ background: 'white', border: `1px solid ${C.neutralBorder}`, borderRadius: 14, padding: 20, flex: 1, boxSizing: 'border-box' }}>
-          <div style={{ fontFamily: FONT_D, fontSize: 14, fontWeight: 700, color: C.neutralDark, marginBottom: 12 }}>Categories</div>
-          <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
-            <div style={{ display: 'flex', alignItems: 'center', gap: 8, fontSize: 12, color: C.neutralMuted, fontWeight: 500 }}>
-              <span style={{ width: 10, height: 10, borderRadius: 3, background: `${C.primary}12`, border: `1px solid ${C.primary}` }} />
+        <div style={{ background: 'white', border: `1px solid ${C.neutralBorder}`, borderRadius: 12, padding: 16, flex: 1, boxSizing: 'border-box' }}>
+          <div style={{ fontFamily: FONT_D, fontSize: 13, fontWeight: 700, color: C.neutralDark, marginBottom: 10 }}>Categories</div>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: 6, fontSize: 11.5, color: C.neutralMuted, fontWeight: 500 }}>
+              <span style={{ width: 8, height: 8, borderRadius: 2, background: `${C.primary}12`, border: `1px solid ${C.primary}` }} />
               Mandatory Tutoring
             </div>
-            <div style={{ display: 'flex', alignItems: 'center', gap: 8, fontSize: 12, color: C.neutralMuted, fontWeight: 500 }}>
-              <span style={{ width: 10, height: 10, borderRadius: 3, background: `${C.success}12`, border: `1px solid ${C.success}` }} />
+            <div style={{ display: 'flex', alignItems: 'center', gap: 6, fontSize: 11.5, color: C.neutralMuted, fontWeight: 500 }}>
+              <span style={{ width: 8, height: 8, borderRadius: 2, background: `${C.success}12`, border: `1px solid ${C.success}` }} />
               Manager Session
             </div>
-            <div style={{ display: 'flex', alignItems: 'center', gap: 8, fontSize: 12, color: C.neutralMuted, fontWeight: 500 }}>
-              <span style={{ width: 10, height: 10, borderRadius: 3, background: 'rgba(147,51,234,0.12)', border: '1px solid #9333ea' }} />
+            <div style={{ display: 'flex', alignItems: 'center', gap: 6, fontSize: 11.5, color: C.neutralMuted, fontWeight: 500 }}>
+              <span style={{ width: 8, height: 8, borderRadius: 2, background: 'rgba(147,51,234,0.12)', border: '1px solid #9333ea' }} />
               Team Masterclass
             </div>
-            <div style={{ display: 'flex', alignItems: 'center', gap: 8, fontSize: 12, color: C.neutralMuted, fontWeight: 500 }}>
-              <span style={{ width: 10, height: 10, borderRadius: 3, background: 'rgba(100,116,139,0.12)', border: '1px solid #64748b' }} />
+            <div style={{ display: 'flex', alignItems: 'center', gap: 6, fontSize: 11.5, color: C.neutralMuted, fontWeight: 500 }}>
+              <span style={{ width: 8, height: 8, borderRadius: 2, background: 'rgba(100,116,139,0.12)', border: '1px solid #64748b' }} />
               Completed Sync
             </div>
           </div>
@@ -499,56 +469,56 @@ function AdminMock() {
     { name: 'Camila Reyes', role: 'Week 11', progress: 91, score: 95, risk: false, status: 'On track' },
   ];
   return (
-    <div style={{ padding: 30, fontFamily: FONT, width: '100%', height: '100%', boxSizing: 'border-box', display: 'flex', flexDirection: 'column', gap: 20, overflow: 'hidden' }}>
+    <div style={{ padding: 24, fontFamily: FONT, width: '100%', height: '100%', boxSizing: 'border-box', display: 'flex', flexDirection: 'column', gap: 16, overflow: 'hidden' }}>
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
         <div>
           <span style={{
-            background: C.neutralDark, color: 'white', fontSize: 11, fontWeight: 700, padding: '4px 12px',
-            borderRadius: 20, textTransform: 'uppercase', display: 'inline-flex', alignItems: 'center', gap: 5, marginBottom: 6,
+            background: C.neutralDark, color: 'white', fontSize: 10.5, fontWeight: 700, padding: '4px 12px',
+            borderRadius: 20, textTransform: 'uppercase', display: 'inline-flex', alignItems: 'center', gap: 5, marginBottom: 4,
             fontFamily: FONT_D, letterSpacing: 0.5
           }}><Icon name="shield-check" size={12} color="white" /> Administration Panel</span>
-          <div style={{ fontFamily: FONT_D, fontSize: 24, fontWeight: 700, color: C.neutralDark, letterSpacing: -0.5 }}>Overview of Team Progress</div>
+          <div style={{ fontFamily: FONT_D, fontSize: 22, fontWeight: 700, color: C.neutralDark, letterSpacing: -0.5 }}>Overview of Team Progress</div>
         </div>
         <div style={{
-          display: 'flex', alignItems: 'center', gap: 8, background: C.primary, color: 'white', fontSize: 13,
-          fontWeight: 700, padding: '10px 18px', borderRadius: 8, boxShadow: '0 4px 12px rgba(166,25,46,0.15)', cursor: 'pointer'
+          display: 'flex', alignItems: 'center', gap: 8, background: C.primary, color: 'white', fontSize: 12.5,
+          fontWeight: 700, padding: '9px 16px', borderRadius: 8, boxShadow: '0 4px 12px rgba(166,25,46,0.12)', cursor: 'pointer'
         }}><Icon name="user-plus" size={15} color="white" /> Register Consultant</div>
       </div>
       
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 14 }}>
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 12 }}>
         <MetricCard label="Active Consultants" value="5" sub="+1 this month" color={C.success} icon="users" />
         <MetricCard label="Average Week" value="8.4" sub="out of 12 weeks" icon="calendar-stats" />
         <MetricCard label="Passing Rate" value="87%" sub="↑ vs target of 70%" color={C.success} icon="discount-check" />
         <MetricCard label="Pending Reviews" value="2" sub="Require evaluation" color={C.warning} icon="clipboard-list" />
       </div>
       
-      <div style={{ background: 'white', border: `1px solid ${C.neutralBorder}`, borderRadius: 12, overflow: 'hidden', boxShadow: '0 4px 12px rgba(30,27,44,0.01)' }}>
-        <div style={{ display: 'grid', gridTemplateColumns: '2fr 1fr 1.2fr 1fr', padding: '14px 20px', background: C.neutralLight, fontSize: 11.5, fontWeight: 700, color: C.neutralMuted, textTransform: 'uppercase', letterSpacing: 0.5, boxSizing: 'border-box' }}>
+      <div style={{ background: 'white', border: `1px solid ${C.neutralBorder}`, borderRadius: 10, overflow: 'hidden', boxShadow: '0 2px 6px rgba(0,0,0,0.01)' }}>
+        <div style={{ display: 'grid', gridTemplateColumns: '2fr 1fr 1.2fr 1fr', padding: '12px 18px', background: C.neutralLight, fontSize: 11, fontWeight: 700, color: C.neutralMuted, textTransform: 'uppercase', letterSpacing: 0.5, boxSizing: 'border-box' }}>
           <span>Consultant</span><span>Current Week</span><span>Progress</span><span>Avg. Score</span>
         </div>
         {rows.map(r => (
-          <div key={r.name} style={{ display: 'grid', gridTemplateColumns: '2fr 1fr 1.2fr 1fr', padding: '14px 20px', borderTop: `1px solid ${C.neutralLight}`, alignItems: 'center', boxSizing: 'border-box' }}>
-            <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
+          <div key={r.name} style={{ display: 'grid', gridTemplateColumns: '2fr 1fr 1.2fr 1fr', padding: '12px 18px', borderTop: `1px solid ${C.neutralLight}`, alignItems: 'center', boxSizing: 'border-box' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
               <div style={{
-                width: 36, height: 36, borderRadius: '50%', background: r.risk ? C.dangerLight : C.successLight,
+                width: 32, height: 32, borderRadius: '50%', background: r.risk ? C.dangerLight : C.successLight,
                 color: r.risk ? C.danger : C.success, display: 'flex', alignItems: 'center', justifyContent: 'center',
-                fontFamily: FONT_D, fontWeight: 800, fontSize: 13, flexShrink: 0,
+                fontFamily: FONT_D, fontWeight: 800, fontSize: 12.5, flexShrink: 0,
               }}>{r.name.split(' ').map(w => w[0]).slice(0, 2).join('')}</div>
               <div>
-                <div style={{ fontWeight: 700, fontSize: 13.5, color: C.neutralDark }}>{r.name}</div>
-                <div style={{ fontSize: 11, color: r.risk ? C.danger : C.neutralMuted, fontWeight: 600 }}>{r.status}</div>
+                <div style={{ fontWeight: 700, fontSize: 13, color: C.neutralDark }}>{r.name}</div>
+                <div style={{ fontSize: 10.5, color: r.risk ? C.danger : C.neutralMuted, fontWeight: 600 }}>{r.status}</div>
               </div>
             </div>
-            <span style={{ fontSize: 13, fontWeight: 700, color: C.neutralDark }}>{r.role}</span>
-            <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
-              <div style={{ flex: 1, height: 6, background: C.neutralLight, borderRadius: 20 }}>
+            <span style={{ fontSize: 12.5, fontWeight: 700, color: C.neutralDark }}>{r.role}</span>
+            <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+              <div style={{ flex: 1, height: 5, background: C.neutralLight, borderRadius: 20 }}>
                 <div style={{ width: `${r.progress}%`, height: '100%', borderRadius: 20, background: r.risk ? C.warning : C.success }} />
               </div>
-              <span style={{ fontSize: 12, fontWeight: 700, color: C.neutralDark }}>{r.progress}%</span>
+              <span style={{ fontSize: 11.5, fontWeight: 700, color: C.neutralDark }}>{r.progress}%</span>
             </div>
             <span style={{
-              fontWeight: 800, fontSize: 12, background: r.risk ? C.dangerLight : C.successLight,
-              color: r.risk ? C.danger : C.success, padding: '3px 10px', borderRadius: 6, width: 'fit-content'
+              fontWeight: 800, fontSize: 11.5, background: r.risk ? C.dangerLight : C.successLight,
+              color: r.risk ? C.danger : C.success, padding: '3px 8px', borderRadius: 4, width: 'fit-content'
             }}>{r.score}%</span>
           </div>
         ))}
@@ -566,7 +536,7 @@ function TestMock() {
   ];
   return (
     <div style={{ padding: 30, fontFamily: FONT, width: '100%', height: '100%', boxSizing: 'border-box', display: 'flex', justifyContent: 'center', alignItems: 'center', overflow: 'hidden' }}>
-      <div style={{ width: 720, background: 'white', border: `1px solid ${C.neutralBorder}`, borderRadius: 16, padding: '24px 30px', boxSizing: 'border-box', boxShadow: '0 12px 30px rgba(30,27,44,0.04)' }}>
+      <div style={{ width: 720, background: 'white', border: `1px solid ${C.neutralBorder}`, borderRadius: 16, padding: '24px 30px', boxSizing: 'border-box', boxShadow: '0 12px 30px rgba(0,0,0,0.02)' }}>
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', fontSize: 11, fontWeight: 700, color: C.primary, letterSpacing: 0.8, marginBottom: 16, fontFamily: FONT_D }}>
           <span>MX.3 PLATFORM CERTIFICATION</span>
           <span style={{ display: 'flex', alignItems: 'center', gap: 5, background: C.warningLight, color: '#B26500', padding: '4px 12px', borderRadius: 8, fontWeight: 700 }}>
@@ -713,7 +683,7 @@ function CertificateMock() {
 
 // ================= SCENE WRAPPERS (Sprite + kenburns + caption) =================
 
-function KBFrame({ children, from = 1, to = 1.035, activeTab, noSidebar = false }) {
+function KBFrame({ children, from = 1, to = 1.035, activeTab, noNavbar = false }) {
   const { localTime, duration } = useSprite();
   
   const entryDur = 0.8;
@@ -746,7 +716,7 @@ function KBFrame({ children, from = 1, to = 1.035, activeTab, noSidebar = false 
   const finalScale = kbVal * animScale;
   
   return (
-    <BrowserFrame scale={finalScale} opacity={opacity} ty={ty} activeTab={activeTab} noSidebar={noSidebar}>
+    <BrowserFrame scale={finalScale} opacity={opacity} ty={ty} activeTab={activeTab} noNavbar={noNavbar}>
       {children}
     </BrowserFrame>
   );
@@ -814,10 +784,10 @@ function OutroScene() {
   );
 }
 
-function FeatureScene({ kicker, title, from, to, children, activeTab, noSidebar = false }) {
+function FeatureScene({ kicker, title, from, to, children, activeTab, noNavbar = false }) {
   return (
     <div style={{ position: 'absolute', inset: 0 }}>
-      <KBFrame from={from} to={to} activeTab={activeTab} noSidebar={noSidebar}>{children}</KBFrame>
+      <KBFrame from={from} to={to} activeTab={activeTab} noNavbar={noNavbar}>{children}</KBFrame>
       <Caption kicker={kicker} title={title} />
     </div>
   );
@@ -861,7 +831,7 @@ function MXBoardDemoScene() {
       </Sprite>
 
       <Sprite start={36} end={42}>
-        <FeatureScene kicker="Certification" title="Achievement, formally recognized." from={1} to={1.035} noSidebar={true}>
+        <FeatureScene kicker="Certification" title="Achievement, formally recognized." from={1} to={1.035} noNavbar={true}>
           <CertificateMock />
         </FeatureScene>
       </Sprite>
