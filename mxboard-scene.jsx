@@ -2084,15 +2084,42 @@ function CalendarScene() {
     currentOpacity = 1 - t;
   }
 
-  const days = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri'];
-  
-  // Staggered initial events definition
-  const staticEvents = [
-    { dayIdx: 0, label: 'Weekly Tutoring', sub: 'Benjamín · 10:00', color: '#0284C7', icon: 'user', startTime: 0.5 },
-    { dayIdx: 1, label: 'Flows Discussion', sub: 'Luana Ortega · 11:30', color: '#9333ea', icon: 'route', startTime: 0.8 },
-    { dayIdx: 2, label: 'Murex Sync', sub: 'Javier Pérez · 13:00', color: '#1D9E75', icon: 'world', startTime: 1.1 },
-    { dayIdx: 3, label: 'Manager Review', sub: 'Luana Ortega · 15:00', color: '#EA580C', icon: 'shield-check', startTime: 1.4 }
+  const days = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
+
+  const calendarEvents = [
+    { day: 1, label: 'Onboarding', color: '#0284C7', popTime: 0.3 },
+    { day: 3, label: 'EOD Sync', color: '#10B981', popTime: 0.5 },
+    { day: 6, label: 'Murex Intro', color: '#8B5CF6', popTime: 0.7 },
+    { day: 8, label: 'Tutoring', color: '#0284C7', popTime: 0.9 },
+    { day: 10, label: 'Manager Sync', color: '#EA580C', popTime: 1.1 },
+    { day: 13, label: 'Flows Review', color: '#EC4899', popTime: 1.3 },
+    { day: 15, label: 'Tutoring', color: '#0284C7', popTime: 1.5 },
+    { day: 16, label: 'EOD Review', color: '#10B981', popTime: 1.7 },
+    { day: 20, label: 'Tech Sync', color: '#8B5CF6', popTime: 1.9 },
+    { day: 22, label: 'Tutoring', color: '#0284C7', popTime: 2.1 },
+    { day: 24, label: 'EOD Sync', color: '#10B981', popTime: 2.3 },
+    { day: 27, label: 'Pega Review', color: '#64748B', popTime: 2.5 },
+    { day: 29, label: 'Tutoring', color: '#0284C7', popTime: 2.7 },
+    { day: 31, label: 'EOD Call', color: '#10B981', popTime: 2.9 },
+    { day: 2, label: 'Class', color: '#9333ea', popTime: 0.8 },
+    { day: 7, label: 'Liquidation', color: '#EA580C', popTime: 1.2 },
+    { day: 9, label: 'Flows Sync', color: '#EC4899', popTime: 1.6 },
+    { day: 14, label: 'Audit Call', color: '#E24B4A', popTime: 2.0 },
+    { day: 21, label: 'Murex Lab', color: '#0284C7', popTime: 2.4 },
+    { day: 28, label: 'Final Sync', color: '#10B981', popTime: 2.8 }
   ];
+
+  const calendarCells = [];
+  // June 29-30
+  calendarCells.push({ num: 29, isCurrentMonth: false });
+  calendarCells.push({ num: 30, isCurrentMonth: false });
+  // July 1-31
+  for (let i = 1; i <= 31; i++) {
+    calendarCells.push({ num: i, isCurrentMonth: true });
+  }
+  // August 1-2
+  calendarCells.push({ num: 1, isCurrentMonth: false });
+  calendarCells.push({ num: 2, isCurrentMonth: false });
 
   // Friday Event animation bounds
   const showFridayEvent = localTime >= 3.2;
@@ -2209,68 +2236,64 @@ function CalendarScene() {
               </div>
             </div>
             
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(5, 1fr)', gap: 10, flex: 1 }}>
-              {days.map((d, i) => {
-                // Find static events that match this day index
-                const dayEvent = staticEvents.find(e => e.dayIdx === i);
-                const isStaticVisible = dayEvent && localTime >= dayEvent.startTime;
-                
-                // Animation values for static events
-                let itemOpacity = 0;
-                let itemTranslateY = 10;
-                if (dayEvent && isStaticVisible) {
-                  const t = clampVal((localTime - dayEvent.startTime) / 0.5, 0, 1);
-                  itemOpacity = t;
-                  itemTranslateY = (1 - Easing.easeOutQuad(t)) * 10;
-                }
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(7, 1fr)', gap: 6, flex: 1, overflowY: 'auto' }}>
+              {days.map(d => (
+                <div key={d} style={{ textAlign: 'center', fontSize: 11, fontWeight: 700, color: C.neutralMuted, marginBottom: 2, textTransform: 'uppercase', letterSpacing: 0.5 }}>{d}</div>
+              ))}
+              
+              {calendarCells.map((cell, idx) => {
+                // Find all matching events for this day that popped in
+                const cellEvents = cell.isCurrentMonth
+                  ? calendarEvents.filter(e => e.day === cell.num && localTime >= e.popTime)
+                  : [];
 
                 return (
-                  <div key={d} style={{ display: 'flex', flexDirection: 'column' }}>
-                    <div style={{ textAlign: 'center', fontSize: 11.5, fontWeight: 700, color: C.neutralMuted, marginBottom: 6, textTransform: 'uppercase', letterSpacing: 0.5 }}>{d}</div>
+                  <div key={idx} style={{
+                    background: cell.isCurrentMonth ? 'white' : '#F9F9FB',
+                    border: `1.5px solid ${cell.isCurrentMonth ? C.neutralBorder : '#F1F5F9'}`,
+                    borderRadius: 8, padding: '5px 8px', display: 'flex', flexDirection: 'column',
+                    minHeight: 62, boxSizing: 'border-box', overflow: 'hidden', position: 'relative'
+                  }}>
+                    {/* Day Number */}
                     <div style={{
-                      background: 'white', border: `1.5px solid ${C.neutralBorder}`, borderRadius: 10, flex: 1,
-                      padding: 10, display: 'flex', flexDirection: 'column', gap: 8, boxSizing: 'border-box',
-                      boxShadow: 'none', position: 'relative'
-                    }}>
-                      <div style={{ fontSize: 12.5, color: C.neutralDark, fontWeight: 700 }}>{i + 14}</div>
-                      
-                      {/* Static Event */}
-                      {dayEvent && (
-                        <div style={{
-                          background: `${dayEvent.color}08`, border: `1.5px solid ${dayEvent.color}30`, color: dayEvent.color,
-                          fontSize: 11.5, fontWeight: 600, padding: '8px 10px', borderRadius: 6,
-                          borderLeft: `3px solid ${dayEvent.color}`,
-                          opacity: itemOpacity,
-                          transform: `translateY(${itemTranslateY}px)`,
-                          transition: 'opacity 0.1s, transform 0.1s',
-                          willChange: 'opacity, transform'
-                        }}>
-                          <div style={{ display: 'flex', alignItems: 'center', gap: 4, marginBottom: 2 }}>
-                            <Icon name={dayEvent.icon} size={11} color={dayEvent.color} />
-                            <strong style={{ whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{dayEvent.label}</strong>
-                          </div>
-                          <div style={{ fontWeight: 500, color: C.neutralMuted, fontSize: 10.5 }}>{dayEvent.sub}</div>
-                        </div>
-                      )}
+                      fontSize: 11, fontWeight: 700,
+                      color: cell.isCurrentMonth ? C.neutralDark : C.neutralMuted,
+                      marginBottom: 2
+                    }}>{cell.num}</div>
 
-                      {/* Friday Dynamic Event (Appears after accept) */}
-                      {i === 4 && showFridayEvent && (
-                        <div style={{
-                          background: `${C.primary}08`, border: `1.5px solid ${C.primary}30`, color: C.primary,
-                          fontSize: 11.5, fontWeight: 600, padding: '8px 10px', borderRadius: 6,
-                          borderLeft: `3px solid ${C.primary}`,
-                          transform: `scale(${fridayScale})`,
-                          transformOrigin: 'top center',
-                          willChange: 'transform'
-                        }}>
-                          <div style={{ display: 'flex', alignItems: 'center', gap: 4, marginBottom: 2 }}>
-                            <Icon name="player-play" size={11} color={C.primary} />
-                            <strong style={{ whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>Accounting Rules Sync</strong>
+                    {/* Pop-in events list */}
+                    <div style={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
+                      {cellEvents.map(e => {
+                        const popT = clampVal((localTime - e.popTime) / 0.4, 0, 1);
+                        const scaleVal = Easing.easeOutBack(popT);
+                        const opacityVal = popT;
+                        return (
+                          <div key={e.label} style={{
+                            background: `${e.color}10`, border: `1px solid ${e.color}25`, color: e.color,
+                            fontSize: 8, fontWeight: 800, padding: '1px 3px', borderRadius: 3,
+                            whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis',
+                            transform: `scale(${scaleVal})`, opacity: opacityVal, transformOrigin: 'left center',
+                            lineHeight: 1
+                          }}>
+                            {e.label}
                           </div>
-                          <div style={{ fontWeight: 500, color: C.neutralMuted, fontSize: 10.5 }}>Benjamín · 14:00</div>
+                        );
+                      })}
+
+                      {/* Accepted Friday meeting */}
+                      {cell.isCurrentMonth && cell.num === 17 && showFridayEvent && (
+                        <div style={{
+                          background: `${C.primary}10`, border: `1px solid ${C.primary}25`, color: C.primary,
+                          fontSize: 8, fontWeight: 800, padding: '1px 3px', borderRadius: 3,
+                          whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis',
+                          transform: `scale(${fridayScale})`, transformOrigin: 'left center',
+                          lineHeight: 1
+                        }}>
+                          Accounting
                         </div>
                       )}
                     </div>
+
                   </div>
                 );
               })}
