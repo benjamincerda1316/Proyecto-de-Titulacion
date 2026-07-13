@@ -276,12 +276,6 @@ function LoginScene() {
     typedPass = "● ".repeat(dotsCount).trim();
   }
 
-  const showArrow = localTime >= 7.0 && localTime < 9.0;
-  let arrowDy = 0;
-  if (showArrow) {
-    arrowDy = Math.abs(Math.sin((localTime - 7.0) * Math.PI * 2)) * 6;
-  }
-
   return (
     <div style={{
       position: 'absolute', inset: 0, background: '#FFFFFF', display: 'flex',
@@ -341,18 +335,6 @@ function LoginScene() {
             }}>
               Sign In
             </div>
-
-            {showArrow && (
-              <div style={{
-                position: 'absolute', left: 168, bottom: -24 - arrowDy,
-                color: C.primary, display: 'flex', flexDirection: 'column', alignItems: 'center'
-              }}>
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
-                  <line x1="12" y1="19" x2="12" y2="5"></line>
-                  <polyline points="5 12 12 5 19 12"></polyline>
-                </svg>
-              </div>
-            )}
           </div>
         </div>
       </div>
@@ -1499,15 +1481,113 @@ function CalendarScene() {
 
   const days = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri'];
   
-  const events = {
-    2: { label: 'Weekly Tutoring', sub: 'Benjamín · 10:00', color: '#0284C7', icon: 'user' }, // Blue
-    4: { label: 'Manager Review', sub: 'Luana Ortega · 15:00', color: '#EA580C', icon: 'shield-check' }, // Orange
-  };
+  // Staggered initial events definition
+  const staticEvents = [
+    { dayIdx: 0, label: 'Weekly Tutoring', sub: 'Benjamín · 10:00', color: '#0284C7', icon: 'user', startTime: 0.5 },
+    { dayIdx: 1, label: 'Flows Discussion', sub: 'Luana Ortega · 11:30', color: '#9333ea', icon: 'route', startTime: 0.8 },
+    { dayIdx: 2, label: 'Murex Sync', sub: 'Javier Pérez · 13:00', color: '#1D9E75', icon: 'world', startTime: 1.1 },
+    { dayIdx: 3, label: 'Manager Review', sub: 'Luana Ortega · 15:00', color: '#EA580C', icon: 'shield-check', startTime: 1.4 }
+  ];
+
+  // Friday Event animation bounds
+  const showFridayEvent = localTime >= 3.2;
+  let fridayScale = 0;
+  if (localTime >= 3.4 && localTime < 4.1) {
+    const t = (localTime - 3.4) / 0.7;
+    fridayScale = interpolate([0, 1], [0, 1], Easing.easeOutBack)(t);
+  } else if (localTime >= 4.1) {
+    fridayScale = 1;
+  }
+
+  // Invitation Popup animation bounds
+  const showInvite = localTime >= 1.5 && localTime < 3.8;
+  let inviteOpacity = 1;
+  let inviteScale = 1;
+  if (localTime >= 1.5 && localTime < 1.9) {
+    const t = (localTime - 1.5) / 0.4;
+    inviteOpacity = t;
+    inviteScale = interpolate([0, 1], [0.8, 1.0], Easing.easeOutBack)(t);
+  } else if (localTime >= 3.2 && localTime < 3.8) {
+    const t = (localTime - 3.2) / 0.6;
+    inviteOpacity = 1 - t;
+    inviteScale = interpolate([0, 1], [1.0, 0.85], Easing.easeInQuad)(t);
+  }
+
+  // Cursor coordinates relative to calendar area
+  let cursorX = 800;
+  let cursorY = 500;
+  let cursorOpacity = 0;
+  
+  if (localTime >= 1.8 && localTime < 3.0) {
+    cursorOpacity = 1;
+    const t = (localTime - 1.8) / 1.2;
+    cursorX = interpolate([0, 1], [920, 840], Easing.easeInOutQuad)(t);
+    cursorY = interpolate([0, 1], [520, 415], Easing.easeInOutQuad)(t);
+  } else if (localTime >= 3.0 && localTime < 3.4) {
+    cursorOpacity = 1;
+    cursorX = 840;
+    cursorY = 415;
+  }
 
   return (
     <div style={{ position: 'absolute', inset: 0, opacity: currentOpacity, transform: `scale(${scale})`, transformOrigin: 'center center' }}>
       <BrowserFrame activeTab="calendar">
-        <div style={{ padding: 24, fontFamily: FONT, width: '100%', height: '100%', boxSizing: 'border-box', display: 'flex', gap: 20, overflow: 'hidden' }}>
+        <div style={{ padding: 24, fontFamily: FONT, width: '100%', height: '100%', boxSizing: 'border-box', display: 'flex', gap: 20, overflow: 'hidden', position: 'relative' }}>
+          
+          {/* Calendar Invite Pop-up Card */}
+          {showInvite && (
+            <div style={{
+              position: 'absolute', left: '42%', top: '48%',
+              transform: `translate(-50%, -50%) scale(${inviteScale})`,
+              width: 380, padding: 22, background: 'white', borderRadius: 14,
+              border: `1.5px solid ${C.neutralBorder}`,
+              boxShadow: '0 24px 50px rgba(0,0,0,0.12)', zIndex: 100,
+              opacity: inviteOpacity, display: 'flex', flexDirection: 'column', gap: 12,
+              fontFamily: FONT, boxSizing: 'border-box', transition: 'all 0.1s ease-out'
+            }}>
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                <span style={{ fontSize: 11, fontWeight: 700, color: C.primary, textTransform: 'uppercase', letterSpacing: 0.8 }}>New Invitation</span>
+                <span style={{ fontSize: 10, color: C.neutralMuted }}>Today 10:45 AM</span>
+              </div>
+              <div>
+                <h4 style={{ fontFamily: FONT_D, fontSize: 15.5, fontWeight: 700, color: C.neutralDark, margin: '0 0 3px' }}>
+                  Accounting Rules Sync
+                </h4>
+                <p style={{ fontSize: 11.5, color: C.neutralMuted, margin: 0 }}>
+                  Hosted by <strong>Benjamín Cerda</strong>
+                </p>
+                <div style={{ display: 'flex', alignItems: 'center', gap: 6, fontSize: 11, color: C.neutralDark, fontWeight: 600, marginTop: 6 }}>
+                  <Icon name="clock" size={13} color={C.primary} /> Friday at 14:00 (2:00 PM)
+                </div>
+              </div>
+              <div style={{ display: 'flex', gap: 8, justifyContent: 'flex-end', marginTop: 4 }}>
+                <button style={{
+                  padding: '7px 14px', background: 'white', border: `1.5px solid ${C.neutralBorder}`,
+                  borderRadius: 6, fontSize: 11.5, fontWeight: 700, color: C.neutralMuted, cursor: 'pointer'
+                }}>Decline</button>
+                <button style={{
+                  padding: '7px 14px', background: localTime >= 3.0 ? '#B01A47' : C.primary, border: 'none',
+                  borderRadius: 6, fontSize: 11.5, fontWeight: 700, color: 'white', cursor: 'pointer',
+                  transform: localTime >= 3.0 && localTime < 3.2 ? 'scale(0.96)' : 'none',
+                  transition: 'transform 0.05s'
+                }}>Accept</button>
+              </div>
+            </div>
+          )}
+
+          {/* Mouse cursor pointer */}
+          {cursorOpacity > 0 && (
+            <div style={{
+              position: 'absolute', left: cursorX, top: cursorY, zIndex: 150,
+              pointerEvents: 'none', opacity: cursorOpacity, transition: 'opacity 0.2s',
+              transform: localTime >= 3.0 && localTime < 3.2 ? 'scale(0.9)' : 'none'
+            }}>
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
+                <path d="M4.5 3V19.5L9.64 14.36L16.29 21L19.5 17.79L12.85 11.15L19.5 9.64L4.5 3Z" fill="black" stroke="white" strokeWidth="2" strokeLinejoin="miter" />
+              </svg>
+            </div>
+          )}
+
           {/* Calendar Area */}
           <div style={{ flex: 1, display: 'flex', flexDirection: 'column' }}>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 14 }}>
@@ -1525,31 +1605,70 @@ function CalendarScene() {
             </div>
             
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(5, 1fr)', gap: 10, flex: 1 }}>
-              {days.map((d, i) => (
-                <div key={d} style={{ display: 'flex', flexDirection: 'column' }}>
-                  <div style={{ textAlign: 'center', fontSize: 11.5, fontWeight: 700, color: C.neutralMuted, marginBottom: 6, textTransform: 'uppercase', letterSpacing: 0.5 }}>{d}</div>
-                  <div style={{
-                    background: 'white', border: `1.5px solid ${C.neutralBorder}`, borderRadius: 10, flex: 1,
-                    padding: 10, display: 'flex', flexDirection: 'column', gap: 8, boxSizing: 'border-box',
-                    boxShadow: 'none',
-                  }}>
-                    <div style={{ fontSize: 12.5, color: C.neutralDark, fontWeight: 700 }}>{i + 14}</div>
-                    {events[i + 1] && (
-                      <div style={{
-                        background: `${events[i + 1].color}08`, border: `1.5px solid ${events[i + 1].color}30`, color: events[i + 1].color,
-                        fontSize: 11.5, fontWeight: 600, padding: '8px 10px', borderRadius: 6,
-                        borderLeft: `3px solid ${events[i + 1].color}`,
-                      }}>
-                        <div style={{ display: 'flex', alignItems: 'center', gap: 4, marginBottom: 2 }}>
-                          <Icon name={events[i + 1].icon} size={11} color={events[i + 1].color} />
-                          <strong>{events[i + 1].label}</strong>
+              {days.map((d, i) => {
+                // Find static events that match this day index
+                const dayEvent = staticEvents.find(e => e.dayIdx === i);
+                const isStaticVisible = dayEvent && localTime >= dayEvent.startTime;
+                
+                // Animation values for static events
+                let itemOpacity = 0;
+                let itemTranslateY = 10;
+                if (dayEvent && isStaticVisible) {
+                  const t = clampVal((localTime - dayEvent.startTime) / 0.5, 0, 1);
+                  itemOpacity = t;
+                  itemTranslateY = (1 - Easing.easeOutQuad(t)) * 10;
+                }
+
+                return (
+                  <div key={d} style={{ display: 'flex', flexDirection: 'column' }}>
+                    <div style={{ textAlign: 'center', fontSize: 11.5, fontWeight: 700, color: C.neutralMuted, marginBottom: 6, textTransform: 'uppercase', letterSpacing: 0.5 }}>{d}</div>
+                    <div style={{
+                      background: 'white', border: `1.5px solid ${C.neutralBorder}`, borderRadius: 10, flex: 1,
+                      padding: 10, display: 'flex', flexDirection: 'column', gap: 8, boxSizing: 'border-box',
+                      boxShadow: 'none', position: 'relative'
+                    }}>
+                      <div style={{ fontSize: 12.5, color: C.neutralDark, fontWeight: 700 }}>{i + 14}</div>
+                      
+                      {/* Static Event */}
+                      {dayEvent && (
+                        <div style={{
+                          background: `${dayEvent.color}08`, border: `1.5px solid ${dayEvent.color}30`, color: dayEvent.color,
+                          fontSize: 11.5, fontWeight: 600, padding: '8px 10px', borderRadius: 6,
+                          borderLeft: `3px solid ${dayEvent.color}`,
+                          opacity: itemOpacity,
+                          transform: `translateY(${itemTranslateY}px)`,
+                          transition: 'opacity 0.1s, transform 0.1s',
+                          willChange: 'opacity, transform'
+                        }}>
+                          <div style={{ display: 'flex', alignItems: 'center', gap: 4, marginBottom: 2 }}>
+                            <Icon name={dayEvent.icon} size={11} color={dayEvent.color} />
+                            <strong style={{ whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{dayEvent.label}</strong>
+                          </div>
+                          <div style={{ fontWeight: 500, color: C.neutralMuted, fontSize: 10.5 }}>{dayEvent.sub}</div>
                         </div>
-                        <div style={{ fontWeight: 500, color: C.neutralMuted, fontSize: 10.5 }}>{events[i + 1].sub}</div>
-                      </div>
-                    )}
+                      )}
+
+                      {/* Friday Dynamic Event (Appears after accept) */}
+                      {i === 4 && showFridayEvent && (
+                        <div style={{
+                          background: `${C.primary}08`, border: `1.5px solid ${C.primary}30`, color: C.primary,
+                          fontSize: 11.5, fontWeight: 600, padding: '8px 10px', borderRadius: 6,
+                          borderLeft: `3px solid ${C.primary}`,
+                          transform: `scale(${fridayScale})`,
+                          transformOrigin: 'top center',
+                          willChange: 'transform'
+                        }}>
+                          <div style={{ display: 'flex', alignItems: 'center', gap: 4, marginBottom: 2 }}>
+                            <Icon name="player-play" size={11} color={C.primary} />
+                            <strong style={{ whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>Accounting Rules Sync</strong>
+                          </div>
+                          <div style={{ fontWeight: 500, color: C.neutralMuted, fontSize: 10.5 }}>Benjamín · 14:00</div>
+                        </div>
+                      )}
+                    </div>
                   </div>
-                </div>
-              ))}
+                );
+              })}
             </div>
           </div>
           
