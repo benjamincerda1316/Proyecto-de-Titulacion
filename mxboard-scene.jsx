@@ -79,7 +79,7 @@ function BrowserFrame({ children, scale = 1, opacity = 1, ty = 0, activeTab, noN
           <div style={{ width: 1, height: 20, background: C.neutralBorder }} />
           <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
             <div style={{ width: 32, height: 32, borderRadius: '50%', background: C.primary, color: 'white', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 700, fontSize: 13, fontFamily: FONT_D }}>JP</div>
-            <div style={{ fontSize: 13, fontWeight: 600, color: C.neutralDark }}>Javier Pérez</div>
+            <div style={{ fontSize: 13, fontWeight: 600, color: C.neutralDark }}>Newcomer</div>
           </div>
         </div>
       </div>
@@ -452,7 +452,7 @@ function DashboardScene() {
                 padding: '4px 12px', borderRadius: 20, textTransform: 'uppercase', letterSpacing: 1,
                 backdropFilter: 'blur(4px)'
               }}>Phase: Induction</span>
-              <div style={{ color: 'white', fontSize: 28, fontWeight: 700, fontFamily: FONT_D, margin: '8px 0 4px', letterSpacing: -0.5 }}>Hello, Javier Pérez</div>
+              <div style={{ color: 'white', fontSize: 28, fontWeight: 700, fontFamily: FONT_D, margin: '8px 0 4px', letterSpacing: -0.5 }}>Hello, Newcomer</div>
               <div style={{ color: 'rgba(255,255,255,0.85)', fontSize: 13, marginBottom: 12, maxWidth: 600, fontWeight: 500 }}>Your technical onboarding journey at Murex Chile. Complete weekly tasks and tests to advance.</div>
               <div style={{ background: 'rgba(0,0,0,0.12)', borderRadius: 10, padding: '8px 14px', width: 380, boxSizing: 'border-box' }}>
                 <div style={{ display: 'flex', justifyContent: 'space-between', color: 'white', fontSize: 11.5, fontWeight: 700, marginBottom: 4 }}>
@@ -1400,7 +1400,7 @@ function OnboardingTrackerScene() {
               <div style={{ display: 'flex', alignItems: 'center', gap: 10, background: '#F4F4F6', padding: '4px 14px', borderRadius: 20 }}>
                 <div style={{ width: 22, height: 22, borderRadius: '50%', background: '#B01A47', color: 'white', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 800, fontSize: 10 }}>FD</div>
                 <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start' }}>
-                  <span style={{ fontSize: 11.5, fontWeight: 700, color: C.neutralDark, lineHeight: 1.2 }}>Francisca Le Dantec</span>
+                  <span style={{ fontSize: 11.5, fontWeight: 700, color: C.neutralDark, lineHeight: 1.2 }}>Newcomer</span>
                   <span style={{ fontSize: 9.5, fontWeight: 600, color: C.neutralMuted, lineHeight: 1 }}>Consultor Junior</span>
                 </div>
               </div>
@@ -1578,7 +1578,7 @@ function OnboardingTrackerScene() {
 
                 <div style={{ textAlign: 'center' }}>
                   <div style={{ fontSize: 13, fontWeight: 700, color: C.neutralDark }}>{completedCount} of 10 Completed</div>
-                  <div style={{ fontSize: 11, color: C.neutralMuted, marginTop: 4 }}>Francisca's Learning Pace</div>
+                  <div style={{ fontSize: 11, color: C.neutralMuted, marginTop: 4 }}>Newcomer's Learning Pace</div>
                 </div>
 
                 {/* Progress bar */}
@@ -2415,9 +2415,9 @@ function AdminScene() {
   const t = Easing.easeOutQuad(progress);
 
   const rows = [
-    { name: 'Francisca Le Dantec', role: 'Week 12', progress: Math.floor(t * 91), score: Math.floor(t * 95), risk: false, status: 'On track' },
-    { name: 'Javier Pérez', role: 'Week 12', progress: Math.floor(t * 91), score: Math.floor(t * 91), risk: false, status: 'On track' },
-    { name: 'Matías Gutiérrez', role: 'Week 5', progress: Math.floor(t * 40), score: Math.floor(t * 71), risk: true, status: 'At risk' },
+    { name: 'Newcomer A', role: 'Week 12', progress: Math.floor(t * 91), score: Math.floor(t * 95), risk: false, status: 'On track' },
+    { name: 'Newcomer B', role: 'Week 12', progress: Math.floor(t * 91), score: Math.floor(t * 91), risk: false, status: 'On track' },
+    { name: 'Newcomer C', role: 'Week 5', progress: Math.floor(t * 40), score: Math.floor(t * 71), risk: true, status: 'At risk' },
   ];
 
   return (
@@ -2687,7 +2687,7 @@ function CertificateScene() {
           
           <div style={{ textAlign: 'center' }}>
             <div style={{ fontFamily: FONT_D, fontSize: 28, fontWeight: 700, color: C.primary, marginBottom: 4 }}>
-              Francisca Le Dantec
+              Newcomer
             </div>
             <div style={{ fontSize: 15, fontWeight: 500, color: C.neutralDark, letterSpacing: -0.1 }}>
               reached full autonomy
