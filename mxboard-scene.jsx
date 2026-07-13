@@ -977,15 +977,6 @@ function LifecycleScene() {
     fontWeight: 500,
   };
 
-  // Scroll down animation starting at 4.8s, finishing at 6.0s
-  let scrollOffset = 0;
-  if (localTime >= 4.8 && localTime < 6.0) {
-    const t = (localTime - 4.8) / 1.2;
-    scrollOffset = interpolate([0, 1], [0, 240], Easing.easeInOutQuad)(t);
-  } else if (localTime >= 6.0) {
-    scrollOffset = 240;
-  }
-
   return (
     <div style={{ position: 'absolute', inset: 0, opacity: currentOpacity, transform: `scale(${scale})`, transformOrigin: 'center center' }}>
       <BrowserFrame activeTab="dashboard">
@@ -997,223 +988,140 @@ function LifecycleScene() {
             <div style={{ fontSize: 12.5, color: C.neutralMuted, marginTop: 2 }}>Contract Lifecycle Event simulation visualised in real-time.</div>
           </div>
 
-          <div style={{ flex: 1, overflow: 'hidden', position: 'relative', height: 335 }}>
-            <div style={{
-              transform: `translateY(-${scrollOffset}px)`,
-              transition: 'transform 0.08s linear',
-              display: 'flex', flexDirection: 'column'
-            }}>
-              {/* Slide 1: SVG Lifecycle Diagram */}
-              <div style={{ height: 335, display: 'flex', flexDirection: 'column', justifyContent: 'space-between', boxSizing: 'border-box' }}>
-                <div style={{ flex: 1, display: 'flex', justifyContent: 'center', alignItems: 'center', background: '#FFFFFF', marginTop: 10 }}>
-                  <svg viewBox="0 0 960 430" style={{ width: '82%', height: 'auto', overflow: 'visible', display: 'block' }}>
-                    
-                    {/* Row labels */}
-                    <text x="18" y="94" style={{ fontFamily: FONT_D, fontWeight: 600, fontSize: '14.5px', fill: '#0A0A0A' }}>Buy cur.</text>
-                    <text x="18" y="344" style={{ fontFamily: FONT_D, fontWeight: 600, fontSize: '14.5px', fill: '#0A0A0A' }}>Sell cur.</text>
+          <div style={{ flex: 1, display: 'flex', justifyContent: 'center', alignItems: 'center', background: '#FFFFFF', marginTop: 10 }}>
+            {/* The full beautiful SVG Diagram from index.html */}
+            <svg viewBox="0 0 960 430" style={{ width: '88%', height: 'auto', overflow: 'visible', display: 'block' }}>
+              
+              {/* Row labels */}
+              <text x="18" y="94" style={{ fontFamily: FONT_D, fontWeight: 600, fontSize: '14.5px', fill: '#0A0A0A' }}>Buy cur.</text>
+              <text x="18" y="344" style={{ fontFamily: FONT_D, fontWeight: 600, fontSize: '14.5px', fill: '#0A0A0A' }}>Sell cur.</text>
 
-                    {/* Date column guides */}
-                    <line x1="90" y1="46" x2="90" y2="392" style={{ stroke: '#C7C4D6', strokeWidth: 1.4, strokeDasharray: '2 5' }} />
-                    <line x1="860" y1="46" x2="860" y2="392" style={{ stroke: '#C7C4D6', strokeWidth: 1.4, strokeDasharray: '2 5' }} />
+              {/* Date column guides */}
+              <line x1="90" y1="46" x2="90" y2="392" style={{ stroke: '#C7C4D6', strokeWidth: 1.4, strokeDasharray: '2 5' }} />
+              <line x1="860" y1="46" x2="860" y2="392" style={{ stroke: '#C7C4D6', strokeWidth: 1.4, strokeDasharray: '2 5' }} />
 
-                    {/* Date pills on canvas */}
-                    <g style={{ cursor: 'pointer' }}>
-                      <rect x="45" y="18" width="90" height="26" rx="13" style={{ fill: isEvent1Active ? '#D4215B' : '#FFF0F3' }} />
-                      <text x="90" y="35" textAnchor="middle" style={{ fontFamily: FONT_D, fontSize: '11px', fontWeight: 700, fill: isEvent1Active ? '#FFFFFF' : '#D4215B', textTransform: 'uppercase', letterSpacing: '.05em' }}>Trade date</text>
-                    </g>
-                    <g style={{ cursor: 'pointer' }}>
-                      <rect x="815" y="18" width="90" height="26" rx="13" style={{ fill: isEvent2Active ? '#D4215B' : '#FFF0F3' }} />
-                      <text x="860" y="35" textAnchor="middle" style={{ fontFamily: FONT_D, fontSize: '11px', fontWeight: 700, fill: isEvent2Active ? '#FFFFFF' : '#D4215B', textTransform: 'uppercase', letterSpacing: '.05em' }}>Value date</text>
-                    </g>
+              {/* Date pills on canvas */}
+              <g style={{ cursor: 'pointer' }}>
+                <rect x="45" y="18" width="90" height="26" rx="13" style={{ fill: isEvent1Active ? '#D4215B' : '#FFF0F3' }} />
+                <text x="90" y="35" textAnchor="middle" style={{ fontFamily: FONT_D, fontSize: '11px', fontWeight: 700, fill: isEvent1Active ? '#FFFFFF' : '#D4215B', textTransform: 'uppercase', letterSpacing: '.05em' }}>Trade date</text>
+              </g>
+              <g style={{ cursor: 'pointer' }}>
+                <rect x="815" y="18" width="90" height="26" rx="13" style={{ fill: isEvent2Active ? '#D4215B' : '#FFF0F3' }} />
+                <text x="860" y="35" textAnchor="middle" style={{ fontFamily: FONT_D, fontSize: '11px', fontWeight: 700, fill: isEvent2Active ? '#FFFFFF' : '#D4215B', textTransform: 'uppercase', letterSpacing: '.05em' }}>Value date</text>
+              </g>
 
-                    {/* Dashed baselines */}
-                    <line x1="90" y1="90" x2="860" y2="90" style={{ stroke: '#F2F2F2', strokeWidth: 1.6, strokeDasharray: '6 5' }} />
-                    <line x1="90" y1="340" x2="860" y2="340" style={{ stroke: '#F2F2F2', strokeWidth: 1.6, strokeDasharray: '6 5' }} />
+              {/* Dashed baselines */}
+              <line x1="90" y1="90" x2="860" y2="90" style={{ stroke: '#F2F2F2', strokeWidth: 1.6, strokeDasharray: '6 5' }} />
+              <line x1="90" y1="340" x2="860" y2="340" style={{ stroke: '#F2F2F2', strokeWidth: 1.6, strokeDasharray: '6 5' }} />
 
-                    {/* MTM wavy line */}
-                    <path d="M90,215 C170,197 235,233 305,216 C375,199 440,233 510,216 C580,199 650,233 720,219 C765,216 800,215 860,215" 
-                      style={{ stroke: '#D4215B', strokeWidth: 2.6, fill: 'none', strokeLinecap: 'round' }} />
-                    
-                    {/* Dynamic progress marker circle */}
-                    <circle r="6" cx={markerX} cy={markerY} style={{ fill: '#D4215B', stroke: '#FFFFFF', strokeWidth: 2 }} />
+              {/* MTM wavy line */}
+              <path d="M90,215 C170,197 235,233 305,216 C375,199 440,233 510,216 C580,199 650,233 720,219 C765,216 800,215 860,215" 
+                style={{ stroke: '#D4215B', strokeWidth: 2.6, fill: 'none', strokeLinecap: 'round' }} />
+              
+              {/* Dynamic progress marker circle */}
+              <circle r="6" cx={markerX} cy={markerY} style={{ fill: '#D4215B', stroke: '#FFFFFF', strokeWidth: 2 }} />
 
-                    {/* OBS commitment (Trade Date) - Top */}
-                    <g style={boxGroupStyle(isEvent1Active, 'obs')}>
-                      <line x1="140" y1="65" x2="92" y2="88" style={{ stroke: '#EF9F27', strokeWidth: 1.3, strokeDasharray: '3 3', opacity: 0.7 }} />
-                      <rect x="140" y="14" width="212" height="58" style={boxRectStyle(isEvent1Active, 'obs')} />
-                      <text x="154" y="34" style={boxTextStyle}>OBS commitment</text>
-                      <text x="154" y="50" style={boxTextStyle}>notional receivable</text>
-                      <text x="154" y="66" style={smallTextStyle}>cur. 1 · USD 1,000,000</text>
-                    </g>
-                    <g style={{ opacity: isEvent1Active ? 1 : 0.22 }}>
-                      <circle cx="350" cy="20" r="13" style={{ fill: '#D4215B', stroke: '#FFFFFF', strokeWidth: 2 }} />
-                      <text x="350" y="24" textAnchor="middle" style={{ fill: '#FFFFFF', fontFamily: FONT_D, fontSize: 12, fontWeight: 700 }}>1</text>
-                    </g>
+              {/* OBS commitment (Trade Date) - Top */}
+              <g style={boxGroupStyle(isEvent1Active, 'obs')}>
+                <line x1="140" y1="65" x2="92" y2="88" style={{ stroke: '#EF9F27', strokeWidth: 1.3, strokeDasharray: '3 3', opacity: 0.7 }} />
+                <rect x="140" y="14" width="212" height="58" style={boxRectStyle(isEvent1Active, 'obs')} />
+                <text x="154" y="34" style={boxTextStyle}>OBS commitment</text>
+                <text x="154" y="50" style={boxTextStyle}>notional receivable</text>
+                <text x="154" y="66" style={smallTextStyle}>cur. 1 · USD 1,000,000</text>
+              </g>
+              <g style={{ opacity: isEvent1Active ? 1 : 0.22 }}>
+                <circle cx="350" cy="20" r="13" style={{ fill: '#D4215B', stroke: '#FFFFFF', strokeWidth: 2 }} />
+                <text x="350" y="24" textAnchor="middle" style={{ fill: '#FFFFFF', fontFamily: FONT_D, fontSize: 12, fontWeight: 700 }}>1</text>
+              </g>
 
-                    {/* OBS commitment (Trade Date) - Bottom */}
-                    <g style={boxGroupStyle(isEvent1Active, 'obs')}>
-                      <line x1="140" y1="365" x2="92" y2="342" style={{ stroke: '#EF9F27', strokeWidth: 1.3, strokeDasharray: '3 3', opacity: 0.7 }} />
-                      <rect x="140" y="357" width="212" height="58" style={boxRectStyle(isEvent1Active, 'obs')} />
-                      <text x="154" y="377" style={boxTextStyle}>OBS commitment</text>
-                      <text x="154" y="393" style={boxTextStyle}>notional payable</text>
-                      <text x="154" y="409" style={smallTextStyle}>cur. 2 · EUR 920,000</text>
-                    </g>
-                    <g style={{ opacity: isEvent1Active ? 1 : 0.22 }}>
-                      <circle cx="350" cy="363" r="13" style={{ fill: '#D4215B', stroke: '#FFFFFF', strokeWidth: 2 }} />
-                      <text x="350" y="367" textAnchor="middle" style={{ fill: '#FFFFFF', fontFamily: FONT_D, fontSize: 12, fontWeight: 700 }}>1</text>
-                    </g>
+              {/* OBS commitment (Trade Date) - Bottom */}
+              <g style={boxGroupStyle(isEvent1Active, 'obs')}>
+                <line x1="140" y1="365" x2="92" y2="342" style={{ stroke: '#EF9F27', strokeWidth: 1.3, strokeDasharray: '3 3', opacity: 0.7 }} />
+                <rect x="140" y="357" width="212" height="58" style={boxRectStyle(isEvent1Active, 'obs')} />
+                <text x="154" y="377" style={boxTextStyle}>OBS commitment</text>
+                <text x="154" y="393" style={boxTextStyle}>notional payable</text>
+                <text x="154" y="409" style={smallTextStyle}>cur. 2 · EUR 920,000</text>
+              </g>
+              <g style={{ opacity: isEvent1Active ? 1 : 0.22 }}>
+                <circle cx="350" cy="363" r="13" style={{ fill: '#D4215B', stroke: '#FFFFFF', strokeWidth: 2 }} />
+                <text x="350" y="367" textAnchor="middle" style={{ fill: '#FFFFFF', fontFamily: FONT_D, fontSize: 12, fontWeight: 700 }}>1</text>
+              </g>
 
-                    {/* MTM value measurement */}
-                    <g style={boxGroupStyle(isEvent3Active, 'mtm')}>
-                      <line x1="470" y1="250" x2="470" y2="219" style={{ stroke: '#EF9F27', strokeWidth: 1.3, strokeDasharray: '3 3', opacity: 0.7 }} />
-                      <rect x="375" y="250" width="192" height="50" style={boxRectStyle(isEvent3Active, 'mtm')} />
-                      <text x="389" y="270" style={boxTextStyle}>MtM Value</text>
-                      <text x="389" y="286" style={smallTextStyle}>measurement</text>
-                    </g>
-                    <g style={{ opacity: isEvent3Active ? 1 : 0.22 }}>
-                      <circle cx="567" cy="256" r="13" style={{ fill: '#D4215B', stroke: '#FFFFFF', strokeWidth: 2 }} />
-                      <text x="567" y="260" textAnchor="middle" style={{ fill: '#FFFFFF', fontFamily: FONT_D, fontSize: 12, fontWeight: 700 }}>3</text>
-                    </g>
+              {/* MTM value measurement */}
+              <g style={boxGroupStyle(isEvent3Active, 'mtm')}>
+                <line x1="470" y1="250" x2="470" y2="219" style={{ stroke: '#EF9F27', strokeWidth: 1.3, strokeDasharray: '3 3', opacity: 0.7 }} />
+                <rect x="375" y="250" width="192" height="50" style={boxRectStyle(isEvent3Active, 'mtm')} />
+                <text x="389" y="270" style={boxTextStyle}>MtM Value</text>
+                <text x="389" y="286" style={smallTextStyle}>measurement</text>
+              </g>
+              <g style={{ opacity: isEvent3Active ? 1 : 0.22 }}>
+                <circle cx="567" cy="256" r="13" style={{ fill: '#D4215B', stroke: '#FFFFFF', strokeWidth: 2 }} />
+                <text x="567" y="260" textAnchor="middle" style={{ fill: '#FFFFFF', fontFamily: FONT_D, fontSize: 12, fontWeight: 700 }}>3</text>
+              </g>
 
-                    {/* Reverse OBS commitment (Value Date) - Top */}
-                    <g style={boxGroupStyle(isEvent2Active, 'obs')}>
-                      <line x1="820" y1="65" x2="858" y2="88" style={{ stroke: '#EF9F27', strokeWidth: 1.3, strokeDasharray: '3 3', opacity: 0.7 }} />
-                      <rect x="608" y="14" width="212" height="58" style={boxRectStyle(isEvent2Active, 'obs')} />
-                      <text x="622" y="38" style={boxTextStyle}>Reverse OBS</text>
-                      <text x="622" y="54" style={boxTextStyle}>commitment</text>
-                    </g>
-                    <g style={{ opacity: isEvent2Active ? 1 : 0.22 }}>
-                      <circle cx="820" cy="20" r="13" style={{ fill: '#D4215B', stroke: '#FFFFFF', strokeWidth: 2 }} />
-                      <text x="820" y="24" textAnchor="middle" style={{ fill: '#FFFFFF', fontFamily: FONT_D, fontSize: 12, fontWeight: 700 }}>2</text>
-                    </g>
+              {/* Reverse OBS commitment (Value Date) - Top */}
+              <g style={boxGroupStyle(isEvent2Active, 'obs')}>
+                <line x1="820" y1="65" x2="858" y2="88" style={{ stroke: '#EF9F27', strokeWidth: 1.3, strokeDasharray: '3 3', opacity: 0.7 }} />
+                <rect x="608" y="14" width="212" height="58" style={boxRectStyle(isEvent2Active, 'obs')} />
+                <text x="622" y="38" style={boxTextStyle}>Reverse OBS</text>
+                <text x="622" y="54" style={boxTextStyle}>commitment</text>
+              </g>
+              <g style={{ opacity: isEvent2Active ? 1 : 0.22 }}>
+                <circle cx="820" cy="20" r="13" style={{ fill: '#D4215B', stroke: '#FFFFFF', strokeWidth: 2 }} />
+                <text x="820" y="24" textAnchor="middle" style={{ fill: '#FFFFFF', fontFamily: FONT_D, fontSize: 12, fontWeight: 700 }}>2</text>
+              </g>
 
-                    {/* Reverse OBS commitment (Value Date) - Bottom */}
-                    <g style={boxGroupStyle(isEvent2Active, 'obs')}>
-                      <line x1="820" y1="365" x2="858" y2="342" style={{ stroke: '#EF9F27', strokeWidth: 1.3, strokeDasharray: '3 3', opacity: 0.7 }} />
-                      <rect x="608" y="357" width="212" height="58" style={boxRectStyle(isEvent2Active, 'obs')} />
-                      <text x="622" y="381" style={boxTextStyle}>Reverse OBS</text>
-                      <text x="622" y="397" style={boxTextStyle}>commitment</text>
-                    </g>
-                    <g style={{ opacity: isEvent2Active ? 1 : 0.22 }}>
-                      <circle cx="820" cy="363" r="13" style={{ fill: '#D4215B', stroke: '#FFFFFF', strokeWidth: 2 }} />
-                      <text x="820" y="367" textAnchor="middle" style={{ fill: '#FFFFFF', fontFamily: FONT_D, fontSize: 12, fontWeight: 700 }}>2</text>
-                    </g>
+              {/* Reverse OBS commitment (Value Date) - Bottom */}
+              <g style={boxGroupStyle(isEvent2Active, 'obs')}>
+                <line x1="820" y1="365" x2="858" y2="342" style={{ stroke: '#EF9F27', strokeWidth: 1.3, strokeDasharray: '3 3', opacity: 0.7 }} />
+                <rect x="608" y="357" width="212" height="58" style={boxRectStyle(isEvent2Active, 'obs')} />
+                <text x="622" y="381" style={boxTextStyle}>Reverse OBS</text>
+                <text x="622" y="397" style={boxTextStyle}>commitment</text>
+              </g>
+              <g style={{ opacity: isEvent2Active ? 1 : 0.22 }}>
+                <circle cx="820" cy="363" r="13" style={{ fill: '#D4215B', stroke: '#FFFFFF', strokeWidth: 2 }} />
+                <text x="820" y="367" textAnchor="middle" style={{ fill: '#FFFFFF', fontFamily: FONT_D, fontSize: 12, fontWeight: 700 }}>2</text>
+              </g>
 
-                    {/* Realized income / expense arrows */}
-                    <path d="M860,215 L860,128" style={{ stroke: '#1D9E75', strokeWidth: 2, fill: 'none', strokeLinecap: 'round', opacity: isEvent4Active ? 1 : 0.22 }} />
-                    <path d="M860,215 L860,302" style={{ stroke: '#E24B4A', strokeWidth: 2, fill: 'none', strokeLinecap: 'round', opacity: isEvent4Active ? 1 : 0.22 }} />
+              {/* Realized income / expense arrows */}
+              <path d="M860,215 L860,128" style={{ stroke: '#1D9E75', strokeWidth: 2, fill: 'none', strokeLinecap: 'round', opacity: isEvent4Active ? 1 : 0.22 }} />
+              <path d="M860,215 L860,302" style={{ stroke: '#E24B4A', strokeWidth: 2, fill: 'none', strokeLinecap: 'round', opacity: isEvent4Active ? 1 : 0.22 }} />
 
-                    {/* Realized income box */}
-                    <g style={boxGroupStyle(isEvent4Active, 'income')}>
-                      <rect x="756" y="90" width="188" height="50" style={boxRectStyle(isEvent4Active, 'income')} />
-                      <text x="770" y="110" style={boxTextStyle}>Realized income</text>
-                      <text x="770" y="126" style={smallTextStyle}>cur.1 · USD 1,000,000</text>
-                    </g>
-                    <g style={{ opacity: isEvent4Active ? 1 : 0.22 }}>
-                      <circle cx="944" cy="96" r="13" style={{ fill: '#D4215B', stroke: '#FFFFFF', strokeWidth: 2 }} />
-                      <text x="944" y="100" textAnchor="middle" style={{ fill: '#FFFFFF', fontFamily: FONT_D, fontSize: 12, fontWeight: 700 }}>4</text>
-                    </g>
+              {/* Realized income box */}
+              <g style={boxGroupStyle(isEvent4Active, 'income')}>
+                <rect x="756" y="90" width="188" height="50" style={boxRectStyle(isEvent4Active, 'income')} />
+                <text x="770" y="110" style={boxTextStyle}>Realized income</text>
+                <text x="770" y="126" style={smallTextStyle}>cur.1 · USD 1,000,000</text>
+              </g>
+              <g style={{ opacity: isEvent4Active ? 1 : 0.22 }}>
+                <circle cx="944" cy="96" r="13" style={{ fill: '#D4215B', stroke: '#FFFFFF', strokeWidth: 2 }} />
+                <text x="944" y="100" textAnchor="middle" style={{ fill: '#FFFFFF', fontFamily: FONT_D, fontSize: 12, fontWeight: 700 }}>4</text>
+              </g>
 
-                    {/* Realized expense box */}
-                    <g style={boxGroupStyle(isEvent4Active, 'expense')}>
-                      <rect x="756" y="290" width="188" height="50" style={boxRectStyle(isEvent4Active, 'expense')} />
-                      <text x="770" y="310" style={boxTextStyle}>Realized expense</text>
-                      <text x="770" y="326" style={smallTextStyle}>cur.2 · EUR 920,000</text>
-                    </g>
-                    <g style={{ opacity: isEvent4Active ? 1 : 0.22 }}>
-                      <circle cx="944" cy="296" r="13" style={{ fill: '#D4215B', stroke: '#FFFFFF', strokeWidth: 2 }} />
-                      <text x="944" y="300" textAnchor="middle" style={{ fill: '#FFFFFF', fontFamily: FONT_D, fontSize: 12, fontWeight: 700 }}>4</text>
-                    </g>
-                  </svg>
-                </div>
-                
-                {/* Descriptive caption */}
-                <div style={{
-                  fontSize: '12.5px', color: '#64748B', padding: '10px 14px',
-                  backgroundColor: '#F8FAFC', borderRadius: '8px', textAlign: 'center',
-                  borderLeft: '3px solid #D4215B', fontWeight: 600, flexShrink: 0,
-                  marginBottom: 6
-                }}>
-                  {localTime < 1.2 && "Press Next Event to start the contract lifecycle."}
-                  {localTime >= 1.2 && localTime < 2.8 && "OBS commitment notional receivable and payable amounts are booked in Off-Balance Sheet (OBS) accounts."}
-                  {localTime >= 2.8 && localTime < 4.8 && "The MtM value measurement tracks market fluctuations of the FX contract value."}
-                  {localTime >= 4.8 && localTime < 5.6 && "At Value Date, OBS commitments are fully reversed."}
-                  {localTime >= 5.6 && "The realized income and expense are settled and recorded on the Balance Sheet."}
-                </div>
-              </div>
-
-              {/* Slide 2: Representative Posted Journal Entries Table */}
-              <div style={{
-                marginTop: 10, display: 'flex', flexDirection: 'column', gap: 10,
-                height: 240, boxSizing: 'border-box'
-              }}>
-                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                  <div>
-                    <h4 style={{ fontFamily: FONT_D, fontSize: 14, fontWeight: 700, color: C.neutralDark, margin: 0 }}>
-                      Posted Journal Entries (Murex Ledger)
-                    </h4>
-                    <div style={{ fontSize: 11.5, color: C.neutralMuted, marginTop: 2, fontWeight: 500 }}>
-                      Representative postings automatically triggered in the ledger.
-                    </div>
-                  </div>
-                  <span style={{
-                    background: '#E6FDF4', border: '1px solid #10B98130', color: '#10B981', fontSize: 10, fontWeight: 800,
-                    padding: '3px 10px', borderRadius: 20, textTransform: 'uppercase', letterSpacing: 0.5
-                  }}>
-                    Chilean Accounting Ledger
-                  </span>
-                </div>
-
-                <div style={{ border: `1.5px solid ${C.neutralBorder}`, borderRadius: 10, overflow: 'hidden' }}>
-                  {/* Headers */}
-                  <div style={{
-                    display: 'grid', gridTemplateColumns: '1.2fr 1.5fr 1.5fr 1.2fr 0.8fr',
-                    padding: '8px 12px', background: '#F8FAFC', fontSize: 10, fontWeight: 700,
-                    color: C.neutralMuted, textTransform: 'uppercase', letterSpacing: 0.5,
-                    borderBottom: `1.5px solid ${C.neutralBorder}`
-                  }}>
-                    <span>Lifecycle Event</span>
-                    <span>Debit Account (DR)</span>
-                    <span>Credit Account (CR)</span>
-                    <span>Amount</span>
-                    <span style={{ textAlign: 'right' }}>Status</span>
-                  </div>
-
-                  {/* Rows */}
-                  {[
-                    { event: 'Initial Commitment', dr: 'OBS USD Receivable', cr: 'OBS USD Payable', amt: '1,000,000 USD', active: localTime >= 1.2 },
-                    { event: 'MtM Revaluation', dr: 'Unrealized Asset (BS)', cr: 'MTM Gain (P&L)', amt: '10,000 USD', active: localTime >= 2.8 },
-                    { event: 'Cash Settlement', dr: 'Cash Nostro Account', cr: 'Unrealized Asset (BS)', amt: '1,000,000 USD', active: localTime >= 5.6 }
-                  ].map((row, i) => (
-                    <div key={i} style={{
-                      display: 'grid', gridTemplateColumns: '1.2fr 1.5fr 1.5fr 1.2fr 0.8fr',
-                      padding: '8px 12px', borderBottom: i === 2 ? 'none' : `1px solid ${C.neutralBorder}`,
-                      alignItems: 'center', opacity: row.active ? 1 : 0.2,
-                      background: row.active && i === 2 && localTime >= 5.6 ? `${C.primary}05` : 'white',
-                      transition: 'all 0.3s ease'
-                    }}>
-                      <span style={{ fontSize: 11.5, fontWeight: 700, color: C.neutralDark }}>{row.event}</span>
-                      <span style={{ fontSize: 10.5, fontWeight: 600, color: C.neutralDark, fontFamily: 'monospace' }}>{row.dr}</span>
-                      <span style={{ fontSize: 10.5, fontWeight: 600, color: C.neutralDark, fontFamily: 'monospace' }}>{row.cr}</span>
-                      <span style={{ fontSize: 11.5, fontWeight: 700, color: C.neutralDark }}>{row.amt}</span>
-                      <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
-                        {row.active ? (
-                          <span style={{
-                            fontSize: 9, fontWeight: 800, padding: '2px 8px', borderRadius: 20,
-                            background: '#E6FDF4', color: '#10B981'
-                          }}>POSTED</span>
-                        ) : (
-                          <span style={{
-                            fontSize: 9, fontWeight: 700, padding: '2px 8px', borderRadius: 20,
-                            background: '#F1F5F9', color: C.neutralMuted
-                          }}>PENDING</span>
-                        )}
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            </div>
+              {/* Realized expense box */}
+              <g style={boxGroupStyle(isEvent4Active, 'expense')}>
+                <rect x="756" y="290" width="188" height="50" style={boxRectStyle(isEvent4Active, 'expense')} />
+                <text x="770" y="310" style={boxTextStyle}>Realized expense</text>
+                <text x="770" y="326" style={smallTextStyle}>cur.2 · EUR 920,000</text>
+              </g>
+              <g style={{ opacity: isEvent4Active ? 1 : 0.22 }}>
+                <circle cx="944" cy="296" r="13" style={{ fill: '#D4215B', stroke: '#FFFFFF', strokeWidth: 2 }} />
+                <text x="944" y="300" textAnchor="middle" style={{ fill: '#FFFFFF', fontFamily: FONT_D, fontSize: 12, fontWeight: 700 }}>4</text>
+              </g>
+            </svg>
+          </div>
+          
+          {/* Simple matching descriptive caption */}
+          <div style={{
+            fontSize: '13px', color: '#888888', padding: '10px',
+            backgroundColor: '#F9F9FB', borderRadius: '8px', textAlign: 'center',
+            borderLeft: '3px solid #D4215B', fontWeight: 500, flexShrink: 0
+          }}>
+            {localTime < 1.2 && "Press Next Event to start the contract lifecycle."}
+            {localTime >= 1.2 && localTime < 2.8 && "OBS commitment notional receivable and payable amounts are booked in Off-Balance Sheet (OBS) accounts."}
+            {localTime >= 2.8 && localTime < 4.8 && "The MtM value measurement tracks market fluctuations of the FX contract value."}
+            {localTime >= 4.8 && localTime < 5.6 && "At Value Date, OBS commitments are fully reversed."}
+            {localTime >= 5.6 && "The realized income and expense are settled and recorded on the Balance Sheet."}
           </div>
         </div>
       </BrowserFrame>
@@ -2600,20 +2508,20 @@ function QuizScene() {
   const isSelected = localTime >= 2.5;
 
   // Cursor animation for QuizScene (clicking Option B)
-  let cursorX = 600;
-  let cursorY = 420;
+  let cursorX = 750;
+  let cursorY = 440;
   let cursorOpacity = 0;
   let isClicking = false;
   
   if (localTime >= 1.0 && localTime < 2.5) {
     cursorOpacity = 1;
     const t = (localTime - 1.0) / 1.5;
-    cursorX = interpolate([0, 1], [600, 380], Easing.easeInOutQuad)(t);
-    cursorY = interpolate([0, 1], [420, 330], Easing.easeInOutQuad)(t);
+    cursorX = interpolate([0, 1], [750, 320], Easing.easeInOutQuad)(t);
+    cursorY = interpolate([0, 1], [440, 292], Easing.easeInOutQuad)(t);
   } else if (localTime >= 2.5 && localTime < 3.2) {
     cursorOpacity = 1;
-    cursorX = 380;
-    cursorY = 330;
+    cursorX = 320;
+    cursorY = 292;
     isClicking = true;
   }
 
