@@ -1110,19 +1110,6 @@ function LifecycleScene() {
               </g>
             </svg>
           </div>
-          
-          {/* Simple matching descriptive caption */}
-          <div style={{
-            fontSize: '13px', color: '#888888', padding: '10px',
-            backgroundColor: '#F9F9FB', borderRadius: '8px', textAlign: 'center',
-            borderLeft: '3px solid #D4215B', fontWeight: 500, flexShrink: 0
-          }}>
-            {localTime < 1.2 && "Press Next Event to start the contract lifecycle."}
-            {localTime >= 1.2 && localTime < 2.8 && "OBS commitment notional receivable and payable amounts are booked in Off-Balance Sheet (OBS) accounts."}
-            {localTime >= 2.8 && localTime < 4.8 && "The MtM value measurement tracks market fluctuations of the FX contract value."}
-            {localTime >= 4.8 && localTime < 5.6 && "At Value Date, OBS commitments are fully reversed."}
-            {localTime >= 5.6 && "The realized income and expense are settled and recorded on the Balance Sheet."}
-          </div>
         </div>
       </BrowserFrame>
     </div>
@@ -2507,24 +2494,6 @@ function QuizScene() {
 
   const isSelected = localTime >= 2.5;
 
-  // Cursor animation for QuizScene (clicking Option B)
-  let cursorX = 750;
-  let cursorY = 440;
-  let cursorOpacity = 0;
-  let isClicking = false;
-  
-  if (localTime >= 1.0 && localTime < 2.5) {
-    cursorOpacity = 1;
-    const t = (localTime - 1.0) / 1.5;
-    cursorX = interpolate([0, 1], [750, 320], Easing.easeInOutQuad)(t);
-    cursorY = interpolate([0, 1], [440, 292], Easing.easeInOutQuad)(t);
-  } else if (localTime >= 2.5 && localTime < 3.2) {
-    cursorOpacity = 1;
-    cursorX = 320;
-    cursorY = 292;
-    isClicking = true;
-  }
-
   return (
     <div style={{ position: 'absolute', inset: 0, opacity: currentOpacity, transform: `scale(${scale})`, transformOrigin: 'center center' }}>
       <BrowserFrame activeTab="evaluation">
@@ -2571,19 +2540,6 @@ function QuizScene() {
               })}
             </div>
           </div>
-
-          {/* Mouse pointer */}
-          {cursorOpacity > 0 && (
-            <div style={{
-              position: 'absolute', left: cursorX, top: cursorY, zIndex: 150,
-              pointerEvents: 'none', opacity: cursorOpacity, transition: 'opacity 0.2s',
-              transform: isClicking ? 'scale(0.85)' : 'none'
-            }}>
-              <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
-                <path d="M4.5 3V19.5L9.64 14.36L16.29 21L19.5 17.79L12.85 11.15L19.5 9.64L4.5 3Z" fill="black" stroke="white" strokeWidth="2" strokeLinejoin="miter" />
-              </svg>
-            </div>
-          )}
         </div>
       </BrowserFrame>
     </div>
