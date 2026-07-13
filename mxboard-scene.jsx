@@ -1255,6 +1255,379 @@ function ResourcesScene() {
   );
 }
 
+function OnboardingTrackerScene() {
+  const { localTime, duration } = useSprite();
+  
+  const entryT = clampVal(localTime / 0.8, 0, 1);
+  const scale = interpolate([0, 1], [0.95, 1.0], Easing.easeOutBack)(entryT);
+  const opacity = entryT;
+
+  let currentOpacity = opacity;
+  const exitStart = duration - 0.5;
+  if (localTime > exitStart) {
+    const t = (localTime - exitStart) / 0.5;
+    currentOpacity = 1 - t;
+  }
+
+  const videos = [
+    'Module: Double Entry Systems',
+    'Module: Accounting Principles',
+    'Module: International Financial Reporting Standards',
+    'Module: Valuation Concepts',
+    'Module: IAS Measurements',
+    'Module: Impairment of Assets',
+    'Module: Hedge Accounting - IFRS 9',
+    'Module: Fair Value Measurement - IFRS 13',
+    'Module: Financial Instruments - IFRS 9',
+    'Module: Cash Flow Statement'
+  ];
+
+  // Scroll offset simulation
+  let scrollOffset = 0;
+  if (localTime >= 2.0 && localTime < 6.0) {
+    const t = (localTime - 2.0) / 4.0;
+    scrollOffset = interpolate([0, 1], [0, 180], Easing.easeInOutQuad)(t);
+  } else if (localTime >= 6.0) {
+    scrollOffset = 180;
+  }
+
+  const clickSequence = [
+    { index: 3, checkTime: 1.8, startMove: 1.0, endMove: 1.7 },
+    { index: 4, checkTime: 2.6, startMove: 1.9, endMove: 2.5 },
+    { index: 5, checkTime: 3.4, startMove: 2.7, endMove: 3.3 },
+    { index: 6, checkTime: 4.2, startMove: 3.5, endMove: 4.1 },
+    { index: 7, checkTime: 5.0, startMove: 4.3, endMove: 4.9 },
+    { index: 8, checkTime: 5.8, startMove: 5.1, endMove: 5.7 },
+    { index: 9, checkTime: 6.6, startMove: 5.9, endMove: 6.5 }
+  ];
+
+  // Check row completions based on localTime
+  const getRowState = (i) => {
+    if (i === 0 || i === 1 || i === 2) return true;
+    const step = clickSequence.find(s => s.index === i);
+    if (step && localTime >= step.checkTime) return true;
+    return false;
+  };
+
+  let completedCount = 3;
+  clickSequence.forEach(s => {
+    if (localTime >= s.checkTime) {
+      completedCount++;
+    }
+  });
+  const pct = completedCount * 10;
+
+  // Cursor coordinates relative to BrowserFrame content
+  let cursorX = 500;
+  let cursorY = 400;
+  let cursorOpacity = 0;
+  let isClicking = false;
+
+  const activeStep = clickSequence.find(s => localTime >= s.startMove && localTime < s.checkTime + 0.1);
+  if (activeStep) {
+    cursorOpacity = 1;
+    const targetX = 85;
+    const targetY = 246 + activeStep.index * 42 - scrollOffset;
+    
+    if (localTime < activeStep.endMove) {
+      const t = (localTime - activeStep.startMove) / (activeStep.endMove - activeStep.startMove);
+      let prevX = 500, prevY = 400;
+      const prevStepIdx = clickSequence.indexOf(activeStep) - 1;
+      if (prevStepIdx >= 0) {
+        const prevStep = clickSequence[prevStepIdx];
+        prevX = 85;
+        prevY = 246 + prevStep.index * 42 - scrollOffset;
+      }
+      cursorX = interpolate([0, 1], [prevX, targetX], Easing.easeInOutQuad)(t);
+      cursorY = interpolate([0, 1], [prevY, targetY], Easing.easeInOutQuad)(t);
+    } else {
+      cursorX = targetX;
+      cursorY = targetY;
+      if (localTime >= activeStep.endMove && localTime < activeStep.checkTime) {
+        isClicking = true;
+      }
+    }
+  } else if (localTime >= 6.7 && localTime < 7.5) {
+    cursorOpacity = 1;
+    const t = (localTime - 6.7) / 0.8;
+    cursorX = interpolate([0, 1], [85, 780], Easing.easeOutQuad)(t);
+    cursorY = interpolate([0, 1], [246 + 9 * 42 - scrollOffset, 220], Easing.easeOutQuad)(t);
+  }
+
+  // Circular progress ring values
+  const r = 38, c = 2 * Math.PI * r;
+  const strokeOffset = c * (1 - pct / 100);
+
+  return (
+    <div style={{ position: 'absolute', inset: 0, opacity: currentOpacity, transform: `scale(${scale})`, transformOrigin: 'center center' }}>
+      <BrowserFrame noNavbar={true}>
+        <div style={{ display: 'flex', flexDirection: 'column', height: '100%', width: '100%', fontFamily: FONT }}>
+          
+          {/* Custom Header matching screenshot */}
+          <div style={{
+            height: 60, background: 'white', borderBottom: `1.5px solid ${C.neutralBorder}`,
+            display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '0 34px',
+            boxSizing: 'border-box', flexShrink: 0
+          }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: 14 }}>
+              <div style={{
+                fontFamily: FONT_D, fontWeight: 800, fontSize: 20, color: C.neutralDark, display: 'flex',
+                alignItems: 'center', gap: 6
+              }}>
+                <div style={{
+                  width: 26, height: 26, borderRadius: '50%', background: C.primary, color: 'white',
+                  display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 800, fontSize: 13, fontFamily: FONT_D
+                }}>M</div>
+                MX<span style={{ color: C.primary }}>Board</span>
+              </div>
+              <div style={{ width: 1.5, height: 16, background: C.neutralBorder }} />
+              <span style={{ fontSize: 13, fontWeight: 600, color: C.neutralMuted }}>Onboarding Tracker</span>
+              
+              {/* Cloud Sync badge */}
+              <div style={{
+                display: 'flex', alignItems: 'center', gap: 6, background: '#EAFDF7', border: '1px dashed #A3F1D7',
+                borderRadius: 20, padding: '3px 12px', fontSize: 11, fontWeight: 700, color: '#14BA82', marginLeft: 10
+              }}>
+                <span style={{
+                  width: 6, height: 6, borderRadius: '50%', background: '#14BA82',
+                  boxShadow: `0 0 0 ${2 + Math.sin(localTime * 4) * 2}px rgba(20,186,130,0.2)`
+                }} />
+                Cloud Sync
+              </div>
+            </div>
+
+            <div style={{ display: 'flex', alignItems: 'center', gap: 20 }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: 10, background: '#F4F4F6', padding: '4px 14px', borderRadius: 20 }}>
+                <div style={{ width: 22, height: 22, borderRadius: '50%', background: '#B01A47', color: 'white', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 800, fontSize: 10 }}>FD</div>
+                <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start' }}>
+                  <span style={{ fontSize: 11.5, fontWeight: 700, color: C.neutralDark, lineHeight: 1.2 }}>Francisca Le Dantec</span>
+                  <span style={{ fontSize: 9.5, fontWeight: 600, color: C.neutralMuted, lineHeight: 1 }}>Consultor Junior</span>
+                </div>
+              </div>
+              <div style={{ width: 1.5, height: 16, background: C.neutralBorder }} />
+              <div style={{ display: 'flex', alignItems: 'center', gap: 6, fontSize: 12.5, fontWeight: 700, color: C.neutralMuted, cursor: 'pointer' }}>
+                <Icon name="logout" size={14} color={C.neutralMuted} />
+                Log Out
+              </div>
+            </div>
+          </div>
+
+          {/* Body Content */}
+          <div style={{ flex: 1, padding: 24, background: '#F8F9FA', boxSizing: 'border-box', display: 'flex', gap: 20, overflow: 'hidden' }}>
+            
+            {/* Left Content Area: Course Modules Card */}
+            <div style={{
+              flex: 1, background: 'white', border: `1.5px solid ${C.neutralBorder}`, borderRadius: 14,
+              padding: 20, display: 'flex', flexDirection: 'column', gap: 14, boxSizing: 'border-box', overflow: 'hidden'
+            }}>
+              
+              {/* Card Header */}
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexShrink: 0 }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+                  <Icon name="folder" size={18} color={C.primary} />
+                  <h3 style={{ fontFamily: FONT_D, fontSize: 17, fontWeight: 700, color: C.neutralDark, margin: 0 }}>MXLearn Onboarding Modules</h3>
+                </div>
+                <span style={{
+                  background: '#EAFDF5', border: '1px solid #A3F1D4', color: '#10B981', fontSize: 10, fontWeight: 700,
+                  padding: '3px 10px', borderRadius: 20, textTransform: 'uppercase', letterSpacing: 0.5
+                }}>
+                  Active Self-Management
+                </span>
+              </div>
+
+              {/* Tabs */}
+              <div style={{ display: 'flex', gap: 14, borderBottom: `1.5px solid ${C.neutralBorder}`, paddingBottom: 10, flexShrink: 0 }}>
+                <span style={{ fontSize: 12.5, fontWeight: 600, color: C.neutralMuted, display: 'flex', alignItems: 'center', gap: 4, cursor: 'pointer' }}>
+                  <Icon name="folder" size={13} color={C.neutralMuted} /> Financial Markets for Newcomers
+                </span>
+                <span style={{ fontSize: 12.5, fontWeight: 700, color: C.primary, borderBottom: `2px solid ${C.primary}`, paddingBottom: 10, display: 'flex', alignItems: 'center', gap: 4, cursor: 'pointer' }}>
+                  <Icon name="folder" size={13} color={C.primary} /> Accounting Module
+                </span>
+                <span style={{ fontSize: 12.5, fontWeight: 600, color: C.neutralMuted, display: 'flex', alignItems: 'center', gap: 4, cursor: 'pointer' }}>
+                  <Icon name="folder" size={13} color={C.neutralMuted} /> Liquidation Module
+                </span>
+              </div>
+
+              {/* Subtabs */}
+              <div style={{ display: 'flex', gap: 10, flexShrink: 0 }}>
+                <span style={{ background: C.primary, color: 'white', fontSize: 11.5, fontWeight: 700, padding: '6px 12px', borderRadius: 6, display: 'flex', alignItems: 'center', gap: 4, cursor: 'pointer' }}>
+                  <Icon name="folder" size={12} color="white" /> Accounting Fundamentals for Newcomers
+                </span>
+                <span style={{ border: `1.5px dashed ${C.neutralBorder}`, color: C.neutralMuted, fontSize: 11.5, fontWeight: 600, padding: '6px 12px', borderRadius: 6, display: 'flex', alignItems: 'center', gap: 4, cursor: 'pointer' }}>
+                  <Icon name="folder" size={12} color={C.neutralMuted} /> Financial Statements Introduction
+                </span>
+                <span style={{ border: `1.5px dashed ${C.neutralBorder}`, color: C.neutralMuted, fontSize: 11.5, fontWeight: 600, padding: '6px 12px', borderRadius: 6, display: 'flex', alignItems: 'center', gap: 4, cursor: 'pointer' }}>
+                  <Icon name="folder" size={12} color={C.neutralMuted} /> Generic EOD Troubleshooting
+                </span>
+              </div>
+
+              {/* Table Column Titles */}
+              <div style={{
+                display: 'grid', gridTemplateColumns: '40px 1.8fr 110px 110px', padding: '10px 14px 4px 14px',
+                borderBottom: `1.5px solid ${C.neutralBorder}`, fontSize: 10.5, fontWeight: 700, color: C.neutralMuted,
+                textTransform: 'uppercase', letterSpacing: 0.5, flexShrink: 0
+              }}>
+                <span>Status</span>
+                <span>Module / Onboarding Video</span>
+                <span style={{ textAlign: 'center' }}>Action</span>
+                <span style={{ textAlign: 'right' }}>Progress</span>
+              </div>
+
+              {/* Table Body (Scroll Wrapper) */}
+              <div style={{ flex: 1, overflow: 'hidden', position: 'relative' }}>
+                <div style={{
+                  transform: `translateY(-${scrollOffset}px)`,
+                  transition: 'transform 0.08s linear',
+                  display: 'flex', flexDirection: 'column'
+                }}>
+                  {videos.map((title, i) => {
+                    const completed = getRowState(i);
+                    return (
+                      <div key={i} style={{
+                        display: 'grid', gridTemplateColumns: '40px 1.8fr 110px 110px', alignItems: 'center',
+                        padding: '10px 14px', borderBottom: `1px solid ${C.neutralBorder}`,
+                        background: '#FFFFFF', minHeight: 42, boxSizing: 'border-box'
+                      }}>
+                        {/* Status Checkbox */}
+                        <div>
+                          {completed ? (
+                            <div style={{
+                              width: 18, height: 18, borderRadius: '50%', background: C.primary,
+                              display: 'flex', alignItems: 'center', justifyContent: 'center'
+                            }}>
+                              <Icon name="check" size={11} color="white" />
+                            </div>
+                          ) : (
+                            <div style={{
+                              width: 16, height: 16, borderRadius: '50%', border: `1.5px dashed ${C.neutralMuted}`,
+                              background: '#FFFFFF'
+                            }} />
+                          )}
+                        </div>
+
+                        {/* Title */}
+                        <span style={{ fontSize: 12.5, fontWeight: 700, color: C.neutralDark, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+                          {title}
+                        </span>
+
+                        {/* Action Go to Course */}
+                        <div style={{ display: 'flex', justifyContent: 'center' }}>
+                          <div style={{
+                            padding: '4px 10px', border: `1px solid ${C.primary}30`, borderRadius: 6,
+                            background: `${C.primary}05`, color: C.primary, fontSize: 10.5, fontWeight: 700,
+                            display: 'flex', alignItems: 'center', gap: 3, cursor: 'pointer', whiteSpace: 'nowrap'
+                          }}>
+                            <Icon name="external-link" size={10} color={C.primary} /> Go to Course
+                          </div>
+                        </div>
+
+                        {/* Progress Label */}
+                        <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
+                          {completed ? (
+                            <div style={{
+                              padding: '3px 8px', border: '1px solid #10B98130', borderRadius: 20,
+                              background: '#E6FDF4', color: '#10B981', fontSize: 10, fontWeight: 800,
+                              display: 'flex', alignItems: 'center', gap: 3
+                            }}>
+                              <Icon name="circle-check" size={10} color="#10B981" /> COMPLETED
+                            </div>
+                          ) : (
+                            <div style={{
+                              padding: '3px 8px', border: '1px solid #94A3B830', borderRadius: 20,
+                              background: '#F8FAFC', color: '#64748B', fontSize: 10, fontWeight: 700
+                            }}>
+                              PENDING
+                            </div>
+                          )}
+                        </div>
+                      </div>
+                    );
+                  })}
+                </div>
+              </div>
+
+            </div>
+
+            {/* Right Sidebar: Onboarding Progress Chart */}
+            <div style={{ width: 280, display: 'flex', flexDirection: 'column', gap: 16, flexShrink: 0 }}>
+              
+              {/* Progress Donut Card */}
+              <div style={{
+                background: 'white', border: `1.5px solid ${C.neutralBorder}`, borderRadius: 14,
+                padding: '24px 16px', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 16, boxSizing: 'border-box'
+              }}>
+                <div style={{ fontSize: 11, fontWeight: 800, color: C.neutralMuted, textTransform: 'uppercase', letterSpacing: 0.8 }}>
+                  Accounting Module Videos
+                </div>
+
+                {/* Donut gauge */}
+                <div style={{ position: 'relative', width: 100, height: 100 }}>
+                  <svg width="100" height="100" style={{ transform: 'rotate(-90deg)' }}>
+                    <circle cx="50" cy="50" r={r} fill="none" stroke="#F1F5F9" strokeWidth="6" />
+                    <circle cx="50" cy="50" r={r} fill="none" stroke={C.primary} strokeWidth="6" strokeLinecap="round"
+                      strokeDasharray={c} strokeDashoffset={strokeOffset} style={{ transition: 'stroke-dashoffset 0.1s linear' }} />
+                  </svg>
+                  <div style={{
+                    position: 'absolute', inset: 0, display: 'flex', alignItems: 'center', justifyContent: 'center'
+                  }}>
+                    <span style={{ fontFamily: FONT_D, fontSize: 24, fontWeight: 900, color: C.neutralDark, letterSpacing: -0.5 }}>
+                      {pct}%
+                    </span>
+                  </div>
+                </div>
+
+                <div style={{ textAlign: 'center' }}>
+                  <div style={{ fontSize: 13, fontWeight: 700, color: C.neutralDark }}>{completedCount} of 10 Completed</div>
+                  <div style={{ fontSize: 11, color: C.neutralMuted, marginTop: 4 }}>Francisca's Learning Pace</div>
+                </div>
+
+                {/* Progress bar */}
+                <div style={{ width: '100%', height: 6, background: '#F1F5F9', borderRadius: 10, overflow: 'hidden', marginTop: 4 }}>
+                  <div style={{ width: `${pct}%`, height: '100%', background: C.primary, borderRadius: 10, transition: 'width 0.1s linear' }} />
+                </div>
+              </div>
+
+              {/* Instructions / Info Card */}
+              <div style={{
+                background: '#0A0A0A', color: 'white', borderRadius: 14, padding: 18, boxSizing: 'border-box',
+                display: 'flex', flexDirection: 'column', gap: 10, flex: 1
+              }}>
+                <div style={{ fontSize: 10, fontWeight: 700, color: C.primary, textTransform: 'uppercase', letterSpacing: 1 }}>Next Module</div>
+                <h4 style={{ fontFamily: FONT_D, fontSize: 15, fontWeight: 700, margin: 0 }}>Financial Statements</h4>
+                <p style={{ fontSize: 11.5, color: 'rgba(255,255,255,0.6)', margin: 0, lineHeight: 1.4 }}>
+                  Once Accounting Fundamentals reaches 100%, P&amp;L and Balance Sheet video sessions will unlock automatically.
+                </p>
+                <div style={{
+                  marginTop: 'auto', background: 'rgba(255,255,255,0.06)', borderRadius: 8, padding: 10,
+                  fontSize: 10.5, color: 'rgba(255,255,255,0.8)', fontWeight: 600, display: 'flex', alignItems: 'center', gap: 6
+                }}>
+                  <Icon name="info-circle" size={13} color={C.primary} /> Self-paced onboarding track
+                </div>
+              </div>
+
+            </div>
+
+          </div>
+
+          {/* Mouse pointer */}
+          {cursorOpacity > 0 && (
+            <div style={{
+              position: 'absolute', left: cursorX, top: cursorY, zIndex: 100,
+              pointerEvents: 'none', opacity: cursorOpacity, transition: 'opacity 0.2s',
+              transform: isClicking ? 'scale(0.85)' : 'none'
+            }}>
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
+                <path d="M4.5 3V19.5L9.64 14.36L16.29 21L19.5 17.79L12.85 11.15L19.5 9.64L4.5 3Z" fill="black" stroke="white" strokeWidth="2" strokeLinejoin="miter" />
+              </svg>
+            </div>
+          )}
+
+        </div>
+      </BrowserFrame>
+    </div>
+  );
+}
+
 // SCENE: HOURS CONSUMED BY EXPERT `1:10–1:18`
 function HoursDashboardScene() {
   const { localTime, duration } = useSprite();
@@ -2405,8 +2778,22 @@ function MXBoardDemoScene() {
         <ResourcesScene />
       </Sprite>
 
-      {/* 1:06–1:10  →  Transition (Documentation -> Hours Control) */}
+      {/* 1:06–1:10  →  Transition (Documentation -> Onboarding Tracker) */}
       <Sprite start={66} end={70}>
+        <TextTransition
+          line1="Onboarding Tracker."
+          line2="Access official Finance PL videos in one place."
+          highlightWord="videos"
+        />
+      </Sprite>
+
+      {/* 1:10–1:18  →  Onboarding Tracker Mockup */}
+      <Sprite start={70} end={78}>
+        <OnboardingTrackerScene />
+      </Sprite>
+
+      {/* 1:18–1:22  →  Transition (Onboarding Tracker -> Hours Control) */}
+      <Sprite start={78} end={82}>
         <TextTransition
           line1="Hours Control by Expert."
           line2="Monitor mentoring and support hours."
@@ -2414,13 +2801,13 @@ function MXBoardDemoScene() {
         />
       </Sprite>
 
-      {/* 1:10–1:18  →  Hours Consumed Dashboard Mockup */}
-      <Sprite start={70} end={78}>
+      {/* 1:22–1:30  →  Hours Consumed Dashboard Mockup */}
+      <Sprite start={82} end={90}>
         <HoursDashboardScene />
       </Sprite>
 
-      {/* 1:18–1:22  →  Transition (Hours Control -> Timesheet Portal) */}
-      <Sprite start={78} end={82}>
+      {/* 1:30–1:34  →  Transition (Hours Control -> Timesheet Portal) */}
+      <Sprite start={90} end={94}>
         <TextTransition
           line1="Timesheet Hub."
           line2="Decimal hour conversion and charging codes."
@@ -2428,13 +2815,13 @@ function MXBoardDemoScene() {
         />
       </Sprite>
 
-      {/* 1:22–1:30  →  Timesheet Calculator and Management Mockup */}
-      <Sprite start={82} end={90}>
+      {/* 1:34–1:42  →  Timesheet Calculator and Management Mockup */}
+      <Sprite start={94} end={102}>
         <TimesheetScene />
       </Sprite>
 
-      {/* 1:30–1:34  →  Transition (Timesheet -> Calendar) */}
-      <Sprite start={90} end={94}>
+      {/* 1:42–1:46  →  Transition (Timesheet -> Calendar) */}
+      <Sprite start={102} end={106}>
         <TextTransition
           line1="Calendar Hub."
           line2="All your meetings, in one place."
@@ -2442,13 +2829,13 @@ function MXBoardDemoScene() {
         />
       </Sprite>
 
-      {/* 1:34–1:42  →  Calendar Hub */}
-      <Sprite start={94} end={102}>
+      {/* 1:46–1:54  →  Calendar Hub */}
+      <Sprite start={106} end={114}>
         <CalendarScene />
       </Sprite>
 
-      {/* 1:42–1:46  →  Transition (Calendar -> Admin) */}
-      <Sprite start={102} end={106}>
+      {/* 1:54–1:58  →  Transition (Calendar -> Admin) */}
+      <Sprite start={114} end={118}>
         <TextTransition
           line1="Administration Panel."
           line2="Real-time tracking of every newcomer."
@@ -2456,13 +2843,13 @@ function MXBoardDemoScene() {
         />
       </Sprite>
 
-      {/* 1:46–1:54  →  Admin Dashboard */}
-      <Sprite start={106} end={114}>
+      {/* 1:58–2:06  →  Admin Dashboard */}
+      <Sprite start={118} end={126}>
         <AdminScene />
       </Sprite>
 
-      {/* 1:54–1:58  →  Transition (Admin -> Quiz) */}
-      <Sprite start={114} end={118}>
+      {/* 2:06–2:10  →  Transition (Admin -> Quiz) */}
+      <Sprite start={126} end={130}>
         <TextTransition
           line1="Live Evaluations."
           line2="Technical knowledge, put to the test."
@@ -2470,13 +2857,13 @@ function MXBoardDemoScene() {
         />
       </Sprite>
 
-      {/* 1:58–2:06  →  Live Quiz */}
-      <Sprite start={118} end={126}>
+      {/* 2:10–2:18  →  Live Quiz */}
+      <Sprite start={130} end={138}>
         <QuizScene />
       </Sprite>
 
-      {/* 2:06–2:10  →  Transition (Quiz -> Autonomy) */}
-      <Sprite start={126} end={130}>
+      {/* 2:18–2:22  →  Transition (Quiz -> Autonomy) */}
+      <Sprite start={138} end={142}>
         <TextTransition
           line1="Autonomy Perception."
           line2="Rising from day one."
@@ -2484,18 +2871,18 @@ function MXBoardDemoScene() {
         />
       </Sprite>
 
-      {/* 2:10–2:16  →  Autonomy Bar & Donut RIngs */}
-      <Sprite start={130} end={136}>
+      {/* 2:22–2:28  →  Autonomy Bar & Donut Rings */}
+      <Sprite start={142} end={148}>
         <AutonomyScene />
       </Sprite>
 
-      {/* 2:16–2:24  →  Certificate Close */}
-      <Sprite start={136} end={144}>
+      {/* 2:28–2:36  →  Certificate Close */}
+      <Sprite start={148} end={156}>
         <CertificateScene />
       </Sprite>
 
-      {/* 2:24–2:28  →  Welcome Outro */}
-      <Sprite start={144} end={148}>
+      {/* 2:36–2:40  →  Welcome Outro */}
+      <Sprite start={156} end={160}>
         <OutroScene />
       </Sprite>
     </>
