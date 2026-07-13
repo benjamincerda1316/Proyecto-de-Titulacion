@@ -528,124 +528,268 @@ function AccountsGameScene() {
     currentOpacity = 1 - t;
   }
 
-  // Animation math of cursor dragging PPE brick
-  const startX = 280;
-  const startY = 320;
-  const endX = 760;
-  const endY = 280;
+  // Animation values
+  let cursorX = 850;
+  let cursorY = 450;
+  let cursorOpacity = 0;
+  let isClicking = false;
+
+  // Bricks relative coordinates:
+  // Brick 1 (PPE): left: 40, top: 120
+  // Brick 2 (Loans Payable): left: 40, top: 200
+  // Brick 3 (Common Stock): left: 40, top: 280
   
-  let brickX = startX;
-  let brickY = startY;
-  let isDragging = false;
+  // Drop targets coordinates:
+  // Slot 1 (Asset): left: 400, top: 120
+  // Slot 2 (Liability): left: 400, top: 230
+  // Slot 3 (Equity): left: 400, top: 340
   
-  if (localTime >= 1.5 && localTime < 4.5) {
-    isDragging = true;
-    const t = clampVal((localTime - 1.5) / 3.0, 0, 1);
+  let ppeX = 40, ppeY = 120;
+  let lpX = 40, lpY = 200;
+  let csX = 40, csY = 280;
+
+  let ppeDropped = false;
+  let lpDropped = false;
+  let csDropped = false;
+
+  // Phase 1: Drag PPE (40, 120) -> Asset Slot (400, 120)
+  if (localTime >= 1.0 && localTime < 1.4) {
+    cursorOpacity = 1;
+    const t = (localTime - 1.0) / 0.4;
+    cursorX = interpolate([0, 1], [850, 40 + 150], Easing.easeInOutQuad)(t);
+    cursorY = interpolate([0, 1], [450, 120 + 25], Easing.easeInOutQuad)(t);
+  } else if (localTime >= 1.4 && localTime < 2.4) {
+    cursorOpacity = 1;
+    isClicking = true;
+    const t = (localTime - 1.4) / 1.0;
     const easeT = Easing.easeInOutQuad(t);
-    brickX = interpolate([0, 1], [startX, endX], easeT);
-    brickY = interpolate([0, 1], [startY, endY], easeT);
-  } else if (localTime >= 4.5) {
-    brickX = endX;
-    brickY = endY;
+    cursorX = interpolate([0, 1], [40 + 150, 400 + 225], easeT);
+    cursorY = interpolate([0, 1], [120 + 25, 120 + 50], easeT);
+    ppeX = cursorX - 150;
+    ppeY = cursorY - 25;
+  } else if (localTime >= 2.4) {
+    ppeDropped = true;
   }
 
-  const showCorrectToast = localTime >= 4.5;
+  // Phase 2: Drag Loans Payable (40, 200) -> Liability Slot (400, 230)
+  if (localTime >= 2.6 && localTime < 3.0) {
+    cursorOpacity = 1;
+    const t = (localTime - 2.6) / 0.4;
+    cursorX = interpolate([0, 1], [400 + 225, 40 + 150], Easing.easeInOutQuad)(t);
+    cursorY = interpolate([0, 1], [120 + 50, 200 + 25], Easing.easeInOutQuad)(t);
+  } else if (localTime >= 3.0 && localTime < 4.0) {
+    cursorOpacity = 1;
+    isClicking = true;
+    const t = (localTime - 3.0) / 1.0;
+    const easeT = Easing.easeInOutQuad(t);
+    cursorX = interpolate([0, 1], [40 + 150, 400 + 225], easeT);
+    cursorY = interpolate([0, 1], [200 + 25, 230 + 50], easeT);
+    lpX = cursorX - 150;
+    lpY = cursorY - 25;
+  } else if (localTime >= 4.0) {
+    lpDropped = true;
+  }
+
+  // Phase 3: Drag Common Stock (40, 280) -> Equity Slot (400, 340)
+  if (localTime >= 4.2 && localTime < 4.6) {
+    cursorOpacity = 1;
+    const t = (localTime - 4.2) / 0.4;
+    cursorX = interpolate([0, 1], [400 + 225, 40 + 150], Easing.easeInOutQuad)(t);
+    cursorY = interpolate([0, 1], [230 + 50, 280 + 25], Easing.easeInOutQuad)(t);
+  } else if (localTime >= 4.6 && localTime < 5.6) {
+    cursorOpacity = 1;
+    isClicking = true;
+    const t = (localTime - 4.6) / 1.0;
+    const easeT = Easing.easeInOutQuad(t);
+    cursorX = interpolate([0, 1], [40 + 150, 400 + 225], easeT);
+    cursorY = interpolate([0, 1], [280 + 25, 340 + 50], easeT);
+    csX = cursorX - 150;
+    csY = cursorY - 25;
+  } else if (localTime >= 5.6) {
+    csDropped = true;
+  }
+
+  if (localTime >= 5.6 && localTime < 6.6) {
+    cursorOpacity = 1;
+    cursorX = 400 + 225;
+    cursorY = 340 + 50;
+  }
+
+  const showSuccessToast = localTime >= 5.8;
 
   return (
     <div style={{ position: 'absolute', inset: 0, opacity: currentOpacity, transform: `scale(${scale})`, transformOrigin: 'center center' }}>
       <BrowserFrame activeTab="dashboard">
-        <div style={{ padding: 34, fontFamily: FONT, width: '100%', height: '100%', boxSizing: 'border-box', display: 'flex', flexDirection: 'column', gap: 16, overflow: 'hidden' }}>
+        <div style={{ padding: 24, fontFamily: FONT, width: '100%', height: '100%', boxSizing: 'border-box', display: 'flex', flexDirection: 'column', gap: 16, overflow: 'hidden', position: 'relative' }}>
+          
+          {/* Header */}
           <div>
             <div style={{ display: 'flex', alignItems: 'center', gap: 8, fontFamily: FONT_D, fontSize: 18, fontWeight: 700, color: C.neutralDark }}>
               <Icon name="device-gamepad-2" size={20} color={C.primary} /> Week 1 — Account Classification Challenge
             </div>
-            <div style={{ fontSize: 12.5, color: C.neutralMuted, marginTop: 2 }}>Drag and drop the account brick into the correct balance sheet bucket.</div>
+            <div style={{ fontSize: 12.5, color: C.neutralMuted, marginTop: 2 }}>Drag and drop the account bricks into their correct Balance Sheet buckets.</div>
           </div>
 
-          <div style={{ flex: 1, display: 'flex', gap: 40, marginTop: 20, position: 'relative' }}>
-            {/* Left side: Bricks */}
-            <div style={{ width: 340, display: 'flex', flexDirection: 'column', gap: 14 }}>
-              <div style={{ fontSize: 12, fontWeight: 700, color: C.neutralMuted, textTransform: 'uppercase', letterSpacing: 0.5 }}>Available Accounts</div>
+          <div style={{ flex: 1, display: 'flex', gap: 40, marginTop: 10, position: 'relative' }}>
+            
+            {/* Left Column: Bricks */}
+            <div style={{ width: 320, display: 'flex', flexDirection: 'column', gap: 12 }}>
+              <div style={{ fontSize: 11.5, fontWeight: 700, color: C.neutralMuted, textTransform: 'uppercase', letterSpacing: 0.5 }}>Available Accounts</div>
               
-              {/* PPE Brick (Dragged) */}
+              {/* PPE Placeholder / Dragging */}
               <div style={{
-                position: 'absolute', left: brickX, top: brickY, width: 280, padding: '14px 18px',
-                borderRadius: 8, border: '1.5px solid #D4215B', background: '#FFFFFF',
-                color: C.primary, fontWeight: 700, fontSize: 14, cursor: 'pointer', zIndex: 10,
-                boxShadow: isDragging ? '0 8px 24px rgba(212,33,91,0.1)' : 'none',
-                opacity: localTime >= 4.5 ? 0 : 1, display: 'flex', justifyContent: 'space-between', alignItems: 'center'
+                height: 52, border: '1.5px dashed #E6E5EC', borderRadius: 8, background: '#F9F9FB',
+                position: 'relative'
               }}>
-                <span>Property, Plant &amp; Equip. (PPE)</span>
-                <Icon name="grip-vertical" size={14} color="#D4215B" />
+                {!ppeDropped && (
+                  <div style={{
+                    position: 'absolute', left: ppeX - 40, top: ppeY - 120, width: 280, padding: '14px 18px',
+                    borderRadius: 8, border: '1.5px solid #D4215B', background: '#FFFFFF',
+                    color: C.primary, fontWeight: 700, fontSize: 13, zIndex: 10,
+                    boxShadow: !ppeDropped && localTime >= 1.4 && localTime < 2.4 ? '0 8px 24px rgba(212,33,91,0.1)' : 'none',
+                    display: 'flex', justifyContent: 'space-between', alignItems: 'center', boxSizing: 'border-box'
+                  }}>
+                    <span>Property, Plant &amp; Equip. (PPE)</span>
+                    <Icon name="grip-vertical" size={14} color="#D4215B" />
+                  </div>
+                )}
               </div>
 
-              {/* Blank placeholder left in place of PPE */}
-              <div style={{ width: 280, height: 48, border: '1.5px dashed #F2F2F2', borderRadius: 8 }} />
-
+              {/* Loans Payable Placeholder / Dragging */}
               <div style={{
-                width: 280, padding: '14px 18px', borderRadius: 8, border: '1.5px solid #F2F2F2',
-                background: '#FFFFFF', color: '#888888', fontWeight: 600, fontSize: 14, display: 'flex', justifyContent: 'space-between', alignItems: 'center'
+                height: 52, border: '1.5px dashed #E6E5EC', borderRadius: 8, background: '#F9F9FB',
+                position: 'relative'
               }}>
-                <span>Equity Cash</span>
-                <Icon name="grip-vertical" size={14} color="#888888" />
+                {!lpDropped && (
+                  <div style={{
+                    position: 'absolute', left: lpX - 40, top: lpY - 200, width: 280, padding: '14px 18px',
+                    borderRadius: 8, border: '1.5px solid #D4215B', background: '#FFFFFF',
+                    color: C.primary, fontWeight: 700, fontSize: 13, zIndex: 10,
+                    boxShadow: !lpDropped && localTime >= 3.0 && localTime < 4.0 ? '0 8px 24px rgba(212,33,91,0.1)' : 'none',
+                    display: 'flex', justifyContent: 'space-between', alignItems: 'center', boxSizing: 'border-box'
+                  }}>
+                    <span>Loans Payable</span>
+                    <Icon name="grip-vertical" size={14} color="#D4215B" />
+                  </div>
+                )}
               </div>
+
+              {/* Common Stock Placeholder / Dragging */}
               <div style={{
-                width: 280, padding: '14px 18px', borderRadius: 8, border: '1.5px solid #F2F2F2',
-                background: '#FFFFFF', color: '#888888', fontWeight: 600, fontSize: 14, display: 'flex', justifyContent: 'space-between', alignItems: 'center'
+                height: 52, border: '1.5px dashed #E6E5EC', borderRadius: 8, background: '#F9F9FB',
+                position: 'relative'
               }}>
-                <span>Customer Loans</span>
-                <Icon name="grip-vertical" size={14} color="#888888" />
+                {!csDropped && (
+                  <div style={{
+                    position: 'absolute', left: csX - 40, top: csY - 280, width: 280, padding: '14px 18px',
+                    borderRadius: 8, border: '1.5px solid #D4215B', background: '#FFFFFF',
+                    color: C.primary, fontWeight: 700, fontSize: 13, zIndex: 10,
+                    boxShadow: !csDropped && localTime >= 4.6 && localTime < 5.6 ? '0 8px 24px rgba(212,33,91,0.1)' : 'none',
+                    display: 'flex', justifyContent: 'space-between', alignItems: 'center', boxSizing: 'border-box'
+                  }}>
+                    <span>Common Stock</span>
+                    <Icon name="grip-vertical" size={14} color="#D4215B" />
+                  </div>
+                )}
               </div>
             </div>
 
-            {/* Right side: Drop Buckets */}
-            <div style={{ flex: 1, display: 'flex', flexDirection: 'column', gap: 20 }}>
-              <div style={{ fontSize: 12, fontWeight: 700, color: C.neutralMuted, textTransform: 'uppercase', letterSpacing: 0.5 }}>Drop Targets</div>
+            {/* Right Column: Drop Targets */}
+            <div style={{ flex: 1, display: 'flex', flexDirection: 'column', gap: 14 }}>
+              <div style={{ fontSize: 11.5, fontWeight: 700, color: C.neutralMuted, textTransform: 'uppercase', letterSpacing: 0.5 }}>Drop Targets</div>
               
               {/* Asset Slot */}
               <div style={{
-                width: 450, minHeight: 100, border: showCorrectToast ? '2px solid #D4215B' : '2px dashed #E6E5EC',
-                borderRadius: 12, padding: 18, background: showCorrectToast ? '#FFF0F3' : '#FFFFFF',
-                display: 'flex', flexDirection: 'column', gap: 10, boxSizing: 'border-box'
+                width: 480, minHeight: 90, border: ppeDropped ? '2.5px solid #D4215B' : '2.5px dashed #E6E5EC',
+                borderRadius: 12, padding: '14px 18px', background: ppeDropped ? '#FFF0F3' : '#FFFFFF',
+                display: 'flex', flexDirection: 'column', gap: 8, boxSizing: 'border-box'
               }}>
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                  <span style={{ fontSize: 14, fontWeight: 700, color: C.neutralDark }}>Asset Accounts</span>
-                  {showCorrectToast && <Icon name="circle-check" size={16} color="#D4215B" />}
+                  <span style={{ fontSize: 13.5, fontWeight: 700, color: C.neutralDark }}>Asset Accounts</span>
+                  {ppeDropped && <Icon name="circle-check" size={16} color="#D4215B" />}
                 </div>
-                {showCorrectToast ? (
+                {ppeDropped ? (
                   <div style={{
-                    padding: '10px 14px', borderRadius: 6, border: '1.5px solid #D4215B',
-                    background: '#FFFFFF', color: '#D4215B', fontWeight: 700, fontSize: 13
+                    padding: '8px 12px', borderRadius: 6, border: '1.5px solid #D4215B',
+                    background: '#FFFFFF', color: '#D4215B', fontWeight: 700, fontSize: 12.5
                   }}>
                     Property, Plant &amp; Equip. (PPE)
                   </div>
                 ) : (
-                  <div style={{ fontSize: 12, color: C.neutralMuted, fontStyle: 'italic' }}>Drop Asset accounts here...</div>
+                  <div style={{ fontSize: 11.5, color: C.neutralMuted, fontStyle: 'italic' }}>Drop Asset accounts here...</div>
+                )}
+              </div>
+
+              {/* Liability Slot */}
+              <div style={{
+                width: 480, minHeight: 90, border: lpDropped ? '2.5px solid #D4215B' : '2.5px dashed #E6E5EC',
+                borderRadius: 12, padding: '14px 18px', background: lpDropped ? '#FFF0F3' : '#FFFFFF',
+                display: 'flex', flexDirection: 'column', gap: 8, boxSizing: 'border-box'
+              }}>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                  <span style={{ fontSize: 13.5, fontWeight: 700, color: C.neutralDark }}>Liability Accounts</span>
+                  {lpDropped && <Icon name="circle-check" size={16} color="#D4215B" />}
+                </div>
+                {lpDropped ? (
+                  <div style={{
+                    padding: '8px 12px', borderRadius: 6, border: '1.5px solid #D4215B',
+                    background: '#FFFFFF', color: '#D4215B', fontWeight: 700, fontSize: 12.5
+                  }}>
+                    Loans Payable
+                  </div>
+                ) : (
+                  <div style={{ fontSize: 11.5, color: C.neutralMuted, fontStyle: 'italic' }}>Drop Liability accounts here...</div>
                 )}
               </div>
 
               {/* Equity Slot */}
               <div style={{
-                width: 450, minHeight: 100, border: '2px dashed #E6E5EC',
-                borderRadius: 12, padding: 18, background: '#FFFFFF',
-                display: 'flex', flexDirection: 'column', gap: 10, boxSizing: 'border-box'
+                width: 480, minHeight: 90, border: csDropped ? '2.5px solid #D4215B' : '2.5px dashed #E6E5EC',
+                borderRadius: 12, padding: '14px 18px', background: csDropped ? '#FFF0F3' : '#FFFFFF',
+                display: 'flex', flexDirection: 'column', gap: 8, boxSizing: 'border-box'
               }}>
-                <span style={{ fontSize: 14, fontWeight: 700, color: C.neutralDark }}>Equity Accounts</span>
-                <div style={{ fontSize: 12, color: C.neutralMuted, fontStyle: 'italic' }}>Drop Equity accounts here...</div>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                  <span style={{ fontSize: 13.5, fontWeight: 700, color: C.neutralDark }}>Equity Accounts</span>
+                  {csDropped && <Icon name="circle-check" size={16} color="#D4215B" />}
+                </div>
+                {csDropped ? (
+                  <div style={{
+                    padding: '8px 12px', borderRadius: 6, border: '1.5px solid #D4215B',
+                    background: '#FFFFFF', color: '#D4215B', fontWeight: 700, fontSize: 12.5
+                  }}>
+                    Common Stock
+                  </div>
+                ) : (
+                  <div style={{ fontSize: 11.5, color: C.neutralMuted, fontStyle: 'italic' }}>Drop Equity accounts here...</div>
+                )}
               </div>
             </div>
 
-            {/* Correct Toast Pop-up */}
-            {showCorrectToast && (
+            {/* Success Congratulatory Toast */}
+            {showSuccessToast && (
               <div style={{
-                position: 'absolute', right: 40, top: 40, background: '#D4215B', color: 'white',
-                padding: '10px 20px', borderRadius: 8, fontSize: 13, fontWeight: 700,
-                boxShadow: '0 8px 24px rgba(212,33,91,0.2)', animation: 'bounce 0.5s'
+                position: 'absolute', right: 40, top: 0, background: '#1D9E75', color: 'white',
+                padding: '12px 24px', borderRadius: 8, fontSize: 13.5, fontWeight: 700,
+                boxShadow: '0 8px 24px rgba(29,158,117,0.2)', animation: 'bounce 0.5s'
               }}>
-                ✓ Correct! +10 Points
+                ✓ Challenge Completed! +30 Points
               </div>
             )}
           </div>
+
+          {/* Mouse pointer */}
+          {cursorOpacity > 0 && (
+            <div style={{
+              position: 'absolute', left: cursorX, top: cursorY, zIndex: 100,
+              pointerEvents: 'none', opacity: cursorOpacity, transition: 'opacity 0.2s',
+              transform: isClicking ? 'scale(0.85)' : 'none'
+            }}>
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
+                <path d="M4.5 3V19.5L9.64 14.36L16.29 21L19.5 17.79L12.85 11.15L19.5 9.64L4.5 3Z" fill="black" stroke="white" strokeWidth="2" strokeLinejoin="miter" />
+              </svg>
+            </div>
+          )}
+
         </div>
       </BrowserFrame>
     </div>
