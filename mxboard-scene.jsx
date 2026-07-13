@@ -614,8 +614,34 @@ function AccountsGameScene() {
     cursorX = 400 + 225;
     cursorY = 340 + 50;
   }
-
   const showSuccessToast = localTime >= 5.8;
+
+  // Centered Score Card Zoom bounds
+  const showCenterCard = localTime >= 5.6;
+  let centerCardScale = 0;
+  let centerCardOpacity = 0;
+  if (localTime >= 5.6 && localTime < 6.0) {
+    const t = (localTime - 5.6) / 0.4;
+    centerCardScale = interpolate([0, 1], [0.6, 1.0], Easing.easeOutBack)(t);
+    centerCardOpacity = t;
+  } else if (localTime >= 6.0) {
+    centerCardOpacity = 1;
+    centerCardScale = 1;
+  }
+
+  // Count up points from 0 to 120
+  let pointsCount = 0;
+  if (localTime >= 5.8 && localTime < 7.0) {
+    const tPoints = (localTime - 5.8) / 1.2;
+    pointsCount = Math.floor(tPoints * 12) * 10;
+  } else if (localTime >= 7.0) {
+    pointsCount = 120;
+  }
+
+  // Chart drawing progress
+  const chartLength = 220;
+  const tChart = clampVal((localTime - 5.8) / 1.2, 0, 1);
+  const chartOffset = chartLength * (1 - Easing.easeOutQuad(tChart));
 
   return (
     <div style={{ position: 'absolute', inset: 0, opacity: currentOpacity, transform: `scale(${scale})`, transformOrigin: 'center center' }}>
@@ -765,14 +791,76 @@ function AccountsGameScene() {
               </div>
             </div>
 
-            {/* Success Congratulatory Toast */}
-            {showSuccessToast && (
+            {/* Success Congratulatory Toast - Centered Zoom and Growing Curve Graph */}
+            {showCenterCard && (
               <div style={{
-                position: 'absolute', right: 40, top: 0, background: '#1D9E75', color: 'white',
-                padding: '12px 24px', borderRadius: 8, fontSize: 13.5, fontWeight: 700,
-                boxShadow: '0 8px 24px rgba(29,158,117,0.2)', animation: 'bounce 0.5s'
+                position: 'absolute', inset: 0, background: 'rgba(10,10,10,0.15)',
+                backdropFilter: 'blur(3px)', zIndex: 190, opacity: centerCardOpacity,
+                transition: 'opacity 0.2s', borderRadius: 12
+              }} />
+            )}
+
+            {showCenterCard && (
+              <div style={{
+                position: 'absolute', left: '50%', top: '50%',
+                transform: `translate(-50%, -50%) scale(${centerCardScale})`,
+                width: 420, padding: '30px 24px', background: 'white', borderRadius: 20,
+                border: `2px solid #1D9E75`,
+                boxShadow: '0 30px 70px rgba(29,158,117,0.2)', zIndex: 200,
+                opacity: centerCardOpacity, display: 'flex', flexDirection: 'column',
+                alignItems: 'center', gap: 14, fontFamily: FONT, boxSizing: 'border-box'
               }}>
-                ✓ Challenge Completed! +30 Points
+                <span style={{ fontSize: 32 }}>🏆</span>
+                <h3 style={{ fontFamily: FONT_D, fontSize: 20, fontWeight: 800, color: C.neutralDark, margin: 0 }}>
+                  Challenge Completed!
+                </h3>
+                <p style={{ fontSize: 13, color: C.neutralMuted, margin: 0, textAlign: 'center', fontWeight: 500 }}>
+                  All account categories correctly classified in record time.
+                </p>
+                
+                {/* Score counter */}
+                <div style={{
+                  fontFamily: FONT_D, fontSize: 56, fontWeight: 900, color: '#1D9E75',
+                  letterSpacing: -1, margin: '10px 0 0'
+                }}>
+                  +{pointsCount} <span style={{ fontSize: 18, fontWeight: 700, color: C.neutralMuted }}>Points</span>
+                </div>
+
+                {/* The growing curve graph */}
+                <svg width="320" height="120" style={{ overflow: 'visible', marginTop: 10 }}>
+                  {/* Grid guidelines */}
+                  <line x1="20" y1="20" x2="300" y2="20" style={{ stroke: '#F2F2F2', strokeWidth: 1.2 }} />
+                  <line x1="20" y1="60" x2="300" y2="60" style={{ stroke: '#F2F2F2', strokeWidth: 1.2 }} />
+                  <line x1="20" y1="100" x2="300" y2="100" style={{ stroke: '#F2F2F2', strokeWidth: 1.2 }} />
+
+                  {/* Left/Right labels */}
+                  <text x="5" y="104" style={{ fontFamily: FONT, fontSize: 9, fill: '#888888', fontWeight: 600 }}>0</text>
+                  <text x="306" y="24" style={{ fontFamily: FONT, fontSize: 9, fill: '#1D9E75', fontWeight: 700 }}>120</text>
+
+                  {/* Wavy line growing upwards */}
+                  <path
+                    d="M 20 100 Q 150 90 300 20"
+                    fill="none"
+                    stroke="#1D9E75"
+                    strokeWidth="4"
+                    strokeLinecap="round"
+                    strokeDasharray={chartLength}
+                    strokeDashoffset={chartOffset}
+                    style={{ transition: 'stroke-dashoffset 0.05s linear' }}
+                  />
+
+                  {/* Point at the end of the path */}
+                  {tChart > 0 && (
+                    <circle
+                      cx={interpolate([0, 1], [20, 300], tChart)}
+                      cy={interpolate([0, 1], [100, 20], Easing.easeOutQuad)(tChart)}
+                      r="5"
+                      fill="#1D9E75"
+                      stroke="#FFFFFF"
+                      strokeWidth="2"
+                    />
+                  )}
+                </svg>
               </div>
             )}
           </div>
