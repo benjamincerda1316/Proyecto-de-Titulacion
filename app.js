@@ -10871,6 +10871,171 @@ const app = {
       }
     }
 
+    // 3. Render sessions detailed log table
+    const tbody = document.getElementById('inspect-hours-sessions-tbody');
+    const expertFilterSelect = document.getElementById('inspect-sessions-expert-filter');
+    if (expertFilterSelect) {
+      const prevVal = expertFilterSelect.value || 'all';
+      expertFilterSelect.innerHTML = '<option value="all">Todos los expertos</option>';
+      
+      const allExpertIds = [];
+      juniorEvents.forEach(e => {
+        const expIds = e.expertos_asistentes_ids || [e.expert_id];
+        expIds.forEach(id => {
+          if (id && id !== 'USR-MUREX-LEARNING') allExpertIds.push(id);
+        });
+      });
+      const uniqueExpertIds = [...new Set(allExpertIds)];
+      
+      uniqueExpertIds.forEach(expId => {
+        const expertObj = this.state.db.users.find(u => u.id === expId);
+        if (expertObj) {
+          const opt = document.createElement('option');
+          opt.value = expId;
+          opt.textContent = expertObj.name;
+          expertFilterSelect.appendChild(opt);
+        }
+      });
+      if (uniqueExpertIds.includes(prevVal)) {
+        expertFilterSelect.value = prevVal;
+      } else {
+        expertFilterSelect.value = 'all';
+      }
+    }
+
+    if (tbody) {
+      tbody.innerHTML = '';
+      const selectedExpertId = expertFilterSelect ? expertFilterSelect.value : 'all';
+      const filteredEvents = selectedExpertId === 'all' 
+        ? juniorEvents 
+        : juniorEvents.filter(e => e.expert_id === selectedExpertId || (e.expertos_asistentes_ids && e.expertos_asistentes_ids.includes(selectedExpertId)));
+
+      if (filteredEvents.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="4" style="text-align:center; padding:15px; color:var(--neutral-muted);">No records found for the selected expert.</td></tr>`;
+      } else {
+        const sortedEvents = [...filteredEvents].sort((a, b) => new Date(b.block_day) - new Date(a.block_day));
+        sortedEvents.forEach(e => {
+          let expertNameStr = 'N/A';
+          if (e.expertos_asistentes_ids && e.expertos_asistentes_ids.length > 0) {
+            expertNameStr = e.expertos_asistentes_ids.map(id => this.state.db.users.find(u => u.id === id)?.name || id).join(', ');
+          } else {
+            const expertObj = this.state.db.users.find(u => u.id === e.expert_id);
+            expertNameStr = expertObj ? expertObj.name : 'N/A';
+          }
+          const formattedDate = new Date(e.block_day + "T00:00:00").toLocaleDateString('en-US', { day: '2-digit', month: '2-digit' });
+          
+          let typeBadgeStyle = 'background-color:rgba(22, 163, 74, 0.1); color:#16a34a; font-weight:700;'; // tutoring
+          let shortType = 'Tutoring';
+          const typeLower = (e.type || '').toLowerCase();
+          
+          if (typeLower === 'masterclass') {
+            typeBadgeStyle = 'background-color:rgba(147, 51, 234, 0.1); color:#9333ea; font-weight:700;';
+            shortType = 'Masterclass';
+          } else if (typeLower === 'extra_support' || typeLower === 'support') {
+            typeBadgeStyle = 'background-color:rgba(239, 159, 39, 0.1); color:#b26500; font-weight:700;';
+            shortType = 'Support';
+          } else if (typeLower === 'coaching') {
+            typeBadgeStyle = 'background-color:rgba(139, 92, 246, 0.1); color:#7c3aed; font-weight:700;';
+            shortType = 'Coaching';
+          } else if (e.type === 'MUREX_LEARNING') {
+            typeBadgeStyle = 'background-color:rgba(71, 85, 105, 0.1); color:#475569; font-weight:700;';
+            shortType = 'Murex Learning';
+          } else if (e.type === 'FEEDBACK_ALINEAMIENTO') {
+            typeBadgeStyle = 'background-color:rgba(13, 148, 136, 0.1); color:#0d9488; font-weight:700;';
+            shortType = 'Feedback';
+          }
+
+          const tr = document.createElement('tr');
+          tr.innerHTML = `
+            <td>
+              <div style="font-weight:600; color:var(--neutral-dark);">${formattedDate}</div>
+              <div style="font-size:0.65rem; color:var(--neutral-muted); font-weight:500; white-space:nowrap; margin-top:2px;">${e.time_start || '00:00'} - ${e.time_end || '00:00'}</div>
+            </td>
+            <td>
+              <div style="font-weight:600;">${e.title || 'Session'}</div>
+              <span class="badge" style="font-size:0.65rem; padding:1px 4px; ${typeBadgeStyle}">Week ${e.week_number} - ${shortType}</span>
+            </td>
+            <td>${expertNameStr}</td>
+            <td><strong>${e.executed_minutes}m</strong></td>
+          </tr>
+        `;
+          tbody.appendChild(tr);
+        });
+      }
+    }
+
+    // Render CSS bar chart: Horas por Experto (Consumo)
+    const expertBarsContainer = document.getElementById('inspect-chart-expert-bars');
+    if (expertBarsContainer) {
+      expertBarsContainer.innerHTML = '';
+      const sortedForChart = Object.entries(hoursByExpert).sort((a, b) => b[1] - a[1]);
+      if (sortedForChart.length === 0) {
+        expertBarsContainer.innerHTML = '<div style="color:var(--neutral-muted);font-size:0.75rem;text-align:center;padding:20px;">No data</div>';
+      } else {
+        const maxVal = Math.max(...sortedForChart.map(e => e[1]), 1);
+        sortedForChart.forEach(([name, hrs]) => {
+          const pct = (hrs / maxVal) * 100;
+          const shortName = name.split(' ').slice(0, 2).join(' ');
+          expertBarsContainer.innerHTML += `
+            <div>
+              <div style="display:flex;justify-content:space-between;font-size:0.72rem;margin-bottom:3px;">
+                <span style="font-weight:600;color:var(--neutral-dark);">${shortName}</span>
+                <span style="color:var(--neutral-muted);font-weight:700;">${hrs.toFixed(1)} hrs</span>
+              </div>
+              <div style="background:var(--neutral-light);height:10px;border-radius:5px;overflow:hidden;">
+                <div style="background:#A6192E;width:${pct}%;height:100%;border-radius:5px;transition:width 0.3s ease;"></div>
+              </div>
+            </div>`;
+        });
+      }
+    }
+
+    // Render CSS bar chart: Desviación Planned vs Real
+    const desvBarsContainer = document.getElementById('inspect-chart-deviation-bars');
+    if (desvBarsContainer) {
+      desvBarsContainer.innerHTML = '';
+      const plannedHours = { tutoring: 0, masterclass: 0, extra_support: 0, coaching: 0 };
+      const realHours    = { tutoring: 0, masterclass: 0, extra_support: 0, coaching: 0 };
+      juniorEvents.forEach(e => {
+        let t = (e.type || '').toLowerCase();
+        if (t === 'support') t = 'extra_support';
+        if (plannedHours[t] !== undefined) {
+          plannedHours[t] += (e.planned_minutes || 60) / 60;
+          realHours[t]    += (e.executed_minutes || 0) / 60;
+        }
+      });
+      const devLabels = [['Tutoring','tutoring'],['Masterclass','masterclass'],['Support','extra_support'],['Coaching','coaching']];
+      const maxDev = Math.max(...devLabels.map(([,k]) => plannedHours[k]), 1);
+      desvBarsContainer.innerHTML += `<div style="display:flex;gap:12px;font-size:0.68rem;margin-bottom:8px;">
+        <span style="display:flex;align-items:center;gap:4px;"><span style="display:inline-block;width:10px;height:10px;border-radius:2px;background:#64748b;"></span>Planned</span>
+        <span style="display:flex;align-items:center;gap:4px;"><span style="display:inline-block;width:10px;height:10px;border-radius:2px;background:#A6192E;"></span>Real</span>
+      </div>`;
+      devLabels.forEach(([label, key]) => {
+        const pPct = (plannedHours[key] / maxDev) * 100;
+        const rPct = (realHours[key] / maxDev) * 100;
+        desvBarsContainer.innerHTML += `
+          <div style="margin-bottom:4px;">
+            <div style="font-size:0.72rem;font-weight:600;color:var(--neutral-dark);margin-bottom:3px;">${label}</div>
+            <div style="display:flex;flex-direction:column;gap:2px;">
+              <div style="background:var(--neutral-light);height:8px;border-radius:4px;overflow:hidden;">
+                <div style="background:#64748b;width:${pPct}%;height:100%;border-radius:4px;"></div>
+              </div>
+              <div style="background:var(--neutral-light);height:8px;border-radius:4px;overflow:hidden;">
+                <div style="background:#A6192E;width:${rPct}%;height:100%;border-radius:4px;"></div>
+              </div>
+            </div>
+            <div style="display:flex;justify-content:space-between;font-size:0.65rem;color:var(--neutral-muted);margin-top:1px;">
+              <span>${plannedHours[key].toFixed(1)}h plan</span>
+              <span>${realHours[key].toFixed(1)}h real</span>
+            </div>
+          </div>`;
+      });
+    }
+
+    // Call the new function to render the Audit Log Bitacora
+    this.renderInspectedAuditBitacora(userId);
+  },
+
   generateTraineeLaTeXReport(userId) {
     const user = (this.state.db.users || []).find(u => u.id === userId);
     if (!user) return '';
@@ -11298,171 +11463,6 @@ const app = {
     printWin.document.open();
     printWin.document.write(html);
     printWin.document.close();
-  },
-
-  // 3. Render sessions detailed log table
-    const tbody = document.getElementById('inspect-hours-sessions-tbody');
-    const expertFilterSelect = document.getElementById('inspect-sessions-expert-filter');
-    if (expertFilterSelect) {
-      const prevVal = expertFilterSelect.value || 'all';
-      expertFilterSelect.innerHTML = '<option value="all">Todos los expertos</option>';
-      
-      const allExpertIds = [];
-      juniorEvents.forEach(e => {
-        const expIds = e.expertos_asistentes_ids || [e.expert_id];
-        expIds.forEach(id => {
-          if (id && id !== 'USR-MUREX-LEARNING') allExpertIds.push(id);
-        });
-      });
-      const uniqueExpertIds = [...new Set(allExpertIds)];
-      
-      uniqueExpertIds.forEach(expId => {
-        const expertObj = this.state.db.users.find(u => u.id === expId);
-        if (expertObj) {
-          const opt = document.createElement('option');
-          opt.value = expId;
-          opt.textContent = expertObj.name;
-          expertFilterSelect.appendChild(opt);
-        }
-      });
-      if (uniqueExpertIds.includes(prevVal)) {
-        expertFilterSelect.value = prevVal;
-      } else {
-        expertFilterSelect.value = 'all';
-      }
-    }
-
-    if (tbody) {
-      tbody.innerHTML = '';
-      const selectedExpertId = expertFilterSelect ? expertFilterSelect.value : 'all';
-      const filteredEvents = selectedExpertId === 'all' 
-        ? juniorEvents 
-        : juniorEvents.filter(e => e.expert_id === selectedExpertId || (e.expertos_asistentes_ids && e.expertos_asistentes_ids.includes(selectedExpertId)));
-
-      if (filteredEvents.length === 0) {
-        tbody.innerHTML = `<tr><td colspan="4" style="text-align:center; padding:15px; color:var(--neutral-muted);">No records found for the selected expert.</td></tr>`;
-      } else {
-        const sortedEvents = [...filteredEvents].sort((a, b) => new Date(b.block_day) - new Date(a.block_day));
-        sortedEvents.forEach(e => {
-          let expertNameStr = 'N/A';
-          if (e.expertos_asistentes_ids && e.expertos_asistentes_ids.length > 0) {
-            expertNameStr = e.expertos_asistentes_ids.map(id => this.state.db.users.find(u => u.id === id)?.name || id).join(', ');
-          } else {
-            const expertObj = this.state.db.users.find(u => u.id === e.expert_id);
-            expertNameStr = expertObj ? expertObj.name : 'N/A';
-          }
-          const formattedDate = new Date(e.block_day + "T00:00:00").toLocaleDateString('en-US', { day: '2-digit', month: '2-digit' });
-          
-          let typeBadgeStyle = 'background-color:rgba(22, 163, 74, 0.1); color:#16a34a; font-weight:700;'; // tutoring
-          let shortType = 'Tutoring';
-          const typeLower = (e.type || '').toLowerCase();
-          
-          if (typeLower === 'masterclass') {
-            typeBadgeStyle = 'background-color:rgba(147, 51, 234, 0.1); color:#9333ea; font-weight:700;';
-            shortType = 'Masterclass';
-          } else if (typeLower === 'extra_support' || typeLower === 'support') {
-            typeBadgeStyle = 'background-color:rgba(239, 159, 39, 0.1); color:#b26500; font-weight:700;';
-            shortType = 'Support';
-          } else if (typeLower === 'coaching') {
-            typeBadgeStyle = 'background-color:rgba(139, 92, 246, 0.1); color:#7c3aed; font-weight:700;';
-            shortType = 'Coaching';
-          } else if (e.type === 'MUREX_LEARNING') {
-            typeBadgeStyle = 'background-color:rgba(71, 85, 105, 0.1); color:#475569; font-weight:700;';
-            shortType = 'Murex Learning';
-          } else if (e.type === 'FEEDBACK_ALINEAMIENTO') {
-            typeBadgeStyle = 'background-color:rgba(13, 148, 136, 0.1); color:#0d9488; font-weight:700;';
-            shortType = 'Feedback';
-          }
-
-          const tr = document.createElement('tr');
-          tr.innerHTML = `
-            <td>
-              <div style="font-weight:600; color:var(--neutral-dark);">${formattedDate}</div>
-              <div style="font-size:0.65rem; color:var(--neutral-muted); font-weight:500; white-space:nowrap; margin-top:2px;">${e.time_start || '00:00'} - ${e.time_end || '00:00'}</div>
-            </td>
-            <td>
-              <div style="font-weight:600;">${e.title || 'Session'}</div>
-              <span class="badge" style="font-size:0.65rem; padding:1px 4px; ${typeBadgeStyle}">Week ${e.week_number} - ${shortType}</span>
-            </td>
-            <td>${expertNameStr}</td>
-            <td><strong>${e.executed_minutes}m</strong></td>
-          </tr>
-        `;
-          tbody.appendChild(tr);
-        });
-      }
-    }
-
-    // Render CSS bar chart: Horas por Experto (Consumo)
-    const expertBarsContainer = document.getElementById('inspect-chart-expert-bars');
-    if (expertBarsContainer) {
-      expertBarsContainer.innerHTML = '';
-      const sortedForChart = Object.entries(hoursByExpert).sort((a, b) => b[1] - a[1]);
-      if (sortedForChart.length === 0) {
-        expertBarsContainer.innerHTML = '<div style="color:var(--neutral-muted);font-size:0.75rem;text-align:center;padding:20px;">No data</div>';
-      } else {
-        const maxVal = Math.max(...sortedForChart.map(e => e[1]), 1);
-        sortedForChart.forEach(([name, hrs]) => {
-          const pct = (hrs / maxVal) * 100;
-          const shortName = name.split(' ').slice(0, 2).join(' ');
-          expertBarsContainer.innerHTML += `
-            <div>
-              <div style="display:flex;justify-content:space-between;font-size:0.72rem;margin-bottom:3px;">
-                <span style="font-weight:600;color:var(--neutral-dark);">${shortName}</span>
-                <span style="color:var(--neutral-muted);font-weight:700;">${hrs.toFixed(1)} hrs</span>
-              </div>
-              <div style="background:var(--neutral-light);height:10px;border-radius:5px;overflow:hidden;">
-                <div style="background:#A6192E;width:${pct}%;height:100%;border-radius:5px;transition:width 0.3s ease;"></div>
-              </div>
-            </div>`;
-        });
-      }
-    }
-
-    // Render CSS bar chart: Desviación Planned vs Real
-    const desvBarsContainer = document.getElementById('inspect-chart-deviation-bars');
-    if (desvBarsContainer) {
-      desvBarsContainer.innerHTML = '';
-      const plannedHours = { tutoring: 0, masterclass: 0, extra_support: 0, coaching: 0 };
-      const realHours    = { tutoring: 0, masterclass: 0, extra_support: 0, coaching: 0 };
-      juniorEvents.forEach(e => {
-        let t = (e.type || '').toLowerCase();
-        if (t === 'support') t = 'extra_support';
-        if (plannedHours[t] !== undefined) {
-          plannedHours[t] += (e.planned_minutes || 60) / 60;
-          realHours[t]    += (e.executed_minutes || 0) / 60;
-        }
-      });
-      const devLabels = [['Tutoring','tutoring'],['Masterclass','masterclass'],['Support','extra_support'],['Coaching','coaching']];
-      const maxDev = Math.max(...devLabels.map(([,k]) => plannedHours[k]), 1);
-      desvBarsContainer.innerHTML += `<div style="display:flex;gap:12px;font-size:0.68rem;margin-bottom:8px;">
-        <span style="display:flex;align-items:center;gap:4px;"><span style="display:inline-block;width:10px;height:10px;border-radius:2px;background:#64748b;"></span>Planned</span>
-        <span style="display:flex;align-items:center;gap:4px;"><span style="display:inline-block;width:10px;height:10px;border-radius:2px;background:#A6192E;"></span>Real</span>
-      </div>`;
-      devLabels.forEach(([label, key]) => {
-        const pPct = (plannedHours[key] / maxDev) * 100;
-        const rPct = (realHours[key] / maxDev) * 100;
-        desvBarsContainer.innerHTML += `
-          <div style="margin-bottom:4px;">
-            <div style="font-size:0.72rem;font-weight:600;color:var(--neutral-dark);margin-bottom:3px;">${label}</div>
-            <div style="display:flex;flex-direction:column;gap:2px;">
-              <div style="background:var(--neutral-light);height:8px;border-radius:4px;overflow:hidden;">
-                <div style="background:#64748b;width:${pPct}%;height:100%;border-radius:4px;"></div>
-              </div>
-              <div style="background:var(--neutral-light);height:8px;border-radius:4px;overflow:hidden;">
-                <div style="background:#A6192E;width:${rPct}%;height:100%;border-radius:4px;"></div>
-              </div>
-            </div>
-            <div style="display:flex;justify-content:space-between;font-size:0.65rem;color:var(--neutral-muted);margin-top:1px;">
-              <span>${plannedHours[key].toFixed(1)}h plan</span>
-              <span>${realHours[key].toFixed(1)}h real</span>
-            </div>
-          </div>`;
-      });
-    }
-
-    // Call the new function to render the Audit Log Bitacora
-    this.renderInspectedAuditBitacora(userId);
   },
 
   filterInspectedSessionsByExpert() {

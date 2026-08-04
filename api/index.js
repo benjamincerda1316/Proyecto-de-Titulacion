@@ -58,13 +58,16 @@ app.use(express.static(path.join(__dirname, '..')));
 let pool = null;
 let sqliteDb = null;
 let useSqlite = false;
+let postgresConnected = false;
 let initPromise = null;
 
 let Database = null;
-try {
-  Database = require('better-sqlite3');
-} catch (err) {
-  console.warn('better-sqlite3 not available in this environment:', err.message);
+if (!process.env.VERCEL) {
+  try {
+    Database = require('better-sqlite3');
+  } catch (err) {
+    console.warn('better-sqlite3 not available in this environment:', err.message);
+  }
 }
 
 const DEFAULT_SUPABASE_URL = 'postgresql://postgres:Realaudiencia1316@db.jrssnzvcjodwfsgeiuou.supabase.co:5432/postgres';
@@ -130,7 +133,7 @@ const db = {
 
 // Open database connection and create tables
 async function initDatabase() {
-  let postgresConnected = false;
+  postgresConnected = false;
 
   if (pool) {
     try {
@@ -498,7 +501,7 @@ app.get('/api/db', async (req, res) => {
       ]);
     }
 
-    if (!pool && !sqliteDb) {
+    if (!postgresConnected && !useSqlite) {
       console.warn('DB pool and sqliteDb unavailable, returning default memory state.');
       return res.json({
         users: [
