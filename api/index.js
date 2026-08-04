@@ -60,9 +60,16 @@ let sqliteDb = null;
 let useSqlite = false;
 let initPromise = null;
 
-const Database = require('better-sqlite3');
+let Database = null;
+try {
+  Database = require('better-sqlite3');
+} catch (err) {
+  console.warn('better-sqlite3 not available in this environment:', err.message);
+}
 
-const pgUrl = process.env.DATABASE_URL || process.env.POSTGRES_URL;
+const DEFAULT_SUPABASE_URL = 'postgresql://postgres:Realaudiencia1316@db.jrssnzvcjodwfsgeiuou.supabase.co:5432/postgres';
+const pgUrl = process.env.DATABASE_URL || process.env.POSTGRES_URL || DEFAULT_SUPABASE_URL;
+
 if (pgUrl && !pgUrl.includes('[YOUR-PASSWORD]')) {
   try {
     pool = new Pool({
@@ -136,6 +143,10 @@ async function initDatabase() {
   }
 
   if (!postgresConnected) {
+    if (!Database) {
+      console.warn('⚠️ No PostgreSQL connection and better-sqlite3 module unavailable.');
+      return;
+    }
     console.log('🔄 Falling back to local SQLite database (mxboard.db)...');
     try {
       const sqlitePath = path.join(__dirname, '..', 'mxboard.db');
