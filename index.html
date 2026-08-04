@@ -1779,23 +1779,13 @@
 
                   <div class="inspector-content hidden" id="admin-inspector-active-content">
                     <!-- Selected consultant summary card -->
-                    <div class="inspector-user-header" style="display: flex; align-items: center; justify-content: space-between; gap: 15px; flex-wrap: wrap;">
-                      <div style="display: flex; align-items: center; gap: 12px;">
-                        <div class="inspector-avatar" id="inspector-user-avatar">JP</div>
-                        <div class="inspector-user-info">
-                          <h3 id="inspector-user-name">Javier Pérez</h3>
-                          <p id="inspector-user-email">javier.perez@murex.cl</p>
-                        </div>
+                    <div class="inspector-user-header">
+                      <div class="inspector-avatar" id="inspector-user-avatar">JP</div>
+                      <div class="inspector-user-info">
+                        <h3 id="inspector-user-name">Javier Pérez</h3>
+                        <p id="inspector-user-email">javier.perez@murex.cl</p>
                       </div>
-                      <div style="display: flex; align-items: center; gap: 8px;">
-                        <div class="inspector-user-score-badge" id="inspector-user-avg-score">78%</div>
-                        <button class="btn btn-secondary btn-sm" onclick="app.exportTraineeLaTeX()" title="Generar y descargar reporte LaTeX (.tex) completo" style="display: inline-flex; align-items: center; gap: 5px; font-weight: 600; padding: 6px 12px; font-size: 0.8rem; background: rgba(88, 28, 135, 0.08); color: var(--secondary); border: 1px solid var(--secondary); border-radius: 6px; cursor: pointer;">
-                          <i class="ti ti-code"></i> Reporte LaTeX (.tex)
-                        </button>
-                        <button class="btn btn-primary btn-sm" onclick="app.exportTraineePDF()" title="Imprimir / Exportar Reporte Ejecutivo a PDF" style="display: inline-flex; align-items: center; gap: 5px; font-weight: 600; padding: 6px 12px; font-size: 0.8rem; background: var(--primary); color: white; border: none; border-radius: 6px; cursor: pointer;">
-                          <i class="ti ti-file-text"></i> Exportar PDF
-                        </button>
-                      </div>
+                      <div class="inspector-user-score-badge" id="inspector-user-avg-score">78%</div>
                     </div>
 
                     <div class="inspector-tabs-container">
