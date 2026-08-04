@@ -2298,40 +2298,47 @@ const app = {
     
     let needsSave = false;
 
-    // 1. Force Francisca to Week 8 if she is in an older week
+    // 1. Ensure Francisca is marked as Week 12 (Completed)
     const fran = this.state.db.users.find(u => u.id === 'USR-FRANCISCA');
-    if (fran && (fran.current_week || fran.semana_actual || 1) < 8) {
-      console.log("Auto-migrating Francisca to Week 8...");
-      fran.current_week = 8;
-      fran.semana_actual = 8;
-      fran.progreso_mallas = Array(12).fill(null).map((_, i) => ({ completado: i < 7, nota: i < 7 ? 80 : null }));
+    if (fran) {
+      const scoresList = [85, 88, 90, 84, 86, 92, 85, 88, 90, 85, 88, 92];
+      const avgScore = Math.round(scoresList.reduce((a, b) => a + b, 0) / scoresList.length);
       
-      if (this.state.db.consultant_progress && this.state.db.consultant_progress["USR-FRANCISCA"]) {
+      fran.current_week = 12;
+      fran.semana_actual = 12;
+      fran.avg_score = avgScore;
+      fran.status = 'completed';
+      fran.progreso_mallas = Array(12).fill(null).map((_, i) => ({ completado: true, nota: scoresList[i] }));
+      
+      if (this.state.db.consultant_progress) {
+        if (!this.state.db.consultant_progress["USR-FRANCISCA"]) {
+          this.state.db.consultant_progress["USR-FRANCISCA"] = {};
+        }
         const progress = this.state.db.consultant_progress["USR-FRANCISCA"];
-        progress.completed_weeks = [1, 2, 3, 4, 5, 6, 7];
+        progress.completed_weeks = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
         if (!progress.checklist_states) progress.checklist_states = {};
         if (!progress.test_scores) progress.test_scores = {};
         if (!progress.test_attempts) progress.test_attempts = {};
         if (!progress.test_times) progress.test_times = {};
         if (!progress.deliverables) progress.deliverables = {};
+        if (!progress.game_scores) progress.game_scores = {};
 
-        for (let w = 1; w <= 7; w++) {
+        for (let w = 1; w <= 12; w++) {
           if (!progress.checklist_states[w]) progress.checklist_states[w] = {};
           for (let idx = 0; idx < 10; idx++) {
             progress.checklist_states[w][idx] = true;
           }
-          progress.test_scores[w] = 80;
+          progress.test_scores[w] = scoresList[w - 1];
           progress.test_attempts[w] = 1;
           progress.test_times[w] = `${10 + w}m 30s`;
           progress.deliverables[w] = {
             fileName: `evidencia_semana_${w}_fd.pdf`,
             fileSize: "1.8 MB",
             status: "approved",
-            submittedAt: new Date(Date.now() - (7 - w + 1) * 7 * 24 * 3600 * 1000).toISOString()
+            submittedAt: new Date(Date.now() - (12 - w + 1) * 7 * 24 * 3600 * 1000).toISOString()
           };
         }
       }
-      needsSave = true;
     }
 
     // 1.5. Ensure ANY user who has completed Week 2 has a valid game_scores[2] populated (including Francisca)

@@ -362,10 +362,11 @@ async function initDatabase() {
       { id: "USR-CAROLINA", name: "Carolina Sepúlveda", nombre: "Carolina Sepúlveda", email: "carolina.sepulveda@murex.cl", password: "password", role: "tutor", rol: "TUTOR", avatar_initials: "CS" },
       { id: "USR-VALENTINA", name: "Valentina Lara", nombre: "Valentina Lara", email: "valentina.lara@murex.cl", password: "password", role: "tutor", rol: "TUTOR", avatar_initials: "VL" },
       { id: "USR-MUREX-LEARNING", name: "Murex Learning", nombre: "Murex Learning", email: "murex.learning@murex.cl", password: "password", role: "senior", rol: "SENIOR", avatar_initials: "ML" },
-      { id: "USR-FRANCISCA", name: "Francisca Le Dantec", nombre: "Francisca Le Dantec", email: "francisca.ledantec@murex.cl", password: "password", role: "consultant", rol: "JUNIOR", avatar_initials: "FD", current_week: 8, avg_score: 80, status: "on_track", entry_date: "2026-04-13" }
+      { id: "USR-FRANCISCA", name: "Francisca Le Dantec", nombre: "Francisca Le Dantec", email: "francisca.ledantec@murex.cl", password: "password", role: "consultant", rol: "JUNIOR", avatar_initials: "FD", current_week: 12, avg_score: 88, status: "completed", entry_date: "2026-04-13" }
     ];
 
-    const progresoMallas = Array(12).fill(null).map((_, i) => ({ completado: i < 7, nota: i < 7 ? 80 : null }));
+    const scoresList = [85, 88, 90, 84, 86, 92, 85, 88, 90, 85, 88, 92];
+    const progresoMallas = Array(12).fill(null).map((_, i) => ({ completado: true, nota: scoresList[i] }));
 
     for (const u of defaultUsers) {
       await db.run(
@@ -378,9 +379,9 @@ async function initDatabase() {
     // Seed mappings
     await db.run(`INSERT INTO tutor_junior_mapping (junior_id, tutor_id) VALUES ('USR-FRANCISCA', 'USR-BENJAMIN')`);
     
-    // Seed initial progress for Francisca (starting at week 8, completing 1 to 7)
+    // Seed initial progress for Francisca (All 12 weeks completed)
     const initialProgress = {
-      completed_weeks: [1, 2, 3, 4, 5, 6, 7],
+      completed_weeks: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12],
       checklist_states: {},
       test_scores: {},
       test_attempts: {},
@@ -391,7 +392,7 @@ async function initDatabase() {
     };
 
     const weekCount = 12;
-    const completedCount = 7;
+    const completedCount = 12;
     for (let w = 1; w <= weekCount; w++) {
       initialProgress.checklist_states[w] = {};
       if (w <= completedCount) {
