@@ -488,24 +488,25 @@ async function initDatabase() {
   console.log('Database initialized successfully.');
 }
 
-// GET API to fetch full state
 app.get('/api/db', async (req, res) => {
   try {
     if (initPromise) {
-      await Promise.race([
-        initPromise,
-        new Promise(resolve => setTimeout(resolve, 3000))
-      ]);
+      await initPromise;
+    }
+
+    if (!postgresConnected && pool) {
+      try {
+        const client = await pool.connect();
+        client.release();
+        postgresConnected = true;
+      } catch (err) {
+        console.warn('Retry pool connect warning:', err.message);
+      }
     }
 
     if (!postgresConnected && !useSqlite) {
-      console.warn('DB pool and sqliteDb unavailable, returning complete default memory state.');
-      try {
-        const backupData = require('../scratch/backup_db_before_translation.json');
-        return res.json(backupData);
-      } catch (err) {
-        return res.json({ users: [], calendar_events: [], consultant_progress: {} });
-      }
+      console.warn('DB pool and sqliteDb unavailable, returning fallback state.');
+      return res.json({ empty: false, users: [], calendar_events: [], consultant_progress: {} });
     }
 
     const usersCount = await db.get('SELECT COUNT(*) as count FROM users');
