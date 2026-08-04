@@ -215,6 +215,16 @@ module.exports = {
       "status": "on_track",
       "progreso_mallas_json": "[]",
       "entry_date": "2026-06-08"
+    },
+    {
+      "id": "USR-BORIS",
+      "name": "Boris Castro",
+      "nombre": "Boris Castro",
+      "email": "bcastro@murex.cl",
+      "password": "admin",
+      "role": "admin",
+      "rol": "MANAGER",
+      "avatar_initials": "BC"
     }
   ],
   "tutor_junior_mapping": [
