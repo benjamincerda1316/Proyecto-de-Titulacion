@@ -2,11 +2,7 @@ const express = require('express');
 const { Pool } = require('pg');
 const path = require('path');
 const fs = require('fs');
-const dns = require('dns');
-
-if (typeof dns.setDefaultResultOrder === 'function') {
-  dns.setDefaultResultOrder('ipv4first');
-}
+// Default dual-stack DNS resolution for Supabase PostgreSQL
 
 // Load environment variables manually from .env file (one level up from api/)
 try {
