@@ -2026,12 +2026,12 @@ const app = {
     this.state.serverConnected = false;
     this.state.hasLoadedFromServer = false;
     
-    const endpointsToTry = [];
-    if (window.location.protocol === 'file:' || window.location.origin === 'null' || window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
-      endpointsToTry.push('http://localhost:3000/api/db');
-    }
-    endpointsToTry.push('/api/db');
-    endpointsToTry.push('https://proyecto-de-titulacion.vercel.app/api/db');
+    const endpointsToTry = [
+      'http://localhost:3000/api/db',
+      'http://127.0.0.1:3000/api/db',
+      '/api/db',
+      'https://proyecto-de-titulacion.vercel.app/api/db'
+    ];
 
     let response = null;
     let workingBase = '';
