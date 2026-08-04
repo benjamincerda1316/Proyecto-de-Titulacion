@@ -504,8 +504,12 @@ app.get('/api/db', async (req, res) => {
 
     if (!postgresConnected && !useSqlite) {
       console.warn('DB pool and sqliteDb unavailable, returning complete default memory state.');
-      const backupData = require('../scratch/backup_db_before_translation.json');
-      return res.json(backupData);
+      try {
+        const backupData = require('../scratch/backup_db_before_translation.json');
+        return res.json(backupData);
+      } catch (err) {
+        return res.json({ users: [], calendar_events: [], consultant_progress: {} });
+      }
     }
 
     const usersCount = await db.get('SELECT COUNT(*) as count FROM users');
