@@ -202,21 +202,6 @@ module.exports = {
       ]
     },
     {
-      "id": "u-5qymlk2bj",
-      "name": "Juanito Perez",
-      "nombre": "Juanito Perez",
-      "email": "juanperez@murex.cl",
-      "password": "password",
-      "role": "consultant",
-      "rol": "JUNIOR",
-      "avatar_initials": "JP",
-      "current_week": 4,
-      "avg_score": 91,
-      "status": "on_track",
-      "progreso_mallas_json": "[]",
-      "entry_date": "2026-06-08"
-    },
-    {
       "id": "USR-BORIS",
       "name": "Boris Castro",
       "nombre": "Boris Castro",
@@ -293,17 +278,6 @@ module.exports = {
       "deliverables_json": "{}",
       "comments_json": "{}",
       "game_scores_json": "{}"
-    },
-    {
-      "user_id": "u-5qymlk2bj",
-      "completed_weeks_json": "[1,2,3]",
-      "checklist_states_json": "{\"1\":{\"0\":false,\"1\":false,\"2\":false,\"3\":false,\"4\":false},\"2\":{\"0\":true,\"1\":true,\"2\":true,\"3\":true,\"4\":true,\"5\":true,\"6\":true,\"7\":true},\"3\":{\"0\":true,\"1\":true,\"2\":true,\"3\":true,\"4\":true,\"5\":true,\"6\":true,\"7\":true},\"4\":{\"0\":false,\"1\":false,\"2\":false,\"3\":false,\"4\":false},\"5\":{\"0\":false,\"1\":false,\"2\":false,\"3\":false,\"4\":false,\"5\":false},\"6\":{\"0\":false,\"1\":false,\"2\":false,\"3\":false,\"4\":false,\"5\":false},\"7\":{\"0\":false,\"1\":false,\"2\":false,\"3\":false,\"4\":false,\"5\":false},\"8\":{\"0\":false,\"1\":false,\"2\":false,\"3\":false,\"4\":false,\"5\":false},\"9\":{\"0\":false,\"1\":false,\"2\":false,\"3\":false,\"4\":false,\"5\":false},\"10\":{\"0\":false,\"1\":false,\"2\":false,\"3\":false,\"4\":false,\"5\":false},\"11\":{\"0\":false,\"1\":false,\"2\":false,\"3\":false,\"4\":false,\"5\":false},\"12\":{\"0\":false,\"1\":false,\"2\":false,\"3\":false,\"4\":false,\"5\":false}}",
-      "test_scores_json": "{\"1\":96,\"2\":86,\"3\":92}",
-      "test_attempts_json": "{\"1\":1,\"2\":1,\"3\":1}",
-      "test_times_json": "{\"1\":\"4m 11s\",\"2\":\"2m 21s\",\"3\":\"1m 25s\"}",
-      "deliverables_json": "{\"2\":{\"fileName\":\"Entrega_Pasantía_2-5.pdf\",\"fileSize\":\"0.3 MB\",\"status\":\"approved\",\"submittedAt\":\"2026-06-12T01:27:52.567Z\"},\"3\":{\"fileName\":\"ComprobantePago.pdf\",\"fileSize\":\"0.0 MB\",\"status\":\"approved\",\"submittedAt\":\"2026-06-12T01:43:41.665Z\"}}",
-      "comments_json": "{}",
-      "game_scores_json": "{\"2\":{\"score\":21,\"total\":25,\"completedAt\":\"2026-06-12T01:25:38.884Z\"}}"
     }
   ],
   "mentoring_logs": [],
@@ -804,27 +778,6 @@ module.exports = {
       "executed_minutes": null,
       "status": "aprobado",
       "block_reason": "Primer día de ingreso del Junior Francisca Le Dantec al equipo de Finance & PL.",
-      "week_number": 1,
-      "organizador_id": "USR-LUANA",
-      "expertos_asistentes_ids": null,
-      "group_id": null,
-      "tipo_sesion": null,
-      "estado_confirmacion": "FIXED",
-      "bloqueado_edicion": true
-    },
-    {
-      "id": "ev-llegada-u-5qymlk2bj",
-      "title": "Llegada de Juanito Perez",
-      "type": "llegada",
-      "junior_id": "u-5qymlk2bj",
-      "expert_id": "USR-LUANA",
-      "block_day": "2026-06-08",
-      "time_start": "09:30",
-      "time_end": "10:30",
-      "planned_minutes": 60,
-      "executed_minutes": null,
-      "status": "aprobado",
-      "block_reason": "Primer día de ingreso del Junior Juanito Perez al equipo de Finance & PL.",
       "week_number": 1,
       "organizador_id": "USR-LUANA",
       "expertos_asistentes_ids": null,
