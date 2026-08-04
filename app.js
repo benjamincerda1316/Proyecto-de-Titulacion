@@ -2025,14 +2025,35 @@ const app = {
   async loadDatabase() {
     this.state.serverConnected = false;
     this.state.hasLoadedFromServer = false;
-    const isLocalFileOrDev = window.location.protocol === 'file:' || 
-                             window.location.origin === 'null' ||
-                             (window.location.hostname === 'localhost' && window.location.port !== '3000') ||
-                             (window.location.hostname === '127.0.0.1' && window.location.port !== '3000');
-    const apiBase = isLocalFileOrDev ? 'http://localhost:3000' : '';
+    
+    const endpointsToTry = [];
+    if (window.location.protocol === 'file:' || window.location.origin === 'null' || window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
+      endpointsToTry.push('http://localhost:3000/api/db');
+    }
+    endpointsToTry.push('/api/db');
+    endpointsToTry.push('https://proyecto-de-titulacion.vercel.app/api/db');
+
+    let response = null;
+    let workingBase = '';
+    for (const url of endpointsToTry) {
+      try {
+        const controller = new AbortController();
+        const timeoutId = setTimeout(() => controller.abort(), 4000);
+        const res = await fetch(url, { signal: controller.signal });
+        clearTimeout(timeoutId);
+        if (res.ok) {
+          response = res;
+          workingBase = url.substring(0, url.indexOf('/api/db'));
+          break;
+        }
+      } catch (e) {
+        // Continue trying next fallback endpoint
+      }
+    }
+    this.state.activeApiBase = workingBase;
+
     try {
-      const response = await fetch(`${apiBase}/api/db`);
-      if (response.ok) {
+      if (response && response.ok) {
         const data = await response.json();
         this.state.serverConnected = true;
         this.state.hasLoadedFromServer = true;
@@ -2436,7 +2457,9 @@ const app = {
                              window.location.origin === 'null' ||
                              (window.location.hostname === 'localhost' && window.location.port !== '3000') ||
                              (window.location.hostname === '127.0.0.1' && window.location.port !== '3000');
-    const apiBase = isLocalFileOrDev ? 'http://localhost:3000' : '';
+    const apiBase = (this.state.activeApiBase !== undefined && this.state.activeApiBase !== null)
+      ? this.state.activeApiBase
+      : (isLocalFileOrDev ? 'http://localhost:3000' : '');
 
     fetch(`${apiBase}/api/db/save`, {
       method: 'POST',
