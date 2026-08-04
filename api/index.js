@@ -506,7 +506,8 @@ app.get('/api/db', async (req, res) => {
 
     if (!postgresConnected && !useSqlite) {
       console.warn('DB pool and sqliteDb unavailable, returning fallback state.');
-      return res.json({ empty: false, users: [], calendar_events: [], consultant_progress: {} });
+      const defaultDb = require('./defaultDb');
+      return res.json(defaultDb);
     }
 
     const usersCount = await db.get('SELECT COUNT(*) as count FROM users');
