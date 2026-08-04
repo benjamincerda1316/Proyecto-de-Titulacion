@@ -1305,6 +1305,7 @@ const app = {
   defaultTemplates: {
     users: [
       { id: "USR-LUANA", name: "Luana Ortega", nombre: "Luana Ortega", email: "luana@murex.cl", password: "admin", role: "admin", rol: "MANAGER", avatar_initials: "LO" },
+      { id: "USR-BORIS", name: "Boris Castro", nombre: "Boris Castro", email: "bcastro@murex.cl", password: "admin", role: "admin", rol: "MANAGER", avatar_initials: "BC" },
       { id: "USR-FERNANDO", name: "Fernando Araya", nombre: "Fernando Araya", email: "fernando.araya@murex.cl", password: "password", role: "senior", rol: "SENIOR", avatar_initials: "FA" },
       { id: "USR-SANDRA", name: "Sandra Segura", nombre: "Sandra Segura", email: "sandra.segura@murex.cl", password: "password", role: "senior", rol: "SENIOR", avatar_initials: "SS" },
       { id: "USR-ALEJANDRA", name: "Alejandra González", nombre: "Alejandra González", email: "alejandra.gonzalez@murex.cl", password: "password", role: "senior", rol: "SENIOR", avatar_initials: "AG" },
@@ -8438,7 +8439,7 @@ const app = {
     const juniorSelect = document.getElementById('coaching-junior-select');
     if (juniorSelect) {
       juniorSelect.innerHTML = '';
-      const usersForCoaching = this.state.db.users.filter(u => u.id !== 'USR-LUANA');
+      const usersForCoaching = this.state.db.users.filter(u => u.role !== 'admin');
       usersForCoaching.forEach(u => {
         const opt = document.createElement('option');
         opt.value = u.id;
@@ -10847,7 +10848,436 @@ const app = {
       }
     }
 
-    // 3. Render sessions detailed log table
+  generateTraineeLaTeXReport(userId) {
+    const user = (this.state.db.users || []).find(u => u.id === userId);
+    if (!user) return '';
+
+    const esc = (str) => {
+      if (str === null || str === undefined) return '';
+      return String(str)
+        .replace(/\\/g, '\\textbackslash{}')
+        .replace(/&/g, '\\&')
+        .replace(/%/g, '\\%')
+        .replace(/\$/g, '\\$')
+        .replace(/#/g, '\\#')
+        .replace(/_/g, '\\_')
+        .replace(/\{/g, '\\{')
+        .replace(/\}/g, '\\}')
+        .replace(/~/g, '\\textasciitilde{}')
+        .replace(/\^/g, '\\textasciicircum{}');
+    };
+
+    const progress = (this.state.db.consultant_progress || {})[userId] || {};
+    const completedWeeks = progress.completed_weeks || [];
+    const testScores = progress.test_scores || {};
+    const deliverables = progress.deliverables || {};
+
+    // Filter executed events
+    const juniorEvents = (this.state.db.calendar_events || []).filter(
+      e => e.junior_id === userId && (e.status === 'ejecutado' || e.status === 'ejecutada' || e.status === 'completed')
+    );
+
+    let totalMinutes = 0;
+    juniorEvents.forEach(e => { totalMinutes += (e.executed_minutes || 0); });
+    const totalHoursStr = (totalMinutes / 60).toFixed(1);
+
+    // Hours per type
+    const hoursByType = { tutoring: 0, masterclass: 0, extra_support: 0, coaching: 0 };
+    juniorEvents.forEach(e => {
+      let t = (e.type || '').toLowerCase();
+      if (t === 'support') t = 'extra_support';
+      if (hoursByType[t] !== undefined) {
+        hoursByType[t] += (e.executed_minutes || 0) / 60;
+      }
+    });
+
+    // Hours per expert
+    const hoursByExpert = {};
+    juniorEvents.forEach(e => {
+      if (e.contabilizar_ids === false || e.expert_id === 'USR-MUREX-LEARNING') return;
+      const expIds = e.expertos_asistentes_ids || [e.expert_id];
+      expIds.forEach(expId => {
+        const expertObj = (this.state.db.users || []).find(u => u.id === expId);
+        const name = expertObj ? expertObj.name : 'N/A';
+        hoursByExpert[name] = (hoursByExpert[name] || 0) + (e.executed_minutes || 0) / 60;
+      });
+    });
+
+    // Evaluaciones
+    const evalHist = (this.state.db.historial_evaluaciones || []).filter(e => e.usuario_id === userId);
+
+    // Week templates
+    const templates = this.state.db.week_templates || [];
+
+    const nowStr = new Date().toLocaleDateString('es-CL', { year: 'numeric', month: 'long', day: 'numeric' });
+
+    let tex = `\\documentclass[11pt,a4paper]{article}
+\\usepackage[utf8]{inputenc}
+\\usepackage[spanish]{babel}
+\\usepackage[margin=1.8cm]{geometry}
+\\usepackage{xcolor}
+\\usepackage{tabularx}
+\\usepackage{booktabs}
+\\usepackage{tcolorbox}
+\\usepackage{enumitem}
+\\usepackage{hyperref}
+\\usepackage{titlesec}
+\\usepackage{fancyhdr}
+
+\\definecolor{murexpink}{HTML}{D4215B}
+\\definecolor{murexpurple}{HTML}{581C87}
+\\definecolor{murexdark}{HTML}{111827}
+\\definecolor{murexbg}{HTML}{F9FAFB}
+
+\\pagestyle{fancy}
+\\fancyhf{}
+\\lhead{\\small \\textbf{MXBOARD \\cdot MUREX ONBOARDING}}
+\\rhead{\\small REPORTE EJECUTIVO DE DESEMPEÑO}
+\\rfoot{\\small Página \\thepage}
+
+\\titleformat{\\section}{\\large\\bfseries\\color{murexpink}}{}{0em}{}[\\titlerule]
+\\titleformat{\\subsection}{\\normalfont\\bfseries\\color{murexpurple}}{}{0em}{}
+
+\\begin{document}
+
+\\begin{tcolorbox}[colback=murexpink,colframe=murexpink,arc=4pt,boxrule=0pt]
+  \\color{white}
+  \\centering \\Huge \\textbf{MXBOARD: REPORTE DE DESEMPEÑO} \\\\[2pt]
+  \\large \\textbf{Programa de Onboarding Murex -- Módulo Finance P\\&L}
+\\end{tcolorbox}
+
+\\vspace{0.3cm}
+
+\\noindent
+\\begin{tabularx}{\\textwidth}{X r}
+  \\textbf{Consultor Evaluado:} ${esc(user.name)} & \\textbf{Fecha de Emisión:} ${esc(nowStr)} \\\\
+  \\textbf{Correo Institucional:} ${esc(user.email)} & \\textbf{Semana Actual:} Semana ${user.current_week || user.semana_actual || 1} / 12 \\\\
+  \\textbf{Estado de Avance:} ${esc((user.status || 'ON_TRACK').toUpperCase())} & \\textbf{Promedio General:} \\textbf{${user.avg_score || 80}\\%} \\\\
+  \\textbf{Tutor Asignado:} ${esc(this.getTutorNameForJunior ? this.getTutorNameForJunior(user.id) : 'Benjamín Cerda')} & \\textbf{Horas Totales Invertidas:} \\textbf{${totalHoursStr} hrs} \\\\
+\\end{tabularx}
+
+\\vspace{0.4cm}
+
+\\section{1. Resumen Ejecutivo y Métricas Principales}
+\\begin{tcolorbox}[colback=murexbg,colframe=gray!30,arc=3pt]
+  El consultor \\textbf{${esc(user.name)}} ha completado \\textbf{${completedWeeks.length}} de las \\textbf{12 semanas} de la malla de Onboarding Murex Finance P\\&L. Registra un rendimiento promedio ponderado del \\textbf{${user.avg_score || 80}\\%} en sus evaluaciones semanales y ha acumulado un total de \\textbf{${totalHoursStr} horas} de entrenamiento activo distribuido en sesiones individuales y grupales.
+\\end{tcolorbox}
+
+\\vspace{0.3cm}
+
+\\section{2. Distribución de Horas y Soporte Técnico por Experto}
+\\begin{subsection}{Resumen por Tipo de Capacitación}
+\\begin{tabularx}{\\textwidth}{X r}
+  \\toprule
+  \\textbf{Tipo de Sesión / Módulo} & \\textbf{Horas Ejecutadas} \\\\
+  \\midrule
+  Tutorías Individuales (1-a-1) & ${hoursByType.tutoring.toFixed(1)} hrs \\\\
+  Masterclasses Semanales con Senior & ${hoursByType.masterclass.toFixed(1)} hrs \\\\
+  Sesiones de Soporte Extra / Desbloqueo & ${hoursByType.extra_support.toFixed(1)} hrs \\\\
+  Coaching y Desarrollo Comunicacional & ${hoursByType.coaching.toFixed(1)} hrs \\\\
+  \\bottomrule
+  \\textbf{Total Horas Acumuladas} & \\textbf{${totalHoursStr} hrs} \\\\
+\\end{tabularx}
+\\end{subsection}
+
+\\vspace{0.3cm}
+
+\\begin{subsection}{Desglose de Horas por Consultor Experto / Mentor}
+\\begin{tabularx}{\\textwidth}{X c r}
+  \\toprule
+  \\textbf{Nombre del Experto / Mentor} & \\textbf{Rol} & \\textbf{Horas Dedicadas} \\\\
+  \\midrule
+`;
+
+    const sortedExp = Object.entries(hoursByExpert).sort((a, b) => b[1] - a[1]);
+    if (sortedExp.length === 0) {
+      tex += `  Benjamín Cerda & Tutor & ${(totalMinutes/60).toFixed(1)} hrs \\\\\n`;
+    } else {
+      sortedExp.forEach(([expName, hrs]) => {
+        const expObj = (this.state.db.users || []).find(u => u.name === expName);
+        const rLabel = expObj ? (expObj.role === 'admin' ? 'Manager' : expObj.role === 'senior' ? 'Senior' : 'Tutor') : 'Tutor';
+        tex += `  ${esc(expName)} & ${esc(rLabel)} & ${hrs.toFixed(1)} hrs \\\\\n`;
+      });
+    }
+
+    tex += `  \\bottomrule
+\\end{tabularx}
+\\end{subsection}
+
+\\vspace{0.4cm}
+
+\\section{3. Matriz de Malla Curricular y Entregables (12 Semanas)}
+\\begin{tabularx}{\\textwidth}{c X c c c}
+  \\toprule
+  \\textbf{Sem.} & \\textbf{Módulo / Tema Malla} & \\textbf{Estado} & \\textbf{Nota Quiz} & \\textbf{Entregable / Evidencia} \\\\
+  \\midrule
+`;
+
+    for (let w = 1; w <= 12; w++) {
+      const tmpl = templates.find(t => t.week_number === w) || {};
+      const topic = tmpl.title || `Semana ${w}: Conceptos Finance P\\&L`;
+      const isDone = completedWeeks.includes(w);
+      const isCurrent = (user.current_week || user.semana_actual || 1) === w;
+      const statusText = isDone ? 'Completado' : (isCurrent ? 'En Curso' : 'Pendiente');
+      const score = testScores[w] !== undefined ? `${testScores[w]}\\%` : (isDone ? '80\\%' : '-');
+      const del = deliverables[w];
+      const delText = del ? (del.fileName || 'Evidencia Subida') : (isDone ? 'Aprobado' : 'No Subido');
+
+      tex += `  S${w} & ${esc(topic)} & ${esc(statusText)} & ${score} & ${esc(delText)} \\\\\n`;
+    }
+
+    tex += `  \\bottomrule
+\\end{tabularx}
+
+\\vspace{0.4cm}
+
+\\section{4. Historial de Evaluaciones Rendidas}
+`;
+
+    if (evalHist.length === 0) {
+      tex += `\\noindent \\textit{El consultor registra avance continuo en sus quizes semanales sin incidencias de reprobación.}\n\n`;
+    } else {
+      tex += `\\begin{tabularx}{\\textwidth}{c c c c r}
+  \\toprule
+  \\textbf{ID Eval.} & \\textbf{Fecha} & \\textbf{Semana} & \\textbf{Puntaje} & \\textbf{\\% Logro} \\\\
+  \\midrule
+`;
+      evalHist.forEach(ev => {
+        const pct = Math.round((ev.puntaje_obtenido / (ev.total_preguntas || 10)) * 100);
+        tex += `  ${esc(ev.evaluacion_id)} & ${esc(ev.fecha_rendicion)} & Semana ${ev.semana_malla} & ${ev.puntaje_obtenido}/${ev.total_preguntas || 10} & ${pct}\\% \\\\\n`;
+      });
+      tex += `  \\bottomrule
+\\end{tabularx}\n\n`;
+    }
+
+    tex += `\\section{5. Certificación de Hitos y Firma}
+\\begin{tcolorbox}[colback=white,colframe=murexpurple,arc=4pt]
+  \\textbf{Dictamen Final de Onboarding:}\\\\
+  Se certifica que la información contenida en este reporte corresponde al registro auditado en la plataforma \\textbf{MXBoard}.
+  
+  \\vspace{0.8cm}
+  \\noindent
+  \\begin{tabularx}{\\textwidth}{X X}
+    \\centering \\rule{5cm}{0.4pt} \\\\ \\textbf{Luana Ortega / Boris Castro} \\\\ Manager de Onboarding Murex &
+    \\centering \\rule{5cm}{0.4pt} \\\\ \\textbf{Benjamín Cerda} \\\\ Tutor Líder Finance P\\&L
+  \\end{tabularx}
+\\end{tcolorbox}
+
+\\end{document}`;
+
+    return tex;
+  },
+
+  exportTraineeLaTeX() {
+    if (!this.state.inspectedUser) {
+      this.showToast('Selecciona un consultor para inspeccionar primero.');
+      return;
+    }
+    const texContent = this.generateTraineeLaTeXReport(this.state.inspectedUser.id);
+    const fileName = `Reporte_Desempeno_LaTeX_${this.state.inspectedUser.name.replace(/\s+/g, '_')}.tex`;
+
+    const blob = new Blob([texContent], { type: 'text/plain;charset=utf-8' });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = fileName;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    URL.revokeObjectURL(url);
+
+    this.showToast(`Reporte LaTeX (.tex) generado para ${this.state.inspectedUser.name}!`);
+  },
+
+  exportTraineePDF() {
+    if (!this.state.inspectedUser) {
+      this.showToast('Selecciona un consultor para inspeccionar primero.');
+      return;
+    }
+    const u = this.state.inspectedUser;
+
+    const printWin = window.open('', '_blank', 'width=950,height=900');
+    if (!printWin) {
+      this.showToast('Permite las ventanas emergentes (popups) para exportar el PDF.');
+      return;
+    }
+
+    const progress = (this.state.db.consultant_progress || {})[u.id] || {};
+    const completedWeeks = progress.completed_weeks || [];
+    const testScores = progress.test_scores || {};
+    const deliverables = progress.deliverables || {};
+
+    const juniorEvents = (this.state.db.calendar_events || []).filter(
+      e => e.junior_id === u.id && (e.status === 'ejecutado' || e.status === 'ejecutada' || e.status === 'completed')
+    );
+    let totalMinutes = 0;
+    juniorEvents.forEach(e => { totalMinutes += (e.executed_minutes || 0); });
+    const totalHoursStr = (totalMinutes / 60).toFixed(1);
+
+    const hoursByType = { tutoring: 0, masterclass: 0, extra_support: 0, coaching: 0 };
+    juniorEvents.forEach(e => {
+      let t = (e.type || '').toLowerCase();
+      if (t === 'support') t = 'extra_support';
+      if (hoursByType[t] !== undefined) hoursByType[t] += (e.executed_minutes || 0) / 60;
+    });
+
+    const hoursByExpert = {};
+    juniorEvents.forEach(e => {
+      if (e.contabilizar_ids === false || e.expert_id === 'USR-MUREX-LEARNING') return;
+      const expIds = e.expertos_asistentes_ids || [e.expert_id];
+      expIds.forEach(expId => {
+        const expertObj = (this.state.db.users || []).find(usr => usr.id === expId);
+        const name = expertObj ? expertObj.name : 'N/A';
+        hoursByExpert[name] = (hoursByExpert[name] || 0) + (e.executed_minutes || 0) / 60;
+      });
+    });
+
+    const templates = this.state.db.week_templates || [];
+
+    let html = `<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Reporte Ejecutivo de Desempeño - ${u.name}</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&family=Manrope:wght@600;700;800&display=swap" rel="stylesheet">
+  <style>
+    body { font-family: 'Inter', sans-serif; color: #111827; margin: 0; padding: 25px; background: #fff; line-height: 1.5; font-size: 13px; }
+    .header-banner { background: linear-gradient(135deg, #D4215B 0%, #8B5CF6 100%); color: white; padding: 20px 25px; border-radius: 10px; margin-bottom: 25px; }
+    .header-banner h1 { font-family: 'Manrope', sans-serif; margin: 0 0 5px 0; font-size: 24px; font-weight: 800; letter-spacing: 0.5px; }
+    .header-banner p { margin: 0; font-size: 13px; opacity: 0.95; font-weight: 500; }
+    .info-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; background: #F9FAFB; padding: 18px; border-radius: 8px; border: 1px solid #E5E7EB; margin-bottom: 25px; }
+    .info-item { font-size: 12.5px; }
+    .info-item strong { color: #374151; }
+    .section-title { font-family: 'Manrope', sans-serif; color: #D4215B; font-size: 16px; font-weight: 800; border-bottom: 2px solid #D4215B; padding-bottom: 5px; margin: 25px 0 12px 0; text-transform: uppercase; letter-spacing: 0.5px; }
+    table { width: 100%; border-collapse: collapse; margin-bottom: 20px; font-size: 12px; }
+    th { background: #581C87; color: white; text-align: left; padding: 8px 12px; font-weight: 600; font-size: 11px; text-transform: uppercase; }
+    td { padding: 8px 12px; border-bottom: 1px solid #E5E7EB; }
+    tr:nth-child(even) { background-color: #F9FAFB; }
+    .badge { display: inline-block; padding: 3px 8px; border-radius: 12px; font-size: 10.5px; font-weight: 700; }
+    .badge-done { background: #DCFCE7; color: #15803D; }
+    .badge-progress { background: #FEF3C7; color: #B45309; }
+    .badge-pending { background: #F3F4F6; color: #6B7280; }
+    .kpi-row { display: flex; gap: 15px; margin-bottom: 20px; }
+    .kpi-card { flex: 1; background: #FFF0F3; border: 1px solid #FECDD3; border-radius: 8px; padding: 15px; text-align: center; }
+    .kpi-card .val { font-size: 22px; font-weight: 800; color: #D4215B; }
+    .kpi-card .lbl { font-size: 11px; color: #6B7280; font-weight: 600; text-transform: uppercase; margin-top: 4px; }
+    .signature-area { margin-top: 40px; display: flex; justify-content: space-between; gap: 40px; }
+    .sig-box { flex: 1; text-align: center; border-top: 1.5px solid #9CA3AF; padding-top: 8px; font-size: 11px; font-weight: 600; color: #4B5563; }
+    @media print {
+      body { padding: 0; }
+      .no-print { display: none; }
+    }
+  </style>
+</head>
+<body>
+  <div class="no-print" style="margin-bottom: 20px; display: flex; justify-content: space-between; align-items: center; background: #EEF2FF; padding: 12px 18px; border-radius: 8px;">
+    <span style="font-weight: 600; color: #3730A3;">Vista previa de impresión PDF lista</span>
+    <button onclick="window.print()" style="background: #D4215B; color: white; border: none; padding: 8px 16px; border-radius: 6px; font-weight: 700; cursor: pointer;">Imprimir / Guardar PDF</button>
+  </div>
+
+  <div class="header-banner">
+    <h1>MXBOARD ONBOARDING MUREX</h1>
+    <p>Reporte Ejecutivo de Desempeño y Capacitación · Módulo Finance P&L</p>
+  </div>
+
+  <div class="info-grid">
+    <div class="info-item"><strong>Consultor:</strong> ${u.name}</div>
+    <div class="info-item"><strong>Fecha de Emisión:</strong> ${new Date().toLocaleDateString('es-CL')}</div>
+    <div class="info-item"><strong>Correo Institucional:</strong> ${u.email}</div>
+    <div class="info-item"><strong>Semana Actual:</strong> Semana ${u.current_week || u.semana_actual || 1} / 12</div>
+    <div class="info-item"><strong>Estado del Programa:</strong> ${u.status || 'ON_TRACK'}</div>
+    <div class="info-item"><strong>Promedio Evaluaciones:</strong> ${u.avg_score || 80}%</div>
+  </div>
+
+  <div class="kpi-row">
+    <div class="kpi-card"><div class="val">${u.avg_score || 80}%</div><div class="lbl">Promedio Exámenes</div></div>
+    <div class="kpi-card"><div class="val">${completedWeeks.length} / 12</div><div class="lbl">Semanas Aprobadas</div></div>
+    <div class="kpi-card"><div class="val">${totalHoursStr} hrs</div><div class="lbl">Horas de Entrenamiento</div></div>
+  </div>
+
+  <div class="section-title">1. Resumen de Horas e Interacción con Mentores</div>
+  <table>
+    <thead>
+      <tr><th>Tipo de Entrenamiento</th><th>Horas Ejecutadas</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>Tutorías Individuales (1-a-1)</td><td><strong>${hoursByType.tutoring.toFixed(1)} hrs</strong></td></tr>
+      <tr><td>Masterclasses Semanales con Senior</td><td><strong>${hoursByType.masterclass.toFixed(1)} hrs</strong></td></tr>
+      <tr><td>Soporte Extra / Resolución de Bloqueos</td><td><strong>${hoursByType.extra_support.toFixed(1)} hrs</strong></td></tr>
+      <tr><td>Coaching Comunicacional</td><td><strong>${hoursByType.coaching.toFixed(1)} hrs</strong></td></tr>
+    </tbody>
+  </table>
+
+  <div class="section-title">2. Desglose de Horas por Experto / Senior</div>
+  <table>
+    <thead>
+      <tr><th>Nombre del Experto</th><th>Horas Dedicadas</th></tr>
+    </thead>
+    <tbody>`;
+
+    const sortedExpList = Object.entries(hoursByExpert).sort((a, b) => b[1] - a[1]);
+    if (sortedExpList.length === 0) {
+      html += `<tr><td>Benjamín Cerda (Tutor)</td><td><strong>${(totalMinutes/60).toFixed(1)} hrs</strong></td></tr>`;
+    } else {
+      sortedExpList.forEach(([expName, hrs]) => {
+        html += `<tr><td>${expName}</td><td><strong>${hrs.toFixed(1)} hrs</strong></td></tr>`;
+      });
+    }
+
+    html += `
+    </tbody>
+  </table>
+
+  <div class="section-title">3. Matriz de Malla Curricular (12 Semanas)</div>
+  <table>
+    <thead>
+      <tr><th>Sem.</th><th>Módulo / Tema</th><th>Estado</th><th>Quiz</th><th>Entregable</th></tr>
+    </thead>
+    <tbody>`;
+
+    for (let w = 1; w <= 12; w++) {
+      const tmpl = templates.find(t => t.week_number === w) || {};
+      const topic = tmpl.title || `Semana ${w}: Conceptos Finance P&L`;
+      const isDone = completedWeeks.includes(w);
+      const isCurrent = (u.current_week || u.semana_actual || 1) === w;
+      const badgeCls = isDone ? 'badge-done' : (isCurrent ? 'badge-progress' : 'badge-pending');
+      const badgeTxt = isDone ? 'Completado' : (isCurrent ? 'En Curso' : 'Pendiente');
+      const score = testScores[w] !== undefined ? `${testScores[w]}%` : (isDone ? '80%' : '-');
+      const del = deliverables[w];
+      const delText = del ? (del.fileName || 'Evidencia Subida') : (isDone ? 'Aprobado' : 'No Subido');
+
+      html += `<tr>
+        <td><strong>S${w}</strong></td>
+        <td>${topic}</td>
+        <td><span class="badge ${badgeCls}">${badgeTxt}</span></td>
+        <td><strong>${score}</strong></td>
+        <td>${delText}</td>
+      </tr>`;
+    }
+
+    html += `
+    </tbody>
+  </table>
+
+  <div class="signature-area">
+    <div class="sig-box"><strong>Luana Ortega / Boris Castro</strong><br>Manager Onboarding Murex</div>
+    <div class="sig-box"><strong>Benjamín Cerda</strong><br>Tutor Líder Finance P&L</div>
+  </div>
+
+  <script>
+    window.onload = function() {
+      setTimeout(function() { window.print(); }, 500);
+    };
+  </script>
+</body>
+</html>`;
+
+    printWin.document.open();
+    printWin.document.write(html);
+    printWin.document.close();
+  },
+
+  // 3. Render sessions detailed log table
     const tbody = document.getElementById('inspect-hours-sessions-tbody');
     const expertFilterSelect = document.getElementById('inspect-sessions-expert-filter');
     if (expertFilterSelect) {

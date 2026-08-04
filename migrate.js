@@ -1,5 +1,4 @@
-const { open } = require('sqlite');
-const sqlite3 = require('sqlite3');
+const Database = require('better-sqlite3');
 const { Client } = require('pg');
 const path = require('path');
 const fs = require('fs');
@@ -48,10 +47,7 @@ async function runMigration() {
   }
 
   console.log('🔄 Connecting to SQLite database...');
-  const sqliteDb = await open({
-    filename: sqlitePath,
-    driver: sqlite3.Database
-  });
+  const sqliteDb = new Database(sqlitePath);
 
   console.log('🔄 Connecting to Supabase PostgreSQL database...');
   const pgClient = new Client({
@@ -205,7 +201,7 @@ async function runMigration() {
   console.log('🔄 Starting data migration...');
   for (const table of tables) {
     console.log(`Migrating table "${table.name}"...`);
-    const rows = await sqliteDb.all(`SELECT * FROM ${table.name}`);
+    const rows = sqliteDb.prepare(`SELECT * FROM ${table.name}`).all();
     console.log(`Found ${rows.length} rows in SQLite.`);
     
     // Clear existing data in target table
@@ -228,7 +224,7 @@ async function runMigration() {
   }
 
   console.log('🎉 Database migration completed successfully!');
-  await sqliteDb.close();
+  sqliteDb.close();
   await pgClient.end();
 }
 

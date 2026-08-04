@@ -55,17 +55,25 @@ app.use((req, res, next) => {
 // Serve frontend static files from the parent directory
 app.use(express.static(path.join(__dirname, '..')));
 
-let pool;
+let pool = null;
+let sqliteDb = null;
+let useSqlite = false;
 let initPromise = null;
+
+const Database = require('better-sqlite3');
 
 const pgUrl = process.env.DATABASE_URL || process.env.POSTGRES_URL;
 if (pgUrl && !pgUrl.includes('[YOUR-PASSWORD]')) {
-  pool = new Pool({
-    connectionString: pgUrl,
-    ssl: {
-      rejectUnauthorized: false
-    }
-  });
+  try {
+    pool = new Pool({
+      connectionString: pgUrl,
+      ssl: {
+        rejectUnauthorized: false
+      }
+    });
+  } catch (e) {
+    console.warn('Failed to construct Postgres Pool:', e.message);
+  }
 }
 
 function convertSql(sql) {
@@ -75,20 +83,34 @@ function convertSql(sql) {
 
 const db = {
   exec: async (sql) => {
-    if (sql.includes('PRAGMA')) return; // Ignore SQLite PRAGMA statements
+    if (useSqlite) {
+      if (sql.includes('PRAGMA')) return;
+      return sqliteDb.exec(sql);
+    }
+    if (sql.includes('PRAGMA')) return;
     return pool.query(sql);
   },
   get: async (sql, params = []) => {
+    if (useSqlite) {
+      return sqliteDb.prepare(sql).get(...params);
+    }
     const converted = convertSql(sql);
     const res = await pool.query(converted, params);
     return res.rows[0];
   },
   all: async (sql, params = []) => {
+    if (useSqlite) {
+      return sqliteDb.prepare(sql).all(...params);
+    }
     const converted = convertSql(sql);
     const res = await pool.query(converted, params);
     return res.rows;
   },
   run: async (sql, params = []) => {
+    if (useSqlite) {
+      const res = sqliteDb.prepare(sql).run(...params);
+      return { changes: res.changes };
+    }
     const converted = convertSql(sql);
     const res = await pool.query(converted, params);
     return {
@@ -99,31 +121,32 @@ const db = {
 
 // Open database connection and create tables
 async function initDatabase() {
-  if (!pool) {
-    const pgUrl = process.env.DATABASE_URL || process.env.POSTGRES_URL;
-    if (!pgUrl || pgUrl.includes('[YOUR-PASSWORD]')) {
-      console.warn('\n⚠️ WARNING: DATABASE_URL or POSTGRES_URL is not set.');
-      console.warn('Please update the environment variables with your actual Supabase database password to run properly.');
-      return;
-    }
+  let postgresConnected = false;
 
-    pool = new Pool({
-      connectionString: pgUrl,
-      ssl: {
-        rejectUnauthorized: false
-      }
-    });
+  if (pool) {
+    try {
+      const client = await pool.connect();
+      client.release();
+      postgresConnected = true;
+      useSqlite = false;
+      console.log('✅ Supabase PostgreSQL connected successfully.');
+    } catch (err) {
+      console.warn('⚠️ Could not connect to Supabase PostgreSQL:', err.message);
+    }
   }
 
-  // Test pool connection
-  try {
-    const client = await pool.connect();
-    client.release();
-    console.log('✅ Supabase PostgreSQL connected successfully.');
-  } catch (err) {
-    console.error('❌ Failed to connect to Supabase PostgreSQL:', err.message);
-    console.error('Please verify your DATABASE_URL password in the .env file.');
-    return;
+  if (!postgresConnected) {
+    console.log('🔄 Falling back to local SQLite database (mxboard.db)...');
+    try {
+      const sqlitePath = path.join(__dirname, '..', 'mxboard.db');
+      sqliteDb = new Database(sqlitePath);
+      sqliteDb.pragma('journal_mode = WAL');
+      useSqlite = true;
+      console.log('✅ Local SQLite database (mxboard.db) connected successfully.');
+    } catch (err) {
+      console.error('❌ Failed to connect to local SQLite database:', err.message);
+      return;
+    }
   }
 
   // Create Users table
@@ -147,9 +170,10 @@ async function initDatabase() {
 
   // Run dynamic schema migration to ensure entry_date exists in live databases
   try {
-    await db.exec(`ALTER TABLE users ADD COLUMN IF NOT EXISTS entry_date TEXT`);
+    const alterSql = useSqlite ? `ALTER TABLE users ADD COLUMN entry_date TEXT` : `ALTER TABLE users ADD COLUMN IF NOT EXISTS entry_date TEXT`;
+    await db.exec(alterSql);
   } catch (err) {
-    console.log('ALTER TABLE users entry_date notice:', err.message);
+    // Column already exists
   }
 
   // Create Tutor Junior Mapping table
@@ -177,9 +201,10 @@ async function initDatabase() {
   `);
 
   try {
-    await db.exec(`ALTER TABLE consultant_progress ADD COLUMN IF NOT EXISTS quiz_spent_json TEXT`);
+    const alterSql = useSqlite ? `ALTER TABLE consultant_progress ADD COLUMN quiz_spent_json TEXT` : `ALTER TABLE consultant_progress ADD COLUMN IF NOT EXISTS quiz_spent_json TEXT`;
+    await db.exec(alterSql);
   } catch (err) {
-    console.log('ALTER TABLE consultant_progress quiz_spent_json notice:', err.message);
+    // Column already exists
   }
 
   // Create Mentoring Logs table
@@ -215,12 +240,22 @@ async function initDatabase() {
   `);
 
   // Add extra columns if they don't exist
-  await db.exec(`ALTER TABLE calendar_events ADD COLUMN IF NOT EXISTS organizador_id TEXT`);
-  await db.exec(`ALTER TABLE calendar_events ADD COLUMN IF NOT EXISTS expertos_asistentes_ids TEXT`);
-  await db.exec(`ALTER TABLE calendar_events ADD COLUMN IF NOT EXISTS group_id TEXT`);
-  await db.exec(`ALTER TABLE calendar_events ADD COLUMN IF NOT EXISTS tipo_sesion TEXT`);
-  await db.exec(`ALTER TABLE calendar_events ADD COLUMN IF NOT EXISTS estado_confirmacion TEXT`);
-  await db.exec(`ALTER TABLE calendar_events ADD COLUMN IF NOT EXISTS bloqueado_edicion BOOLEAN DEFAULT FALSE`);
+  const calCols = [
+    { col: 'organizador_id', type: 'TEXT' },
+    { col: 'expertos_asistentes_ids', type: 'TEXT' },
+    { col: 'group_id', type: 'TEXT' },
+    { col: 'tipo_sesion', type: 'TEXT' },
+    { col: 'estado_confirmacion', type: 'TEXT' },
+    { col: 'bloqueado_edicion', type: 'BOOLEAN DEFAULT FALSE' }
+  ];
+  for (const c of calCols) {
+    try {
+      const alterSql = useSqlite ? `ALTER TABLE calendar_events ADD COLUMN ${c.col} ${c.type}` : `ALTER TABLE calendar_events ADD COLUMN IF NOT EXISTS ${c.col} ${c.type}`;
+      await db.exec(alterSql);
+    } catch (err) {
+      // Column already exists
+    }
+  }
 
   // Create Historial Evaluaciones table
   await db.exec(`
@@ -302,6 +337,7 @@ async function initDatabase() {
     console.log('Seeding default users into Supabase...');
     const defaultUsers = [
       { id: "USR-LUANA", name: "Luana Ortega", nombre: "Luana Ortega", email: "luana@murex.cl", password: "admin", role: "admin", rol: "MANAGER", avatar_initials: "LO" },
+      { id: "USR-BORIS", name: "Boris Castro", nombre: "Boris Castro", email: "bcastro@murex.cl", password: "admin", role: "admin", rol: "MANAGER", avatar_initials: "BC" },
       { id: "USR-FERNANDO", name: "Fernando Araya", nombre: "Fernando Araya", email: "fernando.araya@murex.cl", password: "password", role: "senior", rol: "SENIOR", avatar_initials: "FA" },
       { id: "USR-SANDRA", name: "Sandra Segura", nombre: "Sandra Segura", email: "sandra.segura@murex.cl", password: "password", role: "senior", rol: "SENIOR", avatar_initials: "SS" },
       { id: "USR-ALEJANDRA", name: "Alejandra González", nombre: "Alejandra González", email: "alejandra.gonzalez@murex.cl", password: "password", role: "senior", rol: "SENIOR", avatar_initials: "AG" },
@@ -445,7 +481,7 @@ app.get('/api/db', async (req, res) => {
     if (initPromise) {
       await initPromise;
     }
-    if (!pool) {
+    if (!pool && !sqliteDb) {
       return res.status(500).json({ error: 'Database is not initialized.' });
     }
 
@@ -498,40 +534,31 @@ app.get('/api/db', async (req, res) => {
     // Map cert_checklists back to object
     const cert_checklists = {};
     certRows.forEach(row => {
-      cert_checklists[row.user_id] = JSON.parse(row.cert_checklist_json || '{}');
+      cert_checklists[row.user_id] = JSON.parse(row.cert_checklist_json || '[]');
     });
 
-    // Parse user objects
-    const parsedUsers = users.map(u => ({
-      id: u.id,
-      name: u.name,
-      nombre: u.nombre || u.name,
-      email: u.email,
-      password: u.password,
-      role: u.role,
-      rol: u.rol,
-      avatar_initials: u.avatar_initials,
-      current_week: u.current_week,
-      semana_actual: u.current_week,
-      avg_score: u.avg_score,
-      status: u.status,
-      progreso_mallas: JSON.parse(u.progreso_mallas_json || '[]'),
-      entry_date: u.entry_date
+    // Map questions back to object
+    const questionsMap = {};
+    questions.forEach(row => {
+      questionsMap[row.week_number] = JSON.parse(row.questions_json || '[]');
+    });
+
+    // Parse SMTP outbox emails
+    const smtp_outbox = smtpRows.map(row => JSON.parse(row.email_json || '{}'));
+
+    // Parse week templates
+    const parsedTemplates = templates.map(row => JSON.parse(row.template_json || '{}'));
+
+    // Parse troubleshooting steps
+    const parsedTroubleshooting = troubleshooting.map(row => ({
+      code: row.code,
+      name: row.title,
+      description: row.description,
+      steps: JSON.parse(row.steps_json || '[]')
     }));
 
-    // Parse evaluation history
-    const parsedEvaluations = evaluations.map(e => ({
-      evaluacion_id: e.evaluacion_id,
-      usuario_id: e.usuario_id,
-      semana_malla: e.semana_malla,
-      fecha_rendicion: e.fecha_rendicion,
-      puntaje_obtenido: e.puntaje_obtenido,
-      total_preguntas: e.total_preguntas,
-      respuestas_usuario: JSON.parse(e.respuestas_usuario_json || '{}')
-    }));
-
-    // Parse calendar events
-    const parsedEvents = events.map(ev => ({
+    // Format calendar events
+    const formattedEvents = events.map(ev => ({
       id: ev.id,
       title: ev.title,
       type: ev.type,
@@ -545,54 +572,38 @@ app.get('/api/db', async (req, res) => {
       status: ev.status,
       block_reason: ev.block_reason,
       week_number: ev.week_number,
-      organizador_id: ev.organizador_id,
+      organizador_id: ev.organizador_id || (ev.type === 'extra_support' ? ev.junior_id : ev.expert_id),
       expertos_asistentes_ids: ev.expertos_asistentes_ids ? JSON.parse(ev.expertos_asistentes_ids) : null,
-      group_id: ev.group_id,
-      tipo_sesion: ev.tipo_sesion,
-      estado_confirmacion: ev.estado_confirmacion,
-      bloqueado_edicion: ev.bloqueado_edicion
+      group_id: ev.group_id || null,
+      tipo_sesion: ev.tipo_sesion || null,
+      estado_confirmacion: ev.estado_confirmacion || null,
+      bloqueado_edicion: ev.bloqueado_edicion ? true : false
     }));
 
-    // Parse templates
-    const parsedTemplates = templates.map(t => JSON.parse(t.template_json));
-
-    // Parse questions dictionary
-    const parsedQuestions = {};
-    questions.forEach(q => {
-      parsedQuestions[q.week_number] = JSON.parse(q.questions_json);
-    });
-
-    // Parse troubleshooting items
-    const parsedTroubleshooting = troubleshooting.map(t => ({
-      code: t.code,
-      title: t.title,
-      description: t.description,
-      steps: JSON.parse(t.steps_json || '[]')
+    // Format users with progress parsing
+    const formattedUsers = users.map(u => ({
+      ...u,
+      progreso_mallas: JSON.parse(u.progreso_mallas_json || '[]')
     }));
 
-    // Parse SMTP outbox emails
-    const parsedSmtp = smtpRows.map(s => JSON.parse(s.email_json));
+    // Format historial_evaluaciones
+    const formattedEvaluaciones = evaluations.map(e => ({
+      ...e,
+      respuestas_usuario: JSON.parse(e.respuestas_usuario_json || '{}')
+    }));
 
     res.json({
-      users: parsedUsers,
-      week_templates: parsedTemplates,
-      consultant_progress,
-      questions: parsedQuestions,
+      users: formattedUsers,
       tutor_junior_mapping,
-      mentoring_logs: logs.map(l => ({
-        id: l.id,
-        junior_id: l.junior_id,
-        tutor_name: l.tutor_name,
-        date: l.date,
-        topic: l.topic,
-        duration: l.duration,
-        ids: l.ids
-      })),
-      smtp_outbox: parsedSmtp,
-      troubleshooting_db: parsedTroubleshooting,
+      consultant_progress,
+      mentoring_logs: logs,
+      calendar_events: formattedEvents,
+      historial_evaluaciones: formattedEvaluaciones,
       cert_checklists,
-      calendar_events: parsedEvents,
-      historial_evaluaciones: parsedEvaluations,
+      smtp_outbox,
+      week_templates: parsedTemplates,
+      questions: questionsMap,
+      troubleshooting_db: parsedTroubleshooting,
       onboarding_progress
     });
   } catch (err) {
@@ -601,23 +612,143 @@ app.get('/api/db', async (req, res) => {
   }
 });
 
+// Mutex queue to prevent concurrent writes from corrupting transactions
 let dbMutex = Promise.resolve();
 
-// POST API to save full state
+// POST API to bulk update full state
 app.post('/api/db/save', async (req, res) => {
   const data = req.body;
   if (!data || !data.users) {
-    return res.status(400).json({ error: 'Invalid data' });
+    return res.status(400).json({ error: 'Invalid database payload.' });
   }
 
   if (initPromise) {
     await initPromise;
   }
-  if (!pool) {
+  if (!pool && !sqliteDb) {
     return res.status(500).json({ error: 'Database is not initialized.' });
   }
 
   dbMutex = dbMutex.then(async () => {
+    if (useSqlite) {
+      try {
+        const tx = sqliteDb.transaction(() => {
+          sqliteDb.prepare('DELETE FROM users').run();
+          const stmtUser = sqliteDb.prepare(`INSERT INTO users (id, name, nombre, email, password, role, rol, avatar_initials, current_week, avg_score, status, progreso_mallas_json, entry_date) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`);
+          for (const u of data.users) {
+            stmtUser.run(u.id, u.name, u.nombre || u.name, u.email, u.password, u.role, u.rol, u.avatar_initials, u.current_week || u.semana_actual, u.avg_score, u.status, JSON.stringify(u.progreso_mallas || []), u.entry_date || null);
+          }
+
+          sqliteDb.prepare('DELETE FROM tutor_junior_mapping').run();
+          if (data.tutor_junior_mapping) {
+            const stmtMapping = sqliteDb.prepare(`INSERT INTO tutor_junior_mapping (junior_id, tutor_id) VALUES (?, ?)`);
+            for (const [junior_id, tutor_id] of Object.entries(data.tutor_junior_mapping)) {
+              stmtMapping.run(junior_id, tutor_id);
+            }
+          }
+
+          sqliteDb.prepare('DELETE FROM consultant_progress').run();
+          if (data.consultant_progress) {
+            const stmtProg = sqliteDb.prepare(`INSERT INTO consultant_progress (user_id, completed_weeks_json, checklist_states_json, test_scores_json, test_attempts_json, test_times_json, deliverables_json, comments_json, game_scores_json, quiz_spent_json) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`);
+            for (const [user_id, p] of Object.entries(data.consultant_progress)) {
+              stmtProg.run(
+                user_id,
+                JSON.stringify(p.completed_weeks || []),
+                JSON.stringify(p.checklist_states || {}),
+                JSON.stringify(p.test_scores || {}),
+                JSON.stringify(p.test_attempts || {}),
+                JSON.stringify(p.test_times || {}),
+                JSON.stringify(p.deliverables || {}),
+                JSON.stringify(p.comments || {}),
+                JSON.stringify(p.game_scores || {}),
+                JSON.stringify(p.quiz_spent || {})
+              );
+            }
+          }
+
+          sqliteDb.prepare('DELETE FROM mentoring_logs').run();
+          if (data.mentoring_logs) {
+            const stmtLogs = sqliteDb.prepare(`INSERT INTO mentoring_logs (id, junior_id, tutor_name, date, topic, duration, ids) VALUES (?, ?, ?, ?, ?, ?, ?)`);
+            for (const l of data.mentoring_logs) {
+              stmtLogs.run(l.id, l.junior_id, l.tutor_name, l.date, l.topic, l.duration, l.ids);
+            }
+          }
+
+          sqliteDb.prepare('DELETE FROM calendar_events').run();
+          if (data.calendar_events) {
+            const stmtEv = sqliteDb.prepare(`INSERT INTO calendar_events (id, title, type, junior_id, expert_id, block_day, time_start, time_end, planned_minutes, executed_minutes, status, block_reason, week_number, organizador_id, expertos_asistentes_ids, group_id, tipo_sesion, estado_confirmacion, bloqueado_edicion) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`);
+            for (const ev of data.calendar_events) {
+              stmtEv.run(
+                ev.id, ev.title, ev.type, ev.junior_id, ev.expert_id, ev.block_day, ev.time_start, ev.time_end, ev.planned_minutes, ev.executed_minutes, ev.status, ev.block_reason, ev.week_number,
+                ev.organizador_id || null, ev.expertos_asistentes_ids ? JSON.stringify(ev.expertos_asistentes_ids) : null, ev.group_id || null, ev.tipo_sesion || null, ev.estado_confirmacion || null, ev.bloqueado_edicion ? 1 : 0
+              );
+            }
+          }
+
+          sqliteDb.prepare('DELETE FROM historial_evaluaciones').run();
+          if (data.historial_evaluaciones) {
+            const stmtEval = sqliteDb.prepare(`INSERT INTO historial_evaluaciones (evaluacion_id, usuario_id, semana_malla, fecha_rendicion, puntaje_obtenido, total_preguntas, respuestas_usuario_json) VALUES (?, ?, ?, ?, ?, ?, ?)`);
+            for (const e of data.historial_evaluaciones) {
+              stmtEval.run(e.evaluacion_id, e.usuario_id, e.semana_malla, e.fecha_rendicion, e.puntaje_obtenido, e.total_preguntas, JSON.stringify(e.respuestas_usuario || {}));
+            }
+          }
+
+          sqliteDb.prepare('DELETE FROM cert_checklists').run();
+          if (data.cert_checklists) {
+            const stmtCert = sqliteDb.prepare(`INSERT INTO cert_checklists (user_id, cert_checklist_json) VALUES (?, ?)`);
+            for (const [user_id, list] of Object.entries(data.cert_checklists)) {
+              stmtCert.run(user_id, JSON.stringify(list));
+            }
+          }
+
+          sqliteDb.prepare('DELETE FROM smtp_outbox').run();
+          if (data.smtp_outbox) {
+            const stmtSmtp = sqliteDb.prepare(`INSERT INTO smtp_outbox (email_json) VALUES (?)`);
+            for (const s of data.smtp_outbox) {
+              stmtSmtp.run(JSON.stringify(s));
+            }
+          }
+
+          sqliteDb.prepare('DELETE FROM week_templates').run();
+          if (data.week_templates) {
+            const stmtWk = sqliteDb.prepare(`INSERT INTO week_templates (week_number, template_json) VALUES (?, ?)`);
+            for (const t of data.week_templates) {
+              stmtWk.run(t.week_number, JSON.stringify(t));
+            }
+          }
+
+          sqliteDb.prepare('DELETE FROM questions').run();
+          if (data.questions) {
+            const stmtQ = sqliteDb.prepare(`INSERT INTO questions (week_number, questions_json) VALUES (?, ?)`);
+            for (const [week, qlist] of Object.entries(data.questions)) {
+              stmtQ.run(week, JSON.stringify(qlist));
+            }
+          }
+
+          sqliteDb.prepare('DELETE FROM troubleshooting_db').run();
+          if (data.troubleshooting_db) {
+            const stmtTb = sqliteDb.prepare(`INSERT INTO troubleshooting_db (code, title, description, steps_json) VALUES (?, ?, ?, ?)`);
+            for (const t of data.troubleshooting_db) {
+              stmtTb.run(t.code, t.name || t.title, t.description, JSON.stringify(t.steps || []));
+            }
+          }
+
+          sqliteDb.prepare('DELETE FROM onboarding_progress').run();
+          if (data.onboarding_progress) {
+            const stmtOnb = sqliteDb.prepare(`INSERT INTO onboarding_progress (user_id, onboarding_check_states_json) VALUES (?, ?)`);
+            for (const [user_id, states] of Object.entries(data.onboarding_progress)) {
+              stmtOnb.run(user_id, JSON.stringify(states));
+            }
+          }
+        });
+        tx();
+        return res.json({ success: true });
+      } catch (err) {
+        console.error('Error saving SQLite database state:', err);
+        return res.status(500).json({ error: err.message });
+      }
+    }
+
     const client = await pool.connect();
     try {
       await client.query('BEGIN');
