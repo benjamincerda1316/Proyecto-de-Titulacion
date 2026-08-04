@@ -2027,10 +2027,10 @@ const app = {
     this.state.hasLoadedFromServer = false;
     
     const endpointsToTry = [
-      'http://localhost:3000/api/db',
-      'http://127.0.0.1:3000/api/db',
       '/api/db',
-      'https://proyecto-de-titulacion.vercel.app/api/db'
+      'https://mxboard.vercel.app/api/db',
+      'http://localhost:3000/api/db',
+      'http://127.0.0.1:3000/api/db'
     ];
 
     let response = null;
