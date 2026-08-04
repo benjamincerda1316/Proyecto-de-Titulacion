@@ -10752,13 +10752,17 @@ const app = {
     });
   },
 
-  renderInspectedHours() {
-    if (!this.state.inspectedUser) return;
-    const userId = this.state.inspectedUser.id;
+  renderInspectedHours(targetUserId) {
+    const userId = targetUserId || (this.state.inspectedUser ? this.state.inspectedUser.id : 'USR-FRANCISCA');
+    if (!userId) return;
 
-    // Filter executed calendar events for the inspected junior (completed, ejecutado, ejecutada)
+    const userObj = (this.state.db.users || []).find(u => u.id === userId);
+    if (userObj) this.state.inspectedUser = userObj;
+
+    // Filter executed calendar events for the inspected junior
     const juniorEvents = (this.state.db.calendar_events || []).filter(
-      e => e.junior_id === userId && (e.status === 'ejecutado' || e.status === 'ejecutada' || e.status === 'completed')
+      e => e.junior_id === userId &&
+           ((e.executed_minutes && e.executed_minutes > 0) || e.status === 'ejecutado' || e.status === 'ejecutada' || e.status === 'completed' || e.estado_confirmacion === 'FIXED')
     );
 
     // Calculate total hours and total sessions
