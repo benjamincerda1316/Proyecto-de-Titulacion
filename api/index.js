@@ -76,7 +76,9 @@ if (pgUrl && !pgUrl.includes('[YOUR-PASSWORD]')) {
       connectionString: pgUrl,
       ssl: {
         rejectUnauthorized: false
-      }
+      },
+      connectionTimeoutMillis: 5000,
+      idleTimeoutMillis: 10000
     });
   } catch (e) {
     console.warn('Failed to construct Postgres Pool:', e.message);
