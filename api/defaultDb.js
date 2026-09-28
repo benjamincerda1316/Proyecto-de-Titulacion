@@ -106,6 +106,21 @@ module.exports = {
       "entry_date": null
     },
     {
+      "id": "USR-BENJAMIN-GMAIL",
+      "name": "Benjamín Cerda",
+      "nombre": "Benjamín Cerda",
+      "email": "benjamincerda1316@gmail.com",
+      "password": "test",
+      "role": "tutor",
+      "rol": "TUTOR",
+      "avatar_initials": "BC",
+      "current_week": null,
+      "avg_score": null,
+      "status": null,
+      "progreso_mallas_json": "[]",
+      "entry_date": null
+    },
+    {
       "id": "USR-JUAN",
       "name": "Juan Francisco Orrego",
       "nombre": "Juan Francisco Orrego",
