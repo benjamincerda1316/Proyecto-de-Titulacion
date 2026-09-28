@@ -1175,8 +1175,8 @@ if (process.env.NODE_ENV !== 'production' || !process.env.VERCEL) {
     console.error('Failed to initialize database:', err);
   });
 } else {
-  // Eagerly initialize DDL setup on serverless boot
-  initPromise = initDatabase().catch(err => console.error('Serverless DB DDL failed:', err));
+  // Non-blocking lazy database initialization for Vercel serverless functions
+  initPromise = null;
 }
 
 module.exports = app;
