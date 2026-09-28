@@ -9713,15 +9713,19 @@ const app = {
     if (!this.state.db) this.state.db = {};
     if (!this.state.db.masterclasses || !Array.isArray(this.state.db.masterclasses) || this.state.db.masterclasses.length === 0) {
       this.state.db.masterclasses = [
-        { id: 1, title: 'Bank Impact and Murex', instructor_id: 'USR-LUANA', date: '', time_start: '10:00', time_end: '11:00' },
-        { id: 2, title: 'Placeholder 1', instructor_id: '', date: '', time_start: '10:00', time_end: '11:00' },
-        { id: 3, title: 'Placeholder 2', instructor_id: '', date: '', time_start: '10:00', time_end: '11:00' },
-        { id: 4, title: 'Placeholder 3', instructor_id: '', date: '', time_start: '10:00', time_end: '11:00' },
-        { id: 5, title: 'Placeholder 4', instructor_id: '', date: '', time_start: '10:00', time_end: '11:00' },
-        { id: 6, title: 'Placeholder 5', instructor_id: '', date: '', time_start: '10:00', time_end: '11:00' },
-        { id: 7, title: 'Placeholder 6', instructor_id: '', date: '', time_start: '10:00', time_end: '11:00' },
-        { id: 8, title: 'Placeholder 7', instructor_id: '', date: '', time_start: '10:00', time_end: '11:00' }
+        { id: 1, title: 'Bank Impact and Murex', instructor_id: 'USR-LUANA', junior_id: 'ALL_JUNIORS', date: '', time_start: '10:00', time_end: '11:00' },
+        { id: 2, title: 'Placeholder 1', instructor_id: '', junior_id: 'ALL_JUNIORS', date: '', time_start: '10:00', time_end: '11:00' },
+        { id: 3, title: 'Placeholder 2', instructor_id: '', junior_id: 'ALL_JUNIORS', date: '', time_start: '10:00', time_end: '11:00' },
+        { id: 4, title: 'Placeholder 3', instructor_id: '', junior_id: 'ALL_JUNIORS', date: '', time_start: '10:00', time_end: '11:00' },
+        { id: 5, title: 'Placeholder 4', instructor_id: '', junior_id: 'ALL_JUNIORS', date: '', time_start: '10:00', time_end: '11:00' },
+        { id: 6, title: 'Placeholder 5', instructor_id: '', junior_id: 'ALL_JUNIORS', date: '', time_start: '10:00', time_end: '11:00' },
+        { id: 7, title: 'Placeholder 6', instructor_id: '', junior_id: 'ALL_JUNIORS', date: '', time_start: '10:00', time_end: '11:00' },
+        { id: 8, title: 'Placeholder 7', instructor_id: '', junior_id: 'ALL_JUNIORS', date: '', time_start: '10:00', time_end: '11:00' }
       ];
+    } else {
+      this.state.db.masterclasses.forEach(mc => {
+        if (!mc.junior_id) mc.junior_id = 'ALL_JUNIORS';
+      });
     }
   },
 
@@ -9742,17 +9746,15 @@ const app = {
 
     const masterclasses = this.state.db.masterclasses;
     const users = this.state.db.users || [];
-    const activeUser = this.state.activeUser;
-    const isInstructorOrAdmin = activeUser && (
-      activeUser.role === 'admin' || activeUser.rol === 'MANAGER' ||
-      activeUser.role === 'tutor' || activeUser.rol === 'TUTOR' ||
-      activeUser.role === 'senior' || activeUser.rol === 'SENIOR'
-    );
 
     const instructors = users.filter(u => 
       u.role === 'admin' || u.rol === 'MANAGER' || 
       u.role === 'senior' || u.rol === 'SENIOR' || 
       u.role === 'tutor' || u.rol === 'TUTOR'
+    );
+
+    const juniors = users.filter(u => 
+      u.rol === 'JUNIOR' || u.role === 'consultant'
     );
 
     tbody.innerHTML = '';
@@ -9764,6 +9766,18 @@ const app = {
       const titleCellHtml = `
         <input type="text" id="mc-title-${mc.id}" value="${mc.title || ''}" ${isEditable ? '' : 'disabled'}
           style="width: 95%; padding: 8px 12px; font-size: 0.88rem; font-weight: 600; border: 1px solid var(--neutral-border); border-radius: 6px; background: ${isEditable ? '#ffffff' : '#f9fafb'}; outline: none;" placeholder="Masterclass Title">
+      `;
+
+      let juniorOptions = `<option value="ALL_JUNIORS" ${(!mc.junior_id || mc.junior_id === 'ALL_JUNIORS') ? 'selected' : ''}>👥 All Newcomers (Global)</option>`;
+      juniors.forEach(jr => {
+        const selected = jr.id === mc.junior_id ? 'selected' : '';
+        juniorOptions += `<option value="${jr.id}" ${selected}>👤 ${jr.name}</option>`;
+      });
+      const juniorCellHtml = `
+        <select id="mc-junior-${mc.id}" ${isEditable ? '' : 'disabled'}
+          style="width: 95%; padding: 8px 12px; font-size: 0.88rem; border: 1px solid var(--neutral-border); border-radius: 6px; background: ${isEditable ? '#ffffff' : '#f9fafb'}; outline: none;">
+          ${juniorOptions}
+        </select>
       `;
 
       let instructorOptions = `<option value="">-- Select Assigned Instructor --</option>`;
@@ -9809,6 +9823,7 @@ const app = {
       tr.innerHTML = `
         <td style="padding: 12px 16px; text-align: center; font-weight: 700; color: var(--primary); font-size: 0.9rem;">${mc.id}</td>
         <td style="padding: 12px 16px;">${titleCellHtml}</td>
+        <td style="padding: 12px 16px;">${juniorCellHtml}</td>
         <td style="padding: 12px 16px;">${instructorCellHtml}</td>
         <td style="padding: 12px 16px;">${dateCellHtml}</td>
         <td style="padding: 12px 16px; text-align: center;">${actionCellHtml}</td>
@@ -9828,12 +9843,14 @@ const app = {
     }
 
     const titleInput = document.getElementById(`mc-title-${mcId}`);
+    const juniorInput = document.getElementById(`mc-junior-${mcId}`);
     const instructorInput = document.getElementById(`mc-instructor-${mcId}`);
     const dateInput = document.getElementById(`mc-date-${mcId}`);
     const startInput = document.getElementById(`mc-start-${mcId}`);
     const endInput = document.getElementById(`mc-end-${mcId}`);
 
     const newTitle = titleInput ? titleInput.value.trim() : '';
+    const newJuniorId = juniorInput ? juniorInput.value : 'ALL_JUNIORS';
     const newInstructorId = instructorInput ? instructorInput.value : '';
     const newDate = dateInput ? dateInput.value : '';
     const newStart = startInput ? startInput.value : '10:00';
@@ -9845,6 +9862,7 @@ const app = {
     }
 
     mc.title = newTitle;
+    mc.junior_id = newJuniorId;
     mc.instructor_id = newInstructorId;
     mc.date = newDate;
     mc.time_start = newStart;
@@ -9860,7 +9878,7 @@ const app = {
         id: eventId,
         title: `Masterclass #${mc.id}: ${mc.title}`,
         type: 'masterclass',
-        junior_id: 'ALL_JUNIORS',
+        junior_id: newJuniorId,
         expert_id: newInstructorId,
         expertos_asistentes_ids: [newInstructorId],
         block_day: newDate,
@@ -9892,17 +9910,29 @@ const app = {
         );
       }
 
-      const juniors = (this.state.db.users || []).filter(u => u.rol === 'JUNIOR' || u.role === 'consultant');
-      juniors.forEach(jr => {
-        if (jr.email) {
+      if (newJuniorId === 'ALL_JUNIORS') {
+        const juniors = (this.state.db.users || []).filter(u => u.rol === 'JUNIOR' || u.role === 'consultant');
+        juniors.forEach(jr => {
+          if (jr.email) {
+            this.sendSMTPAlert(
+              'consultant',
+              jr.email,
+              `Calendar Invitation: Masterclass #${mc.id} - ${mc.title}`,
+              `Dear ${jr.name},\n\nA new Masterclass has been scheduled in your onboarding program:\n\nMasterclass: ${mc.title}\nInstructor: ${instructorObj ? instructorObj.name : 'Assigned Instructor'}\nDate: ${newDate}\nTime: ${newStart} - ${newEnd}\n\nPlease join on time.`
+            );
+          }
+        });
+      } else {
+        const targetJunior = (this.state.db.users || []).find(u => u.id === newJuniorId);
+        if (targetJunior && targetJunior.email) {
           this.sendSMTPAlert(
             'consultant',
-            jr.email,
+            targetJunior.email,
             `Calendar Invitation: Masterclass #${mc.id} - ${mc.title}`,
-            `Dear ${jr.name},\n\nA new Masterclass has been scheduled in your onboarding program:\n\nMasterclass: ${mc.title}\nInstructor: ${instructorObj ? instructorObj.name : 'Assigned Instructor'}\nDate: ${newDate}\nTime: ${newStart} - ${newEnd}\n\nPlease join on time.`
+            `Dear ${targetJunior.name},\n\nYou have been assigned to attend Masterclass #${mc.id}:\n\nMasterclass: ${mc.title}\nInstructor: ${instructorObj ? instructorObj.name : 'Assigned Instructor'}\nDate: ${newDate}\nTime: ${newStart} - ${newEnd}\n\nPlease join on time.`
           );
         }
-      });
+      }
     }
 
     this.saveDatabase();
