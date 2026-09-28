@@ -4,27 +4,29 @@ const path = require('path');
 const fs = require('fs');
 // Default dual-stack DNS resolution for Supabase PostgreSQL
 
-// Load environment variables manually from .env file (one level up from api/)
-try {
-  const envPath = path.join(__dirname, '..', '.env');
-  if (fs.existsSync(envPath)) {
-    const envConfig = fs.readFileSync(envPath, 'utf8');
-    envConfig.split('\n').forEach(line => {
-      const match = line.match(/^\s*([\w.-]+)\s*=\s*(.*)?\s*$/);
-      if (match) {
-        const key = match[1];
-        let value = match[2] || '';
-        if (value.startsWith('"') && value.endsWith('"')) {
-          value = value.substring(1, value.length - 1);
-        } else if (value.startsWith("'") && value.endsWith("'")) {
-          value = value.substring(1, value.length - 1);
+// Load environment variables manually from .env file when running locally
+if (!process.env.VERCEL) {
+  try {
+    const envPath = path.join(__dirname, '..', '.env');
+    if (fs.existsSync(envPath)) {
+      const envConfig = fs.readFileSync(envPath, 'utf8');
+      envConfig.split('\n').forEach(line => {
+        const match = line.match(/^\s*([\w.-]+)\s*=\s*(.*)?\s*$/);
+        if (match) {
+          const key = match[1];
+          let value = match[2] || '';
+          if (value.startsWith('"') && value.endsWith('"')) {
+            value = value.substring(1, value.length - 1);
+          } else if (value.startsWith("'") && value.endsWith("'")) {
+            value = value.substring(1, value.length - 1);
+          }
+          process.env[key] = value.trim();
         }
-        process.env[key] = value.trim();
-      }
-    });
+      });
+    }
+  } catch (e) {
+    console.warn('Failed to parse .env file:', e);
   }
-} catch (e) {
-  console.warn('Failed to parse .env file:', e);
 }
 
 const app = express();
@@ -48,8 +50,10 @@ app.use((req, res, next) => {
   next();
 });
 
-// Serve frontend static files from the parent directory
-app.use(express.static(path.join(__dirname, '..')));
+// Serve frontend static files only when not on Vercel
+if (!process.env.VERCEL) {
+  app.use(express.static(path.join(__dirname, '..')));
+}
 
 let pool = null;
 let sqliteDb = null;
