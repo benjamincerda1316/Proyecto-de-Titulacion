@@ -2039,7 +2039,7 @@ const app = {
     for (const url of endpointsToTry) {
       try {
         const controller = new AbortController();
-        const timeoutId = setTimeout(() => controller.abort(), 4000);
+        const timeoutId = setTimeout(() => controller.abort(), 12000);
         const res = await fetch(url, { signal: controller.signal });
         clearTimeout(timeoutId);
         if (res.ok) {
