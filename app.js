@@ -2027,28 +2027,43 @@ const app = {
     this.state.serverConnected = false;
     this.state.hasLoadedFromServer = false;
     
-    const endpointsToTry = [
-      '/api/db',
-      'https://mxboard.vercel.app/api/db',
-      'http://localhost:3000/api/db',
-      'http://127.0.0.1:3000/api/db'
-    ];
+    const currentOrigin = (typeof window !== 'undefined' && window.location && window.location.origin && window.location.origin !== 'null' && !window.location.origin.startsWith('file://'))
+      ? window.location.origin.replace(/\/$/, '')
+      : '';
+
+    const candidateBases = [
+      currentOrigin,
+      'https://proyecto-de-titulacion.vercel.app',
+      'https://mxboard.vercel.app',
+      'http://localhost:3000',
+      'http://127.0.0.1:3000'
+    ].filter((val, idx, self) => val && self.indexOf(val) === idx);
+
+    const endpointsToTry = candidateBases.map(base => `${base}/api/db`);
+    endpointsToTry.push('/api/db');
 
     let response = null;
     let workingBase = '';
-    for (const url of endpointsToTry) {
-      try {
-        const controller = new AbortController();
-        const timeoutId = setTimeout(() => controller.abort(), 12000);
-        const res = await fetch(url, { signal: controller.signal });
-        clearTimeout(timeoutId);
-        if (res.ok) {
-          response = res;
-          workingBase = url.substring(0, url.indexOf('/api/db'));
-          break;
+
+    // Retry loop to handle Vercel serverless cold starts gracefully
+    for (let retry = 0; retry < 2 && !response; retry++) {
+      if (retry > 0) {
+        await new Promise(r => setTimeout(r, 1000));
+      }
+      for (const url of endpointsToTry) {
+        try {
+          const controller = new AbortController();
+          const timeoutId = setTimeout(() => controller.abort(), 18000);
+          const res = await fetch(url, { signal: controller.signal });
+          clearTimeout(timeoutId);
+          if (res.ok) {
+            response = res;
+            workingBase = url.substring(0, url.indexOf('/api/db'));
+            break;
+          }
+        } catch (e) {
+          // Continue trying next fallback endpoint
         }
-      } catch (e) {
-        // Continue trying next fallback endpoint
       }
     }
     this.state.activeApiBase = workingBase;

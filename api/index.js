@@ -146,14 +146,20 @@ async function initDatabase() {
   postgresConnected = false;
 
   if (pool) {
-    try {
-      const client = await pool.connect();
-      client.release();
-      postgresConnected = true;
-      useSqlite = false;
-      console.log('✅ Supabase PostgreSQL connected successfully.');
-    } catch (err) {
-      console.warn('⚠️ Could not connect to Supabase PostgreSQL:', err.message);
+    for (let attempt = 1; attempt <= 3; attempt++) {
+      try {
+        const client = await pool.connect();
+        client.release();
+        postgresConnected = true;
+        useSqlite = false;
+        console.log(`✅ Supabase PostgreSQL connected successfully (attempt ${attempt}).`);
+        break;
+      } catch (err) {
+        console.warn(`⚠️ Attempt ${attempt}/3 to connect to Supabase PostgreSQL failed:`, err.message);
+        if (attempt < 3) {
+          await new Promise(r => setTimeout(r, 600));
+        }
+      }
     }
   }
 
@@ -566,11 +572,19 @@ async function initDatabase() {
   console.log('Database initialized successfully.');
 }
 
+function ensureDatabaseInitialized() {
+  if (!initPromise) {
+    initPromise = initDatabase().catch(err => {
+      console.error('❌ Error during initDatabase:', err);
+      initPromise = null;
+    });
+  }
+  return initPromise;
+}
+
 app.get('/api/db', async (req, res) => {
   try {
-    if (initPromise) {
-      await initPromise;
-    }
+    await ensureDatabaseInitialized();
 
     if (!postgresConnected && pool) {
       try {
@@ -1174,16 +1188,14 @@ app.post('/api/send-reset-email', async (req, res) => {
 
 const PORT = process.env.PORT || 3000;
 if (process.env.NODE_ENV !== 'production' || !process.env.VERCEL) {
-  initPromise = initDatabase().then(() => {
+  ensureDatabaseInitialized().then(() => {
     app.listen(PORT, () => {
       console.log(`Server is running at http://localhost:${PORT}`);
     });
-  }).catch(err => {
-    console.error('Failed to initialize database:', err);
   });
 } else {
-  // Non-blocking lazy database initialization for Vercel serverless functions
-  initPromise = null;
+  // Start database connection initialization eagerly on Vercel cold starts
+  ensureDatabaseInitialized();
 }
 
 module.exports = app;
