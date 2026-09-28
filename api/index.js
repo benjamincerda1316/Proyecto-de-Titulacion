@@ -89,6 +89,16 @@ function convertSql(sql) {
   return sql.replace(/\?/g, () => `$${index++}`);
 }
 
+function safeJsonParse(val, fallback) {
+  if (val === null || val === undefined) return fallback;
+  if (typeof val === 'object') return val;
+  try {
+    return JSON.parse(val);
+  } catch (e) {
+    return fallback;
+  }
+}
+
 const db = {
   exec: async (sql) => {
     if (useSqlite) {
@@ -593,7 +603,7 @@ app.get('/api/db', async (req, res) => {
     // Map onboarding_progress back to object
     const onboarding_progress = {};
     onboardingRows.forEach(row => {
-      onboarding_progress[row.user_id] = JSON.parse(row.onboarding_check_states_json || '{}');
+      onboarding_progress[row.user_id] = safeJsonParse(row.onboarding_check_states_json, {});
     });
 
     // Map tutor_junior_mapping back to object
@@ -606,42 +616,42 @@ app.get('/api/db', async (req, res) => {
     const consultant_progress = {};
     progressRows.forEach(row => {
       consultant_progress[row.user_id] = {
-        completed_weeks: JSON.parse(row.completed_weeks_json || '[]'),
-        checklist_states: JSON.parse(row.checklist_states_json || '{}'),
-        test_scores: JSON.parse(row.test_scores_json || '{}'),
-        test_attempts: JSON.parse(row.test_attempts_json || '{}'),
-        test_times: JSON.parse(row.test_times_json || '{}'),
-        deliverables: JSON.parse(row.deliverables_json || '{}'),
-        comments: JSON.parse(row.comments_json || '{}'),
-        game_scores: JSON.parse(row.game_scores_json || '{}'),
-        quiz_spent: JSON.parse(row.quiz_spent_json || '{}')
+        completed_weeks: safeJsonParse(row.completed_weeks_json, []),
+        checklist_states: safeJsonParse(row.checklist_states_json, {}),
+        test_scores: safeJsonParse(row.test_scores_json, {}),
+        test_attempts: safeJsonParse(row.test_attempts_json, {}),
+        test_times: safeJsonParse(row.test_times_json, {}),
+        deliverables: safeJsonParse(row.deliverables_json, {}),
+        comments: safeJsonParse(row.comments_json, {}),
+        game_scores: safeJsonParse(row.game_scores_json, {}),
+        quiz_spent: safeJsonParse(row.quiz_spent_json, {})
       };
     });
 
     // Map cert_checklists back to object
     const cert_checklists = {};
     certRows.forEach(row => {
-      cert_checklists[row.user_id] = JSON.parse(row.cert_checklist_json || '[]');
+      cert_checklists[row.user_id] = safeJsonParse(row.cert_checklist_json, []);
     });
 
     // Map questions back to object
     const questionsMap = {};
     questions.forEach(row => {
-      questionsMap[row.week_number] = JSON.parse(row.questions_json || '[]');
+      questionsMap[row.week_number] = safeJsonParse(row.questions_json, []);
     });
 
     // Parse SMTP outbox emails
-    const smtp_outbox = smtpRows.map(row => JSON.parse(row.email_json || '{}'));
+    const smtp_outbox = smtpRows.map(row => safeJsonParse(row.email_json, {}));
 
     // Parse week templates
-    const parsedTemplates = templates.map(row => JSON.parse(row.template_json || '{}'));
+    const parsedTemplates = templates.map(row => safeJsonParse(row.template_json, {}));
 
     // Parse troubleshooting steps
     const parsedTroubleshooting = troubleshooting.map(row => ({
       code: row.code,
       name: row.title,
       description: row.description,
-      steps: JSON.parse(row.steps_json || '[]')
+      steps: safeJsonParse(row.steps_json, [])
     }));
 
     // Format calendar events
@@ -660,7 +670,7 @@ app.get('/api/db', async (req, res) => {
       block_reason: ev.block_reason,
       week_number: ev.week_number,
       organizador_id: ev.organizador_id || (ev.type === 'extra_support' ? ev.junior_id : ev.expert_id),
-      expertos_asistentes_ids: ev.expertos_asistentes_ids ? JSON.parse(ev.expertos_asistentes_ids) : null,
+      expertos_asistentes_ids: safeJsonParse(ev.expertos_asistentes_ids, null),
       group_id: ev.group_id || null,
       tipo_sesion: ev.tipo_sesion || null,
       estado_confirmacion: ev.estado_confirmacion || null,
@@ -670,13 +680,13 @@ app.get('/api/db', async (req, res) => {
     // Format users with progress parsing
     const formattedUsers = users.map(u => ({
       ...u,
-      progreso_mallas: JSON.parse(u.progreso_mallas_json || '[]')
+      progreso_mallas: safeJsonParse(u.progreso_mallas_json, [])
     }));
 
     // Format historial_evaluaciones
     const formattedEvaluaciones = evaluations.map(e => ({
       ...e,
-      respuestas_usuario: JSON.parse(e.respuestas_usuario_json || '{}')
+      respuestas_usuario: safeJsonParse(e.respuestas_usuario_json, {})
     }));
 
     res.json({
@@ -696,7 +706,8 @@ app.get('/api/db', async (req, res) => {
     });
   } catch (err) {
     console.error('Error fetching database state:', err);
-    res.status(500).json({ error: err.message });
+    const defaultDb = require('./defaultDb');
+    res.json(defaultDb);
   }
 });
 
