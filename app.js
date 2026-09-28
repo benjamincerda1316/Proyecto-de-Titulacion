@@ -10444,6 +10444,21 @@ const app = {
       statusMsg.innerHTML = '<i class="ti ti-info-circle"></i> Conectando con la API de Resend para enviar tu código...';
     }
 
+    const showStep2 = (codeStr) => {
+      const step1 = document.getElementById('forgot-password-step1-form');
+      const step2 = document.getElementById('forgot-password-step2-form');
+      const codeInput = document.getElementById('forgot-pass-code');
+      const codeHint = document.getElementById('forgot-pass-code-hint');
+
+      if (codeInput) codeInput.value = codeStr;
+      if (codeHint) {
+        codeHint.innerHTML = `<i class="ti ti-key"></i> Código de verificación: <span style="letter-spacing: 2px; background: #fff0f3; padding: 2px 8px; border-radius: 4px; border: 1px solid rgba(212,33,91,0.2);">${codeStr}</span>`;
+      }
+
+      if (step1) step1.style.display = 'none';
+      if (step2) step2.style.display = 'block';
+    };
+
     try {
       const apiBase = this.state.apiBase || '';
       const response = await fetch(`${apiBase}/api/send-reset-email`, {
@@ -10459,39 +10474,16 @@ const app = {
 
       if (response.ok && resData.success) {
         this.showToast("¡Código enviado a tu correo via Resend!");
-        const step1 = document.getElementById('forgot-password-step1-form');
-        const step2 = document.getElementById('forgot-password-step2-form');
-        if (step1) step1.style.display = 'none';
-        if (step2) step2.style.display = 'block';
+        showStep2(code);
       } else {
         console.warn("Resend email warning:", resData.error);
-        if (statusMsg) {
-          statusMsg.style.display = 'block';
-          statusMsg.style.background = '#FEF3C7';
-          statusMsg.style.color = '#92400E';
-          statusMsg.style.border = '1px solid #FCD34D';
-          statusMsg.innerHTML = `<i class="ti ti-alert-triangle"></i> <strong>Resend Test Mode:</strong> ${resData.error || 'Correo no enviado'}. <br/><span style="font-size:0.8rem; margin-top:4px; display:inline-block;">Tu código de prueba es: <strong style="letter-spacing:1px; color:#D4215B;">${code}</strong></span>`;
-        }
-        this.showToast(`Resend Test Mode: Usa el código ${code}`, "warning");
-        const step1 = document.getElementById('forgot-password-step1-form');
-        const step2 = document.getElementById('forgot-password-step2-form');
-        if (step1) step1.style.display = 'none';
-        if (step2) step2.style.display = 'block';
+        this.showToast(`Código de prueba: ${code}`, "warning");
+        showStep2(code);
       }
     } catch (err) {
       console.error("Error sending reset email:", err);
-      if (statusMsg) {
-        statusMsg.style.display = 'block';
-        statusMsg.style.background = '#FEF3C7';
-        statusMsg.style.color = '#92400E';
-        statusMsg.style.border = '1px solid #FCD34D';
-        statusMsg.innerHTML = `<i class="ti ti-alert-triangle"></i> No se pudo contactar al servidor. Código local: <strong style="color:#D4215B;">${code}</strong>`;
-      }
-      this.showToast(`Servidor no disponible. Código local: ${code}`, "warning");
-      const step1 = document.getElementById('forgot-password-step1-form');
-      const step2 = document.getElementById('forgot-password-step2-form');
-      if (step1) step1.style.display = 'none';
-      if (step2) step2.style.display = 'block';
+      this.showToast(`Código local: ${code}`, "warning");
+      showStep2(code);
     } finally {
       if (btnSend) {
         btnSend.disabled = false;
