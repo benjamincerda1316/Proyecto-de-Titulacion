@@ -5991,11 +5991,7 @@ const app = {
       }
     }
     if (welcomeTitle) {
-      if (isSenior) {
-        welcomeTitle.innerText = `Senior Panel — Consultant: ${this.state.activeUser.name}`;
-      } else {
-        welcomeTitle.innerText = isTutor ? `Tutoring Panel — Mentor: ${this.state.activeUser.name}` : `Welcome, ${this.state.activeUser.name}`;
-      }
+      welcomeTitle.innerText = `Welcome, ${this.state.activeUser.name}`;
     }
     if (welcomeSubtitle) {
       if (isSenior) {
@@ -9733,6 +9729,8 @@ const app = {
     const activeUser = this.state.activeUser;
     if (!activeUser) return false;
     if (activeUser.role === 'admin' || activeUser.rol === 'MANAGER') return true;
+    if (activeUser.role === 'tutor' || activeUser.rol === 'TUTOR') return true;
+    if (activeUser.role === 'senior' || activeUser.rol === 'SENIOR') return true;
     if (mc && mc.instructor_id && activeUser.id === mc.instructor_id) return true;
     return false;
   },
@@ -9745,7 +9743,11 @@ const app = {
     const masterclasses = this.state.db.masterclasses;
     const users = this.state.db.users || [];
     const activeUser = this.state.activeUser;
-    const isAdmin = activeUser && (activeUser.role === 'admin' || activeUser.rol === 'MANAGER');
+    const isInstructorOrAdmin = activeUser && (
+      activeUser.role === 'admin' || activeUser.rol === 'MANAGER' ||
+      activeUser.role === 'tutor' || activeUser.rol === 'TUTOR' ||
+      activeUser.role === 'senior' || activeUser.rol === 'SENIOR'
+    );
 
     const instructors = users.filter(u => 
       u.role === 'admin' || u.rol === 'MANAGER' || 
@@ -9755,14 +9757,14 @@ const app = {
 
     const badge = document.getElementById('mc-permission-badge');
     if (badge) {
-      if (isAdmin) {
+      if (isInstructorOrAdmin) {
         badge.style.background = 'rgba(212, 33, 91, 0.1)';
         badge.style.color = 'var(--primary)';
-        badge.innerHTML = '<i class="ti ti-shield-check"></i> Admin Access (Full Editing Enabled)';
+        badge.innerHTML = '<i class="ti ti-shield-check"></i> Tutor & Admin Access (Full Editing Enabled)';
       } else {
-        badge.style.background = 'rgba(59, 130, 246, 0.1)';
-        badge.style.color = '#2563eb';
-        badge.innerHTML = '<i class="ti ti-user-check"></i> Instructor Access (Editable if Assigned)';
+        badge.style.background = 'rgba(243, 244, 246, 1)';
+        badge.style.color = '#6b7280';
+        badge.innerHTML = '<i class="ti ti-lock"></i> Read Only Access';
       }
     }
 
