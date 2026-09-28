@@ -9709,24 +9709,29 @@ const app = {
     });
   },
 
-  ensureMasterclassesData() {
+  ensureMasterclassesDataForJunior(juniorId) {
     if (!this.state.db) this.state.db = {};
-    if (!this.state.db.masterclasses || !Array.isArray(this.state.db.masterclasses) || this.state.db.masterclasses.length === 0) {
-      this.state.db.masterclasses = [
-        { id: 1, title: 'Bank Impact and Murex', instructor_id: 'USR-LUANA', junior_id: 'ALL_JUNIORS', date: '', time_start: '10:00', time_end: '11:00' },
-        { id: 2, title: 'Placeholder 1', instructor_id: '', junior_id: 'ALL_JUNIORS', date: '', time_start: '10:00', time_end: '11:00' },
-        { id: 3, title: 'Placeholder 2', instructor_id: '', junior_id: 'ALL_JUNIORS', date: '', time_start: '10:00', time_end: '11:00' },
-        { id: 4, title: 'Placeholder 3', instructor_id: '', junior_id: 'ALL_JUNIORS', date: '', time_start: '10:00', time_end: '11:00' },
-        { id: 5, title: 'Placeholder 4', instructor_id: '', junior_id: 'ALL_JUNIORS', date: '', time_start: '10:00', time_end: '11:00' },
-        { id: 6, title: 'Placeholder 5', instructor_id: '', junior_id: 'ALL_JUNIORS', date: '', time_start: '10:00', time_end: '11:00' },
-        { id: 7, title: 'Placeholder 6', instructor_id: '', junior_id: 'ALL_JUNIORS', date: '', time_start: '10:00', time_end: '11:00' },
-        { id: 8, title: 'Placeholder 7', instructor_id: '', junior_id: 'ALL_JUNIORS', date: '', time_start: '10:00', time_end: '11:00' }
+    if (!this.state.db.masterclasses) this.state.db.masterclasses = [];
+
+    const existingForJunior = this.state.db.masterclasses.filter(m => m.junior_id === juniorId);
+    if (existingForJunior.length === 0) {
+      const defaultMcs = [
+        { junior_id: juniorId, id: 1, title: 'Bank Impact and Murex', instructor_id: 'USR-LUANA', date: '', time_start: '10:00', time_end: '11:00' },
+        { junior_id: juniorId, id: 2, title: 'Placeholder 1', instructor_id: '', date: '', time_start: '10:00', time_end: '11:00' },
+        { junior_id: juniorId, id: 3, title: 'Placeholder 2', instructor_id: '', date: '', time_start: '10:00', time_end: '11:00' },
+        { junior_id: juniorId, id: 4, title: 'Placeholder 3', instructor_id: '', date: '', time_start: '10:00', time_end: '11:00' },
+        { junior_id: juniorId, id: 5, title: 'Placeholder 4', instructor_id: '', date: '', time_start: '10:00', time_end: '11:00' },
+        { junior_id: juniorId, id: 6, title: 'Placeholder 5', instructor_id: '', date: '', time_start: '10:00', time_end: '11:00' },
+        { junior_id: juniorId, id: 7, title: 'Placeholder 6', instructor_id: '', date: '', time_start: '10:00', time_end: '11:00' },
+        { junior_id: juniorId, id: 8, title: 'Placeholder 7', instructor_id: '', date: '', time_start: '10:00', time_end: '11:00' }
       ];
-    } else {
-      this.state.db.masterclasses.forEach(mc => {
-        if (!mc.junior_id) mc.junior_id = 'ALL_JUNIORS';
-      });
+      this.state.db.masterclasses.push(...defaultMcs);
     }
+  },
+
+  handleMasterclassNewcomerChange(newJuniorId) {
+    this.state.selectedMasterclassJuniorId = newJuniorId;
+    this.renderMasterclassManagement();
   },
 
   canEditMasterclass(mc) {
@@ -9740,12 +9745,41 @@ const app = {
   },
 
   renderMasterclassManagement() {
-    this.ensureMasterclassesData();
     const tbody = document.getElementById('masterclass-management-tbody');
     if (!tbody) return;
 
-    const masterclasses = this.state.db.masterclasses;
     const users = this.state.db.users || [];
+    const juniors = users.filter(u => u.rol === 'JUNIOR' || u.role === 'consultant');
+
+    if (juniors.length === 0) {
+      tbody.innerHTML = `<tr><td colspan="5" style="text-align:center; padding: 20px; color: var(--neutral-muted);">No newcomers/juniors registered in system.</td></tr>`;
+      return;
+    }
+
+    if (!this.state.selectedMasterclassJuniorId || !juniors.find(j => j.id === this.state.selectedMasterclassJuniorId)) {
+      this.state.selectedMasterclassJuniorId = juniors[0].id;
+    }
+
+    const currentJuniorId = this.state.selectedMasterclassJuniorId;
+    const currentJunior = juniors.find(j => j.id === currentJuniorId);
+
+    const newcomerSelect = document.getElementById('mc-newcomer-select');
+    if (newcomerSelect) {
+      newcomerSelect.innerHTML = juniors.map(j => `
+        <option value="${j.id}" ${j.id === currentJuniorId ? 'selected' : ''}>👤 ${j.name}</option>
+      `).join('');
+    }
+
+    const statusInfo = document.getElementById('mc-newcomer-status-info');
+    if (statusInfo && currentJunior) {
+      statusInfo.innerHTML = `Viewing 8 masterclasses for <strong style="color: var(--primary);">${currentJunior.name}</strong>`;
+    }
+
+    this.ensureMasterclassesDataForJunior(currentJuniorId);
+
+    const masterclassesForJunior = (this.state.db.masterclasses || [])
+      .filter(m => m.junior_id === currentJuniorId)
+      .sort((a, b) => a.id - b.id);
 
     const instructors = users.filter(u => 
       u.role === 'admin' || u.rol === 'MANAGER' || 
@@ -9753,12 +9787,8 @@ const app = {
       u.role === 'tutor' || u.rol === 'TUTOR'
     );
 
-    const juniors = users.filter(u => 
-      u.rol === 'JUNIOR' || u.role === 'consultant'
-    );
-
     tbody.innerHTML = '';
-    masterclasses.forEach(mc => {
+    masterclassesForJunior.forEach(mc => {
       const isEditable = this.canEditMasterclass(mc);
       const tr = document.createElement('tr');
       tr.style.borderBottom = '1px solid var(--neutral-border)';
@@ -9766,18 +9796,6 @@ const app = {
       const titleCellHtml = `
         <input type="text" id="mc-title-${mc.id}" value="${mc.title || ''}" ${isEditable ? '' : 'disabled'}
           style="width: 95%; padding: 8px 12px; font-size: 0.88rem; font-weight: 600; border: 1px solid var(--neutral-border); border-radius: 6px; background: ${isEditable ? '#ffffff' : '#f9fafb'}; outline: none;" placeholder="Masterclass Title">
-      `;
-
-      let juniorOptions = `<option value="ALL_JUNIORS" ${(!mc.junior_id || mc.junior_id === 'ALL_JUNIORS') ? 'selected' : ''}>👥 All Newcomers (Global)</option>`;
-      juniors.forEach(jr => {
-        const selected = jr.id === mc.junior_id ? 'selected' : '';
-        juniorOptions += `<option value="${jr.id}" ${selected}>👤 ${jr.name}</option>`;
-      });
-      const juniorCellHtml = `
-        <select id="mc-junior-${mc.id}" ${isEditable ? '' : 'disabled'}
-          style="width: 95%; padding: 8px 12px; font-size: 0.88rem; border: 1px solid var(--neutral-border); border-radius: 6px; background: ${isEditable ? '#ffffff' : '#f9fafb'}; outline: none;">
-          ${juniorOptions}
-        </select>
       `;
 
       let instructorOptions = `<option value="">-- Select Assigned Instructor --</option>`;
@@ -9823,7 +9841,6 @@ const app = {
       tr.innerHTML = `
         <td style="padding: 12px 16px; text-align: center; font-weight: 700; color: var(--primary); font-size: 0.9rem;">${mc.id}</td>
         <td style="padding: 12px 16px;">${titleCellHtml}</td>
-        <td style="padding: 12px 16px;">${juniorCellHtml}</td>
         <td style="padding: 12px 16px;">${instructorCellHtml}</td>
         <td style="padding: 12px 16px;">${dateCellHtml}</td>
         <td style="padding: 12px 16px; text-align: center;">${actionCellHtml}</td>
@@ -9833,8 +9850,11 @@ const app = {
   },
 
   async saveMasterclassRow(mcId) {
-    this.ensureMasterclassesData();
-    const mc = this.state.db.masterclasses.find(m => m.id === mcId);
+    const currentJuniorId = this.state.selectedMasterclassJuniorId;
+    if (!currentJuniorId) return;
+
+    this.ensureMasterclassesDataForJunior(currentJuniorId);
+    const mc = this.state.db.masterclasses.find(m => m.junior_id === currentJuniorId && m.id === mcId);
     if (!mc) return;
 
     if (!this.canEditMasterclass(mc)) {
@@ -9843,14 +9863,12 @@ const app = {
     }
 
     const titleInput = document.getElementById(`mc-title-${mcId}`);
-    const juniorInput = document.getElementById(`mc-junior-${mcId}`);
     const instructorInput = document.getElementById(`mc-instructor-${mcId}`);
     const dateInput = document.getElementById(`mc-date-${mcId}`);
     const startInput = document.getElementById(`mc-start-${mcId}`);
     const endInput = document.getElementById(`mc-end-${mcId}`);
 
     const newTitle = titleInput ? titleInput.value.trim() : '';
-    const newJuniorId = juniorInput ? juniorInput.value : 'ALL_JUNIORS';
     const newInstructorId = instructorInput ? instructorInput.value : '';
     const newDate = dateInput ? dateInput.value : '';
     const newStart = startInput ? startInput.value : '10:00';
@@ -9862,14 +9880,15 @@ const app = {
     }
 
     mc.title = newTitle;
-    mc.junior_id = newJuniorId;
     mc.instructor_id = newInstructorId;
     mc.date = newDate;
     mc.time_start = newStart;
     mc.time_end = newEnd;
 
+    const currentJunior = (this.state.db.users || []).find(u => u.id === currentJuniorId);
+
     if (newInstructorId && newDate) {
-      const eventId = `ev-masterclass-mgmt-${mc.id}`;
+      const eventId = `ev-masterclass-${currentJuniorId}-${mc.id}`;
       if (!this.state.db.calendar_events) this.state.db.calendar_events = [];
       let evIndex = this.state.db.calendar_events.findIndex(e => e.id === eventId);
       
@@ -9878,7 +9897,7 @@ const app = {
         id: eventId,
         title: `Masterclass #${mc.id}: ${mc.title}`,
         type: 'masterclass',
-        junior_id: newJuniorId,
+        junior_id: currentJuniorId,
         expert_id: newInstructorId,
         expertos_asistentes_ids: [newInstructorId],
         block_day: newDate,
@@ -9886,7 +9905,7 @@ const app = {
         time_end: newEnd,
         planned_minutes: 60,
         status: 'aprobado',
-        block_reason: `Masterclass #${mc.id}: ${mc.title}`,
+        block_reason: `Masterclass #${mc.id}: ${mc.title} (${currentJunior ? currentJunior.name : 'Junior'})`,
         week_number: mc.id,
         organizador_id: this.state.activeUser ? this.state.activeUser.id : 'USR-LUANA',
         estado_confirmacion: 'FIXED',
@@ -9906,37 +9925,22 @@ const app = {
           instructorObj.role || 'tutor',
           instructorObj.email,
           `Assigned Masterclass #${mc.id}: ${mc.title}`,
-          `Dear ${instructorObj.name},\n\nYou have been assigned to conduct Masterclass #${mc.id}:\n\nTitle: ${mc.title}\nDate: ${newDate}\nTime: ${newStart} - ${newEnd}\n\nCalendar events and notifications have been automatically dispatched.`
+          `Dear ${instructorObj.name},\n\nYou have been assigned to conduct Masterclass #${mc.id} for ${currentJunior ? currentJunior.name : 'Newcomer'}:\n\nTitle: ${mc.title}\nNewcomer: ${currentJunior ? currentJunior.name : 'Junior'}\nDate: ${newDate}\nTime: ${newStart} - ${newEnd}\n\nCalendar invitation has been created.`
         );
       }
 
-      if (newJuniorId === 'ALL_JUNIORS') {
-        const juniors = (this.state.db.users || []).filter(u => u.rol === 'JUNIOR' || u.role === 'consultant');
-        juniors.forEach(jr => {
-          if (jr.email) {
-            this.sendSMTPAlert(
-              'consultant',
-              jr.email,
-              `Calendar Invitation: Masterclass #${mc.id} - ${mc.title}`,
-              `Dear ${jr.name},\n\nA new Masterclass has been scheduled in your onboarding program:\n\nMasterclass: ${mc.title}\nInstructor: ${instructorObj ? instructorObj.name : 'Assigned Instructor'}\nDate: ${newDate}\nTime: ${newStart} - ${newEnd}\n\nPlease join on time.`
-            );
-          }
-        });
-      } else {
-        const targetJunior = (this.state.db.users || []).find(u => u.id === newJuniorId);
-        if (targetJunior && targetJunior.email) {
-          this.sendSMTPAlert(
-            'consultant',
-            targetJunior.email,
-            `Calendar Invitation: Masterclass #${mc.id} - ${mc.title}`,
-            `Dear ${targetJunior.name},\n\nYou have been assigned to attend Masterclass #${mc.id}:\n\nMasterclass: ${mc.title}\nInstructor: ${instructorObj ? instructorObj.name : 'Assigned Instructor'}\nDate: ${newDate}\nTime: ${newStart} - ${newEnd}\n\nPlease join on time.`
-          );
-        }
+      if (currentJunior && currentJunior.email) {
+        this.sendSMTPAlert(
+          'consultant',
+          currentJunior.email,
+          `Calendar Invitation: Masterclass #${mc.id} - ${mc.title}`,
+          `Dear ${currentJunior.name},\n\nA Masterclass has been scheduled for your onboarding:\n\nMasterclass: ${mc.title}\nInstructor: ${instructorObj ? instructorObj.name : 'Assigned Instructor'}\nDate: ${newDate}\nTime: ${newStart} - ${newEnd}\n\nPlease join on time.`
+        );
       }
     }
 
     this.saveDatabase();
-    this.showToast(`Masterclass #${mcId} updated & invitations sent!`);
+    this.showToast(`Masterclass #${mcId} updated for ${currentJunior ? currentJunior.name : 'Newcomer'} & invitations sent!`);
     this.renderMasterclassManagement();
   },
 

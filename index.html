@@ -2782,8 +2782,24 @@
                     <i class="ti ti-presentation" style="color: var(--primary);"></i> Masterclass Management
                   </h2>
                   <p style="font-size: 0.88rem; color: var(--neutral-muted); margin: 0;">
-                    Manage the 8 core masterclasses for Murex Finance & PL onboarding. Assign instructors, set dates/times, and send corporate calendar invitations.
+                    Manage the 8 core masterclasses for each Murex Finance & PL newcomer in onboarding. Select a newcomer to view and update their individual masterclass program.
                   </p>
+                </div>
+              </div>
+
+              <!-- Newcomer Selector Header Control -->
+              <div style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 16px; margin-bottom: 20px; background: #f8fafc; padding: 14px 20px; border-radius: 10px; border: 1px solid var(--neutral-border);">
+                <div style="display: flex; align-items: center; gap: 12px; flex-wrap: wrap;">
+                  <label for="mc-newcomer-select" style="font-weight: 700; font-size: 0.92rem; color: var(--neutral-dark); display: flex; align-items: center; gap: 8px;">
+                    <i class="ti ti-user-check" style="color: var(--primary); font-size: 1.1rem;"></i> Select Newcomer / Consultant:
+                  </label>
+                  <select id="mc-newcomer-select" onchange="app.handleMasterclassNewcomerChange(this.value)"
+                    style="padding: 8px 16px; font-size: 0.9rem; font-weight: 600; border: 1.5px solid var(--primary); border-radius: 8px; background: white; color: var(--neutral-dark); outline: none; cursor: pointer; min-width: 240px;">
+                    <!-- Options populated dynamically by JS -->
+                  </select>
+                </div>
+                <div id="mc-newcomer-status-info" style="font-size: 0.82rem; color: var(--neutral-muted); font-weight: 500;">
+                  Viewing 8 masterclasses for selected consultant
                 </div>
               </div>
 
@@ -2792,11 +2808,10 @@
                 <table class="consultant-table" style="width: 100%; border-collapse: collapse;">
                   <thead>
                     <tr style="background: var(--neutral-light); border-bottom: 2px solid var(--neutral-border); text-align: left;">
-                      <th style="padding: 14px 16px; font-size: 0.85rem; font-weight: 700; color: var(--neutral-dark); width: 40px; text-align: center;">#</th>
-                      <th style="padding: 14px 16px; font-size: 0.85rem; font-weight: 700; color: var(--neutral-dark); min-width: 200px;">Masterclass Title</th>
-                      <th style="padding: 14px 16px; font-size: 0.85rem; font-weight: 700; color: var(--neutral-dark); min-width: 180px;">Assigned Newcomer</th>
-                      <th style="padding: 14px 16px; font-size: 0.85rem; font-weight: 700; color: var(--neutral-dark); min-width: 180px;">Assigned Instructor</th>
-                      <th style="padding: 14px 16px; font-size: 0.85rem; font-weight: 700; color: var(--neutral-dark); min-width: 260px;">Date & Time</th>
+                      <th style="padding: 14px 16px; font-size: 0.85rem; font-weight: 700; color: var(--neutral-dark); width: 50px; text-align: center;">#</th>
+                      <th style="padding: 14px 16px; font-size: 0.85rem; font-weight: 700; color: var(--neutral-dark); min-width: 240px;">Masterclass Title</th>
+                      <th style="padding: 14px 16px; font-size: 0.85rem; font-weight: 700; color: var(--neutral-dark); min-width: 220px;">Assigned Instructor</th>
+                      <th style="padding: 14px 16px; font-size: 0.85rem; font-weight: 700; color: var(--neutral-dark); min-width: 280px;">Date & Time</th>
                       <th style="padding: 14px 16px; font-size: 0.85rem; font-weight: 700; color: var(--neutral-dark); width: 140px; text-align: center;">Actions</th>
                     </tr>
                   </thead>
