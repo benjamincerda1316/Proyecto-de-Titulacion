@@ -392,7 +392,7 @@ async function initDatabase() {
       { id: "USR-SANDRA", name: "Sandra Segura", nombre: "Sandra Segura", email: "sandra.segura@murex.cl", password: "password", role: "senior", rol: "SENIOR", avatar_initials: "SS" },
       { id: "USR-ALEJANDRA", name: "Alejandra González", nombre: "Alejandra González", email: "alejandra.gonzalez@murex.cl", password: "password", role: "senior", rol: "SENIOR", avatar_initials: "AG" },
       { id: "USR-BENJAMIN", name: "Benjamín Cerda", nombre: "Benjamín Cerda", email: "benjamin.cerda@murex.cl", password: "password", role: "tutor", rol: "TUTOR", avatar_initials: "BC" },
-      { id: "USR-BENJAMIN-GMAIL", name: "Benjamín Cerda", nombre: "Benjamín Cerda", email: "benjamincerda1316@gmail.com", password: "test", role: "tutor", rol: "TUTOR", avatar_initials: "BC" },
+      { id: "USR-BENJAMIN-GMAIL", name: "Benjamin Testing", nombre: "Benjamin Testing", email: "benjamincerda1316@gmail.com", password: "test", role: "consultant", rol: "JUNIOR", avatar_initials: "BT", current_week: 1, avg_score: 0, status: "on_track", entry_date: "2026-09-27" },
       { id: "USR-JUAN", name: "Juan Francisco Orrego", nombre: "Juan Francisco Orrego", email: "juan.orrego@murex.cl", password: "password", role: "tutor", rol: "TUTOR", avatar_initials: "JO" },
       { id: "USR-CAROLINA", name: "Carolina Sepúlveda", nombre: "Carolina Sepúlveda", email: "carolina.sepulveda@murex.cl", password: "password", role: "tutor", rol: "TUTOR", avatar_initials: "CS" },
       { id: "USR-VALENTINA", name: "Valentina Lara", nombre: "Valentina Lara", email: "valentina.lara@murex.cl", password: "password", role: "tutor", rol: "TUTOR", avatar_initials: "VL" },
@@ -413,6 +413,28 @@ async function initDatabase() {
 
     // Seed mappings
     await db.run(`INSERT INTO tutor_junior_mapping (junior_id, tutor_id) VALUES ('USR-FRANCISCA', 'USR-BENJAMIN')`);
+    await db.run(`INSERT INTO tutor_junior_mapping (junior_id, tutor_id) VALUES ('USR-BENJAMIN-GMAIL', 'USR-BENJAMIN')`);
+  }
+
+  // Ensure Benjamin Testing (USR-BENJAMIN-GMAIL) exists in database even if table was already seeded
+  try {
+    const benjExists = await db.get("SELECT * FROM users WHERE email = 'benjamincerda1316@gmail.com' OR id = 'USR-BENJAMIN-GMAIL'");
+    if (!benjExists) {
+      await db.run(
+        `INSERT INTO users (id, name, nombre, email, password, role, rol, avatar_initials, current_week, avg_score, status, progreso_mallas_json, entry_date) 
+         VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+        ['USR-BENJAMIN-GMAIL', 'Benjamin Testing', 'Benjamin Testing', 'benjamincerda1316@gmail.com', 'test', 'consultant', 'JUNIOR', 'BT', 1, 0, 'on_track', '[]', '2026-09-27']
+      );
+      await db.run(`INSERT INTO tutor_junior_mapping (junior_id, tutor_id) VALUES ('USR-BENJAMIN-GMAIL', 'USR-BENJAMIN')`).catch(() => {});
+    } else {
+      await db.run(
+        `UPDATE users SET name = ?, nombre = ?, password = ?, role = ?, rol = ?, email = ? WHERE id = 'USR-BENJAMIN-GMAIL' OR email = 'benjamincerda1316@gmail.com'`,
+        ['Benjamin Testing', 'Benjamin Testing', 'test', 'consultant', 'JUNIOR', 'benjamincerda1316@gmail.com']
+      );
+    }
+  } catch (err) {
+    console.error('Error auto-syncing Benjamin Testing user:', err.message);
+  }
     
     // Seed initial progress for Francisca (All 12 weeks completed)
     const initialProgress = {

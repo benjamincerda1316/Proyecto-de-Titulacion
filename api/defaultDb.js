@@ -107,18 +107,18 @@ module.exports = {
     },
     {
       "id": "USR-BENJAMIN-GMAIL",
-      "name": "Benjamín Cerda",
-      "nombre": "Benjamín Cerda",
+      "name": "Benjamin Testing",
+      "nombre": "Benjamin Testing",
       "email": "benjamincerda1316@gmail.com",
       "password": "test",
-      "role": "tutor",
-      "rol": "TUTOR",
-      "avatar_initials": "BC",
-      "current_week": null,
-      "avg_score": null,
-      "status": null,
+      "role": "consultant",
+      "rol": "JUNIOR",
+      "avatar_initials": "BT",
+      "current_week": 1,
+      "avg_score": 0,
+      "status": "on_track",
       "progreso_mallas_json": "[]",
-      "entry_date": null
+      "entry_date": "2026-09-27"
     },
     {
       "id": "USR-JUAN",
