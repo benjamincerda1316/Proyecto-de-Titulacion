@@ -9755,19 +9755,6 @@ const app = {
       u.role === 'tutor' || u.rol === 'TUTOR'
     );
 
-    const badge = document.getElementById('mc-permission-badge');
-    if (badge) {
-      if (isInstructorOrAdmin) {
-        badge.style.background = 'rgba(212, 33, 91, 0.1)';
-        badge.style.color = 'var(--primary)';
-        badge.innerHTML = '<i class="ti ti-shield-check"></i> Tutor & Admin Access (Full Editing Enabled)';
-      } else {
-        badge.style.background = 'rgba(243, 244, 246, 1)';
-        badge.style.color = '#6b7280';
-        badge.innerHTML = '<i class="ti ti-lock"></i> Read Only Access';
-      }
-    }
-
     tbody.innerHTML = '';
     masterclasses.forEach(mc => {
       const isEditable = this.canEditMasterclass(mc);
