@@ -3489,6 +3489,85 @@ const app = {
     this.initEvaluacionSemanalUI(weekNum);
     this.updateDeliverableTabState(weekNum, progress, template, allChecked);
     this.actualizarEstadoBotonesNavegacion();
+    this.renderWorkspaceMasterclassBanner(weekNum);
+  },
+
+  renderWorkspaceMasterclassBanner(weekNum) {
+    const banner = document.getElementById('workspace-masterclass-banner');
+    if (!banner) return;
+
+    const activeUser = this.state.activeUser;
+    const juniorId = activeUser ? activeUser.id : (this.state.selectedMasterclassJuniorId || null);
+
+    const labelElem = document.getElementById('ws-mc-header-label');
+    const titleElem = document.getElementById('ws-mc-title');
+    const instructorElem = document.getElementById('ws-mc-instructor');
+    const datetimeElem = document.getElementById('ws-mc-datetime');
+    const badgeElem = document.getElementById('ws-mc-status-badge');
+
+    const week = parseInt(weekNum);
+
+    if (week < 2) {
+      if (labelElem) labelElem.innerHTML = `<i class="ti ti-sparkles"></i> Masterclass Program (Starts Week 2)`;
+      if (titleElem) titleElem.innerText = `Masterclasses begin in Week 2`;
+      if (instructorElem) instructorElem.innerText = `8 Core Masterclasses (Weeks 2 - 9)`;
+      if (datetimeElem) datetimeElem.innerText = `Upcoming Next Week`;
+      if (badgeElem) {
+        badgeElem.innerHTML = `<span style="background: rgba(147, 51, 234, 0.1); color: #9333ea; padding: 5px 12px; border-radius: 20px; font-size: 0.8rem; font-weight: 700; display: inline-flex; align-items: center; gap: 4px;"><i class="ti ti-calendar-event"></i> Starts Week 2</span>`;
+      }
+      return;
+    }
+
+    if (week > 9) {
+      if (labelElem) labelElem.innerHTML = `<i class="ti ti-check"></i> Masterclass Program Status`;
+      if (titleElem) titleElem.innerText = `Masterclasses Completed (Weeks 2 - 9)`;
+      if (instructorElem) instructorElem.innerText = `8 Core Masterclasses Delivered`;
+      if (datetimeElem) datetimeElem.innerText = `Program Finished`;
+      if (badgeElem) {
+        badgeElem.innerHTML = `<span style="background: #D1FAE5; color: #065F46; padding: 5px 12px; border-radius: 20px; font-size: 0.8rem; font-weight: 700; display: inline-flex; align-items: center; gap: 4px;"><i class="ti ti-circle-check"></i> Completed</span>`;
+      }
+      return;
+    }
+
+    // Week 2 to 9 correspond to Masterclass 1 to 8 (mcIndex = week - 1)
+    const mcIndex = week - 1;
+    this.ensureMasterclassesDataForJunior(juniorId);
+
+    const masterclasses = (this.state.db.masterclasses || []).filter(m => m.junior_id === juniorId).sort((a, b) => a.id - b.id);
+    const mc = masterclasses[mcIndex - 1]; // 0-indexed array element for Masterclass #mcIndex
+
+    if (!mc) {
+      if (labelElem) labelElem.innerHTML = `<i class="ti ti-presentation"></i> Masterclass of This Week (Week ${week} · Class #${mcIndex})`;
+      if (titleElem) titleElem.innerText = `Masterclass #${mcIndex}`;
+      if (instructorElem) instructorElem.innerText = `To be assigned`;
+      if (datetimeElem) datetimeElem.innerText = `To be scheduled`;
+      if (badgeElem) {
+        badgeElem.innerHTML = `<span style="background: #FEF3C7; color: #92400E; padding: 5px 12px; border-radius: 20px; font-size: 0.8rem; font-weight: 700; display: inline-flex; align-items: center; gap: 4px;"><i class="ti ti-clock"></i> Pending Schedule</span>`;
+      }
+      return;
+    }
+
+    const users = this.state.db.users || [];
+    const instructorObj = users.find(u => u.id === mc.instructor_id);
+    const instructorName = instructorObj ? `${instructorObj.name} (${instructorObj.rol || instructorObj.role.toUpperCase()})` : 'To be assigned by Tutor/Admin';
+
+    let dateTimeStr = 'To be scheduled';
+    if (mc.date) {
+      dateTimeStr = `${mc.date} | ${mc.time_start || '10:00'} - ${mc.time_end || '11:00'}`;
+    }
+
+    if (labelElem) labelElem.innerHTML = `<i class="ti ti-presentation"></i> Masterclass of This Week (Week ${week} · Class #${mcIndex})`;
+    if (titleElem) titleElem.innerText = mc.title || `Masterclass #${mcIndex}`;
+    if (instructorElem) instructorElem.innerText = instructorName;
+    if (datetimeElem) datetimeElem.innerText = dateTimeStr;
+
+    if (badgeElem) {
+      if (mc.date && mc.instructor_id) {
+        badgeElem.innerHTML = `<span style="background: #D1FAE5; color: #065F46; padding: 5px 12px; border-radius: 20px; font-size: 0.8rem; font-weight: 700; display: inline-flex; align-items: center; gap: 4px;"><i class="ti ti-circle-check"></i> Scheduled</span>`;
+      } else {
+        badgeElem.innerHTML = `<span style="background: #FEF3C7; color: #92400E; padding: 5px 12px; border-radius: 20px; font-size: 0.8rem; font-weight: 700; display: inline-flex; align-items: center; gap: 4px;"><i class="ti ti-clock"></i> Pending Schedule</span>`;
+      }
+    }
   },
 
   getQuizSpentState(userId, weekNum) {
