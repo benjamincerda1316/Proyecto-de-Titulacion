@@ -9756,7 +9756,12 @@ const app = {
       return;
     }
 
-    if (!this.state.selectedMasterclassJuniorId || !juniors.find(j => j.id === this.state.selectedMasterclassJuniorId)) {
+    const activeUser = this.state.activeUser;
+    const isJuniorUser = activeUser && (activeUser.rol === 'JUNIOR' || activeUser.role === 'consultant');
+
+    if (isJuniorUser && juniors.some(j => j.id === activeUser.id)) {
+      this.state.selectedMasterclassJuniorId = activeUser.id;
+    } else if (!this.state.selectedMasterclassJuniorId || !juniors.find(j => j.id === this.state.selectedMasterclassJuniorId)) {
       this.state.selectedMasterclassJuniorId = juniors[0].id;
     }
 
@@ -9766,8 +9771,13 @@ const app = {
     const newcomerSelect = document.getElementById('mc-newcomer-select');
     if (newcomerSelect) {
       newcomerSelect.innerHTML = juniors.map(j => `
-        <option value="${j.id}" ${j.id === currentJuniorId ? 'selected' : ''}>👤 ${j.name}</option>
+        <option value="${j.id}" ${j.id === currentJuniorId ? 'selected' : ''}>👤 ${j.name}${j.id === activeUser?.id ? ' (Tú)' : ''}</option>
       `).join('');
+      if (isJuniorUser) {
+        newcomerSelect.disabled = true;
+      } else {
+        newcomerSelect.disabled = false;
+      }
     }
 
     const statusInfo = document.getElementById('mc-newcomer-status-info');
