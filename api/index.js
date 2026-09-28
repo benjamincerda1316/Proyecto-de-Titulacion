@@ -496,25 +496,28 @@ async function initDatabase() {
       }
     }
 
-    await db.run(
-      `INSERT INTO consultant_progress (user_id, completed_weeks_json, checklist_states_json, test_scores_json, test_attempts_json, test_times_json, deliverables_json, comments_json, game_scores_json, quiz_spent_json) 
-       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
-      [
-        'USR-FRANCISCA',
-        JSON.stringify(initialProgress.completed_weeks),
-        JSON.stringify(initialProgress.checklist_states),
-        JSON.stringify(initialProgress.test_scores),
-        JSON.stringify(initialProgress.test_attempts),
-        JSON.stringify(initialProgress.test_times),
-        JSON.stringify(initialProgress.deliverables),
-        JSON.stringify(initialProgress.comments),
-        JSON.stringify(initialProgress.game_scores),
-        JSON.stringify({})
-      ]
-    );
+    try {
+      await db.run(
+        `INSERT INTO consultant_progress (user_id, completed_weeks_json, checklist_states_json, test_scores_json, test_attempts_json, test_times_json, deliverables_json, comments_json, game_scores_json, quiz_spent_json) 
+         VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+        [
+          'USR-FRANCISCA',
+          JSON.stringify(initialProgress.completed_weeks),
+          JSON.stringify(initialProgress.checklist_states),
+          JSON.stringify(initialProgress.test_scores),
+          JSON.stringify(initialProgress.test_attempts),
+          JSON.stringify(initialProgress.test_times),
+          JSON.stringify(initialProgress.deliverables),
+          JSON.stringify(initialProgress.comments),
+          JSON.stringify(initialProgress.game_scores),
+          JSON.stringify({})
+        ]
+      );
+    } catch (e) {
+      // Already exists
+    }
 
     console.log('Default users and basic progress seeded successfully.');
-  }
 
   // Ensure default entry dates for existing users (Francisca Le Dantec and Juanito Perez)
   try {
