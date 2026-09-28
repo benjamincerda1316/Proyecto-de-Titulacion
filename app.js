@@ -10445,7 +10445,8 @@ const app = {
     }
 
     try {
-      const response = await fetch('/api/send-reset-email', {
+      const apiBase = this.state.apiBase || '';
+      const response = await fetch(`${apiBase}/api/send-reset-email`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
