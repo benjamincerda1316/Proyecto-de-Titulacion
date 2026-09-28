@@ -6,4 +6,7 @@ Thumbs.db
 node_modules/
 .env
 mxboard.db
+presentation.html
+*.mp4
+
 

@@ -1028,5 +1028,15 @@ module.exports = {
       "description": "Error del sistema que indica pérdida de conexión con la base de datos central de pruebas del Sandbox MX.3 Chile.",
       "steps_json": "[\"Verificar el estado de la conexión VPN o red interna.\",\"Reiniciar el terminal de MX.3 en tu máquina local.\",\"Si persiste, revisar el canal Slack #sandbox-mx3 para constatar si hay ventanas de mantenimiento activas.\",\"Como último recurso, notificar al tutor para que solicite el reinicio del servidor de base de datos del sandbox.\"]"
     }
+  ],
+  "masterclasses": [
+    { "id": 1, "title": "Bank Impact and Murex", "instructor_id": "USR-LUANA", "date": "", "time_start": "10:00", "time_end": "11:00" },
+    { "id": 2, "title": "Placeholder 1", "instructor_id": "", "date": "", "time_start": "10:00", "time_end": "11:00" },
+    { "id": 3, "title": "Placeholder 2", "instructor_id": "", "date": "", "time_start": "10:00", "time_end": "11:00" },
+    { "id": 4, "title": "Placeholder 3", "instructor_id": "", "date": "", "time_start": "10:00", "time_end": "11:00" },
+    { "id": 5, "title": "Placeholder 4", "instructor_id": "", "date": "", "time_start": "10:00", "time_end": "11:00" },
+    { "id": 6, "title": "Placeholder 5", "instructor_id": "", "date": "", "time_start": "10:00", "time_end": "11:00" },
+    { "id": 7, "title": "Placeholder 6", "instructor_id": "", "date": "", "time_start": "10:00", "time_end": "11:00" },
+    { "id": 8, "title": "Placeholder 7", "instructor_id": "", "date": "", "time_start": "10:00", "time_end": "11:00" }
   ]
 };

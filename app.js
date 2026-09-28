@@ -7633,18 +7633,24 @@ const app = {
     
     const btnAcademic = document.getElementById('admin-tab-academic');
     const btnCalendar = document.getElementById('admin-tab-calendar');
+    const btnMasterclass = document.getElementById('admin-tab-masterclass');
     
     if (btnAcademic) btnAcademic.classList.toggle('active', tabName === 'academic');
     if (btnCalendar) btnCalendar.classList.toggle('active', tabName === 'calendar');
+    if (btnMasterclass) btnMasterclass.classList.toggle('active', tabName === 'masterclass');
     
     const paneAcademic = document.getElementById('admin-pane-academic');
     const paneCalendar = document.getElementById('admin-pane-calendar');
+    const paneMasterclass = document.getElementById('admin-pane-masterclass');
     
     if (paneAcademic) paneAcademic.style.display = tabName === 'academic' ? 'block' : 'none';
     if (paneCalendar) paneCalendar.style.display = tabName === 'calendar' ? 'block' : 'none';
+    if (paneMasterclass) paneMasterclass.style.display = tabName === 'masterclass' ? 'block' : 'none';
     
     if (tabName === 'calendar') {
       this.switchAdminSessionTab(this.state.adminSessionActiveTab || 'calendar');
+    } else if (tabName === 'masterclass') {
+      this.renderMasterclassManagement();
     }
   },
 
@@ -9707,6 +9713,214 @@ const app = {
     });
   },
 
+  ensureMasterclassesData() {
+    if (!this.state.db) this.state.db = {};
+    if (!this.state.db.masterclasses || !Array.isArray(this.state.db.masterclasses) || this.state.db.masterclasses.length === 0) {
+      this.state.db.masterclasses = [
+        { id: 1, title: 'Bank Impact and Murex', instructor_id: 'USR-LUANA', date: '', time_start: '10:00', time_end: '11:00' },
+        { id: 2, title: 'Placeholder 1', instructor_id: '', date: '', time_start: '10:00', time_end: '11:00' },
+        { id: 3, title: 'Placeholder 2', instructor_id: '', date: '', time_start: '10:00', time_end: '11:00' },
+        { id: 4, title: 'Placeholder 3', instructor_id: '', date: '', time_start: '10:00', time_end: '11:00' },
+        { id: 5, title: 'Placeholder 4', instructor_id: '', date: '', time_start: '10:00', time_end: '11:00' },
+        { id: 6, title: 'Placeholder 5', instructor_id: '', date: '', time_start: '10:00', time_end: '11:00' },
+        { id: 7, title: 'Placeholder 6', instructor_id: '', date: '', time_start: '10:00', time_end: '11:00' },
+        { id: 8, title: 'Placeholder 7', instructor_id: '', date: '', time_start: '10:00', time_end: '11:00' }
+      ];
+    }
+  },
+
+  canEditMasterclass(mc) {
+    const activeUser = this.state.activeUser;
+    if (!activeUser) return false;
+    if (activeUser.role === 'admin' || activeUser.rol === 'MANAGER') return true;
+    if (mc && mc.instructor_id && activeUser.id === mc.instructor_id) return true;
+    return false;
+  },
+
+  renderMasterclassManagement() {
+    this.ensureMasterclassesData();
+    const tbody = document.getElementById('masterclass-management-tbody');
+    if (!tbody) return;
+
+    const masterclasses = this.state.db.masterclasses;
+    const users = this.state.db.users || [];
+    const activeUser = this.state.activeUser;
+    const isAdmin = activeUser && (activeUser.role === 'admin' || activeUser.rol === 'MANAGER');
+
+    const instructors = users.filter(u => 
+      u.role === 'admin' || u.rol === 'MANAGER' || 
+      u.role === 'senior' || u.rol === 'SENIOR' || 
+      u.role === 'tutor' || u.rol === 'TUTOR'
+    );
+
+    const badge = document.getElementById('mc-permission-badge');
+    if (badge) {
+      if (isAdmin) {
+        badge.style.background = 'rgba(212, 33, 91, 0.1)';
+        badge.style.color = 'var(--primary)';
+        badge.innerHTML = '<i class="ti ti-shield-check"></i> Admin Access (Full Editing Enabled)';
+      } else {
+        badge.style.background = 'rgba(59, 130, 246, 0.1)';
+        badge.style.color = '#2563eb';
+        badge.innerHTML = '<i class="ti ti-user-check"></i> Instructor Access (Editable if Assigned)';
+      }
+    }
+
+    tbody.innerHTML = '';
+    masterclasses.forEach(mc => {
+      const isEditable = this.canEditMasterclass(mc);
+      const tr = document.createElement('tr');
+      tr.style.borderBottom = '1px solid var(--neutral-border)';
+
+      const titleCellHtml = `
+        <input type="text" id="mc-title-${mc.id}" value="${mc.title || ''}" ${isEditable ? '' : 'disabled'}
+          style="width: 95%; padding: 8px 12px; font-size: 0.88rem; font-weight: 600; border: 1px solid var(--neutral-border); border-radius: 6px; background: ${isEditable ? '#ffffff' : '#f9fafb'}; outline: none;" placeholder="Masterclass Title">
+      `;
+
+      let instructorOptions = `<option value="">-- Select Assigned Instructor --</option>`;
+      instructors.forEach(inst => {
+        const selected = inst.id === mc.instructor_id ? 'selected' : '';
+        let roleLabel = inst.rol || inst.role.toUpperCase();
+        instructorOptions += `<option value="${inst.id}" ${selected}>${inst.name} (${roleLabel})</option>`;
+      });
+      const instructorCellHtml = `
+        <select id="mc-instructor-${mc.id}" ${isEditable ? '' : 'disabled'}
+          style="width: 95%; padding: 8px 12px; font-size: 0.88rem; border: 1px solid var(--neutral-border); border-radius: 6px; background: ${isEditable ? '#ffffff' : '#f9fafb'}; outline: none;">
+          ${instructorOptions}
+        </select>
+      `;
+
+      const dateCellHtml = `
+        <div style="display: flex; gap: 8px; align-items: center;">
+          <input type="date" id="mc-date-${mc.id}" value="${mc.date || ''}" ${isEditable ? '' : 'disabled'}
+            style="padding: 7px 10px; font-size: 0.85rem; border: 1px solid var(--neutral-border); border-radius: 6px; background: ${isEditable ? '#ffffff' : '#f9fafb'}; outline: none;">
+          <input type="time" id="mc-start-${mc.id}" value="${mc.time_start || '10:00'}" ${isEditable ? '' : 'disabled'}
+            style="padding: 7px 8px; font-size: 0.85rem; border: 1px solid var(--neutral-border); border-radius: 6px; background: ${isEditable ? '#ffffff' : '#f9fafb'}; outline: none;">
+          <span style="font-size: 0.8rem; color: var(--neutral-muted);">-</span>
+          <input type="time" id="mc-end-${mc.id}" value="${mc.time_end || '11:00'}" ${isEditable ? '' : 'disabled'}
+            style="padding: 7px 8px; font-size: 0.85rem; border: 1px solid var(--neutral-border); border-radius: 6px; background: ${isEditable ? '#ffffff' : '#f9fafb'}; outline: none;">
+        </div>
+      `;
+
+      let actionCellHtml = '';
+      if (isEditable) {
+        actionCellHtml = `
+          <button class="btn btn-primary btn-sm" onclick="app.saveMasterclassRow(${mc.id})" style="padding: 6px 12px; font-size: 0.8rem; display: inline-flex; align-items: center; gap: 5px;">
+            <i class="ti ti-calendar-event"></i> Save & Invite
+          </button>
+        `;
+      } else {
+        actionCellHtml = `
+          <span style="font-size: 0.78rem; color: #9ca3af; font-weight: 500; display: inline-flex; align-items: center; gap: 4px;">
+            <i class="ti ti-lock"></i> Read Only
+          </span>
+        `;
+      }
+
+      tr.innerHTML = `
+        <td style="padding: 12px 16px; text-align: center; font-weight: 700; color: var(--primary); font-size: 0.9rem;">${mc.id}</td>
+        <td style="padding: 12px 16px;">${titleCellHtml}</td>
+        <td style="padding: 12px 16px;">${instructorCellHtml}</td>
+        <td style="padding: 12px 16px;">${dateCellHtml}</td>
+        <td style="padding: 12px 16px; text-align: center;">${actionCellHtml}</td>
+      `;
+      tbody.appendChild(tr);
+    });
+  },
+
+  async saveMasterclassRow(mcId) {
+    this.ensureMasterclassesData();
+    const mc = this.state.db.masterclasses.find(m => m.id === mcId);
+    if (!mc) return;
+
+    if (!this.canEditMasterclass(mc)) {
+      this.showToast("Permission denied. Only Administrators or the assigned Instructor can edit this masterclass.", "danger");
+      return;
+    }
+
+    const titleInput = document.getElementById(`mc-title-${mcId}`);
+    const instructorInput = document.getElementById(`mc-instructor-${mcId}`);
+    const dateInput = document.getElementById(`mc-date-${mcId}`);
+    const startInput = document.getElementById(`mc-start-${mcId}`);
+    const endInput = document.getElementById(`mc-end-${mcId}`);
+
+    const newTitle = titleInput ? titleInput.value.trim() : '';
+    const newInstructorId = instructorInput ? instructorInput.value : '';
+    const newDate = dateInput ? dateInput.value : '';
+    const newStart = startInput ? startInput.value : '10:00';
+    const newEnd = endInput ? endInput.value : '11:00';
+
+    if (!newTitle) {
+      this.showToast("Masterclass title cannot be empty.", "warning");
+      return;
+    }
+
+    mc.title = newTitle;
+    mc.instructor_id = newInstructorId;
+    mc.date = newDate;
+    mc.time_start = newStart;
+    mc.time_end = newEnd;
+
+    if (newInstructorId && newDate) {
+      const eventId = `ev-masterclass-mgmt-${mc.id}`;
+      if (!this.state.db.calendar_events) this.state.db.calendar_events = [];
+      let evIndex = this.state.db.calendar_events.findIndex(e => e.id === eventId);
+      
+      const instructorObj = this.state.db.users.find(u => u.id === newInstructorId);
+      const eventData = {
+        id: eventId,
+        title: `Masterclass #${mc.id}: ${mc.title}`,
+        type: 'masterclass',
+        junior_id: 'ALL_JUNIORS',
+        expert_id: newInstructorId,
+        expertos_asistentes_ids: [newInstructorId],
+        block_day: newDate,
+        time_start: newStart,
+        time_end: newEnd,
+        planned_minutes: 60,
+        status: 'aprobado',
+        block_reason: `Masterclass #${mc.id}: ${mc.title}`,
+        week_number: mc.id,
+        organizador_id: this.state.activeUser ? this.state.activeUser.id : 'USR-LUANA',
+        estado_confirmacion: 'FIXED',
+        bloqueado_edicion: false,
+        tipo_sesion: 'MASTERCLASS',
+        tematica: mc.title
+      };
+
+      if (evIndex >= 0) {
+        this.state.db.calendar_events[evIndex] = eventData;
+      } else {
+        this.state.db.calendar_events.push(eventData);
+      }
+
+      if (instructorObj && instructorObj.email) {
+        this.sendSMTPAlert(
+          instructorObj.role || 'tutor',
+          instructorObj.email,
+          `Assigned Masterclass #${mc.id}: ${mc.title}`,
+          `Dear ${instructorObj.name},\n\nYou have been assigned to conduct Masterclass #${mc.id}:\n\nTitle: ${mc.title}\nDate: ${newDate}\nTime: ${newStart} - ${newEnd}\n\nCalendar events and notifications have been automatically dispatched.`
+        );
+      }
+
+      const juniors = (this.state.db.users || []).filter(u => u.rol === 'JUNIOR' || u.role === 'consultant');
+      juniors.forEach(jr => {
+        if (jr.email) {
+          this.sendSMTPAlert(
+            'consultant',
+            jr.email,
+            `Calendar Invitation: Masterclass #${mc.id} - ${mc.title}`,
+            `Dear ${jr.name},\n\nA new Masterclass has been scheduled in your onboarding program:\n\nMasterclass: ${mc.title}\nInstructor: ${instructorObj ? instructorObj.name : 'Assigned Instructor'}\nDate: ${newDate}\nTime: ${newStart} - ${newEnd}\n\nPlease join on time.`
+          );
+        }
+      });
+    }
+
+    this.saveDatabase();
+    this.showToast(`Masterclass #${mcId} updated & invitations sent!`);
+    this.renderMasterclassManagement();
+  },
+
   renderManagerAuditDashboard() {
     const allEvents = this.state.db.calendar_events || [];
     const executedEvents = allEvents.filter(e => e.status === 'ejecutado' || e.status === 'ejecutada');
@@ -10108,6 +10322,198 @@ const app = {
     this.saveDatabase();
     this.showToast("Password updated successfully.");
     this.closeChangePasswordModal();
+  },
+
+  openForgotPasswordModal() {
+    const modal = document.getElementById('forgot-password-modal');
+    if (modal) {
+      modal.style.display = 'flex';
+      modal.classList.remove('hidden');
+    }
+    this.resetForgotPasswordStep();
+  },
+
+  closeForgotPasswordModal() {
+    const modal = document.getElementById('forgot-password-modal');
+    if (modal) {
+      modal.style.display = 'none';
+      modal.classList.add('hidden');
+    }
+  },
+
+  resetForgotPasswordStep() {
+    const step1 = document.getElementById('forgot-password-step1-form');
+    const step2 = document.getElementById('forgot-password-step2-form');
+    const statusMsg = document.getElementById('forgot-pass-status-msg');
+    const btnSend = document.getElementById('btn-send-reset-code');
+
+    if (step1) {
+      step1.style.display = 'block';
+      step1.reset();
+    }
+    if (step2) {
+      step2.style.display = 'none';
+      step2.reset();
+    }
+    if (statusMsg) {
+      statusMsg.style.display = 'none';
+      statusMsg.textContent = '';
+    }
+    if (btnSend) {
+      btnSend.disabled = false;
+      btnSend.innerHTML = '<i class="ti ti-send"></i> Enviar Código por Email';
+    }
+  },
+
+  async handleSendResetCode(event) {
+    if (event && event.preventDefault) event.preventDefault();
+
+    const emailInput = document.getElementById('forgot-pass-email');
+    const email = emailInput ? emailInput.value.trim().toLowerCase() : '';
+    const statusMsg = document.getElementById('forgot-pass-status-msg');
+    const btnSend = document.getElementById('btn-send-reset-code');
+
+    if (!email) {
+      this.showToast("Por favor ingresa tu correo electrónico.", "warning");
+      return;
+    }
+
+    const userInDb = this.state.db.users.find(u => u.email.toLowerCase() === email);
+    if (!userInDb) {
+      if (statusMsg) {
+        statusMsg.style.display = 'block';
+        statusMsg.style.background = '#FEE2E2';
+        statusMsg.style.color = '#991B1B';
+        statusMsg.style.border = '1px solid #FCA5A5';
+        statusMsg.innerHTML = '<i class="ti ti-alert-circle"></i> No existe una cuenta registrada con este correo.';
+      }
+      return;
+    }
+
+    // Generate random 6-digit verification code
+    const code = Math.floor(100000 + Math.random() * 900000).toString();
+    this.resetCodeState = {
+      email,
+      code,
+      expiresAt: Date.now() + 15 * 60 * 1000 // 15 minutes
+    };
+
+    if (btnSend) {
+      btnSend.disabled = true;
+      btnSend.innerHTML = '<i class="ti ti-loader animate-spin"></i> Enviando...';
+    }
+    if (statusMsg) {
+      statusMsg.style.display = 'block';
+      statusMsg.style.background = '#EFF6FF';
+      statusMsg.style.color = '#1E40AF';
+      statusMsg.style.border = '1px solid #BFDBFE';
+      statusMsg.innerHTML = '<i class="ti ti-info-circle"></i> Conectando con la API de Resend para enviar tu código...';
+    }
+
+    try {
+      const response = await fetch('/api/send-reset-email', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          email,
+          code,
+          name: userInDb.nombre || userInDb.name || email
+        })
+      });
+      const resData = await response.json();
+
+      if (response.ok && resData.success) {
+        this.showToast("¡Código enviado a tu correo via Resend!");
+        const step1 = document.getElementById('forgot-password-step1-form');
+        const step2 = document.getElementById('forgot-password-step2-form');
+        if (step1) step1.style.display = 'none';
+        if (step2) step2.style.display = 'block';
+      } else {
+        console.warn("Resend email warning:", resData.error);
+        if (statusMsg) {
+          statusMsg.style.display = 'block';
+          statusMsg.style.background = '#FEF3C7';
+          statusMsg.style.color = '#92400E';
+          statusMsg.style.border = '1px solid #FCD34D';
+          statusMsg.innerHTML = `<i class="ti ti-alert-triangle"></i> <strong>Resend Test Mode:</strong> ${resData.error || 'Correo no enviado'}. <br/><span style="font-size:0.8rem; margin-top:4px; display:inline-block;">Tu código de prueba es: <strong style="letter-spacing:1px; color:#D4215B;">${code}</strong></span>`;
+        }
+        this.showToast(`Resend Test Mode: Usa el código ${code}`, "warning");
+        const step1 = document.getElementById('forgot-password-step1-form');
+        const step2 = document.getElementById('forgot-password-step2-form');
+        if (step1) step1.style.display = 'none';
+        if (step2) step2.style.display = 'block';
+      }
+    } catch (err) {
+      console.error("Error sending reset email:", err);
+      if (statusMsg) {
+        statusMsg.style.display = 'block';
+        statusMsg.style.background = '#FEF3C7';
+        statusMsg.style.color = '#92400E';
+        statusMsg.style.border = '1px solid #FCD34D';
+        statusMsg.innerHTML = `<i class="ti ti-alert-triangle"></i> No se pudo contactar al servidor. Código local: <strong style="color:#D4215B;">${code}</strong>`;
+      }
+      this.showToast(`Servidor no disponible. Código local: ${code}`, "warning");
+      const step1 = document.getElementById('forgot-password-step1-form');
+      const step2 = document.getElementById('forgot-password-step2-form');
+      if (step1) step1.style.display = 'none';
+      if (step2) step2.style.display = 'block';
+    } finally {
+      if (btnSend) {
+        btnSend.disabled = false;
+        btnSend.innerHTML = '<i class="ti ti-send"></i> Enviar Código por Email';
+      }
+    }
+  },
+
+  handleVerifyResetCode(event) {
+    if (event && event.preventDefault) event.preventDefault();
+
+    const codeInput = document.getElementById('forgot-pass-code').value.trim();
+    const newPass = document.getElementById('forgot-pass-new').value;
+    const confirmPass = document.getElementById('forgot-pass-confirm').value;
+
+    if (!this.resetCodeState || !this.resetCodeState.code) {
+      this.showToast("No hay una solicitud de código activa.", "danger");
+      return;
+    }
+
+    if (Date.now() > this.resetCodeState.expiresAt) {
+      this.showToast("El código ha expirado. Por favor solicita uno nuevo.", "danger");
+      this.resetForgotPasswordStep();
+      return;
+    }
+
+    if (codeInput !== this.resetCodeState.code) {
+      this.showToast("El código de 6 dígitos es incorrecto.", "danger");
+      return;
+    }
+
+    if (newPass !== confirmPass) {
+      this.showToast("Las contraseñas no coinciden.", "danger");
+      return;
+    }
+
+    if (newPass.length < 4) {
+      this.showToast("La contraseña debe tener al menos 4 caracteres.", "warning");
+      return;
+    }
+
+    const email = this.resetCodeState.email;
+    const userInDb = this.state.db.users.find(u => u.email.toLowerCase() === email);
+    if (!userInDb) {
+      this.showToast("Usuario no encontrado en la base de datos.", "danger");
+      return;
+    }
+
+    userInDb.password = newPass;
+    if (this.state.activeUser && this.state.activeUser.email.toLowerCase() === email) {
+      this.state.activeUser.password = newPass;
+    }
+
+    this.saveDatabase();
+    this.showToast("¡Contraseña restablecida exitosamente!");
+    this.resetCodeState = null;
+    this.closeForgotPasswordModal();
   },
 
   handleNewMemberRoleeChange(value) {

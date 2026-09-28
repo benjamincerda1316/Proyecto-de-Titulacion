@@ -344,6 +344,44 @@ async function initDatabase() {
     )
   `);
 
+  // Create Masterclasses table
+  await db.exec(`
+    CREATE TABLE IF NOT EXISTS masterclasses (
+      id INTEGER PRIMARY KEY,
+      title TEXT,
+      instructor_id TEXT,
+      date TEXT,
+      time_start TEXT,
+      time_end TEXT
+    )
+  `);
+
+  try {
+    const mcCount = await db.get('SELECT COUNT(*) as count FROM masterclasses');
+    if (!mcCount || parseInt(mcCount.count, 10) === 0) {
+      console.log('Seeding initial 8 masterclasses...');
+      const defaultMcs = [
+        { id: 1, title: 'Bank Impact and Murex', instructor_id: 'USR-LUANA', date: '', time_start: '10:00', time_end: '11:00' },
+        { id: 2, title: 'Placeholder 1', instructor_id: '', date: '', time_start: '10:00', time_end: '11:00' },
+        { id: 3, title: 'Placeholder 2', instructor_id: '', date: '', time_start: '10:00', time_end: '11:00' },
+        { id: 4, title: 'Placeholder 3', instructor_id: '', date: '', time_start: '10:00', time_end: '11:00' },
+        { id: 5, title: 'Placeholder 4', instructor_id: '', date: '', time_start: '10:00', time_end: '11:00' },
+        { id: 6, title: 'Placeholder 5', instructor_id: '', date: '', time_start: '10:00', time_end: '11:00' },
+        { id: 7, title: 'Placeholder 6', instructor_id: '', date: '', time_start: '10:00', time_end: '11:00' },
+        { id: 8, title: 'Placeholder 7', instructor_id: '', date: '', time_start: '10:00', time_end: '11:00' }
+      ];
+      for (const m of defaultMcs) {
+        await db.run(
+          `INSERT INTO masterclasses (id, title, instructor_id, date, time_start, time_end) VALUES (?, ?, ?, ?, ?, ?)`,
+          [m.id, m.title, m.instructor_id, m.date, m.time_start, m.time_end]
+        );
+      }
+    }
+  } catch (err) {
+    console.error('Failed to seed masterclasses:', err.message);
+  }
+
+
   const usersCount = await db.get('SELECT COUNT(*) as count FROM users');
   if (!usersCount || parseInt(usersCount.count, 10) === 0) {
     console.log('Seeding default users into Supabase...');
@@ -527,6 +565,7 @@ app.get('/api/db', async (req, res) => {
     const questions = await db.all('SELECT * FROM questions');
     const troubleshooting = await db.all('SELECT * FROM troubleshooting_db');
     const onboardingRows = await db.all('SELECT * FROM onboarding_progress');
+    const masterclassRows = await db.all('SELECT * FROM masterclasses ORDER BY id ASC');
 
     // Map onboarding_progress back to object
     const onboarding_progress = {};
@@ -629,7 +668,8 @@ app.get('/api/db', async (req, res) => {
       week_templates: parsedTemplates,
       questions: questionsMap,
       troubleshooting_db: parsedTroubleshooting,
-      onboarding_progress
+      onboarding_progress,
+      masterclasses: masterclassRows
     });
   } catch (err) {
     console.error('Error fetching database state:', err);
@@ -763,6 +803,14 @@ app.post('/api/db/save', async (req, res) => {
             const stmtOnb = sqliteDb.prepare(`INSERT INTO onboarding_progress (user_id, onboarding_check_states_json) VALUES (?, ?)`);
             for (const [user_id, states] of Object.entries(data.onboarding_progress)) {
               stmtOnb.run(user_id, JSON.stringify(states));
+            }
+          }
+
+          sqliteDb.prepare('DELETE FROM masterclasses').run();
+          if (data.masterclasses) {
+            const stmtMc = sqliteDb.prepare(`INSERT INTO masterclasses (id, title, instructor_id, date, time_start, time_end) VALUES (?, ?, ?, ?, ?, ?)`);
+            for (const m of data.masterclasses) {
+              stmtMc.run(m.id, m.title, m.instructor_id || '', m.date || '', m.time_start || '10:00', m.time_end || '11:00');
             }
           }
         });
@@ -949,6 +997,17 @@ app.post('/api/db/save', async (req, res) => {
         }
       }
 
+      // 13. Masterclasses
+      await txDb.exec('DELETE FROM masterclasses');
+      if (data.masterclasses) {
+        for (const m of data.masterclasses) {
+          await txDb.run(
+            `INSERT INTO masterclasses (id, title, instructor_id, date, time_start, time_end) VALUES ($1, $2, $3, $4, $5, $6)`,
+            [m.id, m.title, m.instructor_id || '', m.date || '', m.time_start || '10:00', m.time_end || '11:00']
+          );
+        }
+      }
+
       await client.query('COMMIT');
       res.json({ success: true });
     } catch (err) {
@@ -1013,6 +1072,62 @@ app.get('/api/download-file', async (req, res) => {
   } catch (err) {
     console.error('Error in /api/download-file:', err);
     res.status(500).json({ error: err.message });
+  }
+});
+
+// POST /api/send-reset-email (Sends password reset email via Resend API)
+app.post('/api/send-reset-email', async (req, res) => {
+  try {
+    const { email, code, name } = req.body;
+    if (!email || !code) {
+      return res.status(400).json({ error: 'Missing required parameters: email and code' });
+    }
+
+    const apiKey = process.env.RESEND_API_KEY || '';
+    const fromEmail = process.env.RESEND_FROM_EMAIL || 'onboarding@resend.dev';
+
+    const response = await fetch('https://api.resend.com/emails', {
+      method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${apiKey}`,
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        from: `MXBoard Finance <${fromEmail}>`,
+        to: [email],
+        subject: '🔐 Código de Recuperación de Contraseña - MXBoard',
+        html: `
+          <div style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; max-width: 550px; margin: 0 auto; background: #ffffff; border-radius: 16px; padding: 32px; border: 1px solid #e5e7eb; box-shadow: 0 10px 30px rgba(0,0,0,0.05);">
+            <div style="text-align: center; margin-bottom: 24px;">
+              <h2 style="color: #D4215B; font-size: 26px; margin: 0; font-weight: 800; letter-spacing: -0.5px;">MXBOARD</h2>
+              <p style="color: #6B7280; font-size: 13px; margin-top: 4px; text-transform: uppercase; letter-spacing: 1px;">Finance & P&L Onboarding Platform</p>
+            </div>
+            <hr style="border: none; border-top: 1px solid #f3f4f6; margin: 20px 0;" />
+            <h3 style="color: #111827; font-size: 18px; margin-bottom: 12px; text-align: center;">Código de Verificación para Contraseña</h3>
+            <p style="color: #4B5563; font-size: 14px; line-height: 1.6;">Hola <strong>${name || email}</strong>,</p>
+            <p style="color: #4B5563; font-size: 14px; line-height: 1.6;">Hemos recibido una solicitud para restablecer la contraseña de tu cuenta en MXBoard. Tu código de seguridad de 6 dígitos es:</p>
+            <div style="text-align: center; margin: 28px 0;">
+              <span style="font-size: 34px; font-weight: 900; letter-spacing: 8px; color: #D4215B; background: #FFF0F3; padding: 14px 28px; border-radius: 12px; border: 1.5px solid rgba(212, 33, 91, 0.25); display: inline-block;">${code}</span>
+            </div>
+            <p style="color: #6B7280; font-size: 13px; line-height: 1.5; text-align: center;">Ingresa este código en la ventana de la aplicación MXBoard para actualizar tu contraseña.</p>
+            <hr style="border: none; border-top: 1px solid #f3f4f6; margin: 24px 0;" />
+            <p style="color: #9CA3AF; font-size: 12px; text-align: center; margin: 0;">Si no solicitaste este cambio, puedes ignorar este mensaje de forma segura.<br /><strong>Murex Corporate Ecosystem &bull; Confidential</strong></p>
+          </div>
+        `
+      })
+    });
+
+    const data = await response.json();
+    if (response.ok) {
+      console.log('Resend email sent successfully:', data);
+      return res.json({ success: true, data });
+    } else {
+      console.error('Resend email error:', data);
+      return res.status(400).json({ success: false, error: data.message || 'Failed to send email via Resend' });
+    }
+  } catch (err) {
+    console.error('Error in /api/send-reset-email:', err);
+    return res.status(500).json({ success: false, error: err.message });
   }
 });
 

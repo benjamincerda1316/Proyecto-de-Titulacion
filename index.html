@@ -105,9 +105,13 @@
               </button>
             </form>
 
-            <div style="margin-top: 15px; text-align: center; border-top: 1px dashed var(--neutral-border); padding-top: 12px;">
-              <a href="#" onclick="app.openChangePasswordModal()" style="font-size: 0.85rem; color: var(--primary); font-weight: 500; text-decoration: none; display: inline-flex; align-items: center; gap: 6px;">
-                <i class="ti ti-key"></i> Change Password
+            <div style="margin-top: 15px; text-align: center; border-top: 1px dashed var(--neutral-border); padding-top: 12px; display: flex; justify-content: center; align-items: center; gap: 12px; flex-wrap: wrap;">
+              <a href="#" onclick="app.openForgotPasswordModal()" style="font-size: 0.85rem; color: var(--primary); font-weight: 600; text-decoration: none; display: inline-flex; align-items: center; gap: 6px;">
+                <i class="ti ti-mail-fast"></i> ¿Olvidaste tu contraseña?
+              </a>
+              <span style="color: var(--neutral-border);">|</span>
+              <a href="#" onclick="app.openChangePasswordModal()" style="font-size: 0.85rem; color: var(--neutral-muted); font-weight: 500; text-decoration: none; display: inline-flex; align-items: center; gap: 6px;">
+                <i class="ti ti-key"></i> Cambiar Contraseña
               </a>
             </div>
           </div>
@@ -1685,6 +1689,9 @@
             <button id="admin-tab-calendar" class="admin-tab-btn" onclick="app.switchAdminViewTab('calendar')">
               <i class="ti ti-calendar-event"></i> Calendar Hub
             </button>
+            <button id="admin-tab-masterclass" class="admin-tab-btn" onclick="app.switchAdminViewTab('masterclass')">
+              <i class="ti ti-presentation"></i> Masterclass Management
+            </button>
           </div>
 
           <!-- Academic Pane -->
@@ -2766,6 +2773,43 @@
             </div>
           </div> <!-- Close Calendar Pane -->
 
+          <!-- Masterclass Management Pane -->
+          <div id="admin-pane-masterclass" class="admin-view-pane" style="display: none;">
+            <div class="card glass-card animate-fade-in" style="padding: 24px; margin-bottom: 24px;">
+              <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 16px; margin-bottom: 20px;">
+                <div>
+                  <h2 style="font-size: 1.4rem; font-weight: 700; color: var(--neutral-dark); margin-bottom: 4px; display: flex; align-items: center; gap: 10px;">
+                    <i class="ti ti-presentation" style="color: var(--primary);"></i> Masterclass Management
+                  </h2>
+                  <p style="font-size: 0.88rem; color: var(--neutral-muted); margin: 0;">
+                    Manage the 8 core masterclasses for Murex Finance & PL onboarding. Assign instructors, set dates/times, and send corporate calendar invitations.
+                  </p>
+                </div>
+                <div id="mc-permission-badge" class="badge" style="background: rgba(212, 33, 91, 0.1); color: var(--primary); font-weight: 600; padding: 8px 14px; border-radius: 20px; font-size: 0.82rem; display: flex; align-items: center; gap: 6px;">
+                  <i class="ti ti-shield-check"></i> Admin / Instructor Access
+                </div>
+              </div>
+
+              <!-- Masterclass Table -->
+              <div class="consultant-table-container" style="overflow-x: auto; border: 1px solid var(--neutral-border); border-radius: 12px; background: white;">
+                <table class="consultant-table" style="width: 100%; border-collapse: collapse;">
+                  <thead>
+                    <tr style="background: var(--neutral-light); border-bottom: 2px solid var(--neutral-border); text-align: left;">
+                      <th style="padding: 14px 16px; font-size: 0.85rem; font-weight: 700; color: var(--neutral-dark); width: 50px; text-align: center;">#</th>
+                      <th style="padding: 14px 16px; font-size: 0.85rem; font-weight: 700; color: var(--neutral-dark); min-width: 220px;">Masterclass Title</th>
+                      <th style="padding: 14px 16px; font-size: 0.85rem; font-weight: 700; color: var(--neutral-dark); min-width: 200px;">Assigned Instructor</th>
+                      <th style="padding: 14px 16px; font-size: 0.85rem; font-weight: 700; color: var(--neutral-dark); min-width: 260px;">Date & Time</th>
+                      <th style="padding: 14px 16px; font-size: 0.85rem; font-weight: 700; color: var(--neutral-dark); width: 140px; text-align: center;">Actions</th>
+                    </tr>
+                  </thead>
+                  <tbody id="masterclass-management-tbody">
+                    <!-- Rendered dynamically by JS -->
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+
 
 
         </div>
@@ -3018,6 +3062,80 @@
       </form>
     </div>
   </div>
+
+  <!-- 7. OLVIDASTE CONTRASEÑA (RESEND EMAIL) MODAL -->
+  <div class="modal-overlay" id="forgot-password-modal" style="display: none;">
+    <div class="card glass-card animate-scale-up"
+      style="max-width: 460px; background: white; padding: 25px; border-radius: var(--radius-sm); position: relative; box-shadow: var(--shadow-lg);">
+      <button class="modal-close-btn" onclick="app.closeForgotPasswordModal()"><i class="ti ti-x"></i></button>
+      <h3 style="margin-bottom: 5px;"><i class="ti ti-mail-forward" style="color: var(--primary);"></i> Restablecer Contraseña</h3>
+      <p style="font-size: 0.8rem; color: var(--neutral-muted); margin-bottom: 20px;">Enviaremos un código de seguridad de 6 dígitos a tu correo corporativo mediante la API de Resend.</p>
+
+      <!-- Step 1: Solicitar código -->
+      <form id="forgot-password-step1-form" onsubmit="app.handleSendResetCode(event)">
+        <div class="form-group" style="margin-bottom: 15px;">
+          <label for="forgot-pass-email"
+            style="font-size: 0.85rem; font-weight: 500; display: block; margin-bottom: 6px;">Correo Corporativo Murex</label>
+          <div class="input-wrapper">
+            <i class="ti ti-mail"></i>
+            <input type="email" id="forgot-pass-email" required placeholder="tu.nombre@murex.cl"
+              style="width: 100%; padding: 10px 10px 10px 42px; font-size: 0.9rem; background-color: var(--neutral-light); border: 1px solid var(--neutral-border); border-radius: var(--radius-sm); outline: none;">
+          </div>
+        </div>
+        <div id="forgot-pass-status-msg" style="display: none; font-size: 0.82rem; margin-bottom: 12px; padding: 10px 14px; border-radius: 8px; line-height: 1.4;"></div>
+        <div style="display: flex; gap: 10px; justify-content: flex-end;">
+          <button type="button" class="btn btn-outline" onclick="app.closeForgotPasswordModal()">Cancelar</button>
+          <button type="submit" id="btn-send-reset-code" class="btn btn-primary">
+            <i class="ti ti-send"></i> Enviar Código por Email
+          </button>
+        </div>
+      </form>
+
+      <!-- Step 2: Ingresar código y nueva contraseña -->
+      <form id="forgot-password-step2-form" onsubmit="app.handleVerifyResetCode(event)" style="display: none;">
+        <div class="form-group" style="margin-bottom: 15px; background: rgba(212, 33, 91, 0.05); padding: 14px; border-radius: 10px; border: 1px dashed rgba(212, 33, 91, 0.3);">
+          <label for="forgot-pass-code"
+            style="font-size: 0.85rem; font-weight: 600; color: var(--primary); display: block; margin-bottom: 8px; text-align: center;">Código de 6 dígitos recibido por correo</label>
+          <div class="input-wrapper" style="width: 220px; margin: 0 auto;">
+            <i class="ti ti-shield-check" style="z-index: 10;"></i>
+            <input type="text" id="forgot-pass-code" required placeholder="123456" maxlength="6"
+              style="width: 100%; padding: 10px 10px 10px 42px; font-size: 1.25rem; font-weight: 700; letter-spacing: 4px; text-align: center; background-color: white; border: 1.5px solid var(--primary); border-radius: var(--radius-sm); outline: none;">
+          </div>
+          <span style="display: block; text-align: center; font-size: 0.75rem; color: var(--neutral-muted); margin-top: 8px;">Revisa tu bandeja de entrada o spam.</span>
+        </div>
+
+        <div class="form-group" style="margin-bottom: 15px;">
+          <label for="forgot-pass-new"
+            style="font-size: 0.85rem; font-weight: 500; display: block; margin-bottom: 6px;">Nueva Contraseña</label>
+          <div class="input-wrapper">
+            <i class="ti ti-lock"></i>
+            <input type="password" id="forgot-pass-new" required placeholder="••••••••"
+              style="width: 100%; padding: 10px 10px 10px 42px; font-size: 0.9rem; background-color: var(--neutral-light); border: 1px solid var(--neutral-border); border-radius: var(--radius-sm); outline: none;">
+          </div>
+        </div>
+
+        <div class="form-group" style="margin-bottom: 20px;">
+          <label for="forgot-pass-confirm"
+            style="font-size: 0.85rem; font-weight: 500; display: block; margin-bottom: 6px;">Confirmar Nueva Contraseña</label>
+          <div class="input-wrapper">
+            <i class="ti ti-lock"></i>
+            <input type="password" id="forgot-pass-confirm" required placeholder="••••••••"
+              style="width: 100%; padding: 10px 10px 10px 42px; font-size: 0.9rem; background-color: var(--neutral-light); border: 1px solid var(--neutral-border); border-radius: var(--radius-sm); outline: none;">
+          </div>
+        </div>
+
+        <div style="display: flex; gap: 10px; justify-content: space-between; align-items: center;">
+          <button type="button" class="btn btn-outline" onclick="app.resetForgotPasswordStep()" style="font-size: 0.8rem;">
+            <i class="ti ti-arrow-left"></i> Volver a Step 1
+          </button>
+          <button type="submit" class="btn btn-primary">
+            <i class="ti ti-check"></i> Actualizar Contraseña
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
 
 
   <!-- Main JavaScript File -->
