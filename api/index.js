@@ -606,19 +606,25 @@ app.get('/api/db', async (req, res) => {
       return res.json({ empty: true });
     }
 
-    const users = await db.all('SELECT * FROM users');
-    const mappingRows = await db.all('SELECT * FROM tutor_junior_mapping');
-    const progressRows = await db.all('SELECT * FROM consultant_progress');
-    const logs = await db.all('SELECT * FROM mentoring_logs');
-    const events = await db.all('SELECT * FROM calendar_events');
-    const evaluations = await db.all('SELECT * FROM historial_evaluaciones');
-    const certRows = await db.all('SELECT * FROM cert_checklists');
-    const smtpRows = await db.all('SELECT * FROM smtp_outbox');
-    const templates = await db.all('SELECT * FROM week_templates');
-    const questions = await db.all('SELECT * FROM questions');
-    const troubleshooting = await db.all('SELECT * FROM troubleshooting_db');
-    const onboardingRows = await db.all('SELECT * FROM onboarding_progress');
-    const masterclassRows = await db.all('SELECT * FROM masterclasses ORDER BY junior_id ASC, id ASC');
+    const [
+      users, mappingRows, progressRows, logs, events, evaluations,
+      certRows, smtpRows, templates, questions, troubleshooting,
+      onboardingRows, masterclassRows
+    ] = await Promise.all([
+      db.all('SELECT * FROM users'),
+      db.all('SELECT * FROM tutor_junior_mapping'),
+      db.all('SELECT * FROM consultant_progress'),
+      db.all('SELECT * FROM mentoring_logs'),
+      db.all('SELECT * FROM calendar_events'),
+      db.all('SELECT * FROM historial_evaluaciones'),
+      db.all('SELECT * FROM cert_checklists'),
+      db.all('SELECT * FROM smtp_outbox'),
+      db.all('SELECT * FROM week_templates'),
+      db.all('SELECT * FROM questions'),
+      db.all('SELECT * FROM troubleshooting_db'),
+      db.all('SELECT * FROM onboarding_progress'),
+      db.all('SELECT * FROM masterclasses ORDER BY junior_id ASC, id ASC')
+    ]);
 
     // Map onboarding_progress back to object
     const onboarding_progress = {};
