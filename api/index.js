@@ -367,39 +367,38 @@ async function initDatabase() {
   // Create Masterclasses table
   await db.exec(`
     CREATE TABLE IF NOT EXISTS masterclasses (
-      id INTEGER PRIMARY KEY,
+      id INTEGER,
+      junior_id TEXT NOT NULL DEFAULT '',
       title TEXT,
       instructor_id TEXT,
       date TEXT,
       time_start TEXT,
-      time_end TEXT
+      time_end TEXT,
+      week_number INTEGER,
+      status TEXT,
+      PRIMARY KEY (id, junior_id)
     )
   `);
 
   try {
-    const mcCount = await db.get('SELECT COUNT(*) as count FROM masterclasses');
-    if (!mcCount || parseInt(mcCount.count, 10) === 0) {
-      console.log('Seeding initial 8 masterclasses...');
-      const defaultMcs = [
-        { id: 1, title: 'Bank Impact and Murex', instructor_id: 'USR-LUANA', date: '', time_start: '10:00', time_end: '11:00' },
-        { id: 2, title: 'Placeholder 1', instructor_id: '', date: '', time_start: '10:00', time_end: '11:00' },
-        { id: 3, title: 'Placeholder 2', instructor_id: '', date: '', time_start: '10:00', time_end: '11:00' },
-        { id: 4, title: 'Placeholder 3', instructor_id: '', date: '', time_start: '10:00', time_end: '11:00' },
-        { id: 5, title: 'Placeholder 4', instructor_id: '', date: '', time_start: '10:00', time_end: '11:00' },
-        { id: 6, title: 'Placeholder 5', instructor_id: '', date: '', time_start: '10:00', time_end: '11:00' },
-        { id: 7, title: 'Placeholder 6', instructor_id: '', date: '', time_start: '10:00', time_end: '11:00' },
-        { id: 8, title: 'Placeholder 7', instructor_id: '', date: '', time_start: '10:00', time_end: '11:00' }
-      ];
-      for (const m of defaultMcs) {
-        await db.run(
-          `INSERT INTO masterclasses (id, title, instructor_id, date, time_start, time_end) VALUES (?, ?, ?, ?, ?, ?)`,
-          [m.id, m.title, m.instructor_id, m.date, m.time_start, m.time_end]
-        );
-      }
+    const alterSql1 = useSqlite ? `ALTER TABLE masterclasses ADD COLUMN junior_id TEXT` : `ALTER TABLE masterclasses ADD COLUMN IF NOT EXISTS junior_id TEXT DEFAULT ''`;
+    await db.exec(alterSql1);
+  } catch (err) {}
+  try {
+    const alterSql2 = useSqlite ? `ALTER TABLE masterclasses ADD COLUMN week_number INTEGER` : `ALTER TABLE masterclasses ADD COLUMN IF NOT EXISTS week_number INTEGER`;
+    await db.exec(alterSql2);
+  } catch (err) {}
+  try {
+    const alterSql3 = useSqlite ? `ALTER TABLE masterclasses ADD COLUMN status TEXT` : `ALTER TABLE masterclasses ADD COLUMN IF NOT EXISTS status TEXT`;
+    await db.exec(alterSql3);
+  } catch (err) {}
+  try {
+    if (!useSqlite) {
+      await db.exec(`UPDATE masterclasses SET junior_id = '' WHERE junior_id IS NULL`);
+      await db.exec(`ALTER TABLE masterclasses DROP CONSTRAINT IF EXISTS masterclasses_pkey`);
+      await db.exec(`ALTER TABLE masterclasses ADD CONSTRAINT masterclasses_pkey PRIMARY KEY (id, junior_id)`);
     }
-  } catch (err) {
-    console.error('Failed to seed masterclasses:', err.message);
-  }
+  } catch (err) {}
 
 
   const usersCount = await db.get('SELECT COUNT(*) as count FROM users');
@@ -619,7 +618,7 @@ app.get('/api/db', async (req, res) => {
     const questions = await db.all('SELECT * FROM questions');
     const troubleshooting = await db.all('SELECT * FROM troubleshooting_db');
     const onboardingRows = await db.all('SELECT * FROM onboarding_progress');
-    const masterclassRows = await db.all('SELECT * FROM masterclasses ORDER BY id ASC');
+    const masterclassRows = await db.all('SELECT * FROM masterclasses ORDER BY junior_id ASC, id ASC');
 
     // Map onboarding_progress back to object
     const onboarding_progress = {};
@@ -710,6 +709,19 @@ app.get('/api/db', async (req, res) => {
       respuestas_usuario: safeJsonParse(e.respuestas_usuario_json, {})
     }));
 
+    // Format masterclasses
+    const formattedMasterclasses = masterclassRows.map(mc => ({
+      id: parseInt(mc.id, 10),
+      junior_id: mc.junior_id || null,
+      title: mc.title,
+      instructor_id: mc.instructor_id || '',
+      date: mc.date || '',
+      time_start: mc.time_start || '10:00',
+      time_end: mc.time_end || '11:00',
+      week_number: mc.week_number ? parseInt(mc.week_number, 10) : null,
+      status: mc.status || null
+    }));
+
     res.json({
       users: formattedUsers,
       tutor_junior_mapping,
@@ -723,7 +735,7 @@ app.get('/api/db', async (req, res) => {
       questions: questionsMap,
       troubleshooting_db: parsedTroubleshooting,
       onboarding_progress,
-      masterclasses: masterclassRows
+      masterclasses: formattedMasterclasses
     });
   } catch (err) {
     console.error('Error fetching database state:', err);
@@ -863,9 +875,19 @@ app.post('/api/db/save', async (req, res) => {
 
           sqliteDb.prepare('DELETE FROM masterclasses').run();
           if (data.masterclasses) {
-            const stmtMc = sqliteDb.prepare(`INSERT INTO masterclasses (id, title, instructor_id, date, time_start, time_end) VALUES (?, ?, ?, ?, ?, ?)`);
+            const stmtMc = sqliteDb.prepare(`INSERT INTO masterclasses (id, junior_id, title, instructor_id, date, time_start, time_end, week_number, status) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`);
             for (const m of data.masterclasses) {
-              stmtMc.run(m.id, m.title, m.instructor_id || '', m.date || '', m.time_start || '10:00', m.time_end || '11:00');
+              stmtMc.run(
+                m.id,
+                m.junior_id || '',
+                m.title || '',
+                m.instructor_id || '',
+                m.date || '',
+                m.time_start || '10:00',
+                m.time_end || '11:00',
+                m.week_number || null,
+                m.status || null
+              );
             }
           }
         });
@@ -1057,8 +1079,18 @@ app.post('/api/db/save', async (req, res) => {
       if (data.masterclasses) {
         for (const m of data.masterclasses) {
           await txDb.run(
-            `INSERT INTO masterclasses (id, title, instructor_id, date, time_start, time_end) VALUES ($1, $2, $3, $4, $5, $6)`,
-            [m.id, m.title, m.instructor_id || '', m.date || '', m.time_start || '10:00', m.time_end || '11:00']
+            `INSERT INTO masterclasses (id, junior_id, title, instructor_id, date, time_start, time_end, week_number, status) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)`,
+            [
+              m.id,
+              m.junior_id || '',
+              m.title || '',
+              m.instructor_id || '',
+              m.date || '',
+              m.time_start || '10:00',
+              m.time_end || '11:00',
+              m.week_number || null,
+              m.status || null
+            ]
           );
         }
       }
