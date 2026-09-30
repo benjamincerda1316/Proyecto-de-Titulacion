@@ -9807,21 +9807,6 @@ const app = {
   ensureMasterclassesDataForJunior(juniorId) {
     if (!this.state.db) this.state.db = {};
     if (!this.state.db.masterclasses) this.state.db.masterclasses = [];
-
-    const existingForJunior = this.state.db.masterclasses.filter(m => m.junior_id === juniorId);
-    if (existingForJunior.length === 0) {
-      const defaultMcs = [
-        { junior_id: juniorId, id: 1, title: 'Bank Impact and Murex', instructor_id: 'USR-LUANA', date: '', time_start: '10:00', time_end: '11:00' },
-        { junior_id: juniorId, id: 2, title: 'Placeholder 1', instructor_id: '', date: '', time_start: '10:00', time_end: '11:00' },
-        { junior_id: juniorId, id: 3, title: 'Placeholder 2', instructor_id: '', date: '', time_start: '10:00', time_end: '11:00' },
-        { junior_id: juniorId, id: 4, title: 'Placeholder 3', instructor_id: '', date: '', time_start: '10:00', time_end: '11:00' },
-        { junior_id: juniorId, id: 5, title: 'Placeholder 4', instructor_id: '', date: '', time_start: '10:00', time_end: '11:00' },
-        { junior_id: juniorId, id: 6, title: 'Placeholder 5', instructor_id: '', date: '', time_start: '10:00', time_end: '11:00' },
-        { junior_id: juniorId, id: 7, title: 'Placeholder 6', instructor_id: '', date: '', time_start: '10:00', time_end: '11:00' },
-        { junior_id: juniorId, id: 8, title: 'Placeholder 7', instructor_id: '', date: '', time_start: '10:00', time_end: '11:00' }
-      ];
-      this.state.db.masterclasses.push(...defaultMcs);
-    }
   },
 
   handleMasterclassNewcomerChange(newJuniorId) {
@@ -9877,7 +9862,8 @@ const app = {
 
     const statusInfo = document.getElementById('mc-newcomer-status-info');
     if (statusInfo && currentJunior) {
-      statusInfo.innerHTML = `Viewing 8 masterclasses for <strong style="color: var(--primary);">${currentJunior.name}</strong>`;
+      const count = (this.state.db.masterclasses || []).filter(m => m.junior_id === currentJuniorId).length;
+      statusInfo.innerHTML = `<strong style="color: var(--primary);">${currentJunior.name}</strong> — ${count} masterclass${count !== 1 ? 'es' : ''}`;
     }
 
     this.ensureMasterclassesDataForJunior(currentJuniorId);
@@ -9893,7 +9879,14 @@ const app = {
     );
 
     tbody.innerHTML = '';
-    masterclassesForJunior.forEach(mc => {
+
+    if (masterclassesForJunior.length === 0) {
+      const emptyTr = document.createElement('tr');
+      emptyTr.innerHTML = `<td colspan="5" style="text-align:center; padding: 28px; color: var(--neutral-muted); font-size: 0.9rem;"><i class="ti ti-presentation" style="font-size:1.6rem; display:block; margin-bottom:8px; color:#d1d5db;"></i>No masterclasses yet. Click <strong>Agregar Masterclass</strong> below to create one.</td>`;
+      tbody.appendChild(emptyTr);
+    }
+
+    masterclassesForJunior.forEach((mc, idx) => {
       const isEditable = this.canEditMasterclass(mc);
       const tr = document.createElement('tr');
       tr.style.borderBottom = '1px solid var(--neutral-border)';
@@ -9917,7 +9910,7 @@ const app = {
       `;
 
       const dateCellHtml = `
-        <div style="display: flex; gap: 8px; align-items: center;">
+        <div style="display: flex; gap: 8px; align-items: center; flex-wrap: wrap;">
           <input type="date" id="mc-date-${mc.id}" value="${mc.date || ''}" ${isEditable ? '' : 'disabled'}
             style="padding: 7px 10px; font-size: 0.85rem; border: 1px solid var(--neutral-border); border-radius: 6px; background: ${isEditable ? '#ffffff' : '#f9fafb'}; outline: none;">
           <input type="time" id="mc-start-${mc.id}" value="${mc.time_start || '10:00'}" ${isEditable ? '' : 'disabled'}
@@ -9931,9 +9924,14 @@ const app = {
       let actionCellHtml = '';
       if (isEditable) {
         actionCellHtml = `
-          <button class="btn btn-primary btn-sm" onclick="app.saveMasterclassRow(${mc.id})" style="padding: 6px 12px; font-size: 0.8rem; display: inline-flex; align-items: center; gap: 5px;">
-            <i class="ti ti-calendar-event"></i> Save & Invite
-          </button>
+          <div style="display:flex; flex-direction:column; gap:6px; align-items:center;">
+            <button class="btn btn-primary btn-sm" onclick="app.saveMasterclassRow(${mc.id})" style="padding: 6px 12px; font-size: 0.8rem; display: inline-flex; align-items: center; gap: 5px; width:100%;">
+              <i class="ti ti-calendar-event"></i> Guardar
+            </button>
+            <button class="btn btn-sm" onclick="app.deleteMasterclassRow(${mc.id})" style="padding: 5px 12px; font-size: 0.78rem; display: inline-flex; align-items: center; gap: 4px; width:100%; background:#fee2e2; color:#dc2626; border:1px solid #fca5a5; border-radius:6px;">
+              <i class="ti ti-trash"></i> Eliminar
+            </button>
+          </div>
         `;
       } else {
         actionCellHtml = `
@@ -9944,7 +9942,7 @@ const app = {
       }
 
       tr.innerHTML = `
-        <td style="padding: 12px 16px; text-align: center; font-weight: 700; color: var(--primary); font-size: 0.9rem;">${mc.id}</td>
+        <td style="padding: 12px 16px; text-align: center; font-weight: 700; color: var(--primary); font-size: 0.9rem;">${idx + 1}</td>
         <td style="padding: 12px 16px;">${titleCellHtml}</td>
         <td style="padding: 12px 16px;">${instructorCellHtml}</td>
         <td style="padding: 12px 16px;">${dateCellHtml}</td>
@@ -9952,6 +9950,61 @@ const app = {
       `;
       tbody.appendChild(tr);
     });
+
+    // Render the "Agregar Masterclass" form
+    const addFormContainer = document.getElementById('mc-add-form-container');
+    if (addFormContainer) {
+      const canAdd = this.canEditMasterclass(null);
+      if (!canAdd) {
+        addFormContainer.innerHTML = '';
+        return;
+      }
+      let instructorOptionsNew = `<option value="">-- Instructor (opcional) --</option>`;
+      instructors.forEach(inst => {
+        let roleLabel = inst.rol || inst.role.toUpperCase();
+        instructorOptionsNew += `<option value="${inst.id}">${inst.name} (${roleLabel})</option>`;
+      });
+      addFormContainer.innerHTML = `
+        <div style="border:2px dashed var(--neutral-border); border-radius:12px; padding:20px; margin-top:16px; background:#fafbfc;">
+          <p style="font-size:0.85rem; font-weight:700; color:var(--neutral-dark); margin:0 0 14px 0; display:flex; align-items:center; gap:8px;">
+            <i class="ti ti-plus" style="color:var(--primary);"></i> Nueva Masterclass para <span style="color:var(--primary);">${currentJunior ? currentJunior.name : ''}</span>
+          </p>
+          <div style="display:flex; flex-wrap:wrap; gap:12px; align-items:flex-end;">
+            <div style="display:flex; flex-direction:column; gap:4px; flex:2; min-width:200px;">
+              <label style="font-size:0.78rem; font-weight:600; color:var(--neutral-muted);">Semana del Newcomer</label>
+              <input type="number" id="mc-new-week" min="1" max="20" placeholder="Ej: 3" value=""
+                style="padding:8px 12px; font-size:0.88rem; border:1px solid var(--neutral-border); border-radius:6px; outline:none; width:90px;">
+            </div>
+            <div style="display:flex; flex-direction:column; gap:4px; flex:4; min-width:200px;">
+              <label style="font-size:0.78rem; font-weight:600; color:var(--neutral-muted);">Título de la Masterclass</label>
+              <input type="text" id="mc-new-title" placeholder="Título de la masterclass"
+                style="padding:8px 12px; font-size:0.88rem; font-weight:600; border:1px solid var(--neutral-border); border-radius:6px; outline:none; min-width:180px;">
+            </div>
+            <div style="display:flex; flex-direction:column; gap:4px; flex:3; min-width:180px;">
+              <label style="font-size:0.78rem; font-weight:600; color:var(--neutral-muted);">Instructor</label>
+              <select id="mc-new-instructor" style="padding:8px 12px; font-size:0.88rem; border:1px solid var(--neutral-border); border-radius:6px; outline:none;">
+                ${instructorOptionsNew}
+              </select>
+            </div>
+            <div style="display:flex; flex-direction:column; gap:4px; flex:2; min-width:140px;">
+              <label style="font-size:0.78rem; font-weight:600; color:var(--neutral-muted);">Fecha</label>
+              <input type="date" id="mc-new-date" style="padding:8px 10px; font-size:0.85rem; border:1px solid var(--neutral-border); border-radius:6px; outline:none;">
+            </div>
+            <div style="display:flex; flex-direction:column; gap:4px;">
+              <label style="font-size:0.78rem; font-weight:600; color:var(--neutral-muted);">Horario</label>
+              <div style="display:flex; gap:6px; align-items:center;">
+                <input type="time" id="mc-new-start" value="10:00" style="padding:7px 8px; font-size:0.85rem; border:1px solid var(--neutral-border); border-radius:6px; outline:none;">
+                <span style="color:var(--neutral-muted); font-size:0.8rem;">-</span>
+                <input type="time" id="mc-new-end" value="11:00" style="padding:7px 8px; font-size:0.85rem; border:1px solid var(--neutral-border); border-radius:6px; outline:none;">
+              </div>
+            </div>
+            <button class="btn btn-primary" onclick="app.addMasterclass()" style="padding:9px 20px; font-size:0.88rem; display:inline-flex; align-items:center; gap:7px; white-space:nowrap;">
+              <i class="ti ti-plus"></i> Agregar Masterclass
+            </button>
+          </div>
+        </div>
+      `;
+    }
   },
 
   async saveMasterclassRow(mcId) {
@@ -10046,6 +10099,64 @@ const app = {
 
     this.saveDatabase();
     this.showToast(`Masterclass #${mcId} updated for ${currentJunior ? currentJunior.name : 'Newcomer'} & invitations sent!`);
+    this.renderMasterclassManagement();
+  },
+
+  addMasterclass() {
+    const currentJuniorId = this.state.selectedMasterclassJuniorId;
+    if (!currentJuniorId) return;
+
+    const titleInput = document.getElementById('mc-new-title');
+    const weekInput = document.getElementById('mc-new-week');
+    const instructorInput = document.getElementById('mc-new-instructor');
+    const dateInput = document.getElementById('mc-new-date');
+    const startInput = document.getElementById('mc-new-start');
+    const endInput = document.getElementById('mc-new-end');
+
+    const title = titleInput ? titleInput.value.trim() : '';
+    const week = weekInput ? parseInt(weekInput.value) || 0 : 0;
+
+    if (!title) {
+      this.showToast('El título de la masterclass no puede estar vacío.', 'warning');
+      return;
+    }
+
+    this.ensureMasterclassesDataForJunior(currentJuniorId);
+    const existing = this.state.db.masterclasses.filter(m => m.junior_id === currentJuniorId);
+    const newId = existing.length > 0 ? Math.max(...existing.map(m => m.id)) + 1 : 1;
+
+    const newMc = {
+      junior_id: currentJuniorId,
+      id: newId,
+      week_number: week || newId,
+      title: title,
+      instructor_id: instructorInput ? instructorInput.value : '',
+      date: dateInput ? dateInput.value : '',
+      time_start: startInput ? startInput.value : '10:00',
+      time_end: endInput ? endInput.value : '11:00'
+    };
+
+    this.state.db.masterclasses.push(newMc);
+    this.saveDatabase();
+    this.showToast(`Masterclass "${title}" agregada correctamente.`);
+    this.renderMasterclassManagement();
+  },
+
+  deleteMasterclassRow(mcId) {
+    const currentJuniorId = this.state.selectedMasterclassJuniorId;
+    if (!currentJuniorId) return;
+
+    const idx = this.state.db.masterclasses.findIndex(m => m.junior_id === currentJuniorId && m.id === mcId);
+    if (idx < 0) return;
+
+    if (!this.canEditMasterclass(this.state.db.masterclasses[idx])) {
+      this.showToast('Sin permisos para eliminar esta masterclass.', 'danger');
+      return;
+    }
+
+    this.state.db.masterclasses.splice(idx, 1);
+    this.saveDatabase();
+    this.showToast('Masterclass eliminada.');
     this.renderMasterclassManagement();
   },
 
