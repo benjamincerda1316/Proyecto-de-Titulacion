@@ -1191,64 +1191,6 @@ app.get('/api/download-file', async (req, res) => {
   }
 });
 
-// POST /api/send-reset-email (Sends password reset email via Resend API)
-app.post('/api/send-reset-email', async (req, res) => {
-  try {
-    const { email, code, name } = req.body;
-    if (!email || !code) {
-      return res.status(400).json({ error: 'Missing required parameters: email and code' });
-    }
-
-    const apiKey = process.env.RESEND_API_KEY;
-    if (!apiKey) {
-      return res.status(500).json({ error: 'Email service not configured. Set RESEND_API_KEY environment variable.' });
-    }
-    const fromEmail = process.env.RESEND_FROM_EMAIL || 'onboarding@resend.dev';
-
-    const response = await fetch('https://api.resend.com/emails', {
-      method: 'POST',
-      headers: {
-        'Authorization': `Bearer ${apiKey}`,
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({
-        from: `MXBoard Finance <${fromEmail}>`,
-        to: [email],
-        subject: '🔐 Código de Recuperación de Contraseña - MXBoard',
-        html: `
-          <div style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; max-width: 550px; margin: 0 auto; background: #ffffff; border-radius: 16px; padding: 32px; border: 1px solid #e5e7eb; box-shadow: 0 10px 30px rgba(0,0,0,0.05);">
-            <div style="text-align: center; margin-bottom: 24px;">
-              <h2 style="color: #D4215B; font-size: 26px; margin: 0; font-weight: 800; letter-spacing: -0.5px;">MXBOARD</h2>
-              <p style="color: #6B7280; font-size: 13px; margin-top: 4px; text-transform: uppercase; letter-spacing: 1px;">Finance & P&L Onboarding Platform</p>
-            </div>
-            <hr style="border: none; border-top: 1px solid #f3f4f6; margin: 20px 0;" />
-            <h3 style="color: #111827; font-size: 18px; margin-bottom: 12px; text-align: center;">Código de Verificación para Contraseña</h3>
-            <p style="color: #4B5563; font-size: 14px; line-height: 1.6;">Hola <strong>${name || email}</strong>,</p>
-            <p style="color: #4B5563; font-size: 14px; line-height: 1.6;">Hemos recibido una solicitud para restablecer la contraseña de tu cuenta en MXBoard. Tu código de seguridad de 6 dígitos es:</p>
-            <div style="text-align: center; margin: 28px 0;">
-              <span style="font-size: 34px; font-weight: 900; letter-spacing: 8px; color: #D4215B; background: #FFF0F3; padding: 14px 28px; border-radius: 12px; border: 1.5px solid rgba(212, 33, 91, 0.25); display: inline-block;">${code}</span>
-            </div>
-            <p style="color: #6B7280; font-size: 13px; line-height: 1.5; text-align: center;">Ingresa este código en la ventana de la aplicación MXBoard para actualizar tu contraseña.</p>
-            <hr style="border: none; border-top: 1px solid #f3f4f6; margin: 24px 0;" />
-            <p style="color: #9CA3AF; font-size: 12px; text-align: center; margin: 0;">Si no solicitaste este cambio, puedes ignorar este mensaje de forma segura.<br /><strong>Murex Corporate Ecosystem &bull; Confidential</strong></p>
-          </div>
-        `
-      })
-    });
-
-    const data = await response.json();
-    if (response.ok) {
-      console.log('Resend email sent successfully:', data);
-      return res.json({ success: true, data });
-    } else {
-      console.error('Resend email error:', data);
-      return res.status(400).json({ success: false, error: data.message || 'Failed to send email via Resend' });
-    }
-  } catch (err) {
-    console.error('Error in /api/send-reset-email:', err);
-    return res.status(500).json({ success: false, error: err.message });
-  }
-});
 
 app.use((req, res) => {
   res.status(404).json({ error: `Route ${req.method} ${req.path} not found.` });
