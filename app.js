@@ -9878,129 +9878,126 @@ const app = {
       u.role === 'tutor' || u.rol === 'TUTOR'
     );
 
+    const inputStyle = `padding:9px 12px; font-size:0.88rem; border:1px solid var(--neutral-border); border-radius:7px; outline:none; height:38px; box-sizing:border-box;`;
+    const inputStyleDisabled = `padding:9px 12px; font-size:0.88rem; border:1px solid var(--neutral-border); border-radius:7px; outline:none; height:38px; box-sizing:border-box; background:#f9fafb;`;
+
     tbody.innerHTML = '';
 
     if (masterclassesForJunior.length === 0) {
       const emptyTr = document.createElement('tr');
-      emptyTr.innerHTML = `<td colspan="5" style="text-align:center; padding: 28px; color: var(--neutral-muted); font-size: 0.9rem;"><i class="ti ti-presentation" style="font-size:1.6rem; display:block; margin-bottom:8px; color:#d1d5db;"></i>No masterclasses yet. Click <strong>Agregar Masterclass</strong> below to create one.</td>`;
+      emptyTr.innerHTML = `<td colspan="5" style="text-align:center; padding: 32px; color: var(--neutral-muted); font-size: 0.9rem;"><i class="ti ti-presentation" style="font-size:2rem; display:block; margin-bottom:10px; color:#d1d5db;"></i>No masterclasses scheduled yet.<br><span style="font-size:0.82rem;">Use the <strong style="color:var(--primary)">Add Masterclass</strong> form below to create one.</span></td>`;
       tbody.appendChild(emptyTr);
     }
 
     masterclassesForJunior.forEach((mc, idx) => {
       const isEditable = this.canEditMasterclass(mc);
+      const bg = isEditable ? '#ffffff' : '#f9fafb';
+      const dis = isEditable ? '' : 'disabled';
       const tr = document.createElement('tr');
       tr.style.borderBottom = '1px solid var(--neutral-border)';
 
-      const titleCellHtml = `
-        <input type="text" id="mc-title-${mc.id}" value="${mc.title || ''}" ${isEditable ? '' : 'disabled'}
-          style="width: 95%; padding: 8px 12px; font-size: 0.88rem; font-weight: 600; border: 1px solid var(--neutral-border); border-radius: 6px; background: ${isEditable ? '#ffffff' : '#f9fafb'}; outline: none;" placeholder="Masterclass Title">
-      `;
-
-      let instructorOptions = `<option value="">-- Select Assigned Instructor --</option>`;
+      let instructorOptions = `<option value="">— Select Instructor —</option>`;
       instructors.forEach(inst => {
-        const selected = inst.id === mc.instructor_id ? 'selected' : '';
-        let roleLabel = inst.rol || inst.role.toUpperCase();
-        instructorOptions += `<option value="${inst.id}" ${selected}>${inst.name} (${roleLabel})</option>`;
+        const sel = inst.id === mc.instructor_id ? 'selected' : '';
+        instructorOptions += `<option value="${inst.id}" ${sel}>${inst.name} (${inst.rol || inst.role.toUpperCase()})</option>`;
       });
-      const instructorCellHtml = `
-        <select id="mc-instructor-${mc.id}" ${isEditable ? '' : 'disabled'}
-          style="width: 95%; padding: 8px 12px; font-size: 0.88rem; border: 1px solid var(--neutral-border); border-radius: 6px; background: ${isEditable ? '#ffffff' : '#f9fafb'}; outline: none;">
-          ${instructorOptions}
-        </select>
-      `;
-
-      const dateCellHtml = `
-        <div style="display: flex; gap: 8px; align-items: center; flex-wrap: wrap;">
-          <input type="date" id="mc-date-${mc.id}" value="${mc.date || ''}" ${isEditable ? '' : 'disabled'}
-            style="padding: 7px 10px; font-size: 0.85rem; border: 1px solid var(--neutral-border); border-radius: 6px; background: ${isEditable ? '#ffffff' : '#f9fafb'}; outline: none;">
-          <input type="time" id="mc-start-${mc.id}" value="${mc.time_start || '10:00'}" ${isEditable ? '' : 'disabled'}
-            style="padding: 7px 8px; font-size: 0.85rem; border: 1px solid var(--neutral-border); border-radius: 6px; background: ${isEditable ? '#ffffff' : '#f9fafb'}; outline: none;">
-          <span style="font-size: 0.8rem; color: var(--neutral-muted);">-</span>
-          <input type="time" id="mc-end-${mc.id}" value="${mc.time_end || '11:00'}" ${isEditable ? '' : 'disabled'}
-            style="padding: 7px 8px; font-size: 0.85rem; border: 1px solid var(--neutral-border); border-radius: 6px; background: ${isEditable ? '#ffffff' : '#f9fafb'}; outline: none;">
-        </div>
-      `;
 
       let actionCellHtml = '';
       if (isEditable) {
         actionCellHtml = `
-          <div style="display:flex; flex-direction:column; gap:6px; align-items:center;">
-            <button class="btn btn-primary btn-sm" onclick="app.saveMasterclassRow(${mc.id})" style="padding: 6px 12px; font-size: 0.8rem; display: inline-flex; align-items: center; gap: 5px; width:100%;">
-              <i class="ti ti-calendar-event"></i> Guardar
+          <div style="display:flex; flex-direction:column; gap:5px;">
+            <button class="btn btn-primary btn-sm" onclick="app.saveMasterclassRow(${mc.id})" style="padding:6px 14px; font-size:0.8rem; display:inline-flex; align-items:center; justify-content:center; gap:5px;">
+              <i class="ti ti-device-floppy"></i> Save
             </button>
-            <button class="btn btn-sm" onclick="app.deleteMasterclassRow(${mc.id})" style="padding: 5px 12px; font-size: 0.78rem; display: inline-flex; align-items: center; gap: 4px; width:100%; background:#fee2e2; color:#dc2626; border:1px solid #fca5a5; border-radius:6px;">
-              <i class="ti ti-trash"></i> Eliminar
+            <button onclick="app.deleteMasterclassRow(${mc.id})" style="padding:5px 14px; font-size:0.78rem; display:inline-flex; align-items:center; justify-content:center; gap:4px; background:#fff0f0; color:#dc2626; border:1px solid #fca5a5; border-radius:6px; cursor:pointer;">
+              <i class="ti ti-trash"></i> Delete
             </button>
-          </div>
-        `;
+          </div>`;
       } else {
-        actionCellHtml = `
-          <span style="font-size: 0.78rem; color: #9ca3af; font-weight: 500; display: inline-flex; align-items: center; gap: 4px;">
-            <i class="ti ti-lock"></i> Read Only
-          </span>
-        `;
+        actionCellHtml = `<span style="font-size:0.78rem; color:#9ca3af; font-weight:500; display:inline-flex; align-items:center; gap:4px;"><i class="ti ti-lock"></i> Read Only</span>`;
       }
 
       tr.innerHTML = `
-        <td style="padding: 12px 16px; text-align: center; font-weight: 700; color: var(--primary); font-size: 0.9rem;">${idx + 1}</td>
-        <td style="padding: 12px 16px;">${titleCellHtml}</td>
-        <td style="padding: 12px 16px;">${instructorCellHtml}</td>
-        <td style="padding: 12px 16px;">${dateCellHtml}</td>
-        <td style="padding: 12px 16px; text-align: center;">${actionCellHtml}</td>
+        <td style="padding:12px 16px; text-align:center; font-weight:700; color:var(--primary); font-size:0.95rem;">${idx + 1}</td>
+        <td style="padding:10px 14px;">
+          <input type="text" id="mc-title-${mc.id}" value="${(mc.title || '').replace(/"/g, '&quot;')}" ${dis}
+            style="${isEditable ? inputStyle : inputStyleDisabled} width:100%; font-weight:600;" placeholder="Masterclass title">
+        </td>
+        <td style="padding:10px 14px;">
+          <select id="mc-instructor-${mc.id}" ${dis} style="${isEditable ? inputStyle : inputStyleDisabled} width:100%;">
+            ${instructorOptions}
+          </select>
+        </td>
+        <td style="padding:10px 14px;">
+          <div style="display:flex; gap:6px; align-items:center; flex-wrap:wrap;">
+            <input type="date" id="mc-date-${mc.id}" value="${mc.date || ''}" ${dis}
+              style="${isEditable ? inputStyle : inputStyleDisabled}">
+            <input type="time" id="mc-start-${mc.id}" value="${mc.time_start || '10:00'}" ${dis}
+              style="${isEditable ? inputStyle : inputStyleDisabled} width:105px;">
+            <span style="color:var(--neutral-muted); font-size:0.85rem; font-weight:600;">→</span>
+            <input type="time" id="mc-end-${mc.id}" value="${mc.time_end || '11:00'}" ${dis}
+              style="${isEditable ? inputStyle : inputStyleDisabled} width:105px;">
+          </div>
+        </td>
+        <td style="padding:10px 16px; text-align:center; white-space:nowrap;">${actionCellHtml}</td>
       `;
       tbody.appendChild(tr);
     });
 
-    // Render the "Agregar Masterclass" form
+    // Render "Add Masterclass" form below the table
     const addFormContainer = document.getElementById('mc-add-form-container');
     if (addFormContainer) {
-      const canAdd = this.canEditMasterclass(null);
-      if (!canAdd) {
+      if (!this.canEditMasterclass(null)) {
         addFormContainer.innerHTML = '';
         return;
       }
-      let instructorOptionsNew = `<option value="">-- Instructor (opcional) --</option>`;
+      let instOptsNew = `<option value="">— Select Instructor (optional) —</option>`;
       instructors.forEach(inst => {
-        let roleLabel = inst.rol || inst.role.toUpperCase();
-        instructorOptionsNew += `<option value="${inst.id}">${inst.name} (${roleLabel})</option>`;
+        instOptsNew += `<option value="${inst.id}">${inst.name} (${inst.rol || inst.role.toUpperCase()})</option>`;
       });
       addFormContainer.innerHTML = `
-        <div style="border:2px dashed var(--neutral-border); border-radius:12px; padding:20px; margin-top:16px; background:#fafbfc;">
-          <p style="font-size:0.85rem; font-weight:700; color:var(--neutral-dark); margin:0 0 14px 0; display:flex; align-items:center; gap:8px;">
-            <i class="ti ti-plus" style="color:var(--primary);"></i> Nueva Masterclass para <span style="color:var(--primary);">${currentJunior ? currentJunior.name : ''}</span>
-          </p>
-          <div style="display:flex; flex-wrap:wrap; gap:12px; align-items:flex-end;">
-            <div style="display:flex; flex-direction:column; gap:4px; flex:2; min-width:200px;">
-              <label style="font-size:0.78rem; font-weight:600; color:var(--neutral-muted);">Semana del Newcomer</label>
-              <input type="number" id="mc-new-week" min="1" max="20" placeholder="Ej: 3" value=""
-                style="padding:8px 12px; font-size:0.88rem; border:1px solid var(--neutral-border); border-radius:6px; outline:none; width:90px;">
-            </div>
-            <div style="display:flex; flex-direction:column; gap:4px; flex:4; min-width:200px;">
-              <label style="font-size:0.78rem; font-weight:600; color:var(--neutral-muted);">Título de la Masterclass</label>
-              <input type="text" id="mc-new-title" placeholder="Título de la masterclass"
-                style="padding:8px 12px; font-size:0.88rem; font-weight:600; border:1px solid var(--neutral-border); border-radius:6px; outline:none; min-width:180px;">
-            </div>
-            <div style="display:flex; flex-direction:column; gap:4px; flex:3; min-width:180px;">
-              <label style="font-size:0.78rem; font-weight:600; color:var(--neutral-muted);">Instructor</label>
-              <select id="mc-new-instructor" style="padding:8px 12px; font-size:0.88rem; border:1px solid var(--neutral-border); border-radius:6px; outline:none;">
-                ${instructorOptionsNew}
-              </select>
-            </div>
-            <div style="display:flex; flex-direction:column; gap:4px; flex:2; min-width:140px;">
-              <label style="font-size:0.78rem; font-weight:600; color:var(--neutral-muted);">Fecha</label>
-              <input type="date" id="mc-new-date" style="padding:8px 10px; font-size:0.85rem; border:1px solid var(--neutral-border); border-radius:6px; outline:none;">
-            </div>
-            <div style="display:flex; flex-direction:column; gap:4px;">
-              <label style="font-size:0.78rem; font-weight:600; color:var(--neutral-muted);">Horario</label>
-              <div style="display:flex; gap:6px; align-items:center;">
-                <input type="time" id="mc-new-start" value="10:00" style="padding:7px 8px; font-size:0.85rem; border:1px solid var(--neutral-border); border-radius:6px; outline:none;">
-                <span style="color:var(--neutral-muted); font-size:0.8rem;">-</span>
-                <input type="time" id="mc-new-end" value="11:00" style="padding:7px 8px; font-size:0.85rem; border:1px solid var(--neutral-border); border-radius:6px; outline:none;">
+        <div style="margin-top:16px; border:1.5px dashed var(--neutral-border); border-radius:12px; background:#f8fafc; overflow:hidden;">
+          <div style="background:var(--neutral-light); padding:12px 20px; border-bottom:1px solid var(--neutral-border); display:flex; align-items:center; gap:8px;">
+            <i class="ti ti-circle-plus" style="color:var(--primary); font-size:1.1rem;"></i>
+            <span style="font-weight:700; font-size:0.9rem; color:var(--neutral-dark);">Add Masterclass</span>
+            <span style="font-size:0.82rem; color:var(--neutral-muted);">for <strong style="color:var(--primary);">${currentJunior ? currentJunior.name : ''}</strong></span>
+          </div>
+          <div style="padding:18px 20px;">
+            <div style="display:grid; grid-template-columns: 110px 1fr 1fr 160px 230px; gap:14px; align-items:end;">
+              <div>
+                <label style="display:block; font-size:0.78rem; font-weight:600; color:var(--neutral-muted); margin-bottom:5px; text-transform:uppercase; letter-spacing:.03em;">Week #</label>
+                <input type="number" id="mc-new-week" min="1" max="20" placeholder="e.g. 3"
+                  style="${inputStyle} width:100%;">
+              </div>
+              <div>
+                <label style="display:block; font-size:0.78rem; font-weight:600; color:var(--neutral-muted); margin-bottom:5px; text-transform:uppercase; letter-spacing:.03em;">Title</label>
+                <input type="text" id="mc-new-title" placeholder="Masterclass title"
+                  style="${inputStyle} width:100%; font-weight:600;">
+              </div>
+              <div>
+                <label style="display:block; font-size:0.78rem; font-weight:600; color:var(--neutral-muted); margin-bottom:5px; text-transform:uppercase; letter-spacing:.03em;">Instructor</label>
+                <select id="mc-new-instructor" style="${inputStyle} width:100%;">
+                  ${instOptsNew}
+                </select>
+              </div>
+              <div>
+                <label style="display:block; font-size:0.78rem; font-weight:600; color:var(--neutral-muted); margin-bottom:5px; text-transform:uppercase; letter-spacing:.03em;">Date</label>
+                <input type="date" id="mc-new-date" style="${inputStyle} width:100%;">
+              </div>
+              <div>
+                <label style="display:block; font-size:0.78rem; font-weight:600; color:var(--neutral-muted); margin-bottom:5px; text-transform:uppercase; letter-spacing:.03em;">Time</label>
+                <div style="display:flex; gap:6px; align-items:center;">
+                  <input type="time" id="mc-new-start" value="10:00" style="${inputStyle} width:105px;">
+                  <span style="color:var(--neutral-muted); font-weight:600;">→</span>
+                  <input type="time" id="mc-new-end" value="11:00" style="${inputStyle} width:105px;">
+                </div>
               </div>
             </div>
-            <button class="btn btn-primary" onclick="app.addMasterclass()" style="padding:9px 20px; font-size:0.88rem; display:inline-flex; align-items:center; gap:7px; white-space:nowrap;">
-              <i class="ti ti-plus"></i> Agregar Masterclass
-            </button>
+            <div style="margin-top:16px; display:flex; justify-content:flex-end;">
+              <button class="btn btn-primary" onclick="app.addMasterclass()" style="padding:10px 24px; font-size:0.9rem; display:inline-flex; align-items:center; gap:8px;">
+                <i class="ti ti-circle-plus"></i> Add Masterclass
+              </button>
+            </div>
           </div>
         </div>
       `;
@@ -10117,7 +10114,7 @@ const app = {
     const week = weekInput ? parseInt(weekInput.value) || 0 : 0;
 
     if (!title) {
-      this.showToast('El título de la masterclass no puede estar vacío.', 'warning');
+      this.showToast('Masterclass title cannot be empty.', 'warning');
       return;
     }
 
@@ -10138,7 +10135,7 @@ const app = {
 
     this.state.db.masterclasses.push(newMc);
     this.saveDatabase();
-    this.showToast(`Masterclass "${title}" agregada correctamente.`);
+    this.showToast(`Masterclass "${title}" added successfully.`);
     this.renderMasterclassManagement();
   },
 
@@ -10150,13 +10147,13 @@ const app = {
     if (idx < 0) return;
 
     if (!this.canEditMasterclass(this.state.db.masterclasses[idx])) {
-      this.showToast('Sin permisos para eliminar esta masterclass.', 'danger');
+      this.showToast('Permission denied. Only Administrators or the assigned Instructor can delete this masterclass.', 'danger');
       return;
     }
 
     this.state.db.masterclasses.splice(idx, 1);
     this.saveDatabase();
-    this.showToast('Masterclass eliminada.');
+    this.showToast('Masterclass deleted.');
     this.renderMasterclassManagement();
   },
 
