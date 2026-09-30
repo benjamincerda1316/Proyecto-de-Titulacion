@@ -1307,7 +1307,7 @@ const app = {
       { id: "USR-LUANA", name: "Luana Ortega", nombre: "Luana Ortega", email: "luana@murex.cl", password: "admin", role: "admin", rol: "MANAGER", avatar_initials: "LO" },
       { id: "USR-BORIS", name: "Boris Castro", nombre: "Boris Castro", email: "bcastro@murex.cl", password: "admin", role: "admin", rol: "MANAGER", avatar_initials: "BC" },
       { id: "USR-FERNANDO", name: "Fernando Araya", nombre: "Fernando Araya", email: "fernando.araya@murex.cl", password: "password", role: "senior", rol: "SENIOR", avatar_initials: "FA" },
-      { id: "USR-SANDRA", name: "Sandra Segura", nombre: "Sandra Segura", email: "sandra.segura@murex.cl", password: "password", role: "senior", rol: "SENIOR", avatar_initials: "SS" },
+      { id: "USR-SANDRA", name: "Sandra Segura", nombre: "Sandra Segura", email: "sandra.segura@murex.cl", password: "password", role: "admin", rol: "MANAGER", avatar_initials: "SS" },
       { id: "USR-ALEJANDRA", name: "Alejandra González", nombre: "Alejandra González", email: "alejandra.gonzalez@murex.cl", password: "password", role: "senior", rol: "SENIOR", avatar_initials: "AG" },
       { id: "USR-BENJAMIN", name: "Benjamín Cerda", nombre: "Benjamín Cerda", email: "benjamin.cerda@murex.cl", password: "password", role: "tutor", rol: "TUTOR", avatar_initials: "BC" },
       { id: "USR-BENJAMIN-GMAIL", name: "Benjamin Testing", nombre: "Benjamin Testing", email: "benjamincerda1316@gmail.com", password: "test", role: "consultant", rol: "JUNIOR", avatar_initials: "BT", current_week: 1, semana_actual: 1, avg_score: 0, status: "on_track", entry_date: "2026-09-27" },
