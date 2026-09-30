@@ -3590,30 +3590,15 @@ const app = {
   },
 
   getQuizSpentState(userId, weekNum) {
-    // 1. Try DB first for cross-machine synchronization
+    // DB is sole source of truth — avoids retry-by-clearing-localStorage exploit
     const progress = this.state.db && this.state.db.consultant_progress ? this.state.db.consultant_progress[userId] : null;
     if (progress && progress.quiz_spent && progress.quiz_spent[weekNum] !== undefined) {
       return progress.quiz_spent[weekNum] === true;
-    }
-
-    // 2. Fallback to localStorage
-    const userKey = `spent_quiz_w${weekNum}_${userId}`;
-    const globalKey = `spent_quiz_w${weekNum}`;
-    const userVal = localStorage.getItem(userKey);
-    if (userVal !== null) {
-      return userVal === 'true';
-    }
-    // Fallback and migration of old global key
-    const globalVal = localStorage.getItem(globalKey);
-    if (globalVal !== null) {
-      localStorage.setItem(userKey, globalVal);
-      return globalVal === 'true';
     }
     return false;
   },
 
   setQuizSpentState(userId, weekNum, spent) {
-    // 1. Save to DB
     const progress = this.state.db && this.state.db.consultant_progress ? this.state.db.consultant_progress[userId] : null;
     if (progress) {
       if (!progress.quiz_spent) {
@@ -3621,15 +3606,6 @@ const app = {
       }
       progress.quiz_spent[weekNum] = spent;
       this.saveDatabase();
-    }
-
-    // 2. Also save to localStorage for local fast path
-    const userKey = `spent_quiz_w${weekNum}_${userId}`;
-    if (spent) {
-      localStorage.setItem(userKey, 'true');
-    } else {
-      localStorage.removeItem(userKey);
-      localStorage.removeItem(`spent_quiz_w${weekNum}`);
     }
   },
 
@@ -5305,12 +5281,74 @@ const app = {
           return;
         }
 
-        if (ping) {
-          ping.style.backgroundColor = "var(--danger)";
-          ping.className = "w-2 h-2 rounded-full inline-block";
+        // No attempt recorded — quiz was started but tab was closed
+        // Check if session can be resumed (within 15-minute window)
+        let canResume = false;
+        try {
+          const savedTs = localStorage.getItem(`quiz_inprogress_${activeUserId}_w${this.quizEngine.semana}`);
+          if (savedTs) {
+            const elapsed = Math.floor((Date.now() - parseInt(savedTs)) / 1000);
+            if (elapsed < 15 * 60) {
+              // Time remaining — resume with adjusted clock
+              canResume = true;
+              const remaining = 15 * 60 - elapsed;
+              if (ping) { ping.style.backgroundColor = "var(--warning)"; }
+              this.quizEngine.stage = 3;
+              this.quizEngine.index = 0;
+              this.quizEngine.correctas = 0;
+              this.quizEngine.tiempo = remaining;
+              this.quizEngine.startTimestamp = parseInt(savedTs);
+              const timerDisplay = document.getElementById('quiz-timer-display');
+              if (timerDisplay) timerDisplay.classList.remove('hidden');
+              this.quizEngine.timerInterval = setInterval(() => {
+                this.quizEngine.tiempo--;
+                this.actualizarRelojUI();
+                if (this.quizEngine.tiempo <= 0) {
+                  clearInterval(this.quizEngine.timerInterval);
+                  this.terminarYMostrarResultado();
+                }
+              }, 1000);
+              this.renderPreguntaConsola();
+              return;
+            }
+          }
+        } catch(e) {}
+
+        if (!canResume) {
+          // Time expired without completing — record 0% attempt
+          const quizPool = (this.state.db.questions && this.state.db.questions[this.quizEngine.semana]) || [];
+          if (quizPool.length > 0) {
+            const userId2 = activeUserId;
+            const progress2 = this.state.db.consultant_progress[userId2];
+            if (progress2) {
+              progress2.test_scores[this.quizEngine.semana] = 0;
+              progress2.test_attempts[this.quizEngine.semana] = (progress2.test_attempts[this.quizEngine.semana] || 0) + 1;
+              const letras2 = ['A', 'B', 'C', 'D'];
+              const respuestasVacias = {};
+              quizPool.forEach((q, idx) => {
+                respuestasVacias[`P${idx + 1}`] = { marcada: null, correcta: letras2[q.correct], es_valida: false };
+              });
+              this.state.db.historial_evaluaciones = this.state.db.historial_evaluaciones || [];
+              this.state.db.historial_evaluaciones.push({
+                evaluacion_id: `EV-W${this.quizEngine.semana}-${userId2}-${Date.now()}`,
+                usuario_id: userId2,
+                semana_malla: this.quizEngine.semana,
+                fecha_rendicion: new Date().toISOString().split('T')[0],
+                puntaje_obtenido: 0,
+                total_preguntas: quizPool.length,
+                respuestas_usuario: respuestasVacias
+              });
+              try { localStorage.removeItem(`quiz_inprogress_${userId2}_w${this.quizEngine.semana}`); } catch(e) {}
+              this.saveDatabase();
+            }
+          }
+          if (ping) {
+            ping.style.backgroundColor = "var(--primary)";
+            ping.className = "w-2 h-2 rounded-full inline-block";
+          }
+          this.renderTestCorrectionMode(this.quizEngine.semana);
+          return;
         }
-        this.renderPantallaBloqueo("⛔ INSTANCE LOCKED: ATTEMPT EXHAUSTED", "You have completed the maximum limit of 1 attempt allowed for this onboarding week.");
-        return;
     }
 
     // REGLA DE CANDADO: Semana sin preguntas cargadas
@@ -5348,7 +5386,7 @@ const app = {
                     Weekly Theoretical Validation
                 </h4>
                 <p style="font-size: 12px; color: var(--neutral-muted); line-height: 1.5; max-width: 340px; margin: 0 auto 20px auto;">
-                    This evaluation consists of multiple-choice questions about the contents of MX.3. Once started, you have 25 minutes. 
+                    This evaluation consists of multiple-choice questions about the contents of MX.3. Once started, you have 15 minutes.
                     <br><strong>Limit: 1 attempt allowed.</strong>
                 </p>
                 <button class="btn btn-primary" onclick="app.irAPantallaConfirmacion()" style="padding: 8px 24px; font-weight: 600; font-size: 0.85rem; letter-spacing: 0.05em;">
@@ -5419,8 +5457,10 @@ const app = {
 
     this.quizEngine.index = 0;
     this.quizEngine.correctas = 0;
-    this.quizEngine.tiempo = 25 * 60;
+    this.quizEngine.tiempo = 15 * 60;
+    this.quizEngine.startTimestamp = Date.now();
     this.quizEngine.stage = 3;
+    try { localStorage.setItem(`quiz_inprogress_${activeUserId}_w${this.quizEngine.semana}`, String(this.quizEngine.startTimestamp)); } catch(e) {}
 
     this.quizEngine.timerInterval = setInterval(() => {
         this.quizEngine.tiempo--;
@@ -5550,7 +5590,8 @@ const app = {
     progress.test_attempts[this.quizEngine.semana] = (progress.test_attempts[this.quizEngine.semana] || 0) + 1;
     
     // Save elapsed test duration
-    const totalTimeSecs = 25 * 60 - this.quizEngine.tiempo;
+    try { localStorage.removeItem(`quiz_inprogress_${userId}_w${this.quizEngine.semana}`); } catch(e) {}
+    const totalTimeSecs = 15 * 60 - this.quizEngine.tiempo;
     const elapsedMins = Math.floor(totalTimeSecs / 60);
     const elapsedSecs = totalTimeSecs % 60;
     progress.test_times = progress.test_times || {};
@@ -5695,243 +5736,6 @@ const app = {
       }
     }
   },
-
-  // ==========================================================================
-  // KNOWLEDGE QUIZ GAME STATE ENGINE
-  // ==========================================================================
-  startKnowledgeTest() {
-    const weekNum = this.state.selectedWeekNum;
-    
-    // Check if it's Week 1 and already attempted
-    const userId = this.state.activeUser.id;
-    const progress = this.state.db.consultant_progress[userId];
-    const attempts = progress.test_attempts[weekNum] || 0;
-    if (weekNum === 1 && attempts >= 1) {
-      this.showToast("You have no more attempts available for this evaluation.", "danger");
-      return;
-    }
-    
-    // Confirm starting the test
-    const confirmMsg = weekNum === 1
-      ? "Are you sure you want to start the Week 1 evaluation? You have a single attempt available and 50 questions to answer."
-      : "Are you sure you want to start the evaluation?";
-    if (!confirm(confirmMsg)) {
-      return;
-    }
-    
-    // Pull questions
-    let quizPool = this.state.db.questions[weekNum];
-    if (!quizPool) {
-      // Fallback procedural questions if week questions not seeded
-      const template = this.state.db.week_templates.find(wt => wt.week_number === weekNum);
-      const topicsText = template ? template.description : "module topics";
-      quizPool = [
-        {
-          question: `What is the critical factor in the success of ${template.title}?`,
-          options: [
-            "Configure in a structured way according to the documentation and validate results.",
-            "Skip theoretical validations and go straight to production.",
-            "Expect global support to resolve all configuration steps."
-          ],
-          correct: 0
-        },
-        {
-          question: `Which standard mainly governs the development of ${template.title}?`,
-          options: [
-            "Murex global guidelines and associated accounting regulations.",
-            "Local laws not linked to finance.",
-            "Informal criteria of the local development team."
-          ],
-          correct: 0
-        }
-      ];
-    }
-    
-    // Setup test state
-    this.state.testState = {
-      active: true,
-      weekNum: weekNum,
-      questions: quizPool,
-      currentQuestionIdx: 0,
-      answers: {},
-      secondsRemaining: 900 // 15 mins
-    };
-    
-    // Start countdown timer
-    if (this.state.testState.timer) clearInterval(this.state.testState.timer);
-    this.state.testState.timer = setInterval(() => this.updateTestTimer(), 1000);
-    
-    // Render first question
-    this.renderQuizQuestion();
-    
-    // Update Layout Tabs State
-    this.renderConsultantView();
-  },
-
-  updateTestTimer() {
-    if (!this.state.testState.active) return;
-    
-    this.state.testState.secondsRemaining--;
-    
-    const minutes = Math.floor(this.state.testState.secondsRemaining / 60);
-    const seconds = this.state.testState.secondsRemaining % 60;
-    const formattedTime = `${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
-    
-    const clock = document.getElementById('test-timer-clock');
-    if (clock) clock.innerText = formattedTime;
-    
-    if (this.state.testState.secondsRemaining <= 0) {
-      clearInterval(this.state.testState.timer);
-      this.submitKnowledgeTest(true); // Force auto-submit on timeout
-    }
-  },
-
-  renderQuizQuestion() {
-    const idx = this.state.testState.currentQuestionIdx;
-    const question = this.state.testState.questions[idx];
-    const total = this.state.testState.questions.length;
-    
-    document.getElementById('test-question-counter').innerText = `Question ${idx + 1} of ${total}`;
-    document.getElementById('test-question-text').innerText = question.question;
-    document.getElementById('test-progress-bar-fill').style.width = `${((idx + 1) / total) * 100}%`;
-    
-    const optionsContainer = document.getElementById('test-options-list');
-    optionsContainer.innerHTML = '';
-    
-    const selectedAns = this.state.testState.answers[idx];
-    
-    question.options.forEach((opt, oIdx) => {
-      const isSelected = selectedAns === oIdx;
-      
-      const label = document.createElement('label');
-      label.className = `test-option-label ${isSelected ? 'selected' : ''}`;
-      label.onclick = () => {
-        this.state.testState.answers[idx] = oIdx;
-        this.renderQuizQuestion(); // re-render selected highlight
-      };
-      
-      label.innerHTML = `
-        <input type="radio" name="quiz-options" value="${oIdx}" ${isSelected ? 'checked' : ''} style="accent-color: var(--primary);">
-        <span>${opt}</span>
-      `;
-      
-      optionsContainer.appendChild(label);
-    });
-
-    // Control buttons text/status
-    document.getElementById('btn-prev-question').style.visibility = idx === 0 ? 'hidden' : 'visible';
-    const nextBtn = document.getElementById('btn-next-question');
-    if (idx === total - 1) {
-      nextBtn.innerHTML = 'Finalizar Prueba <i class="ti ti-checkbox"></i>';
-      nextBtn.onclick = () => this.submitKnowledgeTest(false);
-    } else {
-      nextBtn.innerHTML = 'Siguiente';
-      nextBtn.onclick = () => this.nextQuestion();
-    }
-  },
-
-  nextQuestion() {
-    if (this.state.testState.answers[this.state.testState.currentQuestionIdx] === undefined) {
-      this.showToast("Please select an option.", "warning");
-      return;
-    }
-    this.state.testState.currentQuestionIdx++;
-    this.renderQuizQuestion();
-  },
-
-  prevQuestion() {
-    if (this.state.testState.currentQuestionIdx > 0) {
-      this.state.testState.currentQuestionIdx--;
-      this.renderQuizQuestion();
-    }
-  },
-
-  submitKnowledgeTest(isTimeout = false) {
-    if (!isTimeout) {
-      // Check that all questions have been answered
-      const unanswered = this.state.testState.questions.some((_, idx) => this.state.testState.answers[idx] === undefined);
-      if (unanswered) {
-        this.showToast("You must answer all questions.", "warning");
-        return;
-      }
-    }
-
-    clearInterval(this.state.testState.timer);
-    
-    const weekNum = this.state.testState.weekNum;
-    const questions = this.state.testState.questions;
-    const answers = this.state.testState.answers;
-    
-    // Grade exam
-    let correctCount = 0;
-    questions.forEach((q, idx) => {
-      if (answers[idx] === q.correct) {
-        correctCount++;
-      }
-    });
-    
-    const scorePercentage = Math.round((correctCount / questions.length) * 100);
-    const template = this.state.db.week_templates.find(wt => wt.week_number === parseInt(weekNum));
-    const minScore = template.knowledge_test?.min_passing_score || 70;
-    
-    const userId = this.state.activeUser.id;
-    const progress = this.state.db.consultant_progress[userId];
-    
-    progress.test_scores[weekNum] = scorePercentage;
-    progress.test_attempts[weekNum] = (progress.test_attempts[weekNum] || 0) + 1;
-    
-    const passed = scorePercentage >= minScore;
-    
-    let alertMsg = "";
-    let alertType = "";
-
-    if (passed) {
-      alertType = "success";
-      alertMsg = `Test Approved with ${scorePercentage}%!`;
-      
-      this.checkWeekCompletion(userId, weekNum);
-      const isCompletedNow = progress.completed_weeks.includes(weekNum);
-      if (isCompletedNow) {
-        alertMsg += " You have completed the week and unlocked the next module.";
-      } else {
-        if (template.deliverable && (!progress.deliverables[weekNum] || progress.deliverables[weekNum].status !== 'approved')) {
-          alertMsg += " Upload your Deliverable in the corresponding tab for final review.";
-        } else {
-          alertMsg += " You have passed the evaluation. The week will be completed once your tutor validates all checklist tasks.";
-        }
-      }
-      
-      // SMTP Alert on approved test
-      this.sendSMTPAlert(
-        "junior",
-        this.state.activeUser.email,
-        `Test Passed - Week ${weekNum}`,
-        `Hello ${this.state.activeUser.name},\n\nYou have successfully passed the theoretical test for Week ${weekNum} with a score of ${scorePercentage}%.\n\n${template.deliverable ? 'Remember that you must upload your practical deliverable to complete the module.' : 'The next module is already unlocked in your schedule.'}`
-      );
-    } else {
-      alertType = "danger";
-      alertMsg = `Test Failed with ${scorePercentage}%. Minimum required: ${minScore}%. Try again.`;
-      
-      // Trigger SMTP alert to Manager for Critical Block (failed twice or more)
-      const attempts = progress.test_attempts[weekNum] || 0;
-      if (attempts >= 2) {
-        this.sendSMTPAlert(
-          "admin",
-          "luana@murex.cl",
-          `Critical Block Alert: ${this.state.activeUser.name}`,
-          `Dear Manager Luana Ortega,\n\nA prolonged block has been detected for Junior Consultant ${this.state.activeUser.name} on Week ${weekNum} (${template.title}).\n\nThe consultant has failed the theoretical evaluation for the second consecutive time with a score of ${scorePercentage}% (passing minimum: ${minScore}%).`
-        );
-      }
-    }
-
-    this.resetTestState();
-    this.saveDatabase();
-    
-    // Render and show results
-    this.renderConsultantView();
-    this.showToast(alertMsg, alertType);
-  },
-
   resetTestState() {
     if (this.state.testState.timer) clearInterval(this.state.testState.timer);
     this.state.testState.active = false;
@@ -5943,13 +5747,24 @@ const app = {
   // Completion Certificate Trigger
   triggerCompletionCertificate(userId) {
     const user = this.state.db.users.find(u => u.id === userId);
-    
+    if (!user) return;
+
+    // Persist UUID so repeated views show the same certificate number
+    if (!user.cert_uuid) {
+      user.cert_uuid = `MX3-FPL-${Math.random().toString(36).substr(2, 9).toUpperCase()}`;
+      this.saveDatabase();
+    }
+    if (!user.cert_date) {
+      user.cert_date = new Date().toISOString().split('T')[0];
+      this.saveDatabase();
+    }
+
     document.getElementById('cert-consultant-name').innerText = user.name;
-    document.getElementById('cert-uuid').innerText = `MX3-FPL-${Math.random().toString(36).substr(2, 9).toUpperCase()}`;
-    
+    document.getElementById('cert-uuid').innerText = user.cert_uuid;
+
     const options = { year: 'numeric', month: 'long', day: 'numeric' };
-    document.getElementById('cert-date').innerText = new Date().toLocaleDateString('en-US', options);
-    
+    document.getElementById('cert-date').innerText = new Date(user.cert_date + 'T12:00:00').toLocaleDateString('en-US', options);
+
     // Render modal
     document.getElementById('completion-certificate-modal').style.display = 'flex';
   },
@@ -7070,9 +6885,6 @@ const app = {
           `Hello ${trainee.name},\n\nYou have successfully completed Week ${weekNum}! Your approval has been registered after completing the technical evaluation and receiving checklist validation from your tutor.`
         );
       }
-    } else if (!isCompleted && wasCompleted) {
-      // If any condition is no longer met, remove from completed_weeks
-      progress.completed_weeks = progress.completed_weeks.filter(w => w !== weekNum);
     }
   },
 
@@ -7100,7 +6912,8 @@ const app = {
       if (weekNum === 12) {
         this.triggerCompletionCertificate(userId);
       }
-      
+
+      this.updateAllTraineesScores();
       this.saveDatabase();
       this.renderAdminView();
       this.showToast(`Force approval successful for Week ${weekNum}.`, "warning");
