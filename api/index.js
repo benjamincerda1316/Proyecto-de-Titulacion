@@ -70,8 +70,7 @@ if (!process.env.VERCEL) {
   }
 }
 
-const DEFAULT_SUPABASE_URL = 'postgresql://postgres:Realaudiencia1316@db.jrssnzvcjodwfsgeiuou.supabase.co:5432/postgres';
-const pgUrl = process.env.DATABASE_URL || process.env.POSTGRES_URL || DEFAULT_SUPABASE_URL;
+const pgUrl = process.env.DATABASE_URL || process.env.POSTGRES_URL;
 
 if (pgUrl && !pgUrl.includes('[YOUR-PASSWORD]')) {
   try {
@@ -568,6 +567,17 @@ async function initDatabase() {
     console.error('Failed to create arrival events for existing juniors:', err.message);
   }
 
+  // Performance indexes on high-frequency filter columns
+  const indexes = [
+    `CREATE INDEX IF NOT EXISTS idx_cal_junior ON calendar_events(junior_id)`,
+    `CREATE INDEX IF NOT EXISTS idx_cal_status ON calendar_events(status)`,
+    `CREATE INDEX IF NOT EXISTS idx_mc_junior ON masterclasses(junior_id)`,
+    `CREATE INDEX IF NOT EXISTS idx_logs_junior ON mentoring_logs(junior_id)`
+  ];
+  for (const sql of indexes) {
+    try { await db.exec(sql); } catch (e) { /* index may already exist */ }
+  }
+
   console.log('Database initialized successfully.');
 }
 
@@ -756,8 +766,21 @@ let dbMutex = Promise.resolve();
 // POST API to bulk update full state
 app.post('/api/db/save', async (req, res) => {
   const data = req.body;
-  if (!data || !data.users) {
+  if (!data || !data.users || !Array.isArray(data.users)) {
     return res.status(400).json({ error: 'Invalid database payload.' });
+  }
+  // Drop corrupt records that would break PK constraints
+  if (data.calendar_events) {
+    data.calendar_events = data.calendar_events.filter(e => e && e.id != null);
+  }
+  if (data.masterclasses) {
+    data.masterclasses = data.masterclasses.filter(m => m && m.id != null && m.junior_id != null);
+  }
+  if (data.mentoring_logs) {
+    data.mentoring_logs = data.mentoring_logs.filter(l => l && l.id != null);
+  }
+  if (data.users) {
+    data.users = data.users.filter(u => u && u.id != null && u.email != null);
   }
 
   if (initPromise) {
@@ -1176,7 +1199,10 @@ app.post('/api/send-reset-email', async (req, res) => {
       return res.status(400).json({ error: 'Missing required parameters: email and code' });
     }
 
-    const apiKey = process.env.RESEND_API_KEY || Buffer.from('cmVfaDNOZzZkVGhfOEpRQnBSU1g4WHE2Q2NZS2oyanJneGJR', 'base64').toString('utf8');
+    const apiKey = process.env.RESEND_API_KEY;
+    if (!apiKey) {
+      return res.status(500).json({ error: 'Email service not configured. Set RESEND_API_KEY environment variable.' });
+    }
     const fromEmail = process.env.RESEND_FROM_EMAIL || 'onboarding@resend.dev';
 
     const response = await fetch('https://api.resend.com/emails', {
@@ -1222,6 +1248,10 @@ app.post('/api/send-reset-email', async (req, res) => {
     console.error('Error in /api/send-reset-email:', err);
     return res.status(500).json({ success: false, error: err.message });
   }
+});
+
+app.use((req, res) => {
+  res.status(404).json({ error: `Route ${req.method} ${req.path} not found.` });
 });
 
 const PORT = process.env.PORT || 3000;

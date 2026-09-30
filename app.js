@@ -2080,8 +2080,12 @@ const app = {
           return;
         }
         this.state.db = data;
+        // Cap outbox to avoid unbounded growth
+        if (this.state.db.smtp_outbox && this.state.db.smtp_outbox.length > 100) {
+          this.state.db.smtp_outbox = this.state.db.smtp_outbox.slice(0, 100);
+        }
         this.updateAllTraineesScores();
-        
+
         // Ensure backward compatibility for calendar events
         if (this.state.db.calendar_events) {
           this.state.db.calendar_events.forEach(e => {
